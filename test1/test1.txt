@@ -1,0 +1,20 @@
+2026/03/05
+
+## Start a New Feature
+git-flow -> 開發新功能 (Start a New Feature) -> 預設選 develop -> 輸入功能名稱
+
+當你在這個 feature 分支寫完程式碼，並點擊 Git Flow -> Finish Feature 時，SourceTree 會自動幫你做以下兩件事：
+
+把這段新代碼合併回 develop。
+
+刪除這個臨時的 feature 分支。
+
+小撇步： > 只有當你需要「修復正在線上的緊急錯誤（Bug）」時，才會用到從 master 起始的功能，但那個在 Git Flow 裡有專屬的按鈕叫做 Hotfix，而不是 Feature。
+
+## 0305 -1 Commit 沒有push
+
+這裡沒有push,這段修正只有我本地看的到  團隊看不到
+
+
+## 0305 -2 Commit 沒有push
+一樣沒有push,所以只有我本地看的到修正內容 大家看不到feature/add_test1
