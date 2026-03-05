@@ -10,3 +10,7 @@ git-flow -> 開發新功能 (Start a New Feature) -> 預設選 develop -> 輸入
 刪除這個臨時的 feature 分支。
 
 小撇步： > 只有當你需要「修復正在線上的緊急錯誤（Bug）」時，才會用到從 master 起始的功能，但那個在 Git Flow 裡有專屬的按鈕叫做 Hotfix，而不是 Feature。
+
+## 0305 -1 Commit 沒有push
+
+這裡沒有push,這段修正只有我本地看的到  團隊看不到
