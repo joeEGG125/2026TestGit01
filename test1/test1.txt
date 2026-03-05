@@ -21,3 +21,6 @@ git-flow -> 開發新功能 (Start a New Feature) -> 預設選 develop -> 輸入
 
 ## 0305 -3 3月5日 下午 12:01:43  gitID:6df0ff4
 點下gitflow選擇finish後，我可以選擇merge to develop 也可以選擇 rebase on develop這樣就會呈現一條線 不會有一個merge的樣子
+
+
+## 0305 -4 develop 直接 commit 測試1
