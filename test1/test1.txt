@@ -14,3 +14,7 @@ git-flow -> 開發新功能 (Start a New Feature) -> 預設選 develop -> 輸入
 ## 0305 -1 Commit 沒有push
 
 這裡沒有push,這段修正只有我本地看的到  團隊看不到
+
+
+## 0305 -2 Commit 沒有push
+一樣沒有push,所以只有我本地看的到修正內容 大家看不到feature/add_test1
