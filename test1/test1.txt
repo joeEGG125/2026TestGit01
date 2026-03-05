@@ -18,3 +18,6 @@ git-flow -> 開發新功能 (Start a New Feature) -> 預設選 develop -> 輸入
 
 ## 0305 -2 Commit 沒有push
 一樣沒有push,所以只有我本地看的到修正內容 大家看不到feature/add_test1
+
+## 0305 -3 3月5日 下午 12:01:43  gitID:6df0ff4
+點下gitflow選擇finish後，我可以選擇merge to develop 也可以選擇 rebase on develop這樣就會呈現一條線 不會有一個merge的樣子
