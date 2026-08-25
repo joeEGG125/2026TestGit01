@@ -1,0 +1,278 @@
+.modal-dialog-info .modal-content {
+	background: -webkit-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #8be4f1, #17a2b8); /* Chrome10+,Safari5.1+ */
+	background: -moz-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #8be4f1, #17a2b8); /* FF3.6+ */
+	background: -ms-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #8be4f1, #17a2b8); /* IE10+ */
+	background: -o-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #8be4f1, #17a2b8); /* Opera 11.10+ */
+	background: linear-gradient(to right top, #FFF, rgb(252, 250, 246) 50%, #8be4f1, #17a2b8); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#17a2b8', GradientType=1); /* IE6-8 */
+}
+
+.modal-dialog-info .modal-header {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-info .modal-footer {
+	margin-top: 1px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-info .modal-title {
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px #cccccc;
+	color: #17a2b8;
+}
+
+.modal-dialog-danger .modal-content {
+	background: -webkit-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ed9aa3, #dc3545); /* Chrome10+,Safari5.1+ */
+	background: -moz-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ed9aa3, #dc3545); /* FF3.6+ */
+	background: -ms-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ed9aa3, #dc3545); /* IE10+ */
+	background: -o-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ed9aa3, #dc3545); /* Opera 11.10+ */
+	background: linear-gradient(to right top, #FFF, rgb(252, 250, 246) 50%, #ed9aa3, #dc3545); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#dc3545', GradientType=1); /* IE6-8 */
+}
+
+.modal-dialog-danger .modal-header {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-danger .modal-footer {
+	margin-top: 1px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-danger .modal-title {
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px #cccccc;
+	color: #dc3545;
+}
+
+.modal-dialog-warning .modal-content {
+	background: -webkit-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ffe697, #ffc107); /* Chrome10+,Safari5.1+ */
+	background: -moz-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ffe697, #ffc107); /* FF3.6+ */
+	background: -ms-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ffe697, #ffc107); /* IE10+ */
+	background: -o-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #ffe697, #ffc107); /* Opera 11.10+ */
+	background: linear-gradient(to right top, #FFF, rgb(252, 250, 246) 50%, #ffe697, #ffc107); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#ffc107', GradientType=1); /* IE6-8 */
+}
+
+.modal-dialog-warning .modal-header {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-warning .modal-footer {
+	margin-top: 1px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-warning .modal-title {
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px #cccccc;
+	color: #b98b00;
+}
+
+.modal-dialog-success .modal-content {
+	background: -webkit-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #adebbb, #28a745); /* Chrome10+,Safari5.1+ */
+	background: -moz-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #adebbb, #28a745); /* FF3.6+ */
+	background: -ms-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #adebbb, #28a745); /* IE10+ */
+	background: -o-linear-gradient(right top, #FFF, rgb(252, 250, 246) 50%, #adebbb, #28a745); /* Opera 11.10+ */
+	background: linear-gradient(to right top, #FFF, rgb(252, 250, 246) 50%, #adebbb, #28a745); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#28a745', GradientType=1); /* IE6-8 */
+}
+
+.modal-dialog-success .modal-header {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-success .modal-footer {
+	margin-top: 1px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: 1px solid rgb(200, 200, 200);
+}
+
+.modal-dialog-success .modal-title {
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px #cccccc;
+	color: #28a745
+}
+
+.modal-dialog-confirm .modal-body {
+	padding: 0px;
+}
+
+.bootstrap-datetimepicker-widget table a[data-action] {
+	padding: 3px 0px;
+	color: var(--blue) !important;
+}
+
+.bootstrap-datetimepicker-widget table th {
+	border-bottom: 2px solid #dee2e6 !important;
+	border-left: none;
+	border-right: none;
+}
+
+.bootstrap-datetimepicker-widget table td {
+	height: 36px;
+	line-height: 36px;
+	width: 0px;
+	border: none;
+}
+
+.bootstrap-datetimepicker-widget table td span {
+	height: 36px;
+	line-height: 36px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 50px;
+}
+
+.bootstrap-datetimepicker-widget table td span:hover {
+	background: #007bff;
+	color: white;
+}
+
+.bootstrap-datetimepicker-widget table td.day:hover, 
+.bootstrap-datetimepicker-widget table td.hour:hover, 
+.bootstrap-datetimepicker-widget table td.minute:hover, 
+.bootstrap-datetimepicker-widget table td.second:hover {
+	background: #007bff;
+	color: white;
+}
+
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
+	background: #007bff;
+	color: white;
+}
+
+.bootstrap-datetimepicker-widget tbody tr:hover {
+	background-color: transparent;
+}
+
+.bootstrap-datetimepicker-widget tbody tr:nth-of-type(odd) {
+	background-color: transparent;
+}
+
+.bootstrap-datetimepicker-widget .datepicker .table>thead>tr>td, 
+.bootstrap-datetimepicker-widget .datepicker .table>tbody>tr>td, 
+.bootstrap-datetimepicker-widget .datepicker .table>tfoot>tr>td {
+	border-top: 2px solid #dee2e6;
+}
+
+.bootstrap-datetimepicker-widget .picker-switch td {
+	padding: 0px !important;
+}
+
+.bootstrap-datetimepicker-widget .picker-switch td span {
+	height: 36px;
+	line-height: 36px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 50px;
+}
+
+.bootstrap-datetimepicker-widget .timepicker-hour, 
+.bootstrap-datetimepicker-widget .timepicker-minute, 
+.bootstrap-datetimepicker-widget .timepicker-second {
+	width: 36px;
+}
+
+.bootstrap-datetimepicker-widget .table tbody>tr>td:first-of-type, 
+.bootstrap-datetimepicker-widget .table tbody>tr>th:first-of-type, 
+.bootstrap-datetimepicker-widget .table tfoot>tr>td:first-of-type,
+.bootstrap-datetimepicker-widget .table tfoot>tr>th:first-of-type, 
+.bootstrap-datetimepicker-widget .table thead>tr>td:first-of-type, 
+.bootstrap-datetimepicker-widget .table thead>tr>th:first-of-type {
+	padding: .3rem !important;
+}
+
+.bootstrap-datetimepicker-widget .table tbody>tr>td:last-of-type, 
+.bootstrap-datetimepicker-widget .table tbody>tr>th:last-of-type, 
+.bootstrap-datetimepicker-widget .table tfoot>tr>td:last-of-type,
+.bootstrap-datetimepicker-widget .table tfoot>tr>th:last-of-type, 
+.bootstrap-datetimepicker-widget .table thead>tr>td:last-of-type, 
+.bootstrap-datetimepicker-widget .table thead>tr>th:last-of-type {
+	padding: .3rem !important;
+}
+
+.bootstrap-datetimepicker-widget .table tbody>tr>td, 
+.bootstrap-datetimepicker-widget .table tbody>tr>th, 
+.bootstrap-datetimepicker-widget .table tfoot>tr>td, 
+.bootstrap-datetimepicker-widget .table tfoot>tr>th,
+.bootstrap-datetimepicker-widget .table thead>tr>td, 
+.bootstrap-datetimepicker-widget .table thead>tr>th {
+	padding: .3rem !important;
+}
+
+.bootstrap-datetimepicker-widget .table thead tr:nth-child(1) th {
+	box-shadow: none !important;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed {
+	white-space: normal;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed tbody>tr>td:first-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed tbody>tr>th:first-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed tfoot>tr>td:first-of-type,
+.bootstrap-datetimepicker-widget .table-condensed tfoot>tr>th:first-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed thead>tr>td:first-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed thead>tr>th:first-of-type
+	{
+	padding: .3rem !important;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed tbody>tr>td:last-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed tbody>tr>th:last-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed tfoot>tr>td:last-of-type,
+.bootstrap-datetimepicker-widget .table-condensed tfoot>tr>th:last-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed thead>tr>td:last-of-type, 
+.bootstrap-datetimepicker-widget .table-condensed thead>tr>th:last-of-type {
+	padding: .3rem !important;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed tbody>tr>td, 
+.bootstrap-datetimepicker-widget .table-condensed tbody>tr>th, 
+.bootstrap-datetimepicker-widget .table-condensed tfoot>tr>td, 
+.bootstrap-datetimepicker-widget .table-condensed tfoot>tr>th,
+.bootstrap-datetimepicker-widget .table-condensed thead>tr>td, 
+.bootstrap-datetimepicker-widget .table-condensed thead>tr>th {
+	padding: .3rem !important;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed thead tr:nth-child(1) th {
+	box-shadow: none !important;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed td, .bootstrap-datetimepicker-widget .table-condensed th {
+	padding: .3rem !important;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed tr:hover {
+	background-color: transparent;
+}
+
+.bootstrap-datetimepicker-widget .table-condensed tr:nth-of-type(odd) {
+	background-color: transparent;
+}

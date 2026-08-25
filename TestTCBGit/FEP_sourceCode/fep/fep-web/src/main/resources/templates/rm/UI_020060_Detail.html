@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<table border="0" cellspacing="0" class="table-detail" th:object="${form}">
+			<tr>
+				<td class="condition-label col-3">
+					<label class="col-form-label">財金銀行代碼_銀行別</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankBkno)}" readonly="true"></label>
+				</td>
+				<td class="condition-label col-3">
+					<label class="col-form-label">財金銀行代碼_分支機構</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankBrno)}" readonly="true"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">分行別檢查碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankBrnoChkcode)}" readonly="true"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">總行代號</label>
+				</td>
+				<td class="condition-input">
+					<select class="form-control" readonly="true">
+						<option value="0" th:text="*{allbankFiscUnit}==0?'0-一般行庫':'1-共用中心'"></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">計算機中心總行代號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankUnitBank)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">銀行簡稱</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankAliasname)}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">銀行全名</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankFullname)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">銀行英文名稱</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankEngname)}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">銀行地址</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankAddrress)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">郵遞區號1</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankZipcode1)}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">郵遞區號2</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankZipcode2)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">電話</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankTelno)}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">參加財金匯款通匯旗標</label>
+				</td>
+				<td class="condition-input">
+					<select class="form-control" disabled="disabled">
+						<option value="0" th:text="*{allbankRmflag}==0?'0-未參加':'1-參加'"></option>
+					</select>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">匯款匯出FORWARD旗標</label>
+				</td>
+				<td class="condition-input">
+					<select class="form-control" disabled="disabled">
+						<option value="0" th:text="*{allbankRmforward}==0?'0-正常':(*{allbankRmforward}==1?'1-禁止':'2-颱風天暫停')"></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">今日財金關帳時間</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(form.allbankSetCloseTime)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">參加財金證券匯款旗標</label>
+				</td>
+				<td class="condition-input">
+					<select class="form-control" disabled="disabled">
+						<option value="0" th:text="*{allbankSetCloseFlag}==0?'0-未參加':'1-參加'"></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">銀行種類</label>
+				</td>
+				<td class="condition-input">
+					<select class="form-control" disabled="disabled">
+						<option value="0" th:text="*{allbankType}==0?'0-自行':(*{allbankType}==1?'1-一般他行':'2-合作社')"></option>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

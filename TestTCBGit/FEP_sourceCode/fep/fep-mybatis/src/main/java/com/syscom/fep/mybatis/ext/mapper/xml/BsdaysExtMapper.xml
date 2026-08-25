@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.BsdaysExtMapper">
+
+	<select id="getBsdaysDate" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT BSDAYS_NBSDY 
+		  FROM BSDAYS 
+		 WHERE BSDAYS_DATE = #{transactDate,jdbcType=VARCHAR} 
+		   AND BSDAYS_ZONE_CODE = 'TWN'
+	</select>
+	<select id="getBSDAYSByYearAndZoneAndDate" parameterType="map" resultType="map">
+		SELECT * FROM BSDAYS
+		WHERE 1=1
+		<if test="txtBSDAYS_DATE != null and txtBSDAYS_DATE !=''">
+			AND BSDAYS_DATE <![CDATA[  =  ]]> #{txtBSDAYS_DATE,jdbcType=VARCHAR}
+		</if>
+		<if test="bsdays_ZONE_CODEDdl != null and bsdays_ZONE_CODEDdl !=''">
+			AND BSDAYS_ZONE_CODE = #{bsdays_ZONE_CODEDdl,jdbcType=CHAR}
+		</if>
+	</select>
+	<select id="getBSDAYSByYearAndZone" parameterType="map" resultType="map">
+		SELECT * FROM BSDAYS
+		WHERE 1=1
+		<if test="BSDAYS_TARGET_YEAR != null and BSDAYS_TARGET_YEAR !=''">
+			AND BSDAYS_DATE <![CDATA[  >=  ]]> #{BSDAYS_TARGET_YEAR,jdbcType=VARCHAR}
+			AND BSDAYS_DATE  &lt;  #{BSDAYS_TARGET_NEXT_YEAR,jdbcType=VARCHAR}
+		</if>
+		<if test="BSDAYS_ZONE_CODE != null and BSDAYS_ZONE_CODE !=''">
+			AND BSDAYS_ZONE_CODE = #{BSDAYS_ZONE_CODE,jdbcType=CHAR}
+		</if>
+	</select>
+	<!-- Bruce add 使用sp查詢日期 -->
+	<select id="getNextBusinessDate" statementType="CALLABLE" resultType="java.util.Map">
+		{
+			call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETNEXTBUSINESSDATE(
+				#{zoneCode, mode=IN, jdbcType=VARCHAR},
+				#{transactDate, mode=IN, jdbcType=VARCHAR},
+				#{nextDate, mode=OUT, jdbcType=VARCHAR}
+			)
+		}
+	</select>
+	<update id="updateByPrimaryKey2" parameterType="map">
+		UPDATE BSDAYS
+		<set>
+			<if test="updateUserid != null">
+				UPDATE_USERID = #{updateUserid,jdbcType=NUMERIC},
+			</if>
+			<if test="bsdays_WORKDAYDdl != null and bsdays_WORKDAYDdl != ''">
+				BSDAYS_WORKDAY = #{bsdays_WORKDAYDdl,jdbcType=NUMERIC},
+			</if>
+			<if test="txtBSDAYS_JDAY != null and txtBSDAYS_JDAY != ''">
+				BSDAYS_JDAY = #{txtBSDAYS_JDAY,jdbcType=NUMERIC},
+			</if>
+			<if test="txtBSDAYS_NBSDY != null and txtBSDAYS_NBSDY != ''">
+				BSDAYS_NBSDY = #{txtBSDAYS_NBSDY,jdbcType=VARCHAR},
+			</if>
+			<if test="txtBSDAYS_WEEKNO != null and txtBSDAYS_WEEKNO != ''">
+				BSDAYS_WEEKNO = #{txtBSDAYS_WEEKNO,jdbcType=NUMERIC},
+			</if>
+			<if test="txtBSDAYS_ST_FLAG != null and txtBSDAYS_ST_FLAG != ''">
+				BSDAYS_ST_FLAG = #{txtBSDAYS_ST_FLAG,jdbcType=NUMERIC},
+			</if>
+			<if test="txtBSDAYS_ST_DATE_ATM != null and txtBSDAYS_ST_DATE_ATM != ''">
+				BSDAYS_ST_DATE_ATM = #{txtBSDAYS_ST_DATE_ATM,jdbcType=VARCHAR},
+			</if>
+			<if test="txtBSDAYS_ST_DATE_RM != null and txtBSDAYS_ST_DATE_RM != ''">
+				BSDAYS_ST_DATE_RM = #{txtBSDAYS_ST_DATE_RM,jdbcType=VARCHAR},
+			</if>
+			UPDATE_TIME = sysdate
+		</set>
+
+		where BSDAYS_ZONE_CODE =  #{bsdays_ZONE_CODEDdl,jdbcType=CHAR}
+		AND	  BSDAYS_DATE = #{txtBSDAYS_DATE,jdbcType=VARCHAR}
+
+	</update>
+	<select id="getLBsdays" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BsdaysMapper.BaseResultMap">
+		SELECT 
+			<include refid="com.syscom.fep.mybatis.mapper.BsdaysMapper.Base_Column_List" />
+		FROM BSDAYS
+		WHERE BSDAYS_NBSDY = #{txtBSDAYS_NBSDY, jdbcType=VARCHAR}
+		AND BSDAYS_WORKDAY = 1
+	</select>
+	<select id="queryBSDAYSOfYearAndZone" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BsdaysMapper.BaseResultMap">
+		select
+		<include refid="com.syscom.fep.mybatis.mapper.BsdaysMapper.Base_Column_List"/>
+		from BSDAYS
+		where BSDAYS_ZONE_CODE = #{BSDAYS_ZONE_CODE,jdbcType=CHAR}
+		AND SUBSTR(BSDAYS_DATE, 1, 4) = #{BSDAYS_TARGET_YEAR, jdbcType=VARCHAR}
+		ORDER BY BSDAYS_DATE
+	</select>
+
+	<select id="getLBsdaysBefore" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BsdaysMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.BsdaysMapper.Base_Column_List" />
+		FROM BSDAYS
+		WHERE BSDAYS_ZONE_CODE = 'TWN'
+		AND BSDAYS_NBSDY <![CDATA[ < ]]> #{txtLbsdy, jdbcType=VARCHAR}
+		ORDER BY BSDAYS_NBSDY DESC
+	</select>
+
+	<select id="getBsdaysByDateOrNbsdy" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BsdaysMapper.BaseResultMap">
+		SELECT * FROM BSDAYS
+		WHERE BSDAYS_ZONE_CODE = 'TWN'
+		AND (BSDAYS_DATE = #{queryDate} OR BSDAYS_NBSDY = #{queryDate})
+		ORDER BY BSDAYS_DATE ASC
+	</select>
+</mapper>

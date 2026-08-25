@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.MsgfileExtMapper">
+	<!-- add by wj 20210514 -->
+	<select id="selectByMsgfileErrorcode" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgfileMapper.ResultMapWithBLOBs">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Base_Column_List" />
+		,
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Blob_Column_List" />
+		FROM MSGFILE
+		WHERE MSGFILE_ERRORCODE = #{msgfileErrorcode,jdbcType=VARCHAR}
+	</select>
+	<select id="select" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgfileMapper.ResultMapWithBLOBs">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Base_Column_List" />
+		,
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Blob_Column_List" />
+		FROM MSGFILE
+		WHERE MSGFILE_EXTERNAL = #{msgfileExternal,jdbcType=VARCHAR}
+	</select>
+	<select id="selectShortMsgByATM" parameterType="map" resultType="java.lang.String" >
+		SELECT
+		MSGFILE_SHORTMSG
+		FROM MSGFILE
+		WHERE MSGFILE_CHANNEL = #{msgfileChannel,jdbcType=DECIMAL}
+		AND MSGFILE_ATM = #{msgfileErrorcode,jdbcType=CHAR}
+	</select>
+	<select id="queryMsgFileByDef" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgfileMapper.ResultMapWithBLOBs">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Base_Column_List" />
+		,
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Blob_Column_List" />
+		FROM MSGFILE
+		<where>
+			<if test="args.msgfileChannel != null and args.msgfileChannel != '' ">
+				AND MSGFILE_CHANNEL = #{args.msgfileChannel,jdbcType=DECIMAL}
+			</if> 		
+			<if test="args.msgfileErrorcode != null and  args.msgfileErrorcode != '' ">
+				AND MSGFILE_ERRORCODE LIKE CONCAT('%', CONCAT(#{args.msgfileErrorcode}, '%'))
+			</if> 	
+			<if test="args.msgfileSubsys != null and args.msgfileSubsys != '' ">
+				AND MSGFILE_SUBSYS = #{args.msgfileSubsys,jdbcType=DECIMAL}
+			</if> 		
+			<if test="args.msgfileSeverity != null and args.msgfileSeverity != '' ">
+				AND MSGFILE_SEVERITY = #{args.msgfileSeverity,jdbcType=VARCHAR}
+			</if> 	
+			<if test="args.msgfileShortmsg != null and args.msgfileShortmsg != '' ">
+				AND MSGFILE_SHORTMSG LIKE CONCAT('%', CONCAT(#{args.msgfileShortmsg}, '%'))
+			</if> 	
+		</where>
+	</select>
+	
+	<select id="queryMsgFileByDefLike" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgfileMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Base_Column_List" />
+		FROM MSGFILE
+		<where>
+			<if test="args.channel != null and args.channel != '' ">
+				AND MSGFILE_CHANNEL = #{args.channel,jdbcType=DECIMAL}
+			</if> 		
+			<if test="args.errorCode != null and  args.errorCode != '' ">
+				AND MSGFILE_ERRORCODE LIKE CONCAT('%', CONCAT(#{args.errorCode}, '%'))
+			</if> 	
+			<if test="args.msgfileFisc != null and args.msgfileFisc != '' ">
+				AND MSGFILE_FISC LIKE CONCAT('%', CONCAT(#{args.msgfileFisc}, '%'))
+			</if> 
+			<if test="args.msgfileAtm != null and args.msgfileAtm != '' ">
+				AND MSGFILE_ATM LIKE CONCAT('%', CONCAT(#{args.msgfileAtm}, '%'))
+			</if> 	
+			<if test="args.msgfileT24 != null and args.msgfileT24 != '' ">
+				AND MSGFILE_T24 LIKE CONCAT('%', CONCAT(#{args.msgfileT24}, '%'))
+			</if> 	
+			<if test="args.msgfileCredit != null and args.msgfileCredit != '' ">
+				AND MSGFILE_CREDIT LIKE CONCAT('%', CONCAT(#{args.msgfileCredit}, '%'))
+			</if> 	
+			<if test="args.severity != null and args.severity != '' ">
+				AND MSGFILE_SEVERITY = #{args.severity,jdbcType=VARCHAR}
+			</if> 	
+			<if test="args.msgfileShortmsg != null and args.msgfileShortmsg != '' ">
+				AND MSGFILE_SHORTMSG LIKE CONCAT('%', CONCAT(#{args.msgfileShortmsg}, '%'))
+			</if> 	
+		</where>
+	</select>
+	<select id="queryByDefJoinChannel" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgfileMapper.ResultMapWithBLOBs">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Base_Column_List" />
+		,
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Blob_Column_List" />
+		FROM (
+		SELECT M.*
+		FROM MSGFILE M
+		LEFT JOIN CHANNEL C ON M.MSGFILE_CHANNEL = C.CHANNEL_CHANNELNO
+		<where>
+			<if test="args.msgfileChannel != null and args.msgfileChannel != '' ">
+				AND MSGFILE_CHANNEL = #{args.msgfileChannel,jdbcType=DECIMAL}
+			</if> 		
+			<if test="args.msgfileErrorcode != null and  args.msgfileErrorcode != '' ">
+				AND MSGFILE_ERRORCODE LIKE CONCAT('%', CONCAT(#{args.msgfileErrorcode}, '%'))
+			</if> 	
+			<if test="args.msgfileSubsys != null and args.msgfileSubsys != '' ">
+				AND MSGFILE_SUBSYS = #{args.msgfileSubsys,jdbcType=DECIMAL}
+			</if> 		
+			<if test="args.msgfileSeverity != null and args.msgfileSeverity != '' ">
+				AND MSGFILE_SEVERITY = #{args.msgfileSeverity,jdbcType=VARCHAR}
+			</if> 	
+			<if test="args.msgfileShortmsg != null and args.msgfileShortmsg != '' ">
+				AND MSGFILE_SHORTMSG LIKE CONCAT('%', CONCAT(#{args.msgfileShortmsg}, '%'))
+			</if> 	
+		</where>
+		)
+	</select>
+	<select id="queryByLikeJoinChannel" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgfileMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgfileMapper.Base_Column_List" />
+		FROM (
+		SELECT
+		M.*
+		FROM MSGFILE M
+		LEFT JOIN CHANNEL C ON M.MSGFILE_CHANNEL = C.CHANNEL_CHANNELNO
+		<where>
+			<if test="args.channel != null and args.channel != '' ">
+				AND M.MSGFILE_CHANNEL = #{args.channel,jdbcType=DECIMAL}
+			</if> 		
+			<if test="args.errorCode != null and  args.errorCode != '' ">
+				AND M.MSGFILE_ERRORCODE LIKE CONCAT('%', CONCAT(#{args.errorCode}, '%'))
+			</if> 	
+			<if test="args.msgfileFisc != null and args.msgfileFisc != '' ">
+				AND M.MSGFILE_FISC LIKE CONCAT('%', CONCAT(#{args.msgfileFisc}, '%'))
+			</if> 
+			<if test="args.msgfileAtm != null and args.msgfileAtm != '' ">
+				AND M.MSGFILE_ATM LIKE CONCAT('%', CONCAT(#{args.msgfileAtm}, '%'))
+			</if> 	
+			<if test="args.msgfileT24 != null and args.msgfileT24 != '' ">
+				AND M.MSGFILE_T24 LIKE CONCAT('%', CONCAT(#{args.msgfileT24}, '%'))
+			</if> 	
+			<if test="args.msgfileCredit != null and args.msgfileCredit != '' ">
+				AND M.MSGFILE_CREDIT LIKE CONCAT('%', CONCAT(#{args.msgfileCredit}, '%'))
+			</if> 	
+			<if test="args.severity != null and args.severity != '' ">
+				AND M.MSGFILE_SEVERITY = #{args.severity,jdbcType=VARCHAR}
+			</if> 	
+			<if test="args.msgfileShortmsg != null and args.msgfileShortmsg != '' ">
+				AND M.MSGFILE_SHORTMSG LIKE CONCAT('%', CONCAT(#{args.msgfileShortmsg}, '%'))
+			</if> 	
+		</where>
+		)
+	</select>
+</mapper>

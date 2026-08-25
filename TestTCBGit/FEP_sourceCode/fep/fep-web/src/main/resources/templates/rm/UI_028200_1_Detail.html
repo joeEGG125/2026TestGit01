@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnConfirm">確認</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage2">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028200_1_Detail/btnConfirm}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">檔案名稱</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{fileName}" readonly="readonly" width="100%"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">匯款日期</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{remDate}" maxlength="8"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">批號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{batchNo}" maxlength="32"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">分行登錄櫃員代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{tlrNo}" maxlength="6"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">分行放行主管代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{supNo}"  maxlength="6"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">授權主管代號二</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{supNo2}" maxlength="6"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">授權主管密碼二</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="password" th:field="*{supNo2Pw}"  maxlength="16"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">授權主管代號三</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{supNo3}" maxlength="6"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label col-3">
+                    <label class="col-form-label">授權主管密碼三</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="password" th:field="*{supNo3Pw}" maxlength="16"/>
+                </td>
+            </tr>
+            <tr readonly="readonly" style="display:none">
+                <td class="condition-input">
+                    <label>
+                        <input class="form-control col-2" type="text" th:text="*{fcsTlrNo}"/>
+                        <input class="form-control col-2" type="text" th:text="*{fcsSupNo}"/>
+                        <input class="form-control col-2" type="text" th:text="*{fcsRemDate}"/>
+                        <input class="form-control col-2" type="text" th:text="*{fcsBatchNo}"/>
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028200_1.js}"></script>
+</div>
+</body>
+</html>

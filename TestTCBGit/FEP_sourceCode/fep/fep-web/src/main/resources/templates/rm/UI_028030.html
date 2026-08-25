@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <form id="form-validator">
+            <div class="card card-primary card-outline" >
+                <div class="card-header">
+                    <h5 class="card-title">更換條件</h5>
+                </div>
+                <div class="card-body">
+                    <table border="0" cellspacing="0" class="table-condition">
+                        <tr>
+                            <td class="condition-label">
+                                <label for="bkno" class="col-form-label">收信行總行代號</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="bkno" name="bkno" maxlength="40" />
+                            </td>
+                            <td class="condition-label">
+                                <label for="txkind" class="col-form-label">交易項目</label>
+                            </td>
+                            <td class="condition-input">
+                                <select class="form-control" id="txkind">
+                                    <option value="1" selected="selected">匯出-組新基碼送出</option>
+                                    <option value="2">匯入-取消新舊並存狀態</option>
+                                    <option value="3">取消本行換KEY進行中記號</option>
+                                    <option value="4">匯出-對所有銀行組新基碼送出</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label for="confiRm" class="col-form-label">交易項目確認</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="confiRm" name="confiRm" maxlength="3" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+
+                            </td>
+                            <td class="condition-input">
+                                (Confirm Keyword "ALL")
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnConfirm">執行</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/rm/UI028030.js}"></script>
+    </div>
+</body>
+</html>

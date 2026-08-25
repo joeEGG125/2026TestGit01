@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.RminExtMapper">
+    <!-- 2021/10/25 Chen Yang Add -->
+    <select id="getRMINByCheckINData" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.RminMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.RminMapper.Base_Column_List"/>
+        FROM RMIN
+        WHERE RMIN_TXDATE = #{rminTxdate,jdbcType=VARCHAR}
+        AND SUBSTR(RMIN_RECEIVER_BANK, 1, 3) = #{rminReceiverBank,jdbcType=VARCHAR}
+        AND RMIN_FISCSNO = #{rminFiscsno,jdbcType=VARCHAR}
+        AND RMIN_FISC_RTN_CODE = #{rminFiscRtnCode,jdbcType=VARCHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <select id="queryRMINForUI028110" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.RminMapper.BaseResultMap">
+        SELECT * FROM RMIN
+            <where>
+                <if test=" rminFiscsno != null and rminFiscsno != ''">
+                    AND RMIN_FISCSNO = #{rmoutTxdate,jdbcType=VARCHAR}
+                </if>
+                <if test=" rminRmsno != null and rminRmsno != ''">
+                    AND RMIN_RMSNO = #{rminRmsno,jdbcType=VARCHAR}
+                </if>
+                <if test=" rminFiscSndCode != null and rminFiscSndCode != ''">
+                    AND SUBSTR(RMIN_FISC_SND_CODE,2,2)= #{rminFiscSndCode,jdbcType=CHAR}
+                </if>
+                <if test=" rminTxdate != null and rminTxdate != ''">
+                    AND RMIN_TXDATE = #{rminTxdate,jdbcType=VARCHAR}
+                </if>
+                <if test=' rminFepno != null and rminFepno != " "'>
+                    AND RMIN_FEPNO = #{rminFepno,jdbcType=VARCHAR}
+                </if>
+                <if test=" rminStat != null and rminStat != ''">
+                    AND RMIN_STAT = #{rminStat,jdbcType=VARCHAR}
+                </if>
+                <if test="rminReceiverBank != null and rminReceiverBank !=''">
+                    <if test="rminReceiverBank.length() == 3">
+                        AND SUBSTR(RMIN_RECEIVER_BANK,1,3)= #{rminReceiverBank,jdbcType=VARCHAR}
+                    </if>
+                    <if test="rminReceiverBank.length() == 6">
+                        AND SUBSTR(RMIN_RECEIVER_BANK,1,6)= #{rminReceiverBank,jdbcType=VARCHAR}
+                    </if>
+                    <if test="rminReceiverBank.length() == 7">
+                        AND RMIN_RECEIVER_BANK= #{rminReceiverBank,jdbcType=VARCHAR}
+                    </if>
+                </if>
+                <if test="rminSenderBank != null and rminSenderBank !=''">
+                    <if test="rminSenderBank.length() == 3">
+                        AND SUBSTR(RMIN_SENDER_BANK,1,3) = #{rminSenderBank,jdbcType=VARCHAR}
+                    </if>
+                    <if test="rminSenderBank.length() == 6">
+                        AND SUBSTR(RMIN_SENDER_BANK,1,6) = #{rminSenderBank,jdbcType=VARCHAR}
+                    </if>
+                    <if test="rminSenderBank.length() == 7">
+                        AND RMIN_SENDER_BANK = #{rminSenderBank,jdbcType=VARCHAR}
+                    </if>
+                </if>
+                <if test=" rminStan != null and rminStan != ''">
+                    AND RMIN_STAN = #{rminStan,jdbcType=VARCHAR}
+                </if>
+                <if test="rminEjno1 != null and rminEjno1 != ''">
+                    RMIN_EJNO1 = #{rminEjno1,jdbcType=INTEGER},
+                </if>
+                <if test="rminEjno2 != null and rminEjno2 != ''">
+                    RMIN_EJNO2 = #{rminEjno1,jdbcType=INTEGER},
+                </if>
+                <if test="rminEjno3 != null and rminEjno3 != ''">
+                    RMIN_EJNO3 = #{rminEjno1,jdbcType=INTEGER},
+                </if>
+                <if test="rminEjno4 != null and rminEjno4 != ''">
+                    RMIN_EJNO4 = #{rminEjno1,jdbcType=INTEGER},
+                </if>
+            </where>
+    </select>
+    <select id="getTopRMINByTxdateReciveBank" parameterType="map" resultType="java.util.HashMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.RminMapper.Base_Column_List"/>
+        from RMIN
+        <where>
+            <if test="txDate != null">
+                RMIN_TXDATE = #{txDate,jdbcType=CHAR}
+            </if>
+            <if test="receiver != null">
+                AND SUBSTR(RMIN_RECEIVER_BANK,1,3)= #{receiver,jdbcType=CHAR}
+            </if>
+        </where>
+        ORDER BY RMIN_SENDTIME DESC, RMIN_BRNO DESC, RMIN_FEPNO DESC, RMIN_FISCSNO DESC
+        FETCH FIRST #{topNumber,jdbcType=CHAR} ROWS ONLY
+    </select>
+    <select id="getTotalCntByStat" resultType="java.lang.Integer">
+        SELECT COUNT(*) as cnt FROM RMIN
+        <where>
+        <if test="date != null and date !=''">
+            AND RMIN_TXDATE = #{date,jdbcType=CHAR}
+        </if>
+        <if test="stat != null and stat !=''">
+            AND RMIN_STAT = #{stat,jdbcType=CHAR}
+        </if>
+    </where>
+    </select>
+    <select id="getSingleRMIN" parameterType="com.syscom.fep.mybatis.model.Rmin"
+            resultMap="com.syscom.fep.mybatis.mapper.RminMapper.BaseResultMap">
+        SELECT <include refid="com.syscom.fep.mybatis.mapper.RminMapper.Base_Column_List"/> FROM RMIN
+        <where>
+            <if test='rminTxdate != null and rminTxdate != "" and rminTxdate != " "'>
+                AND RMIN_TXDATE = #{rminTxdate,jdbcType=VARCHAR}
+            </if>
+            <if test="rminEjno1 != null">
+                AND RMIN_EJNO1 = #{rminEjno1,jdbcType=INTEGER}
+            </if>
+            <if test="rminEjno2 != null">
+                AND RMIN_EJNO2 = #{rminEjno2,jdbcType=INTEGER}
+            </if>
+            <if test="rminEjno3 != null">
+                AND RMIN_EJNO3 = #{rminEjno3,jdbcType=INTEGER}
+            </if>
+            <if test='rminBrno != null and rminBrno != "" and rminBrno != " "'>
+                AND RMIN_BRNO = #{rminBrno,jdbcType=VARCHAR}
+            </if>
+            <if test="rminBrsno != null and rminBrsno != ''">
+                AND RMIN_BRSNO = #{rminBrsno,jdbcType=VARCHAR}
+            </if>
+            <if test='rminFepno != null and rminFepno != "" and rminFepno != " "'>
+                AND RMIN_FEPNO = #{rminFepno,jdbcType=VARCHAR}
+            </if>
+            <if test="rminTxamt != null">
+                AND RMIN_TXAMT = #{rminTxamt,jdbcType=DECIMAL}
+            </if>
+            <if test="rminStat != null and rminStat != ''">
+                AND RMIN_STAT = #{rminStat,jdbcType=VARCHAR}
+            </if>
+            <if test="rminRmsno != null and rminRmsno != ''">
+                AND RMIN_RMSNO = #{rminRmsno,jdbcType=VARCHAR}
+            </if>
+            <if test="rminReceiverBank != null and rminReceiverBank != ''">
+                <choose>
+                    <when test="rminReceiverBank.length == 3">
+                        AND SUBSTR(RMIN_RECEIVER_BANK,1,3) = #{rminReceiverBank,jdbcType=VARCHAR}
+                    </when>
+                    <otherwise>
+                        AND RMIN_RECEIVER_BANK = #{rminReceiverBank,jdbcType=VARCHAR}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="rminFiscsno != null and rminFiscsno != ''">
+                AND RMIN_FISCSNO = #{rminFiscsno,jdbcType=VARCHAR}
+            </if>
+            <if test="rminFiscRtnCode != null and rminFiscRtnCode != ''">
+                AND RMIN_FISC_RTN_CODE = #{rminFiscRtnCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <select id="getRminByDef" resultMap="com.syscom.fep.mybatis.mapper.RminMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.RminMapper.Base_Column_List"/>
+        FROM RMIN
+        <where>
+            <if test='rminTxdate != null and rminTxdate != "" and rminTxdate != " "'>
+                AND RMIN_TXDATE = #{rminTxdate,jdbcType=VARCHAR}
+            </if>
+            <if test='rminBrno != null and rminBrno != "" and rminBrno != " "'>
+                AND RMIN_BRNO = #{rminBrno,jdbcType=CHAR}
+            </if>
+            <if test="rminBrsno != null and rminBrsno != ''">
+                AND RMIN_BRSNO = #{rminBrsno,jdbcType=VARCHAR}
+            </if>
+            <if test='rminFepno != null and rminFepno != "" and rminFepno != " "'>
+                AND RMIN_FEPNO = #{rminFepno,jdbcType=VARCHAR}
+            </if>
+            <if test='rminTxamt != null and rminTxamt != ""'>
+                AND RMIN_TXAMT = #{rminTxamt,jdbcType=DECIMAL},
+            </if>
+            <if test="rminStat != null and rminStat != ''">
+                AND RMIN_STAT = #{rminStat,jdbcType=VARCHAR}
+            </if>
+            <if test="rminRmsno != null and rminRmsno != ''">
+                AND RMIN_RMSNO = #{rminRmsno,jdbcType=VARCHAR}
+            </if>
+            <if test='rminTmpStat != null and rminTmpStat != ""'>
+                AND RMIN_TMP_STAT = #{rminTmpStat,jdbcType=VARCHAR}
+            </if>
+            <if test="rminEjno1 != null and rminEjno1 != ''">
+                AND RMIN_EJNO1 = #{rminEjno1,jdbcType=INTEGER}
+            </if>
+            <if test="rminEjno2 != null and rminEjno2 != ''">
+                AND RMIN_EJNO2 = #{rminEjno2,jdbcType=INTEGER}
+            </if>
+            <if test="rminEjno3 != null and rminEjno3 != ''">
+                AND RMIN_EJNO3 = #{rminEjno3,jdbcType=INTEGER}
+            </if>
+            <if test="rminEjno4 != null and rminEjno4 != ''">
+                AND RMIN_EJNO4 = #{rminEjno4,jdbcType=INTEGER}
+            </if>
+            <if test="rminInAccIdNo != null and rminInAccIdNo != ''">
+                AND RMIN_IN_ACC_ID_NO = #{rminInAccIdNo,jdbcType=VARCHAR}
+            </if>
+            <if test="rminRecdate != null and rminRecdate != ''">
+                AND RMIN_RECDATE = #{rminRecdate,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getRMINForResend" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.RminMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.RminMapper.Base_Column_List"/>
+        FROM RMIN
+        WHERE RMIN_TXDATE = #{rminTxdate,jdbcType=CHAR}
+        AND RMIN_FISCSNO = #{rminFiscsno,jdbcType=CHAR}
+        AND SUBSTR(RMIN_SENDER_BANK,1,3) = #{rminSenderBank,jdbcType=CHAR}
+        AND RMIN_RMSNO = #{rminRmsno,jdbcType=CHAR}
+        AND RMIN_FISC_RTN_CODE = #{rminFiscRtnCode,jdbcType=CHAR}
+        AND RMIN_FISC_SND_CODE &lt;&gt; #{rminFiscSndCode,jdbcType=CHAR}
+        AND RMIN_STAT = '99'
+        <if test="rminStan != null">
+            AND RMIN_STAN = #{rminStan,jdbcType=CHAR}
+        </if>
+        <if test='rminFepno != null and rminFepno != " "'>
+            AND RMIN_FEPNO = #{rminFepno,jdbcType=CHAR}
+        </if>
+        <if test="rminEjno1 != null">
+            AND RMIN_EJNO1 = #{rminEjno1,jdbcType=INTEGER}
+        </if>
+
+    </select>
+
+    <select id="getSumByStatGroupByBrno" parameterType="map" resultType="java.util.HashMap">
+        SELECT COUNT(*) as CNT, NVL(SUM(RMIN_TXAMT),'0') as AMT, NVL(SUBSTR(RMIN_RECEIVER_BANK,4,3),' ') as RECEIVER_BRNO FROM RMIN
+        WHERE RMIN_TXDATE = #{date,jdbcType=CHAR}
+        AND RMIN_STAT = #{stat,jdbcType=CHAR}
+        GROUP BY SUBSTR(RMIN_RECEIVER_BANK,4,3)
+        ORDER BY SUBSTR(RMIN_RECEIVER_BANK,4,3)
+    </select>
+    <select id="getAMLReSendData" parameterType="map" resultType="java.util.HashMap">
+        SELECT * FROM RMIN JOIN ALLBANK ON SUBSTR(RMIN_RECEIVER_BANK, 1, 3) = ALLBANK_BKNO
+        AND SUBSTR(RMIN_RECEIVER_BANK,4,3) = ALLBANK_BRNO
+        WHERE RMIN_STAT = '98' AND RMIN_TXDATE = #{date,jdbcType=CHAR}
+    </select>
+
+    <select id="getRMINByDateSendbankPendingEJ" parameterType="map"  resultType="java.util.HashMap">
+        SELECT RMIN_SENDER_BANK AS O_SENDER_BANK, RMIN_RECEIVER_BANK AS RECEIVER_BANK, RMIN_IN_ACC_ID_NO AS ACTNO, RMIN_RMSNO AS RMSNO, RMIN_STAN AS STAN,
+        CAST(RMIN_TXAMT AS VARCHAR(100)) AS AMT, RMIN_FISCSNO AS FISCSNO, RMIN_FISC_SND_CODE AS REMTYPE, RMIN_FISC_RTN_CODE AS STAT
+        FROM RMIN
+        <where>
+            AND RMIN_TXDATE = #{txdate,jdbcType=CHAR}
+            AND RMIN_STAT = #{stat,jdbcType=VARCHAR}
+            <if test='senderBank != null and senderBank != ""'>
+                AND SUBSTR(RMIN_SENDER_BANK,1,3) = #{senderBank,jdbcType=CHAR}
+            </if>
+            <if test='ej != null and ej != "0" and ej != ""'>
+                AND RMIN_EJNO1 = #{ej,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <select id="getRMINUnionMSGIN" parameterType="map" resultType="java.util.HashMap">
+        SELECT RMIN_SENDER_BANK AS O_SENDER_BANK, RMIN_RECEIVER_BANK AS RECEIVER_BANK, RMIN_IN_ACC_ID_NO AS ACTNO, RMIN_RMSNO AS RMSNO, RMIN_STAN AS STAN,
+        CAST(RMIN_TXAMT AS VARCHAR(100)) AS AMT, RMIN_FISCSNO AS FISCSNO, RMIN_FISC_SND_CODE AS REMTYPE, RMIN_FISC_RTN_CODE AS STAT
+        FROM RMIN
+        <where>
+            RMIN_TXDATE = #{txdate,jdbcType=CHAR}
+            AND RMIN_STAT = #{stat,jdbcType=VARCHAR}
+            <if test='senderBank != null and senderBank != ""'>
+                AND SUBSTR(RMIN_SENDER_BANK,1,3) = #{senderBank,jdbcType=CHAR}
+            </if>
+            <if test='ej != null and ej != "0" and ej != ""'>
+                AND RMIN_EJNO1 = #{ej,jdbcType=INTEGER}
+            </if>
+        </where>
+
+        UNION ALL
+
+        SELECT MSGIN_SENDER_BANK AS O_SENDER_BANK, MSGIN_RECEIVER_BANK AS RECEIVER_BANK, MSGIN_STAN AS STAN, '' AS ACTNO, '' AS RMSNO, '' AS AMT,
+        MSGIN_FISCSNO AS FISCSNO, '通訊' AS REMTYPE, MSGIN_FISC_RTN_CODE AS STAT
+        FROM MSGIN
+        <where>
+            MSGIN_TXDATE = #{txdate,jdbcType=CHAR}
+            AND MSGIN_FISC_RTN_CODE = #{fiscRtnCode,jdbcType=VARCHAR}
+            <if test='senderBank != null and senderBank != ""'>
+                AND SUBSTR(MSGIN_SENDER_BANK,1,3) = #{senderBank,jdbcType=CHAR}
+            </if>
+            <if test='ej != null and ej != "0" and ej != ""'>
+                AND MSGIN_EJNO = #{ej,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+    <update id="updateByPrimaryKeyWithStat" parameterType="com.syscom.fep.mybatis.model.Rmin">
+        <!--
+          WARNING - @mbg.generated
+          This element is automatically generated by MyBatis Generator, do not modify.
+        -->
+        update RMIN
+        <set>
+            <if test='rmin.rminFepsubno != null and rmin.rminFepsubno != " "'>
+                RMIN_FEPSUBNO = #{rmin.rminFepsubno,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminTxamt != null">
+                RMIN_TXAMT = #{rmin.rminTxamt,jdbcType=DECIMAL},
+            </if>
+            <if test="rmin.rminCategory != null">
+                RMIN_CATEGORY = #{rmin.rminCategory,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminSenderBank != null">
+                RMIN_SENDER_BANK = #{rmin.rminSenderBank,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminReceiverBank != null">
+                RMIN_RECEIVER_BANK = #{rmin.rminReceiverBank,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminStanBkno != null">
+                RMIN_STAN_BKNO = #{rmin.rminStanBkno,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminStan != null">
+                RMIN_STAN = #{rmin.rminStan,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminFiscsno != null">
+                RMIN_FISCSNO = #{rmin.rminFiscsno,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminRmsno != null">
+                RMIN_RMSNO = #{rmin.rminRmsno,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminStat != null">
+                RMIN_STAT = #{rmin.rminStat,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminCbsNo != null">
+                RMIN_CBS_NO = #{rmin.rminCbsNo,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminSenddate != null">
+                RMIN_SENDDATE = #{rmin.rminSenddate,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminSendtime != null">
+                RMIN_SENDTIME = #{rmin.rminSendtime,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminOrgrmsno != null">
+                RMIN_ORGRMSNO = #{rmin.rminOrgrmsno,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminOrgdate != null">
+                RMIN_ORGDATE = #{rmin.rminOrgdate,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminOrgregNo != null">
+                RMIN_ORGREG_NO = #{rmin.rminOrgregNo,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminOrgStat != null">
+                RMIN_ORG_STAT = #{rmin.rminOrgStat,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminBackReason != null">
+                RMIN_BACK_REASON = #{rmin.rminBackReason,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminFiscRtnCode != null">
+                RMIN_FISC_RTN_CODE = #{rmin.rminFiscRtnCode,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminOutName != null">
+                RMIN_OUT_NAME = #{rmin.rminOutName,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminInName != null">
+                RMIN_IN_NAME = #{rmin.rminInName,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminMemo != null">
+                RMIN_MEMO = #{rmin.rminMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminId != null">
+                RMIN_ID = #{rmin.rminId,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminInOrgAccIdNo != null">
+                RMIN_IN_ORG_ACC_ID_NO = #{rmin.rminInOrgAccIdNo,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminInAccIdNo != null">
+                RMIN_IN_ACC_ID_NO = #{rmin.rminInAccIdNo,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminSupno1 != null">
+                RMIN_SUPNO1 = #{rmin.rminSupno1,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminSupno2 != null">
+                RMIN_SUPNO2 = #{rmin.rminSupno2,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminRegTlrno != null">
+                RMIN_REG_TLRNO = #{rmin.rminRegTlrno,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminFiscSndCode != null">
+                RMIN_FISC_SND_CODE = #{rmin.rminFiscSndCode,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminCbsRc != null">
+                RMIN_CBS_RC = #{rmin.rminCbsRc,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminPending != null">
+                RMIN_PENDING = #{rmin.rminPending,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminEjno1 != null">
+                RMIN_EJNO1 = #{rmin.rminEjno1,jdbcType=INTEGER},
+            </if>
+            <if test="rmin.rminEjno2 != null">
+                RMIN_EJNO2 = #{rmin.rminEjno2,jdbcType=INTEGER},
+            </if>
+            <if test="rmin.rminEjno3 != null">
+                RMIN_EJNO3 = #{rmin.rminEjno3,jdbcType=INTEGER},
+            </if>
+            <if test="rmin.rminEjno4 != null">
+                RMIN_EJNO4 = #{rmin.rminEjno4,jdbcType=INTEGER},
+            </if>
+            <if test="rmin.rminBrsno != null">
+                RMIN_BRSNO = #{rmin.rminBrsno,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminRecdate != null">
+                RMIN_RECDATE = #{rmin.rminRecdate,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminRectime != null">
+                RMIN_RECTIME = #{rmin.rminRectime,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminRttlrno != null">
+                RMIN_RTTLRNO = #{rmin.rminRttlrno,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminPrtcnt != null">
+                RMIN_PRTCNT = #{rmin.rminPrtcnt,jdbcType=INTEGER},
+            </if>
+            <if test="rmin.rminOrgremtype != null">
+                RMIN_ORGREMTYPE = #{rmin.rminOrgremtype,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminDmyactno != null">
+                RMIN_DMYACTNO = #{rmin.rminDmyactno,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminAmtType != null">
+                RMIN_AMT_TYPE = #{rmin.rminAmtType,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminActno != null">
+                RMIN_ACTNO = #{rmin.rminActno,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminActno2 != null">
+                RMIN_ACTNO2 = #{rmin.rminActno2,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminCifname != null">
+                RMIN_CIFNAME = #{rmin.rminCifname,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminTmpStat != null">
+                RMIN_TMP_STAT = #{rmin.rminTmpStat,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminTmpRc != null">
+                RMIN_TMP_RC = #{rmin.rminTmpRc,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminTmpErrmsg != null">
+                RMIN_TMP_ERRMSG = #{rmin.rminTmpErrmsg,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminPreTlrno != null">
+                RMIN_PRE_TLRNO = #{rmin.rminPreTlrno,jdbcType=VARCHAR},
+            </if>
+            <if test="rmin.rminActInactno != null">
+                RMIN_ACT_INACTNO = #{rmin.rminActInactno,jdbcType=VARCHAR},
+            </if>
+            <if test='rmin.rminKinbr != null and rmin.rminKinbr != " "'>
+                RMIN_KINBR = #{rmin.rminKinbr,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminGlUnit1 != null">
+                RMIN_GL_UNIT1 = #{rmin.rminGlUnit1,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminGlUnit2 != null">
+                RMIN_GL_UNIT2 = #{rmin.rminGlUnit2,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminGlUnit1a != null">
+                RMIN_GL_UNIT1A = #{rmin.rminGlUnit1a,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminGlUnit2a != null">
+                RMIN_GL_UNIT2A = #{rmin.rminGlUnit2a,jdbcType=CHAR},
+            </if>
+            <if test="rmin.updateUserid != null">
+                UPDATE_USERID = #{rmin.updateUserid,jdbcType=INTEGER},
+            </if>
+            <if test="rmin.updateTime != null">
+                UPDATE_TIME = #{rmin.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rmin.rminAmlstat != null">
+                RMIN_AMLSTAT = #{rmin.rminAmlstat,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminAmlbypass != null">
+                RMIN_AMLBYPASS = #{rmin.rminAmlbypass,jdbcType=CHAR},
+            </if>
+            <if test="rmin.rminEjnoAml != null">
+                RMIN_EJNO_AML = #{rmin.rminEjnoAml,jdbcType=INTEGER},
+            </if>
+        </set>
+        where RMIN_TXDATE = #{rmin.rminTxdate,jdbcType=CHAR}
+        and RMIN_BRNO = #{rmin.rminBrno,jdbcType=CHAR}
+        and RMIN_FEPNO = #{rmin.rminFepno,jdbcType=CHAR}
+        AND RMIN_STAT = #{stat,jdbcType=CHAR}
+    </update>
+</mapper>

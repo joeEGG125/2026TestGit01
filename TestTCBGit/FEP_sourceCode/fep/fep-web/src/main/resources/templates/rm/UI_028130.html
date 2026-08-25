@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <div class="card card-primary card-outline" >
+            <div class="card-header">
+                <h5 class="card-title">調整條件</h5>
+            </div>
+            <div class="card-body">
+                <form id="form-validator">
+                    <table border="0" cellspacing="0" class="table-condition">
+                        <tr>
+                            <td class="condition-label">
+                                <label for="kind" class="col-form-label">調整內容</label>
+                            </td>
+                            <td class="condition-input">
+                                <select class="form-control" id="kind">
+                                    <option value="1" selected="selected">單筆匯款</option>
+                                    <option value="2">特定銀行或特定分行</option>
+                                    <option value="3">特定金額(大於等於)</option>
+                                    <option value="4">特定帳號</option>
+                                    <option value="5">系統暫停</option>
+                                </select>
+                            </td>
+                            <td class="condition-label">
+                                <label for="uiItem" class="col-form-label">調整標準</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="uiItem" name="uiItem" maxlength="19" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label"></td>
+                            <td class="condition-input"></td>
+                            <td class="condition-label"></td>
+                            <td class="condition-input">
+                                (1-單筆匯款輸入格式: <br>YYYYMMDDBBBCFFFFFFF, <br>例如2011041812100000002)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label for="owpriority" class="col-form-label">匯出優先順序</label>
+                            </td>
+                            <td class="condition-input">
+                                <select class="form-control" id="owpriority">
+                                    <option value="0" selected="selected">Normal</option>
+                                    <option value="1">LOW</option>
+                                    <option value="8">System Suspend</option>
+                                    <option value="9">Suspend</option>
+                                    <option value="*">High</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+        <button type="button" class="btn btn-primary" id="btnConfirm">執行</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid">
+        <div id="rm" v-cloak>
+            <table border="0" cellspacing="0" class="table-condition">
+                <tr>
+                    <td class="condition-label">
+                        <label class="col-form-label">單筆匯款內容</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="rmoutTxdate" class="col-form-label">匯款日期</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutTxdate" v-model="rmout.rmoutTxdate" name="rmoutTxdate" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="rmoutBrno" class="col-form-label">登錄分行</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutBrno" v-model="rmout.rmoutBrno" name="rmoutBrno" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="rmoutOriginal" class="col-form-label">交易來源</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutOriginal" v-model="rmout.rmoutOriginal" name="rmoutOriginal" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="rmoutFepno" class="col-form-label">登錄序號</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutFepno" v-model="rmout.rmoutFepno" name="rmoutFepno" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="rmoutTxamt" class="col-form-label">匯款金額</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutTxamt" v-model="rmout.rmoutTxamt" name="rmoutTxamt" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="rmoutRemtype" class="col-form-label">匯款種類</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutRemtype" v-model="rmout.rmoutRemtype" name="rmoutRemtype" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="rmoutStat" class="col-form-label">匯款狀態</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutStat" v-model="rmout.rmoutStat" name="rmoutStat" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="rmoutSenderBank" class="col-form-label">匯款行</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutSenderBank" v-model="rmout.rmoutSenderBank" name="rmoutSenderBank" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="rmoutReceiverBank" class="col-form-label">解款行</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutReceiverBank" v-model="rmout.rmoutReceiverBank" name="rmoutReceiverBank" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="rmoutOutName" class="col-form-label">匯款人姓名</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutOutName" v-model="rmout.rmoutOutName" name="rmoutOutName" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="rmoutInName" class="col-form-label">解款人姓名</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="rmoutInName" v-model="rmout.rmoutInName" name="rmoutInName" readonly/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/rm/UI028130.js}"></script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/common/UI_080320/bindGrid}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label for="sysstatTbsdyFisc" class="col-form-label">員工編號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+						<input style="width:150px" type="text" class="form-control" th:field="*{userTelId}"
+							th:maxlength="6" />
+					</td>
+					<td style="width:70px"></td>
+					<td class="condition-label">
+						<label for="zoneZoneTbsdy" class="col-form-label">權限群組:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+						<select id="cur" class="form-control" th:field="*{groupId}">
+							<option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}" />
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">分行代號:</label>
+					</td>
+					<td class="condition-input">
+						<select id="cur" class="form-control" th:field="*{atmbctl}">
+							<option th:each="option : ${gridData}" th:text="${option.text}" th:value="${option.value}" />
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b>員工編號</b></th>
+						<th><b>員工姓名</b></th>
+						<th><b>權限群組</b></th>
+						<th><b>分行代號</b></th>
+						<th><b>上次登錄日期</b></th>
+						<th><b>上次登錄時間</b></th>
+						<th><b>上次修改人員</b></th>
+						<th><b>上次修改日期</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+					<tr th:each="data, dataStat : ${pageData.list}">
+						<!--員工編號-->
+						<td align="center">
+							<a class="fepuserLogonid" href="#" th:text="${data.fepuserLogonid}" th:value="${										
+                    			         '{' 											
+                    			            + '&quot;fepuserLogonid&quot;:&quot;'+data.fepuserLogonid + '&quot;' + ','
+											+ '&quot;fepuserName&quot;:&quot;'+data.fepuserName + '&quot;' + ',' 
+											+ '&quot;fepUserGroup&quot;:&quot;'+data.fepuserGroup + '&quot;' + ',' 
+											+ '&quot;fepuserBrno&quot;:&quot;'+data.fepuserBrno + '&quot;' + ',' 
+											+ '&quot;fepuserStatus&quot;:&quot;'+data.fepuserStatus + '&quot;' + ','
+											+ '&quot;fepuserLevel&quot;:&quot;'+data.fepuserLevel + '&quot;' + ','
+											+ '&quot;fepuserBossTxt&quot;:&quot;'+data.fepuserBossTxt + '&quot;' + ','
+											+ '&quot;updateUseridTxt&quot;:&quot;'+data.updateUseridTxt + '&quot;' + ','
+											+ '&quot;userUpdateTimeTxt&quot;:&quot;'+data.userUpdateTimeTxt + '&quot;'
+										+ '}'
+										}">
+							</a>
+						</td>
+						<!--員工姓名-->
+						<td align="center" th:text="${data.fepuserName}" />
+						<!--權限群組-->
+						<td align="center" th:text="${data.fepUserGroupTxt}" />
+						<!--分行代號-->
+						<td align="center" th:text="${data.fepuserBrnoTxt}" />
+						<!--上次登錄日期-->
+						<td align="right" th:text="${data.fepuserLuDateTxt}" />
+						<!--上次登錄時間-->
+						<td align="center" th:text="${data.fepuserLuTimeTxt}" />
+						<!--上次修改人員-->
+						<td align="right" th:text="${data.updateUseridTxt}" />
+						<!--上次修改日期-->
+						<td align="right" th:text="${data.userUpdateTimeTxt}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/common/UI080320.js}"></script>
+	</div>
+</body>
+
+</html>

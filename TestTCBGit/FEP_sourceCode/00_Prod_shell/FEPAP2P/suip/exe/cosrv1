@@ -1,0 +1,11 @@
+cc -o ../exe/suipsrv1 -g -I../incl ../sou/suipsrv1.c -L../suip -lsuip -lssl -lcrypto -lpthread ../lib/LogMSG1.o -lm -lc  2> suipsrv1.err
+
+if [ $? = 0 ]; then
+   strip ../exe/suipsrv1
+   cat suipsrv1.err
+   rm suipsrv1.err
+else
+   echo "**** compilation error, please see $1.err for detail"
+   cat suipsrv1.err
+fi
+rm -f suipsrv1.o

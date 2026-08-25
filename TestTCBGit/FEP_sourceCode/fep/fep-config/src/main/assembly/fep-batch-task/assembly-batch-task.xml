@@ -1,0 +1,28 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+	<id>${assembly-prop-batch-task}</id>
+	<formats>
+		<format>${assembly-format-jar}</format>
+	</formats>
+	<baseDirectory>${project.build.directory}</baseDirectory>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<includes>
+				<!-- <include>com/syscom/fep/batch/task/*.class</include> -->
+				<include>com/syscom/fep/batch/task/**/${assembly-prop-batch-task}.class</include>
+				<include>com/syscom/fep/batch/task/**/${assembly-prop-batch-task}$*.class</include>
+			</includes>
+			<outputDirectory>.</outputDirectory>
+		</fileSet>
+	</fileSets>
+	<files>
+		<file>
+			<source>${assembly-release-note-path}/${project.artifactId}-${assembly-prop-batch-task}.txt</source>
+			<outputDirectory>.</outputDirectory>
+			<destName>${assembly-file-readme}</destName>
+			<fileMode>${assembly-file-mode}</fileMode>
+			<lineEnding>${assembly-lineEnding}</lineEnding>
+		</file>
+	</files>
+</assembly>

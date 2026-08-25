@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.VendorExtMapper">
+	<!-- 2022-06-24 Bruce add -->
+	<select id="queryAllData" resultType="com.syscom.fep.mybatis.model.Vendor">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.VendorMapper.Base_Column_List" />
+		FROM VENDOR
+		ORDER BY VENDOR_NO 
+	</select>
+  <select id="selectByNo" parameterType="map" resultType="com.syscom.fep.mybatis.model.Vendor">
+    select 
+    <include refid="com.syscom.fep.mybatis.mapper.VendorMapper.Base_Column_List" />
+    from VENDOR
+    where VENDOR_NAME_S = #{venderName,jdbcType=CHAR}
+  </select>	
+</mapper>

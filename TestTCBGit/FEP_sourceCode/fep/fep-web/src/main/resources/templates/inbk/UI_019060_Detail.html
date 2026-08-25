@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden"></div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary">
+	<table border="0" cellspacing="0" class="table-detail">
+		<tr>
+			<td class="condition-label">
+				<label for="archivesDate" class="col-form-label">檔案日期:</label>
+			</td>
+			<td class="condition-input">
+				<label class="form-control label-text-left" th:text="${T(com.syscom.fep.web.base.FEPWebBase).charDateToDate(archivesDate)}"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="condition-label">
+				<label for="totalAmount" class="col-form-label">總金額:</label>
+			</td>
+			<td class="condition-input">
+				<label class="form-control label-text-left" th:text="${#numbers.formatDecimal(totalAmount,1,'COMMA',2,'POINT')}"></label>
+			</td>
+			<td class="condition-label">
+				<label for="totalNumber" class="col-form-label">總筆數:</label>
+			</td>
+			<td class="condition-input">
+				<label class="form-control label-text-left" th:text="${totalNumber}"></label>
+			</td>
+		</tr>
+		<tr th:if="${totalHandlingFee} != null">
+			<td class="condition-label">
+				<label for="totalHandlingFee" class="col-form-label">總手續費:</label>
+			</td>
+			<td class="condition-input">
+				<label class="form-control label-text-left" th:if="${totalHandlingFee} ne '0'" th:text="${#numbers.formatDecimal(totalHandlingFee,1,'COMMA',1,'POINT')}"></label>
+				<label class="form-control label-text-left" th:if="${totalHandlingFee} eq '0'" th:text="${totalHandlingFee}"></label>
+			</td>
+		</tr>
+	</table>
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+	<div class="card-body table-responsive p-0">
+		<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+			<thead>
+			<tr>
+				<th><b>交易日期時間</b></th>
+				<th><b>交易序號</b></th>
+				<th><b>扣款帳號</b></th>
+				<th><b>入帳帳號</b></th>
+				<th><b>金額</b></th>
+				<th><b>委託單位</b></th>
+				<th><b>繳款類別</b></th>
+				<th><b>費用代號</b></th>
+				<th><b>附言欄</b></th>
+			</tr>
+			</thead>
+			<tbody th:if="${pageData.list != null}">
+			<tr th:each="data : ${pageData.list}">
+				<td align="center" th:text="${T(com.syscom.fep.web.base.FEPWebBase).formatYMDHM(data.get('APIDTL_TXDATETM'))}" />
+				<td align="center" th:text="${data.get('APIDTL_TXN_NO')}" />
+				<td align="center" th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-', data.get('APIDTL_TROUT_BKNO'), data.get('APIDTL_TROUT_ACTNO'))}" />
+				<td align="center" th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-', data.get('APIDTL_TRIN_BKNO'), data.get('APIDTL_TRIN_ACTNO'))}" />
+				<td align="center" th:text="${#numbers.formatDecimal(data.get('APIDTL_TX_AMT'),1,'COMMA',2,'POINT')}" />
+				<td align="center" th:text="${data.get('APIDTL_BUSINESS_UNIT')}" />
+				<td align="center" th:text="${data.get('APIDTL_PAYTYPE')}" />
+				<td align="center" th:text="${data.get('APIDTL_PAYNO')}" />
+				<td align="center" th:text="${data.get('APIDTL_MENO')}" />
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

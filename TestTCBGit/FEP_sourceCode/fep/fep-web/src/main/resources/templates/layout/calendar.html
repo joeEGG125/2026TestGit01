@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Calendar</title>
+</head>
+<body>
+	<div th:fragment="calendar" class="panel-calendar">
+		<div class="row" th:each="row:${#numbers.sequence(0, 3)}">
+			<div class="col-sm-3" th:each="column:${#numbers.sequence(1, 3)}">
+				<div th:id="${'calendar' + (row * 3 + column)}"></div>
+			</div>
+		</div>
+		<script th:inline="javascript">
+			// 初始化元件開始
+			var calendarCount = 12;
+			// 從request.attribute中嘗試獲取初始年份, 如果沒有則取當前client的年份
+			var calendarYear = /*[[${calendarYear}]]*/'';
+			if (stringIsBlank(calendarYear)) {
+				calendarYear = moment().format('YYYY');
+			}
+			var calendarIdPrefix = 'calendar';
+			for (var i = 1; i <= calendarCount; i++) {
+				var opt = getDateTimePickerOpt('L', calendarYear + (i <= 9 ? '0' : '') + i);
+				opt['inline'] = true;
+				opt['buttons']['showToday'] = false;
+				opt['buttons']['showClear'] = false;
+				opt['buttons']['showClose'] = false;
+				$('#' + calendarIdPrefix + i).datetimepicker(opt);
+			}
+			var calendarActiveDate = /*[[${calendarActiveDate}]]*/'';
+			setCalendarDateActive(calendarActiveDate);
+			setupCalendar();
+			// 初始化元件結束
+			function setupCalendar() {
+				var removeHover = function() {
+					$(this).css("background-color", "white").css("color", "inherit").css("cursor", "default");
+				};
+				$('.panel-calendar .bootstrap-datetimepicker-widget th.prev').hide();
+				$('.panel-calendar .bootstrap-datetimepicker-widget th.next').hide();
+				$('.panel-calendar .bootstrap-datetimepicker-widget th.picker-switch').removeAttr('data-action').removeAttr('title').attr('colspan', 7).hover(removeHover);
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.day').removeAttr('data-action').removeClass('active');
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.weekend:not(.new,.old)').addClass('calendar-active');
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.day:not(.new,.old)').click(function(){
+					var date = $(this).attr('data-day');
+					calendarChooseCalendarDateEvents.forEach(function(chooseCalendarDateEvent) {
+						chooseCalendarDateEvent(date);
+					});
+				});
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.new').attr('data-day', '').html('').hover(removeHover);
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.old').attr('data-day', '').html('').hover(removeHover);
+			}
+			// 設置Calendar的年份
+			function setCalendarYear(year) {
+				for (var i = 1; i <= calendarCount; i++) {
+					setDateTimePicker(calendarIdPrefix + i, year + (i <= 9 ? '0' : '') + i);
+				}
+				setupCalendar();
+			}
+			// 設置哪些Date處於高亮選中狀態, activeDate以逗號間隔, 例如20220713,20220714
+			function setCalendarDateActive(activeDate) {
+				if (stringIsBlank(activeDate)) {
+					return;
+				}
+				var activeDateArr = activeDate.split(",");
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.day').each(function(){
+					var td = $(this);
+					var date = td.attr('data-day');
+					activeDateArr.forEach(function(value, index) {
+						if (date === moment(value).format('YYYY/MM/DD')) {
+							td.addClass('calendar-active');
+							return;
+						}
+					});
+				});
+			}
+			// 清除高亮顯示的日期
+			function clearCalendarDateActive(activeDate) {
+				if (stringIsBlank(activeDate)) {
+					return;
+				}
+				var activeDateArr = activeDate.split(",");
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.day').each(function(){
+					var td = $(this);
+					var date = td.attr('data-day');
+					activeDateArr.forEach(function(value, index) {
+						if (date === moment(value).format('YYYY/MM/DD')) {
+							td.removeClass('calendar-active');
+							return;
+						}
+					});
+				});
+			}
+			// 清除除了週末外所有高亮的日期
+			function clearAllCalendarDateActive() {
+				$('.panel-calendar .bootstrap-datetimepicker-widget td.day:not(.weekend)').each(function(){
+					$(this).removeClass('calendar-active');
+				});
+			}
+			// 增加日期cell的click事件
+			var calendarChooseCalendarDateEvents = [];
+			function addChooseCalendarDateEvent(chooseCalendarDateEvent) {
+				if (chooseCalendarDateEvent) {
+					calendarChooseCalendarDateEvents.push(chooseCalendarDateEvent);	
+				}
+			}
+		</script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060010/queryClick}" method="post" enctype="multipart/form-data">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label" style="width:150px">
+						<label for="transactDate" class="col-form-label">分行:</label>
+					</td>
+					<td class="condition-input">
+                        <input style="width:150px" type="text" class="form-control"  th:field="*{branchNameCTxt}"/>
+					</td>
+					<td class="condition-label" style="width:150px">
+						<label for="transactDate" class="col-form-label">機器代號:</label>
+					</td>
+					<td class="condition-input">
+                        <input style="width:150px" type="text" class="form-control"  th:field="*{atmAtmNoTxt}"/>
+					</td>
+					<td class="condition-label" style="width:150px">
+						<label for="transactDate" class="col-form-label">機型:</label>
+					</td>
+					<td class="condition-input">
+                        <input type="text" class="form-control"  th:field="*{atmModelnoTxt}"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:150px">
+						<label for="transactDate" class="col-form-label">IP位置:</label>
+					</td>
+					<td class="condition-input">
+                        <input style="width:150px" type="text" class="form-control"  th:field="*{atmIpTxt}"/>
+					</td>
+					<td class="condition-label" style="width:150px">
+						<label for="transactDate" class="col-form-label">憑證版本:</label>
+					</td>
+					<td class="condition-input">
+                        <input style="width:150px" type="text" class="form-control"  th:field="*{atmCertaliasTxt}"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<form id="form-upload" method="POST" th:action="@{/atmmon/UI_060010/upload}" enctype="multipart/form-data">
+			<button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+			<button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+		    <button style="width:100px" type="button" class="btn btn-primary" id="btnUpload">上傳</button>
+		    <!-- <input type="submit" value="Submit" />-->
+		    <!--<input class="input" type="file" name="file" id="fileUpload" th:text="*{fileUpload}"/><br/><br/>-->
+		    <input class="input" type="file" name="file"/><br/><br/>
+		</form>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b>分行</b></th>
+						<th><b>機器代號</b></th>
+						<th><b>機型</b></th>
+						<th><b>IP位置</b></th>
+					    <th><b>憑證版本</b></th>
+					    <th style="width:50px"><b>是否連線至FEP</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+					<tr th:each="data, dataStat : ${pageData.list}">
+						<!--分行-->
+						<td align="center" th:text="${data.ATM_BRANCH_NAME_C}"/>
+						<!--機器代號-->
+						<td align="center">
+							<a class="atmAtmNo" href="#" th:text="${data.ATM_ATMNO}" th:value="${								
+                    			         '{' 
+                    			            + '&quot;rbtnDelFlg&quot;:&quot;'+(data.rbtnDelFlg == null ? '':data.rbtnDelFlg) + '&quot;' + ','
+                    			            + '&quot;checkCtrlEmv&quot;:&quot;'+(data.checkCtrlEmv == null ? '':data.checkCtrlEmv) + '&quot;' + ','
+                    			            + '&quot;rbtnOS&quot;:&quot;'+(data.rbtnOS == null ? '':data.rbtnOS) + '&quot;' + ','
+                    			            + '&quot;vendor&quot;:&quot;'+(data.vendor == null ? '':data.vendor) + '&quot;' + ','
+                    			            + '&quot;typeQuery&quot;:&quot;'+(data.typeQuery == null ? '':data.typeQuery) + '&quot;' + ','
+                    			            + '&quot;insBrno&quot;:&quot;'+(data.insBrno == null ? '':data.insBrno) + '&quot;' + ','                    			            											
+                    			            + '&quot;atmAtmNo&quot;:&quot;'+(data.ATM_ATMNO == null ? '':data.ATM_ATMNO) + '&quot;' + ','
+                    			            + '&quot;atmSno&quot;:&quot;'+(data.ATM_SNO == null ? '':data.ATM_SNO) + '&quot;' + ','
+                    			            + '&quot;atmVendorTxt&quot;:&quot;'+(data.ATM_VENDOR_TXT == null ? '':data.ATM_VENDOR_TXT) + '&quot;' + ','
+                    			            + '&quot;atmModelNo&quot;:&quot;'+(data.ATM_MODELNO == null ? '':data.ATM_MODELNO) + '&quot;' + ','
+                    			            + '&quot;atmZoneTxt&quot;:&quot;'+(data.ATM_ZONE_TXT == null ? '':data.ATM_ZONE_TXT) + '&quot;' + ','
+                    			            + '&quot;atmIp&quot;:&quot;'+(data.ATM_IP == null ? '':data.ATM_IP) + '&quot;' + ','
+                    			            + '&quot;atmCurStTxt&quot;:&quot;'+(data.ATM_CUR_ST_TXT == null ? '':data.ATM_CUR_ST_TXT) + '&quot;' + ','
+                    			            + '&quot;atmBrnoSt&quot;:&quot;'+(data.ATM_BRNO_ST == null ? '':data.ATM_BRNO_ST) + '&quot;' + ','
+                    			            + '&quot;atmAtmType&quot;:&quot;'+(data.ATM_ATMTYPE == null ? '':data.ATM_ATMTYPE) + '&quot;' + ','
+                    			            + '&quot;atmAtmTypeTxt&quot;:&quot;'+(data.ATM_ATMTYPE_TXT == null ? '':data.ATM_ATMTYPE_TXT) + '&quot;' + ','
+                    			            + '&quot;atmScope&quot;:&quot;'+(data.ATM_SCOPE == null ? '':data.ATM_SCOPE) + '&quot;' + ','
+                    			            + '&quot;atmLoc&quot;:&quot;'+(data.ATM_LOC == null ? '':data.ATM_LOC) + '&quot;' + ','
+                    			            + '&quot;atmLocTxt&quot;:&quot;'+(data.ATM_LOC_TXT == null ? '':data.ATM_LOC_TXT) + '&quot;' + ','
+                    			            + '&quot;atmChannelType&quot;:&quot;'+(data.ATM_CHANNEL_TYPE == null ? '':data.ATM_CHANNEL_TYPE) + '&quot;' + ','
+                    			            + '&quot;atmChannelTypeTxt&quot;:&quot;'+(data.ATM_CHANNEL_TYPE_TXT == null ? '':data.ATM_CHANNEL_TYPE_TXT) + '&quot;' + ','
+                    			            + '&quot;atmArea&quot;:&quot;'+(data.ATM_AREA == null ? '':data.ATM_AREA) + '&quot;' + ','
+                    			            + '&quot;atmAreaTxt&quot;:&quot;'+(data.ATM_AREA_TXT == null ? '':data.ATM_AREA_TXT) + '&quot;' + ','
+                    			            + '&quot;atmLocation&quot;:&quot;'+(data.ATM_LOCATION == null ? '':data.ATM_LOCATION) + '&quot;' + ','
+                    			            + '&quot;atmInsBrno&quot;:&quot;'+(data.ATM_INS_BRNO == null ? '':data.ATM_INS_BRNO) + '&quot;' + ','
+                    			            + '&quot;atmRsCaretaker&quot;:&quot;'+(data.ATM_RS_CARETAKER == null ? '':data.ATM_RS_CARETAKER) + '&quot;' + ','
+                    			            + '&quot;atmEmv&quot;:&quot;'+(data.ATM_EMV == null ? '':data.ATM_EMV) + '&quot;' + ','
+                    			            + '&quot;atmOs&quot;:&quot;'+(data.ATM_OS == null ? '':data.ATM_OS) + '&quot;' + ','
+                    			            + '&quot;atmGuardCash&quot;:&quot;'+(data.ATM_GUARD_CASH == null ? '':data.ATM_GUARD_CASH) + '&quot;' + ','
+                    			            + '&quot;atmGuardSecure&quot;:&quot;'+(data.ATM_GUARD_SECURE == null ? '':data.ATM_GUARD_SECURE) + '&quot;' + ','
+                    			            + '&quot;atmRecording&quot;:&quot;'+(data.ATM_RECORDING == null ? '':data.ATM_RECORDING) + '&quot;' + ','
+                    			            + '&quot;atmBrNoMa&quot;:&quot;'+(data.ATM_BRNO_MA == null ? '':data.ATM_BRNO_MA) + '&quot;' + ','
+                    			            + '&quot;atmBranchNameC&quot;:&quot;'+(data.ATM_BRANCH_NAME_C == null ? '':data.ATM_BRANCH_NAME_C) + '&quot;' + ','
+                    			            + '&quot;atmTelBranch&quot;:&quot;'+(data.ATM_TEL_BRANCH == null ? '':data.ATM_TEL_BRANCH) + '&quot;' + ','
+                    			            + '&quot;atmCityC&quot;:&quot;'+(data.ATM_CITY_C == null ? '':data.ATM_CITY_C) + '&quot;' + ','
+                    			            + '&quot;atmAddressC&quot;:&quot;'+(data.ATM_ADDRESS_C == null ? '':data.ATM_ADDRESS_C) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretaker1&quot;:&quot;'+(data.ATM_HW_CARETAKER1 == null ? '':data.ATM_HW_CARETAKER1) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretakerTelNo1&quot;:&quot;'+(data.ATM_HW_CARETAKER_TELNO1 == null ? '':data.ATM_HW_CARETAKER_TELNO1) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretakerEmail1&quot;:&quot;'+(data.ATM_HW_CARETAKER_EMAIL1 == null ? '':data.ATM_HW_CARETAKER_EMAIL1) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretaker2&quot;:&quot;'+(data.ATM_HW_CARETAKER2 == null ? '':data.ATM_HW_CARETAKER2) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretakerTelNo2&quot;:&quot;'+(data.ATM_HW_CARETAKER_TELNO2 == null ? '':data.ATM_HW_CARETAKER_TELNO2) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretakerEmail2&quot;:&quot;'+(data.ATM_HW_CARETAKER_EMAIL2 == null ? '':data.ATM_HW_CARETAKER_EMAIL2) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretaker3&quot;:&quot;'+(data.ATM_HW_CARETAKER3 == null ? '':data.ATM_HW_CARETAKER3) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretakerTelNo3&quot;:&quot;'+(data.ATM_HW_CARETAKER_TELNO3 == null ? '':data.ATM_HW_CARETAKER_TELNO3) + '&quot;' + ','
+                    			            + '&quot;atmHwCaretakerEmail3&quot;:&quot;'+(data.ATM_HW_CARETAKER_EMAIL3 == null ? '':data.ATM_HW_CARETAKER_EMAIL3) + '&quot;' + ','
+                    			            + '&quot;atmAdslTleNo&quot;:&quot;'+(data.ATM_ADSL_TLENO == null ? '':data.ATM_ADSL_TLENO) + '&quot;' + ','
+                    			            + '&quot;atmAtNo&quot;:&quot;'+(data.ATM_ATNO == null ? '':data.ATM_ATNO) + '&quot;' + ','
+                    			            + '&quot;atmDirectTelNo&quot;:&quot;'+(data.ATM_DIRECT_TELNO == null ? '':data.ATM_DIRECT_TELNO) + '&quot;' + ','
+                    			            + '&quot;atmStartDate&quot;:&quot;'+(data.ATM_START_DATE == null ? '':data.ATM_START_DATE) + '&quot;' + ','
+                    			            + '&quot;atmMemo&quot;:&quot;'+(data.ATM_MEMO == null ? '':data.ATM_MEMO) + '&quot;' + ','
+                    			            + '&quot;atm24Service&quot;:&quot;'+(data.ATM_24_SERVICE == null ? '':data.ATM_24_SERVICE) + '&quot;' + ','
+                    			            + '&quot;atmCheckMac&quot;:&quot;'+(data.ATM_CHECK_MAC == null ? '':data.ATM_CHECK_MAC) + '&quot;' + ','
+                    			            + '&quot;atmCoin&quot;:&quot;'+(data.ATM_COIN == null ? '':data.ATM_COIN) + '&quot;' + ','
+                    			            + '&quot;atmCoinVendor&quot;:&quot;'+(data.ATM_COIN_VENDOR == null ? '':data.ATM_COIN_VENDOR) + '&quot;' + ','
+                    			            + '&quot;atmMarketbdm&quot;:&quot;'+(data.ATM_MARKETBDM == null ? '':data.ATM_MARKETBDM) + '&quot;' + ','
+                    			            + '&quot;atmWatrPct&quot;:&quot;'+(data.ATM_WATER_PCT == null ? '':data.ATM_WATER_PCT) + '&quot;' + ','
+                    			            + '&quot;atmWatrAmt&quot;:&quot;'+(data.ATM_WATER_AMT == null ? '':data.ATM_WATER_AMT) + '&quot;' + ','
+                    			            + '&quot;updateUserId&quot;:&quot;'+(data.UPDATE_USERID == null ? '':data.UPDATE_USERID) + '&quot;' + ','
+                    			            + '&quot;updateTime&quot;:&quot;'+(data.UPDATE_TIME == null ? '':data.UPDATE_TIME) + '&quot;' + ','
+                    			            + '&quot;atmCertalias&quot;:&quot;'+(data.ATM_CERTALIAS == null ? '':data.ATM_CERTALIAS) + '&quot;' + ','
+                    			            + '&quot;userUpdateTime&quot;:&quot;'+(data.USER_UPDATE_TIME == null ? '':data.USER_UPDATE_TIME) + '&quot;'
+										+ '}'
+										}">
+							</a>
+						</td>
+						<!--機型-->
+						<td align="center" th:text="${data.ATM_MODELNO}"/>
+						<!--IP位置-->
+						<td align="center" th:text="${data.ATM_IP}"/>
+						<!--憑證版本-->
+						<td align="center" th:text="${data.ATM_CERTALIAS}" />
+						<!--是否連線至FEP-->
+						<td align="center" th:text="${data.ATM_FEP_CONNECTIONTXT}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI060010.js}"></script>
+	</div>
+	</form>
+</body>
+
+</html>

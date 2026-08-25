@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="_csrf" th:content="${_csrf.token}" th:if="${_csrf!=null}"/>
+    <meta name="_csrf" content="" th:if="${_csrf==null}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" th:if="${_csrf!=null}"/>
+    <meta name="_csrf_header" content="" th:if="${_csrf==null}"/>
+    <title th:text="${#strings.isEmpty(changedTitle) ? (session.logonUser != null && session.logonUser.selectedMenu != null ? session.logonUser.selectedMenu.code + ' - ' + session.logonUser.selectedMenu.name : '') : changedTitle}"></title>
+    <!-- 引用的 -->
+    <script type="text/javascript" th:src="@{/plugins/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/jquery-validation/localization/messages_zh_TW.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/jquery-ui/jquery-ui.min.js}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+        document.onkeydown=function(e){var e=e||event;if(e.keyCode===13||e.keyCode===27){return false;}}
+    </script>
+    <script type="text/javascript" th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/moment/moment-with-locales.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/pace-progress/pace.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/bs-custom-file-input/bs-custom-file-input.min.js}"></script>
+    <script>
+        $(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+    <script type="text/javascript" th:src="@{/plugins/adminlte/js/adminlte.xss.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/vue/vue.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/zTree/js/jquery.ztree.all.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/filesaver/FileSaver.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/xss/xss.min.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/zTree/css/zTreeStyle/zTreeStyle.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/adminlte/css/adminlte.min.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/pace-progress/themes/black/pace-theme-flat-top.css}" media="all">
+    <!-- 自定義 -->
+    <script type="text/javascript" th:inline="javascript">
+        var ctx = /*[[${T(com.syscom.fep.web.util.WebUtil).getRequest().getContextPath()}]]*/'';
+        var token = /*[[${session.logonUser != null ? session.logonUser.token : ''}]]*/'';
+    </script>
+    <script type="text/javascript" th:src="@{/js/utils/ajax.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/components.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/form.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/formatter.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/json.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/popover.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/strings.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/table.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/regex.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils/validator.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/adminlte-overwrite.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap-overwrite.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/layout.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/theme-overwrite.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/animation.min.css}" media="all">
+    <!-- 2024-11-06 Richard modified start for【Potential Clickjacking on Legacy Browsers】 -->
+    <script>
+        if (window.self.location !== window.top.location) {
+            const safeUrl = window.self.location.origin;
+            if (window.self.location.origin === safeUrl) { // 僅允許重定向到同一源的URL 2024-11-06 Modified for 【Client DOM Open Redirect】
+                window.top.location = filterXSS(window.self.location); // 2024-11-06 Richard modified for【Client DOM XSS】
+            }
+        }
+    </script>
+    <!-- 2024-11-06 Richard modified end for【Potential Clickjacking on Legacy Browsers】 -->
+</head>
+<!-- 移除sidebar-mini可以全部隱藏menu -->
+<body th:class="${'hold-transition layout-fixed pace-olive' + (session.logonUser == null ? ' sidebar-collapse' : (session.logonUser != null && session.logonUser.homePage != null && session.logonUser.homePage.sidebarCollapsed ? ' sidebar-collapse' : ''))}">
+<div class="wrapper panel-wrapper">
+    <div th:replace="~{layout/header :: header}"></div>
+    <div th:replace="~{layout/left :: left}"></div>
+    <div class="content-wrapper panel-content-wrapper">
+        <div class="container-fluid panel-container-fluid">
+            使用者群組：
+            <div th:each="group,iter : ${session.group}" style="display: inline-block;">
+                <span class="text-category" th:if="${session.group.size-1 eq iter.index}" th:text="${group.roleNo}"></span>
+                <span class="text-category" th:if="${session.group.size-1 ne iter.index}" th:text="${group.roleNo}+','"></span>
+            </div>
+            <div layout:fragment="panel-content" class="panel-content"></div>
+        </div>
+    </div>
+    <div th:replace="~{layout/footer :: footer}"></div>
+    <div th:replace="~{layout/loading :: loading}"></div>
+</div>
+<div th:replace="~{layout/scrolltop :: scrolltop}"></div>
+<div th:replace="~{layout/submiterr :: submiterr}"></div>
+<div th:replace="~{layout/confirm :: cmnConfirm(id=cmnConfirm,body=_,size=medium)}"></div>
+<div th:replace="~{layout/alert :: cmnAlert(id=cmnAlert,body=_,size=medium)}"></div>
+<div th:replace="~{layout/alert :: cmnAlert(id=error500Alert,body=~{::section-error-500},size=xl)}">
+    <section-error-500>
+        <h3>
+            <i class="icon fas fa-ban"></i> 500 Exception Occur
+        </h3>
+        <h4>抱歉! 您訪問的網頁出現錯誤, 請聯繫系統管理員.</h4>
+        <pre id="error500AlertContent" class="pre-content"></pre>
+    </section-error-500>
+</div>
+<script th:if="${session.logonUser != null && session.logonUser.selectedMenu != null}" th:inline="javascript">
+    // 按下清除按鈕事件, 重定向當前頁面
+    var btnClear = $('#btnClear');
+    if (btnClear.length > 0) {
+        btnClear.on('click', function () {
+            doFormSubmit('/clear', {}, false);
+        });
+    }
+    // 按下離開按鈕事件, 重定向當前頁面
+    var btnExit = $('#btnExit');
+    if (btnExit.length > 0) {
+        btnExit.on('click', function () {
+            doFormSubmit('/exit', {}, false);
+        });
+    }
+    // 按下放棄按鈕事件, 重定向當前頁面
+    var btnDiscard = $('#btnDiscard');
+    if (btnDiscard.length > 0) {
+        btnDiscard.on('click', function () {
+            doFormSubmit('/currentPage', {}, false);
+        });
+    }
+</script>
+<script th:if="${session.logonUser != null && session.logonUser.pageView != null && session.logonUser.pageView.collapseButtonShownForConditionPanel}" th:inline="javascript">
+    var conditionPanelCollapsed = /*[[${session.logonUser.pageView.conditionPanelCollapsed}]]*/'';
+    if (conditionPanelCollapsed) {
+        $('.card-condition').addClass('collapsed-card');
+    }
+    $('.card-header-condition').append(
+        '<div class="card-tools card-condition-tools">' +
+            '<button type="button" class="btn btn-tool btn-condition-collapse" data-card-widget="collapse">' +
+                '<i class="fas fa-' + (conditionPanelCollapsed ? 'plus' : 'minus') + '"></i>' +
+            '</button>' +
+        '</div>');
+    $('.btn-condition-collapse').on('click', function () {
+        var jsonData = {
+            conditionPanelCollapsed: !$(".card-condition").hasClass('collapsed-card')
+        };
+        doAjax(jsonData, "/conditionPanelCollapse", true, false, function (resp) {
+            if ('undefined' !== typeof resp) {}
+        });
+        doDisplayRemovePopoverError(!jsonData.conditionPanelCollapsed);
+    });
+</script>
+<script th:if="${session.logonUser != null && session.logonUser.hasPrevPageForm}" th:inline="javascript">
+    // 按下上一頁按鈕
+    var btnPrevPage = $('#btnPrevPage');
+    if (btnPrevPage.length > 0) {
+        btnPrevPage.on('click', function () {
+            doFormSubmit('/prevPage', {});
+        });
+    }
+</script>
+<script th:unless="${session.logonUser != null && session.logonUser.hasPrevPageForm}" th:inline="javascript">
+    // 按下上一頁按鈕
+    var btnPrevPage = $('#btnPrevPage');
+    if (btnPrevPage.length > 0) {
+        btnPrevPage.on('click', function () {
+            doFormSubmit('/selectMenu', {});
+        });
+    }
+</script>
+<script th:inline="javascript">
+    /**
+     * alert公用元件一般訊息
+     *
+     * @param alertMessage
+     * @param closeFunc
+     */
+    function showInfoCmnAlert(alertMessage, closeFunc) {
+        showInfoAlert('cmnAlert', alertMessage, closeFunc);
+    }
+
+    /**
+     * alert公用元件成功訊息
+     *
+     * @param alertMessage
+     * @param closeFunc
+     */
+    function showSuccessCmnAlert(alertMessage, closeFunc) {
+        showSuccessAlert('cmnAlert', alertMessage, closeFunc);
+    }
+
+    /**
+     * alert公用元件警告訊息
+     *
+     * @param alertMessage
+     * @param closeFunc
+     */
+    function showWarningCmnAlert(alertMessage, closeFunc) {
+        showWarningAlert('cmnAlert', alertMessage, closeFunc);
+    }
+
+    /**
+     * alert公用元件錯誤訊息
+     *
+     * @param alertMessage
+     * @param closeFunc
+     */
+    function showDangerCmnAlert(alertMessage, closeFunc) {
+        showDangerAlert('cmnAlert', alertMessage, closeFunc);
+    }
+
+    /**
+     * alert公用元件訊息
+     *
+     * @param alertMessageType
+     * @param alertMessage
+     * @param closeFunc
+     */
+    function showCmnAlert(alertMessageType, alertMessage, closeFunc) {
+        showAlert('cmnAlert', alertMessageType, alertMessage, closeFunc);
+    }
+
+    /**
+     * show公用的Confirm訊息視窗
+     *
+     * @param confirmMsg
+     * @param confirmFunc
+     * @param cancelFunc
+     */
+    function showCmnConfirmDialog(confirmMsg, confirmFunc, cancelFunc) {
+        showConfirmDialog('cmnConfirm', confirmMsg, confirmFunc, cancelFunc);
+    }
+</script>
+</body>
+</html>

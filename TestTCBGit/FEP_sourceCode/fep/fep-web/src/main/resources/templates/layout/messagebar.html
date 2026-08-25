@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Message Bar</title>
+</head>
+<body>
+	<div th:fragment="messagebar" class="card card-body panel-messagebar" th:style="${#strings.isEmpty(message) ? 'display: none; ' : ''}">
+		<div th:class="${'card-' + (messageType == null ? 'info' : #strings.toLowerCase(messageType))}">
+			<div class="card-header">
+				<h3 class="card-title">
+					<block th:switch="${messageType}">
+						<i th:case="${T(com.syscom.fep.web.entity.MessageType).DANGER}" class="icon fas fa-ban"></i>
+						<i th:case="${T(com.syscom.fep.web.entity.MessageType).INFO}" class="icon fas fa-info"></i>
+						<i th:case="${T(com.syscom.fep.web.entity.MessageType).WARNING}" class="icon fas fa-exclamation-triangle"></i>
+						<i th:case="${T(com.syscom.fep.web.entity.MessageType).SUCCESS}" class="icon fas fa-check"></i>
+					</block>
+					[[${message}]]
+				</h3>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-card-widget="remove">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<script th:inline="javascript">
+			/**
+			 * 顯示處理中的文字
+			 *
+			 * @param show
+			 */
+			function showProcessingMessage(show) {
+				clearMessage();
+				if (show) {
+					showInfoMessage("系統處理中,請稍候!!!");
+				}
+			}
+			/**
+			 * 顯示一般訊息
+			 *
+			 * @param message
+			 */
+			function showInfoMessage(message) {
+				var messageType = /*[[${T(com.syscom.fep.web.entity.MessageType).INFO}]]*/'';
+				showMessage(messageType, message);
+			}
+			/**
+			 * 顯示成功訊息
+			 *
+			 * @param message
+			 */
+			function showSuccessMessage(message) {
+				var messageType = /*[[${T(com.syscom.fep.web.entity.MessageType).SUCCESS}]]*/'';
+				showMessage(messageType, message);
+			}
+			/**
+			 * 顯示警告訊息
+			 *
+			 * @param message
+			 */
+			function showWarningoMessage(message) {
+				var messageType = /*[[${T(com.syscom.fep.web.entity.MessageType).WARNING}]]*/'';
+				showMessage(messageType, message);
+			}
+			/**
+			 * 顯示錯誤訊息
+			 *
+			 * @param message
+			 */
+			function showDangerMessage(message) {
+				var messageType = /*[[${T(com.syscom.fep.web.entity.MessageType).DANGER}]]*/'';
+				showMessage(messageType, message);
+			}
+			/**
+			 * 顯示隱藏訊息
+			 *
+			 * @param messageType
+			 * @param message
+			 */
+			function showMessage(messageType, message) {
+				var messageDiv = $(".panel-messagebar");
+				var messageBar = $(".panel-messagebar .card-title");
+				if (stringIsBlank(message)) {
+					messageDiv.hide();
+					messageBar.html('');
+					messageDiv.children(":first").attr('class', 'card-info');
+				} else {
+					messageDiv.children(":first").attr('class', 'card-' + (stringIsBlank(messageType) ? 'info' : messageType.toLowerCase()));
+					var icon = '<i class="icon fas fa-info"></i>';
+					switch (messageType) {
+						case 'DANGER':
+							icon = '<i class="icon fas fa-ban"></i>';
+							break;
+						case 'INFO':
+							icon = '<i class="icon fas fa-info"></i>';
+							break;
+						case 'WARNING':
+							icon = '<i class="icon fas fa-exclamation-triangle"></i>';
+							break;
+						case 'SUCCESS':
+							icon = '<i class="icon fas fa-check"></i>';
+							break;
+					}
+					messageBar.html(icon + message);
+					messageDiv.show();
+				}
+			}
+			/**
+			 * 清空訊息
+			 *
+			 * @param show
+			 */
+			function clearMessage() {
+				showInfoMessage();
+			}
+		</script>
+	</div>
+</body>
+</html>

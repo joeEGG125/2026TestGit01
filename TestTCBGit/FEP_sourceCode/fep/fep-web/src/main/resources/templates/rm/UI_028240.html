@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}"
+			th:action="@{/rm/UI_028240/btnExecute}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label"><label for="txdate"
+						class="col-form-label">營業日期</label></td>
+					<td class="condition-input">
+						<div class="col input-group date" id="txdate" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#txdate" th:field="*{txdate}" />
+							<div class="input-group-append" data-target="#txdate" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnExecute">執行</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+		<button type="button" class="btn btn-primary" id="btnExit">離開</button>
+	</div>
+	<div layout:fragment="panel-grid" class="panel-hidden"></div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-script">
+			<script type="text/javascript" th:src="@{/js/rm/UI028240.js}"></script>
+		</div>
+</body>
+</html>

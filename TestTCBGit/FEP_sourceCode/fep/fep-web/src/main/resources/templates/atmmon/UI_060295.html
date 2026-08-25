@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button" class="panel-hidden"></div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+		<div class="card card-primary card-outline card-tabs">
+			<div class="card-header p-0 pt-1 border-bottom-0">
+				<ul class="nav nav-tabs" role="tablist">
+					<li fep:nav-item="tabId1" nav-item-selected="true" nav-item-caption="基本資料"></li>
+					<li fep:nav-item="tabId2" nav-item-selected="false" nav-item-caption="財金系統狀態"></li>
+					<li fep:nav-item="tabId3" nav-item-selected="false" nav-item-caption="本行系統狀態"></li>
+				</ul>
+			</div>
+			<form th:object="${form}">
+				<div class="card-body p-0">
+					<div class="tab-content">
+						<div fep:tab-pane="tabId1" tab-pane-selected="true" tab-pane-class="panel-detail">
+							<table border="0" cellspacing="0" class="table-condition">
+								<tr>
+									<td class="condition-label" style="width:380px">
+										<label class="col-form-label">銀行代號<font color="red">*</font>:</label>
+									</td>
+									<td class="condition-input" style="width:200px">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatHbkno}" />
+									</td>
+									<td class="condition-label" style="width:380px">
+										<label class="col-form-label">財金公司銀行代號:</label>
+									</td>
+									<td class="condition-input" style="width:200px">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatFbkno}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">信用卡虛擬代號:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatScbkno}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">財金上營業日:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatLbsdyFisc}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">財金本營業日:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatTbsdyFisc}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">財金下營業日:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatNbsdyFisc}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">OPC FROM FISC 同步基碼:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatFopcsync}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">OPC TO FISC 同步基碼:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatTopcsync}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">CD/ATM FROM FISC 同步基碼:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatFcdsync}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">CD/ATM TO FISC 同步基碼:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatTcdsync}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">通匯 FROM FISC 同步基碼:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatFrmsync}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">通匯 TO FISC 同步基碼:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatTrmsync}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">PIN PROTECTON FROM FISC:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatFppsync}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">PIN PROTECTION TO FISC:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatTppsync}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">TRIPLE DES PIN PROTECTION KEY FROM FISC:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatF3dessync}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">TRIPLE DES PIN PROTECTION KEY TO FISC:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatT3dessync}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">OPC KEY STATUS:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatOpckeyst}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">ATM KEY STATUS:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatAtmkeyst}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">RM KEY STATUS:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatRmkeyst}" />
+									</td>
+									<td class="condition-label">
+										<label class="col-form-label">PP KEY STATUS:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstatPpkeyst}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-label">
+										<label class="col-form-label">3DES KEY STATUS:</label>
+									</td>
+									<td class="condition-input">
+										<input class="form-control" type="text" disabled="true"
+											th:field="*{sysstat3enckeyst}" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div fep:tab-pane="tabId2" tab-pane-selected="false" tab-pane-class="panel-detail">
+							<table border="1" cellspacing="0" class="table-condition">
+								<tr>
+									<td class="condition-label" style="width:300px">
+									</td>
+									<td class="condition-input" style="width:400px">
+										<label class="col-form-label">財金</label>
+									</td>
+									<td class="condition-input" style="width:400px">
+										<label class="col-form-label">本行</label>
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">系統狀態</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatSoct}" />
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatMboct}" />
+									</td>
+								</tr>
+							<!--	<tr>
+									<td class="condition-input">
+										<label class="col-form-label">1000 通匯各類子系統</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct1000}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact1000txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact1000}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">1100 匯款類子系統</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct1100}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact1100txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact1100}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">1200 代收款項類子系統</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct1200}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact1200txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact1200}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">1300 代繳代發類子系統</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct1300}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact1300txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact1300}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">1400 一般通信類子系統</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct1400}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact1400txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact1400}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">1600 外幣通匯各類子系統</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{fcrmstatAoct1600}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{fcrmstatMbact1600txt}" />-
+										<label class="col-form-label" th:text="*{fcrmstatMbact1600}" />
+									</td>
+								</tr>-->
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2000 CD/ATM 共用系統提款作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2000}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2000txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2000}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2200 CD/ATM 共用系統轉帳作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2200}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2200txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2200}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2500 晶片卡共用系統</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2200}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2200txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2200}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2510 晶片卡提款作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2510}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2510txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2510}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2520 晶片卡轉帳作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2520}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2520txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2520}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2530 晶片卡繳款作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2530}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2530txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2530}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2540 晶片卡消費扣款作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2540}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2540txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2540}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2550 晶片卡預先授權作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2550}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2550txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2550}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2560 晶片卡全國繳費作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2560}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2560txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2560}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">2570 晶片卡跨國提款作業</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct2570}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact2570txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact2570}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">7100 轉帳退款類交易</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct7100}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact7100txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact7100}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="condition-input">
+										<label class="col-form-label">7300 FXML 跨行付款交易</label>
+									</td>
+									<td class="condition-input">
+										<label class="col-form-label" th:text="*{sysstatAoct7300}" />
+									</td>
+									<td class="condition-input">
+										<input class="col-form-label" style="width:30px" type="text" disabled="true"
+											th:field="*{sysstatMbact7300txt}" />-
+										<label class="col-form-label" th:text="*{sysstatMbact7300}" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div fep:tab-pane="tabId3" tab-pane-selected="false" tab-pane-class="panel-detail">
+
+							ATM
+							<table border="2">
+								<tr>
+									<td rowspan="6" style="width:300px">
+										<input id="sysstatIntra" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIntra}" disabled="true"/>
+										<label for="sysstatIntra">自行</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIwdi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIwdI}" disabled="true"/>
+										<label for="sysstatIwdi">提款</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIfti" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIftI}" disabled="true"/>
+										<label for="sysstatIfti">轉帳</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatAdmi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAdmI}" disabled="true"/>
+										<label for="sysstatAdmi">存款</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIiqi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIiqI}" disabled="true"/>
+										<label for="sysstatIiqi">餘額查詢</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatFwdi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatFwdI}" disabled="true"/>
+										<label for="sysstatFwdi">外幣提款</label>
+									</td>
+									<td>
+										<input id="sysstatNwdi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatNwdI}" disabled="true"/>
+										<label for="sysstatNwdi">無卡提款</label>
+									</td>
+									<td>
+										<input id="sysstatNfwi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatNfwI}" disabled="true"/>
+										<label for="sysstatNfwi">外幣無卡提款</label>
+									</td>
+									<td>
+										<input id="sysstatIpyi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIpyI}" disabled="true"/>
+										<label for="sysstatIpyi">繳款</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatIccdpi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIccdpI}" disabled="true"/>
+										<label for="sysstatIccdpi">全國繳費</label>
+									</td>
+									<td>
+										<input id="sysstatEtxi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEtxI}" disabled="true"/>
+										<label for="sysstatEtxi">全國繳稅</label>
+									</td>
+									<td>
+										<input id="sysstatCai" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCaI}" disabled="true"/>
+										<label for="sysstatCai">預借現金</label>
+									</td>
+									<td>
+										<input id="sysstatCaai" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCaaI}" disabled="true"/>
+										<label for="sysstatCaai">AE預借現金</label>
+									</td>
+								</tr>
+							<!--	<tr>
+									<td>
+										<input id="sysstatAig" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAig}" disabled="true"/>
+										<label for="sysstatAig">南山人壽保單繳款</label>
+									</td>
+									<td>
+										<input id="sysstatHkIssue" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatHkIssue}" disabled="true"/>
+										<label for="sysstatHkIssue">香港分行原存行</label>
+									</td>
+									<td>
+										<input id="sysstatHkFiscmb" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatHkFiscmb}" disabled="true"/>
+										<label for="sysstatHkFiscmb">香港分行財金提款</label>
+									</td>
+									<td>
+										<input id="sysstatHkFiscmq" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatHkFiscmq}" disabled="true"/>
+										<label for="sysstatHkFiscmq">香港分行財金餘額查詢</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatHkPlus" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatHkPlus}" disabled="true"/>
+										<label for="sysstatHkPlus">香港分行PLUS</label>
+									</td>
+									<td>
+										<input id="sysstatMoIssue" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatMoIssue}" disabled="true"/>
+										<label for="sysstatMoIssue">澳門分行原存行</label>
+									</td>
+									<td>
+										<input id="sysstatMoFiscmb" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatMoFiscmb}" disabled="true"/>
+										<label for="sysstatMoFiscmb">澳門分行財金財金提款</label>
+									</td>
+									<td>
+										<input id="sysstatMoFiscmq" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatMoFiscmq}" disabled="true"/>
+										<label for="sysstatMoFiscmq">澳門分行財金餘額查詢</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatMoPlus" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatMoPlus}" disabled="true"/>
+										<label for="sysstatMoPlus">澳門分行PLUS</label>
+									</td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>-->
+							</table><br />
+
+							<table border="2">
+								<tr>
+									<td rowspan="7" style="width:300px">
+										<input id="sysstatAgent" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAgent}" disabled="true"/>
+										<label for="sysstatAgent">代理行</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIwda" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIwdA}" disabled="true"/>
+										<label for="sysstatIwda">台幣提款</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatFawa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatFawA}" disabled="true"/>
+										<label for="sysstatFawa">外幣提款</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIfta" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIftA}" disabled="true"/>
+										<label for="sysstatIfta">轉帳</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatAdma" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAdmA}" disabled="true"/>
+										<label for="sysstatAdma">跨行存款</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatIpya" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIpyA}" disabled="true"/>
+										<label for="sysstatIpya">繳款</label>
+									</td>
+									<td>
+										<input id="sysstatIccdpa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIccdpA}" disabled="true"/>
+										<label for="sysstatIccdpa">全國繳費(晶片)</label>
+									</td>
+									<td>
+										<input id="sysstatCdpa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCdpA}" disabled="true"/>
+										<label for="sysstatCdpa">全國繳費(ID+ACC)</label>
+									</td>
+									<td>
+										<input id="sysstatEtxa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEtxA}" disabled="true"/>
+										<label for="sysstatEtxa">全國繳稅</label>
+									</td>
+								</tr>
+							<!--	<tr>
+									<td>
+										<input id="sysstat2525a" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstat2525A}" disabled="true"/>
+										<label for="sysstat2525a">消費扣款（固定費率）</label>
+									</td>
+									<td>
+										<input id="sysstatCpua" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCpuA}" disabled="true"/>
+										<label for="sysstatCpua">消費扣款（變動費率）</label>
+									</td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatCava" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCavA}" disabled="true"/>
+										<label for="sysstatCava">預借現金 VISA</label>
+									</td>
+									<td>
+										<input id="sysstatCama" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCamA}" disabled="true"/>
+										<label for="sysstatCama">預借現金 MASTER</label>
+									</td>
+									<td></td>
+									<td></td>
+								</tr>-->
+								<tr>
+									<td>
+										<input id="sysstatCaua" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCauA}" disabled="true"/>
+										<label for="sysstatCaua">預授交易</label>
+									</td>
+								<!--	<td>
+										<input id="sysstatCwva" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCwvA}" disabled="true"/>
+										<label for="sysstatCwva">國際提款PLUS</label>
+									</td>
+									<td>
+										<input id="sysstatCwma" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCwmA}" disabled="true"/>
+										<label for="sysstatCwma">國際提款CIRRUS</label>
+									</td>
+									<td>
+										<input id="sysstatCafa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCafA}" disabled="true"/>
+										<label for="sysstatCafa">國際提款銀聯卡</label>
+									</td>-->
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatEafa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEafA}" disabled="true"/>
+										<label for="sysstatEafa">EMV 國際提款銀聯卡</label>
+									</td>
+									<td>
+										<input id="sysstatEwva" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEwvA}" disabled="true"/>
+										<label for="sysstatEwva">EMV國際提款(PLUS)</label>
+									</td>
+									<td>
+										<input id="sysstatEwma" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEwmA}" disabled="true"/>
+										<label for="sysstatEwma">EMV國際提款(CIRRUS)</label>
+									</td>
+									<td>
+										<input id="sysstatEava" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEavA}" disabled="true"/>
+										<label for="sysstatEava">EMV預借現金(VISA)</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatEama" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEamA}" disabled="true"/>
+										<label for="sysstatEama">EMV預借現金(MASTER)</label>
+									</td>
+									<td>
+										<input id="sysstatNwda" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatNwdA}" disabled="true"/>
+										<label for="sysstatNwda">無卡跨行提款</label>
+									</td>
+									<td>
+										<input id="sysstatVaaa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatVaaA}" disabled="true"/>
+										<label for="sysstatVaaa">約定及核驗服務</label>
+									</td>
+									<td>
+										<input id="sysstatVaaa" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEajA}" disabled="true"/>
+										<label for="sysstatVaaa">EMV預借現金(JCB)</label>
+									</td>
+								</tr>
+							</table>
+							<br />
+							<table border="2">
+								<tr>
+									<td rowspan="5" style="width:300px">
+										<input id="sysstatIssue" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIssue}" disabled="true"/>
+										<label for="sysstatIssue">原存</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIwdf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIwdF}" disabled="true"/>
+										<label for="sysstatIwdf">提款</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIftf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIftF}" disabled="true"/>
+										<label for="sysstatIftf">轉帳</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIiqf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIiqF}" disabled="true"/>
+										<label for="sysstatIiqf">餘額查詢</label>
+									</td>
+									<td style="width:300px"></td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatIpyf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIpyF}" disabled="true"/>
+										<label for="sysstatIpyf">繳款</label>
+									</td>
+									<td>
+										<input id="sysstatIccdpf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIccdpF}" disabled="true"/>
+										<label for="sysstatIccdpf">全國繳費(晶片)</label>
+									</td>
+									<td>
+										<input id="sysstatCdpf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCdpF}" disabled="true"/>
+										<label for="sysstatCdpf">全國繳費(ID+ACT)</label>
+									</td>
+									<td>
+										<input id="sysstatEtxf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEtxF}" disabled="true"/>
+										<label for="sysstatEtxf">全國繳稅</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstat2525f" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstat2525F}" disabled="true"/>
+										<label for="sysstat2525f">消費扣款(固定費率)</label>
+									</td>
+									<td>
+										<input id="sysstatCpuf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCpuF}" disabled="true"/>
+										<label for="sysstatCpuf">消費扣款(變動費率)</label>
+									</td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatCauf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCauF}" disabled="true"/>
+										<label for="sysstatCauf">預授交易</label>
+									</td>
+									<td>
+										<input id="sysstatGpcwdf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatGpcwdF}" disabled="true"/>
+										<label for="sysstatGpcwdf">國際提款PLUS/CIRRUS</label>
+									</td>
+									<td>
+										<input id="sysstatGpemvf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatGpemvF}" disabled="true"/>
+										<label for="sysstatGpemvf">EMV國際提款PLUS/CIRRUS</label>
+									</td>
+									<td>
+										<input id="sysstatGpcadf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatGpcadF}" disabled="true"/>
+										<label for="sysstatGpcadf">預借現金VISA/MASTER</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatGpiwdf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatGpiwdF}" disabled="true"/>
+										<label for="sysstatGpiwdf">晶片卡跨國提款</label>
+									</td>
+									<td>
+										<input id="sysstatGpobf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatGpobF}" disabled="true"/>
+										<label for="sysstatGpobf">跨境支付交易</label>
+									</td>
+									<td>
+										<input id="sysstatVaaf" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatVaaF}" disabled="true"/>
+										<label for="sysstatVaaf">約定及核驗服務</label>
+									</td>
+									<td></td>
+								</tr>
+							</table>
+							<br />
+							<table border="2">
+								<tr>
+									<td rowspan="3" style="width:300px">
+										<input id="sysstatPure" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatPure}" disabled="true"/>
+										<label for="sysstatPure">純代理</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIiqp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIiqP}" disabled="true"/>
+										<label for="sysstatIiqp">晶片卡餘額查詢</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIftp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIftP}" disabled="true"/>
+										<label for="sysstatIftp">轉帳</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatIccdpp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIccdpP}" disabled="true"/>
+										<label for="sysstatIccdpp">全國繳費(晶片)</label>
+									</td>
+									<td style="width:300px">
+										<input id="sysstatCdpp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCdpP}" disabled="true"/>
+										<label for="sysstatCdpp">全國繳費(ID+ACC)</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatIpyp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIpyP}" disabled="true"/>
+										<label for="sysstatIpyp">繳款-跨行(2531)</label>
+									</td>
+									<td>
+										<!--<input id="sysstatIqvp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIqvP}" disabled="true"/>
+										<label for="sysstatIqvp">PLUS卡餘額查詢</label>-->
+									</td>
+									<td>
+										<!--<input id="sysstatIqmp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIqmP}" disabled="true"/>
+										<label for="sysstatIqmp">CIRRUS卡餘額查詢</label>-->
+									</td>
+									<td>
+										<!--<input id="sysstatIqcp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatIqcP}" disabled="true"/>
+										<label for="sysstatIqcp">銀聯卡餘額查詢</label>-->
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input id="sysstatEqup" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEquP}" disabled="true"/>
+										<label for="sysstatEqup">EMV 銀聯卡餘額查詢</label>
+									</td>
+									<td>
+										<input id="sysstatEqpp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEqpP}" disabled="true"/>
+										<label for="sysstatEqpp">EMV PLUS餘額查詢</label>
+									</td>
+									<td>
+										<input id="sysstatEqcp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatEqcP}" disabled="true"/>
+										<label for="sysstatEqcp">EMV CIRRUS卡餘額查詢</label>
+									</td>
+									<td></td>
+								</tr>
+							</table>
+							<br />
+							<!--T24主機服務
+							<table border="0">
+								<tr>
+									<td style="width:120px">
+										<input id="sysstatT24twn" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatT24Twn}" disabled="true"/>
+										<label for="sysstatT24twn">台灣T24主機</label>
+									</td>
+									<td style="width:120px">
+										<input id="sysstatT24hkg" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatT24Hkg}" disabled="true"/>
+										<label for="sysstatT24hkg">香港T24主機</label>
+									</td>
+									<td style="width:200px">
+										<input id="sysstatT24mac" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatT24Mac}" disabled="true"/>
+										<label for="sysstatT24mac">澳門T24主機</label>
+									</td>
+								</tr>
+							</table>
+							<br />-->
+							其他通道及線路
+							<table border="0">
+								<tr>
+									<td style="width:100px">
+										<input id="sysstatCbs" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatCbs}" disabled="true"/>
+										<label for="sysstatCbs">CBS主機</label>
+									</td>
+									<!--<td style="width:70px">
+										<input id="sysstatFedi" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatFedi}" disabled="true"/>
+										<label for="sysstatFedi">FEDI</label>
+									</td>-->
+									<td style="width:70px">
+										<input id="sysstatNb" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatNb}" disabled="true"/>
+										<label for="sysstatNb">網銀</label>
+									</td>
+									<td style="width:140px">
+										<input id="sysstatWebatm" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatWebatm}" disabled="true"/>
+										<label for="sysstatWebatm">WEB ATM服務</label>
+									</td>
+									<td style="width:120px">
+										<input id="sysstatAscChannel" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAscChannel}" disabled="true"/>
+											<label for="sysstatAscChannel">新信用卡</label>
+										<!--<label for="sysstatAscChannel">永豐信用卡</label>-->
+									</td>
+									<!--<td style="width:130px">
+										<input id="sysstatSvcs" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatSvcs}" disabled="true"/>
+										<label for="sysstatSvcs">悠遊Debit卡</label>
+									</td>-->
+									<!--<td style="width:100px">
+										<input id="sysstatHkSms" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatHkSms}" disabled="true"/>
+										<label for="sysstatHkSms">香港SMS</label>
+									</td>-->
+									<td style="width:90px">
+										<input id="sysstatPv" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatPv}" disabled="true"/>
+										<label for="sysstatPv">指靜脈</label>
+									</td>
+									<td style="width:200px">
+										<input id="sysstatSmtp" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatSmtp}" disabled="true"/>
+										<label for="sysstatSmtp">手機門號轉帳中台</label>
+									</td>
+								</tr>
+							</table>
+							<!--<table border="0">
+								<tr>
+									<td style="width:150px">
+										<input id="sysstatAsc" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAsc}" disabled="true"/>
+										<label for="sysstatAsc">永豐信用卡線路</label>
+									</td>
+									<td style="width:170px">
+										<input id="sysstatAscmd" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAscmd}" disabled="true"/>
+										<label for="sysstatAscmd">永豐晶片錢卡線路</label>
+									</td>
+									<td style="width:160px">
+										<input id="sysstatGcard" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatGcard}" disabled="true"/>
+										<label for="sysstatGcard">永豐GIFT卡線路</label>
+									</td>
+									<td style="width:140px">
+										<input id="sysstatSps" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatSps}" disabled="true"/>
+										<label for="sysstatSps">永豐證券線路</label>
+									</td>
+									<td style="width:150px">
+										<input id="sysstatAscmac" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatAscmac}" disabled="true"/>
+										<label for="sysstatAscmac">與ASC壓碼線路</label>
+									</td>
+									<td style="width:150px">
+										<input id="sysstatSpsmac" class="col-form-checkbox" type="checkbox"
+											th:checked="*{sysstatSpsmac}" disabled="true"/>
+										<label for="sysstatSpsmac">與 SPS 壓碼線路</label>
+									</td>
+								</tr>
+							</table>-->
+
+						</div>
+					</div>
+				</div>
+		    </div>
+		</form>
+	</div>
+	<div layout:fragment="panel-script"></div>
+</body>
+
+</html>

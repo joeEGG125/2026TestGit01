@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+	<form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_019141/getFwdtxns}" method="post">
+		<table border="0" cellspacing="0" class="table-condition">
+			<tr>
+				<td class="condition-label">
+					<label for="txDate" class="col-form-label">預約檔日期</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{txDate}" readonly>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label for="txDate" class="col-form-label">轉出帳號</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" value="807" disabled maxlength="3">
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{txTroutActno}" maxlength="16">
+				</td>
+				<td class="condition-label">
+					<label for="txDate" class="col-form-label">轉入帳號</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{txTrinBkno}" maxlength="3">
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{txTrinActno}" maxlength="16">
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label for="txtTxAmt" class="col-form-label">交易金額</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{txtTxAmt}">
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+	<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary">
+	<table border="0" cellspacing="0" class="table-detail">
+		<tr>
+			<td class="condition-label">
+				<label for="archivesDate" class="col-form-label">失敗筆數:</label>
+			</td>
+			<td class="condition-input">
+				<input class="form-control" type="text" th:value="${lblFail}" disabled>
+			</td>
+			<td class="condition-label">
+				<label for="archivesDate" class="col-form-label">(系統:</label>
+			</td>
+			<td class="condition-input">
+				<input class="form-control" type="text" th:value="${lblFailSys}" disabled>
+			</td>
+			<td class="condition-label">
+				<label for="archivesDate" class="col-form-label">客戶:</label>
+			</td>
+			<td class="condition-input">
+				<input class="form-control" type="text" th:value="${lblFailCust}" disabled>
+			</td>
+			<td class="condition-label">
+				<label for="archivesDate" class="col-form-label">其他:</label>
+			</td>
+			<td class="condition-input">
+				<input class="form-control" type="text" th:value="${lblFailOther}" disabled>
+			</td>
+			<td class="condition-label">
+				<label for="archivesDate" class="col-form-label">)</label>
+			</td>
+		</tr>
+	</table>
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+	<div class="card-body table-responsive p-0">
+		<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+			<thead>
+			<tr>
+				<th><b>執行</b></th>
+				<th><b>預約交易序號</b></th>
+				<th><b>PCODE</b></th>
+				<th><b>通路別</b></th>
+				<th><b>扣款帳號</b></th>
+				<th><b>入帳帳號</b></th>
+				<th><b>金  額</b></th>
+				<th><b>次數</b></th>
+				<th><b>EJ序號</b></th>
+				<th><b>交易結果</b></th>
+				<th><b>錯誤訊息</b></th>
+			</tr>
+			</thead>
+			<tbody th:if="${pageData.list != null}">
+			<tr th:each="data : ${pageData.list}">
+				<td align="center">
+					<button type="button" class="btn btn-primary btn-inquiry"
+							th:value="${
+										'{' + '&quot;txDate&quot;:&quot;'+form.txDate + '&quot;' + ','
+											+ '&quot;txTroutActno&quot;:&quot;'+form.txTroutActno + '&quot;' + ','
+											+ '&quot;txTrinBkno&quot;:&quot;'+form.txTrinBkno + '&quot;' + ','
+											+ '&quot;txTrinActno&quot;:&quot;'+form.txTrinActno + '&quot;' + ','
+											+ '&quot;txtTxAmt&quot;:&quot;'+form.txtTxAmt + '&quot;' + ','
+											+ '&quot;txID&quot;:&quot;'+data.get('FWDTXN_TX_ID') + '&quot;'
+										+ '}'
+										}">執行</button>
+				</td>
+				<td align="center" th:text="${data.get('FWDTXN_TX_ID')}" />
+				<td align="center" th:text="${data.get('FWDTXN_PCODE')}" />
+				<td align="center" th:text="${data.get('FWDTXN_CHANNEL_S')}" />
+				<td align="center" th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-', data.get('SYSSTAT_HBKNO'), data.get('FWDTXN_TROUT_ACTNO'))}" />
+				<td align="center" th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-', data.get('FWDTXN_TRIN_BKNO'), data.get('FWDTXN_TRIN_ACTNO'))}" />
+				<td align="right" th:text="${#numbers.formatDecimal(data.get('FWDTXN_TX_AMT'),1,'COMMA',2,'POINT')}" />
+				<td align="center" th:text="${data.get('FWDRST_RUN_NO')}" />
+				<td th:text="${data.get('FWDRST_EJFNO')}" />
+				<td align="center" th:text="${data.get('FWDRST_TXRUST')}" />
+				<td align="left" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(data.get('FWDRST_REPLY_CODE')) + T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(data.get('FWDRST_ERR_MSG'))}" />
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div layout:fragment="panel-script">
+	<script type="text/javascript" th:src="@{/js/inbk/UI019141.js}"></script>
+</div>
+</body>
+</html>

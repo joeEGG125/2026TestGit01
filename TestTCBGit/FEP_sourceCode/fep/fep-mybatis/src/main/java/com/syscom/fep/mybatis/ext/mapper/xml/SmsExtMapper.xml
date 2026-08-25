@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.SmsExtMapper">
+    <!--ChenYang add 2022-07-19 -->
+    <select id="queryAll" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.SmsMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Blob_Column_List"/>
+        FROM SMS ORDER BY SMS_SERVICENAME, SMS_SERVICEIP
+    </select>
+    <update id="updateFEPMonitorServiceWhenTerminate" parameterType="map">
+        UPDATE SMS SET
+        <if test="smsStoptime != null">
+            SMS_STOPTIME = #{smsStoptime,jdbcType=TIMESTAMP},
+        </if>
+        SMS_UPDATETIME = SYSDATE, SMS_SERVICESTATE = #{smsServicestate,jdbcType=CHAR}, SMS_CPU = 0, SMS_RAM = 0, SMS_THREADS = 0, SMS_PID = NULL
+        WHERE SMS_SERVICENAME = #{smsServicename,jdbcType=VARCHAR}
+        AND SMS_SERVICEIP = #{smsServiceip,jdbcType=VARCHAR}
+    </update>
+    <select id="queryFEPMonitorService" resultMap="com.syscom.fep.mybatis.mapper.SmsMapper.ResultMapWithBLOBs">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Blob_Column_List"/>
+        FROM SMS
+        WHERE SMS_SERVICENAME LIKE 'FEP%'
+        ORDER BY SMS_HOSTNAME, SMS_SERVICENAME
+    </select>
+    <select id="queryFEPTxnService" parameterType="map" resultType="map">
+        SELECT
+            A.CHANNEL_NAME AS SOURCE,
+            IFNULL(B.count, 0) AS count,
+            C.SYSCONF_VALUE AS timeouttotalcount
+        FROM
+            (SELECT CHANNEL_NAME
+             FROM CHANNEL
+             WHERE CHANNEL_ENABLE = 1) A
+        LEFT JOIN
+            (SELECT CBSPEND_CHANNEL, COUNT(1) AS count
+             FROM CBSPEND
+             WHERE CBSPEND_TX_DATE = TO_CHAR(CURRENT DATE, 'YYYYMMDD')
+<!--             AND FEPTXN_CBS_TIMEOUT = 1-->
+             AND LEFT(CBSPEND_TX_TIME, 4) = TO_CHAR(CURRENT TIMESTAMP, 'HH24MI')
+             GROUP BY CBSPEND_CHANNEL) B
+        ON A.CHANNEL_NAME = B.CBSPEND_CHANNEL
+        LEFT JOIN SYSCONF C ON C.SYSCONF_NAME = 'TimeOutTotalCount'
+        ORDER BY A.CHANNEL_NAME
+    </select>
+    <select id="queryExcludeServiceName" resultMap="com.syscom.fep.mybatis.mapper.SmsMapper.ResultMapWithBLOBs">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Blob_Column_List"/>
+        FROM SMS
+        WHERE SMS_SERVICENAME NOT IN
+        <foreach collection="smsServicenames" item="smsServicename" index="index" open="(" close=")" separator=",">
+            #{smsServicename}
+        </foreach>
+        ORDER BY SMS_SERVICENAME, SMS_SERVICEIP
+    </select>
+    <delete id="deleteAll">
+        delete
+        from SMS
+    </delete>
+    <select id="selectByServiceName" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.SmsMapper.ResultMapWithBLOBs">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.mapper.SmsMapper.Blob_Column_List"/>
+        from SMS
+        where SMS_SERVICENAME = #{smsServicename,jdbcType=VARCHAR}
+    </select>
+    <update id="updateThresholdByPrimaryKey" parameterType="com.syscom.fep.mybatis.model.Sms">
+        update SMS
+        set SMS_CPU_THRESHOLD     = #{smsCpuThreshold,jdbcType=INTEGER},
+            SMS_RAM_THRESHOLD     = #{smsRamThreshold,jdbcType=INTEGER},
+            SMS_THREADS_THRESHOLD = #{smsThreadsThreshold,jdbcType=INTEGER}
+        where SMS_SERVICENAME = #{smsServicename,jdbcType=VARCHAR}
+          and SMS_SERVICEIP = #{smsServiceip,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028180/queryClick}" method="post">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h5 class="card-title">查詢條件</h5>
+            </div>
+            <div class="card-body">
+                <div class="condition-label row">
+                    <label for="brno" class="col-form-label col-1">登錄分行</label>
+                    <select class="form-control col-2" th:field="*{brno}">
+                        <option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"/>
+                    </select>
+                    <label for="txAmt" class="col-form-label col-1">匯款金額</label>
+                    <input class="form-control col-2" type="text" th:field="*{txAmt}" maxlength="13"/>
+                </div>
+                <div class="condition-label row">
+                    <label for="fepNo" class="col-form-label col-1">FEP/T24登錄序號</label>
+                    <input class="form-control col-2" type="text" th:field="*{fepNo}" maxlength="7"/>
+                    <label for="original" class="col-form-label col-1">來源別</label>
+                    <select class="form-control col-2" th:field="*{original}">
+                        <option value="0" selected="selected">0-臨櫃</option>
+                        <option value="1">1-FCS</option>
+                        <option value="2">2-FEDI</option>
+                        <option value="4">4-MMAB2B</option>
+                        <option value="5">5-緊急匯款</option>
+                    </select>
+                </div>
+                <div class="condition-label row">
+                    <label for="batchNo" class="col-form-label col-1">批號</label>
+                    <input class="form-control col-2" type="text" th:field="*{batchNo}" readonly="readonly" maxlength="32"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" th:if="${execute}" class="btn btn-primary" id="btnExecute">執行</button>
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid">
+    <div class="card card-primary card-outline">
+            <div class="card-body">
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">匯款行</label>
+                    <label class="form-control col-2"  type="text" th:text="${RMOUT_SENDER_BANK}" maxlength="8"/>
+                    <label  class="col-form-label col-1">匯款行名稱</label>
+                    <label class="form-control col-2" type="text" th:text="${SENDBK_NAME}" maxlength="7"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">匯款帳務別</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_AMT_TYPE}" maxlength="4"/>
+                    <label class="col-form-label col-1">匯款種類</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_REMTYPE}" maxlength="7"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">手續費帳務別</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_SERVAMT_TYPE}" maxlength="7"/>
+                    <label class="col-form-label col-1">應收手續費</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_RECFEE}" maxlength="6"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">實收手續費</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_ACTFEE}" maxlength="7"/>
+                    <label class="col-form-label col-1">客戶ID</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_CIF}" maxlength="6"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">解款行</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_RECEIVER_BANK}" maxlength="7"/>
+                    <label class="col-form-label col-1">收款人帳號</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_IN_ACC_ID_NO}" maxlength="6"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">收款人</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_IN_NAME}" maxlength="7"/>
+                    <label class="col-form-label col-1">匯款人代號</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_REMCIF}" maxlength="6"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">匯款人</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_OUT_NAME}" maxlength="7"/>
+                    <label class="col-form-label col-1">匯款人電話</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_REMTEL}" maxlength="6"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">附言</label>
+                    <label class="form-control col-5" type="text" th:text="${RMOUT_MEMO}"/>
+                </div>
+                <div class="condition-label row" style="height: 45px">
+                    <label class="col-form-label col-1">稅單編號</label>
+                    <label class="form-control col-2" type="text" th:text="${RMOUT_TAXNO}" maxlength="6"/>
+                </div>
+            </div>
+        </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028180.js}"></script>
+</div>
+</body>
+</html>

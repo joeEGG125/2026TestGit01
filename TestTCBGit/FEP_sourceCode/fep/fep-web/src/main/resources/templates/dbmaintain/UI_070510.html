@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+	    <form id="form-validator" th:object="${form}" th:action="@{/dbmaintain/UI_070510/queryClick}" method="post">
+	        <table border="0" cellspacing="0" class="table-condition">
+	            <tr>
+	                <td class="condition-label" >
+	                    <label class="col-form-label">CREDIT CARD BIN</label>
+	                </td>
+	                <td class="condition-input">
+	                    <input class="form-control" type="text" th:field="*{txtBinNo}" maxlength="6">
+	                </td>
+	                 <td class="condition-label" >
+	                    <label class="col-form-label">發卡組織</label>
+	                </td>
+	                <td class="condition-input">
+	                    <input class="form-control" type="text" th:field="*{txtBinOrg}" maxlength="6">
+	                </td>
+	            </tr>
+	        </table>
+	    </form>
+	</div>
+	<div align="left" layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnInsert">新增</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnDelete">刪除</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0 col-6">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th fep:table-th-check="demo"></th>
+						<th><b>CREDIT CARD BIN</b></th>
+						<th><b>發卡組織</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data,dataStatus : ${pageData.list}" th:id="${dataStatus.index}">
+						<td style="text-align:center " fep:table-td-check="demo" table-td-check-value=
+							"${'{' + '
+							&quot;binNo&quot;:&quot;'+ data.BIN_NO + '&quot; 
+							'+ '}'}">
+						</td>
+						<td align="left" th:text="${data.BIN_NO}" th:id="${data.BIN_NO}"/>
+						<td align="left" th:text="${data.BIN_ORG}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/dbmaintain/UI070510.js}"></script>
+        <script th:inline="javascript">
+			var dataFocus = [[${form}]];
+			if(null == dataFocus.focusInsert){
+			}else{
+				$('#'+dataFocus).parent().css("background-color","#738A9C");
+			}
+		</script>
+	</div>
+</body>
+</html>

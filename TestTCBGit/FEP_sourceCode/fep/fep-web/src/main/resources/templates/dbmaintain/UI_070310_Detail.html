@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button th:disabled="*{webType == 'SSTQ'}" style="width:100px" type="button" class="btn btn-primary" id="btnChange">變更儲存</button>
+		<button th:disabled="*{webType == 'SSTQ'}" style="width:100px" type="button" class="btn btn-primary" id="btnDiscard">放棄變更</button>
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+	<form id="form-validator" th:object="${form}" th:action="@{/dbmaintain/UI_070310/saveClick}" method="post">
+		<input type="hidden" name="btnType" th:value="*{btnType}">
+		<table border="0" cellspacing="0" class="table-detail">
+			<tr>
+				<td class="condition-label">
+				    <label class="col-form-label">
+					CREDIT CARD BIN<span style="color: red">*</span>
+				    </label>
+				</td>
+				<td class="condition-input" width="300px">
+						<input class="form-control" th:disabled="*{btnType ne 'insert'}"  style="background-color: white" type="text" th:field="*{binNo}" maxlength="6" />
+					</td>
+                <td class="condition-label">
+				    <label class="col-form-label">
+					行庫代號（總行）<span style="color: red">*</span>
+				    </label>
+				</td>
+				<td class="condition-input" width="300px">
+						<input class="form-control" th:disabled="*{btnType ne 'insert'}"  style="background-color: white" type="text" th:field="*{binBkno}" maxlength="3" />
+					</td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">SWITCHING CENTER</label></td>
+				<td class="condition-input"><select class="form-control"
+					id="binNet" th:field="*{binNet}">
+						<option value="" selected="selected"></option>
+						<option value="FISC">FISC</option>
+						<option value="NCCC">NCCC</option>
+					    <option value="TCB">TCB</option>
+				</select></td>
+				<td class="condition-label"><label for="trad"
+												   class="col-form-label">區域碼</label></td>
+				<td class="condition-input"><select class="form-control"
+													id="binZone" th:field="*{binZone}">
+					<option value="" selected="selected"></option>
+					<option value="TWN">台灣</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+												   class="col-form-label">發卡組織</label></td>
+				<td class="condition-input"><select class="form-control"
+													id="binOrg" th:field="*{binOrg}">
+					<option value="" selected="selected"></option>
+					<option value="VISA">VISA</option>
+					<option value="MASTER">MASTER</option>
+					<option value="JCB">JCB</option>
+				</select></td>
+				<td class="condition-label"><label for="trad"
+												   class="col-form-label">BIN產品別</label></td>
+				<td class="condition-input"><select class="form-control"
+													id="binProd" th:field="*{binProd}">
+					<option value="" selected="selected"></option>
+					<option value="A">國際金融卡(PLUS/CIRRUS)</option>
+					<option value="C">信用卡</option>
+					<option value="M">COMBO卡</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label for="trad" class="col-form-label">使用EMV交易</label></td>
+				<td class="condition-input">
+					<input th:type="radio" id="radio1" th:name="binEmvflag" th:value="0" th:checked="*{binEmvflag} == 0" required>不可使用
+                    <input th:type="radio" id="radio2" th:name="binEmvflag" th:value="1" th:checked="*{binEmvflag} == 1">可使用
+				</td>
+				<td class="condition-label">
+				</td>
+				<td class="condition-input">
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/dbmaintain/UI070310Detail.js}"></script>
+	</div>
+</body>
+</html>

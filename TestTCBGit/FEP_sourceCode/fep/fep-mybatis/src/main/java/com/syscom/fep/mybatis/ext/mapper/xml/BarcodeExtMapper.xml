@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.BarcodeExtMapper">
+	<!-- add by wj 20210525 -->
+	<select id="queryByActId" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BarcodeMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.BarcodeMapper.Base_Column_List" />
+		FROM BARCODE
+		WHERE BARCODE_ACT_ID = #{barcodeActId,jdbcType=INTEGER}
+		AND BARCODE_STATUS = 'N' ORDER BY BARCODE_CODE
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+</mapper>

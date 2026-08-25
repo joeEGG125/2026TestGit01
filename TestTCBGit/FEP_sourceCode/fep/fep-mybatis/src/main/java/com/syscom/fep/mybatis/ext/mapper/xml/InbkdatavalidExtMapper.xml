@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.InbkdatavalidExtMapper">
+    <delete id="deleteINBKDATAVALID" parameterType="com.syscom.fep.mybatis.model.Inbkdatavalid">
+        delete from INBKDATAVALID
+        where INBKDATAVALID_DATE = #{inbkdatavalidDate,jdbcType=CHAR}
+        and INBKDATAVALID_PROGRAM = #{inbkdatavalidProgram,jdbcType=CHAR}
+    </delete>
+    <select id="select" parameterType="com.syscom.fep.mybatis.model.Inbkdatavalid" resultMap="com.syscom.fep.mybatis.mapper.InbkdatavalidMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.InbkdatavalidMapper.Base_Column_List" />
+        from INBKDATAVALID
+        where INBKDATAVALID_DATE = #{inbkdatavalidDate,jdbcType=CHAR}
+        and INBKDATAVALID_PROGRAM = #{inbkdatavalidProgram,jdbcType=CHAR}
+    </select>
+
+</mapper>

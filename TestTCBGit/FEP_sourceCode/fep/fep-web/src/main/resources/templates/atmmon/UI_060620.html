@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060620/saveIntervalBtn_Click}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label for="time" class="col-form-label">畫面更新間隔時間</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col">
+                            <input class="form-control" type="text" maxlength="3" style="width: 156px;" th:field="*{time}" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"
+                                   onafterpaste="this.value=this.value.replace(/[^\d]/g,'')"/>
+                        </div>
+                        <label class="label-text-symbol">秒</label>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary" id="btnReserve">設定</button>
+                        </div>
+                    </div>
+                </td>
+                <td class="condition-label">
+                    <label for="subSystemDdl" class="col-form-label">子系統</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{subSystemDdl}" style="display: inline-block">
+                        <option value="" selected>全部</option>
+                        <option value="None">None</option>
+                        <option value="INBK">INBK-財金公司跨行前置處理系統</option>
+                        <option value="RM">RM-跨行通匯系統(含國內匯兌)</option>
+                        <option value="ATMP">ATMP-ATM 前置處理系統</option>
+                        <option value="Card">CARD-金融卡卡片管理系統</option>
+                        <option value="HSM">HSM-HSM基碼管理系統</option>
+                        <option value="FEPMonitor">FEPMonitor-ATM及上項各前置處理系統監控系統</option>
+                        <option value="RECS">RECS-入扣帳帳務比對系統</option>
+                        <option value="GW">GW-ATM集中化</option>
+                        <option value="CMN">CMN-公用模組</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="dtTransactDate" class="col-form-label">警示日期</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" data-target-input="nearest" id="dtTransactDate">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#dtTransactDate" th:field="*{dtTransactDate}"/>
+                        <div class="input-group-append" data-target="#dtTransactDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="condition-label">
+                    <label for="txTransactTimeBEG" class="col-form-label">警示時間起訖</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col input-group date" id="txTransactTimeBEG" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#txTransactTimeBEG" th:field="*{txTransactTimeBEG}"/>
+                            <div class="input-group-append" data-target="#txTransactTimeBEG" data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="fa fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="label-text-symbol">~</label>
+                        <div class="col input-group date" id="txTransactTimeEND" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#txTransactTimeEND" th:field="*{txTransactTimeEND}"/>
+                            <div class="input-group-append" data-target="#txTransactTimeEND" data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="fa fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <!-- <td class="condition-label">
+                    <label for="txtIP" class="col-form-label">IP</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{txtIP}" maxlength="20" />
+                </td> -->
+                <td class="condition-label">
+                    <label for="txtATMNo" class="col-form-label">ATM代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{txtATMNo}" maxlength="8"/>
+                </td>
+                <td class="condition-label">
+                    <label for="applicationDdl" class="col-form-label">訊息類別</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" id="applicationDdl" th:field="*{applicationDdl}">
+                        <option value="" selected>全部</option>
+                        <option value="1">OPC</option>
+                        <option value="2">清算</option>
+                        <option value="3">INBK人工作業</option>
+                        <option value="4">匯款</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+            	<td class="condition-label">
+                    <label for="txtATMNo" class="col-form-label">訊息</label>
+                </td>
+                <td class="condition-input" colspan="3">
+                    <input class="form-control" type="text" th:field="*{txtArErdescription}"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <table>
+        <tr>
+            <td class="condition-label">
+                <label for="newtime" class="col-form-label">更新時間:</label>
+            </td>
+            <td style="color: #7abaff" class="condition-input" th:text="${newtime}">
+            <td>
+                <button type="button" class="btn btn-primary" id="btnDownload">下載CSV</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>等級</b></th>
+                <th><b>日期</b></th>
+                <th><b>時間</b></th>
+                <th><b>Server Name</b></th>
+                <th><b>EJ</b></th>
+                <th><b>交易代號</b></th>
+                <th><b>來源</b></th>
+                <th><b>ATMNO</b></th>
+                <th><b>STAN</b></th>
+                <th><b>轉出行</b></th>
+                <th><b>轉入行</b></th>
+                <th><b>使用者</b></th>
+                <th><b>訊息</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data,i : ${pageData.list}">
+                <td align="center">
+                    <a class="a-inquiry a-start" href="#" th:text="${data.AR_LEVEL}" th:value="${'{'+'&quot;arNo&quot;:&quot;'+data.AR_NO+'&quot;'+'}'}"></a>
+                </td>
+                <td align="center" th:text="${#dates.format(data.AR_DATETIME,'yyyy/MM/dd')}"/>
+                <td align="center" th:text="${#dates.format(data.AR_DATETIME,'HH:mm:ss')}"/>
+                <td align="center" th:text="${data.AR_HOSTNAME}"/>
+                <td align="center" th:text="${data.EJ}"/>
+                <td align="center" th:text="${data.MSGID}"/>
+                <td align="center" th:text="${data.Channel}"/>
+                <td align="center" th:text="${data.ATMNO}"/>
+                <td align="center" th:text="${data.STAN}"/>
+                <td align="center" th:text="${data.SBK}"/>
+                <td align="center" th:text="${data.DBK}"/>
+                <td align="center" th:text="${data.TxUser}"/>
+                <td align="left">
+							<span style="word-break: normal; width: auto; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; white-space: normal; word-wrap: break-word; overflow: hidden"> <a
+                                    class="a-inquiry a-end" href="#" th:text="${T(com.syscom.fep.web.base.FEPWebBase).nullToEmptyStr(data.get('AR_ERDESCRIPTION'))}"
+                                    th:value="${'{'+'&quot;index&quot;:&quot;'+i.index + '&quot;'+'}'}">
+								</a>
+							</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/atmmon/UI060620.js}"></script>
+    <script th:inline="javascript">
+        var form = /*[[${form}]]*/'';;
+        let timerId = setInterval(myrefresh, form.time * 1000);
+        window.addEventListener('mousemove', function (event) {
+            if (!donwloading) {
+                clearInterval(timerId);
+                timerId = setInterval(myrefresh, form.time * 1000);
+            } else {
+                console.log("downloading now, cannot reset timer");
+            }
+        });
+        window.addEventListener('click', function (event) {
+            if (!donwloading) {
+                clearInterval(timerId);
+                timerId = setInterval(myrefresh, form.time * 1000);
+            } else {
+                console.log("downloading now, cannot reset timer");
+            }
+        });
+        window.addEventListener('keydown', function (event) {
+            if (!donwloading) {
+                clearInterval(timerId);
+                timerId = setInterval(myrefresh, form.time * 1000);
+            } else {
+                console.log("downloading now, cannot reset timer");
+            }
+        });
+        window.addEventListener('wheel', function (event) {
+            if (!donwloading) {
+                clearInterval(timerId);
+                timerId = setInterval(myrefresh, form.time * 1000);
+            } else {
+                console.log("downloading now, cannot reset timer");
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

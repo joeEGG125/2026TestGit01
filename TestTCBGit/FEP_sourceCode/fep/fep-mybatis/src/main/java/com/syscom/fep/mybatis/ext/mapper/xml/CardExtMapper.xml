@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.CardExtMapper">
+	<!--Zhao Kai Add 2021-05-14 -->
+	<select id="getNcCardByStatus" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.CardMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardMapper.Base_Column_List" />
+		FROM CARD
+		WHERE CARD_ACTNO = #{cardActno,jdbcType=CHAR}
+		AND CARD_NCSTATUS = #{cardNcstatus,jdbcType=DECIMAL}
+		ORDER BY CARD_CARD_SEQ DESC
+	</select>
+	<!--Zhao Kai Add 2021-05-14 -->
+	<select id="queryNcCardByStatus" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.CardMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardMapper.Base_Column_List" />
+		FROM CARD
+		WHERE CARD_ACTNO = #{cardActno,jdbcType=CHAR}
+		AND CARD_NCSTATUS = #{cardNcstatus,jdbcType=DECIMAL}
+		ORDER BY CARD_CARD_SEQ DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	<!--Zhao Kai Add 2021-05-19 -->
+	<select id="queryByCreditNoWithMaxCardSeq" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.CardMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardMapper.Base_Column_List" />
+		FROM CARD WHERE CARD_CREDITNO = #{cardCreditno,jdbcType=CHAR} ORDER BY CARD_CARD_SEQ DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	<!--Zhao Kai Add 2021-05-19 -->
+	<!--Richard modified on 2021-09-08 -->
+	<select id="getSingleCard" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.CardMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardMapper.Base_Column_List" />
+		FROM CARD
+		<where>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cardCardNo)">
+				AND CARD_CARDNO = #{cardCardNo,jdbcType=CHAR}
+			</if>
+		</where>
+	</select>
+	<!--Zhao Kai Add 2021-05-19 -->
+	<select id="queryStatusNot5678ByActno" parameterType="map" resultType="java.lang.Integer">
+		SELECT
+		COUNT(1)
+		FROM CARD
+		WHERE CARD_STATUS &lt;= 4
+		AND CARD_ACTNO = #{cardActno,jdbcType=CHAR}
+		AND CARD_CARD_SEQ
+		&lt; #{cardCardSeq,jdbcType=DECIMAL}
+	</select>
+	<!--Zhao Kai Add 2021-05-19 -->
+	<select id="getMaxCardSeq" parameterType="map" resultType="java.lang.Short">
+		SELECT CARD_CARD_SEQ FROM CARD WHERE CARD_ACTNO = #{cardActno,jdbcType=CHAR}
+		<if test="cardType == 1">
+			AND CARD_TYPE BETWEEN 0 AND 2
+		</if>
+		<if test="cardType == 2">
+			AND CARD_TYPE = 3
+		</if>
+		<if test="cardType == 3">
+			AND CARD_TYPE = 11
+		</if>
+		<if test="cardType == 4">
+			AND CARD_TYPE in (13,53)
+		</if>
+		<if test="cardType == 7">
+			AND CARD_TYPE in (17,18)
+		</if>
+		<if test="cardType == 8">
+			AND CARD_TYPE in (41,42)
+		</if>
+		ORDER BY CARD_CARD_SEQ DESC
+		FETCH FIRST 1 ROW ONLY
+	</select>
+	<!--Zhao Kai Add 2021-05-19 -->
+	<select id="getOldCardByMaxCardSeq" parameterType="com.syscom.fep.mybatis.model.Card" resultMap="com.syscom.fep.mybatis.mapper.CardMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardMapper.Base_Column_List" />
+		FROM CARD
+		<where>
+			<if test="cardActno != null">
+				AND CARD_ACTNO = #{cardActno,jdbcType=CHAR}
+			</if>
+			<if test="cardCardSeq != null">
+				AND CARD_CARD_SEQ &lt;= #{cardCardSeq,jdbcType=DECIMAL}
+			</if>
+			<if test="cardStatus != null">
+				AND CARD_STATUS = #{cardStatus,jdbcType=DECIMAL}
+			</if>
+			<if test="cardCombine != null">
+				AND CARD_COMBINE = #{cardCombine,jdbcType=DECIMAL}
+			</if>
+			<if test="cardCreditno != null">
+				AND CARD_CREDITNO = #{cardCreditno,jdbcType=CHAR}
+			</if>
+		</where>
+		ORDER BY CARD_CARD_SEQ DESC
+		FETCH FIRST 1 ROW ONLY
+	</select>
+	<!--Zhao Kai Add 2021-05-19 -->
+	<select id="getCardByCreditNoStatus" parameterType="com.syscom.fep.mybatis.model.Card" resultMap="com.syscom.fep.mybatis.mapper.CardMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardMapper.Base_Column_List" />
+		FROM CARD
+		<where>
+			<if test="cardCardSeq != null">
+				AND CARD_CARD_SEQ = #{cardCardSeq,jdbcType=DECIMAL}
+			</if>
+			<if test="cardStatus != null">
+				AND CARD_STATUS = #{cardStatus,jdbcType=DECIMAL}
+			</if>
+			<if test="cardCreditno != null">
+				AND CARD_CREDITNO = #{cardCreditno,jdbcType=CHAR}
+			</if>
+		</where>
+		ORDER BY CARD_CARD_SEQ DESC
+		FETCH FIRST 1 ROW ONLY
+	</select>
+
+	<select id="getCardByActno" parameterType="com.syscom.fep.mybatis.model.Card" resultMap="com.syscom.fep.mybatis.mapper.CardMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardMapper.Base_Column_List" />
+		FROM CARD
+		<where>
+			CARD_STATUS ='4' AND CARD_ICPU ='1'
+			<if test="cardActno != null and cardActno != ''">
+				AND CARD_ACTNO = #{cardActno,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY CARD_CARD_SEQ DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+</mapper>

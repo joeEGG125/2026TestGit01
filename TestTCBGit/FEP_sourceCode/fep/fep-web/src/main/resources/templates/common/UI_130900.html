@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/common/UI_130900/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+        	<tr>
+                <td class="condition-label">
+                    <label class="col-form-label">報表分行代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="reportDep_depNo" th:field="*{reportDep_depNo}" maxlength="4">
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">可輸入部分字串查詢</label>
+                </td>
+                <td style="min-width:100px">
+                </td>
+               	<td class="condition-label">
+                    <label class="col-form-label">單位性質</label>
+                </td>
+                <td class="condition-input">
+                	<select class="form-control" th:field="*{reportDep_type}">
+						<option value="" selected="selected"></option>
+						<option value="1">總行單位</option>
+						<option value="2">分行</option>
+						<option value="9">測試單位</option>
+					</select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">報表分行名稱</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="reportDep_depName" th:field="*{reportDep_depName}" maxlength="20">
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">可輸入部分字串查詢</label>
+                </td>
+                <td class="condition-label">
+                </td>
+                <td class="condition-label">
+                </td>
+                <td class="condition-input">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnInsert">新增</button>
+    <button type="button" class="btn btn-primary" id="btnDelete">刪除</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>刪除</b></th>
+                <th><b>報表分行代號</b></th>
+                <th><b>報表分行名稱</b></th>
+                <th><b>單位性質</b></th>
+                <th><b>更新使用者代號</b></th>
+                <th><b>更新時間</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <input type="checkbox" class="checked" th:value="${'{' + '&quot;reportDep_depNo&quot;:&quot;'+data.reportdepDepno + '&quot;' + '}'}" />
+                </td>
+                <td>
+                    <a class="btn-inquiry" href="#" th:text="${data.reportdepDepno}" th:value="${data.reportdepDepno}"> </a>
+                </td>
+                <td align="left" th:text="${data.reportdepDepname}" />
+                <td align="left" th:text="${data.reportdepTypeTxt}" />
+                <td align="left" th:text="${data.updateUserName}" />
+                <td align="left" th:text="${#dates.format(data.updateTime, 'yyyy-MM-dd HH:mm:ss')}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI130900.js}"></script>
+</div>
+</body>
+</html>

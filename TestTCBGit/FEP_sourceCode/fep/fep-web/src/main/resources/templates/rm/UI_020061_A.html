@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form th:action="@{/rm/UI_020061_A/btnExecute}"  enctype="multipart/form-data" id="form-validator"  th:object="${form}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{excuteTypeDdlSelectedIndexChanged}">
+                        <option value="1">檔案上傳</option>
+                        <option value="2">查看Log</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">財金檔案</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="file" name="fileName" id="fileUpload" th:text="*{fileUpload}">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">轉參加證券匯款銀行代號檔</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="file" name="fileName" id="fileUpload2" th:text="*{fileUpload2}">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnExecute">執行</button>
+    <button type="button" class="btn btn-primary" id="btnExit">離開</button>
+    <button type="button" class="btn btn-primary" id="btnClear1">清除</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage1">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0" style="height: 430px;">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>時間</b></th>
+                <th><b>轉檔結果Log</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td class="btnDetail" th:text="${data.LogTime}" th:value="${data.LogUrl}"/>
+                <td th:text="${data.LogName}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI020061_A.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+	<form id="form-validator" th:object="${form}" th:action="@{/common/UI_080070/doQuery}" method="post">
+		<table border="0" cellspacing="0" class="table-condition">
+			<tr>
+				<td class="condition-label">
+					<label for="logTimeBegin" class="col-form-label">登入時間</label>
+				</td>
+				<td class="condition-input">
+					<div class="input-group date" id="logTimeBegin" data-target-input="nearest">
+						<input type="text" class="form-control datetimepicker-input" data-target="#logTimeBegin" th:field="*{logTimeBegin}"/>
+						<div class="input-group-append" data-target="#logTimeBegin" data-toggle="datetimepicker">
+							<div class="input-group-text">
+								<i class="fa fa-calendar"></i>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td class="condition-input">
+					<div class="col input-group date" id="logTimeBeginTime" data-target-input="nearest">
+						<input type="text" class="form-control datetimepicker-input" data-target="#logTimeBeginTime" th:field="*{logTimeBeginTime}" />
+						<div class="input-group-append" data-target="#logTimeBeginTime" data-toggle="datetimepicker">
+							<div class="input-group-text">
+								<i class="far fa-clock"></i>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td class="condition-input">
+					<div class="input-group date" id="logTimeEnd" data-target-input="nearest">
+						<input type="text" class="form-control datetimepicker-input" data-target="#logTimeEnd" th:field="*{logTimeEnd}"/>
+						<div class="input-group-append" data-target="#logTimeEnd" data-toggle="datetimepicker">
+							<div class="input-group-text">
+								<i class="fa fa-calendar"></i>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td class="condition-input">
+					<div class="col input-group date" id="logTimeEndTime" data-target-input="nearest">
+						<input type="text" class="form-control datetimepicker-input" data-target="#logTimeEndTime" th:field="*{logTimeEndTime}"/>
+						<div class="input-group-append" data-target="#logTimeEndTime" data-toggle="datetimepicker">
+							<div class="input-group-text">
+								<i class="far fa-clock"></i>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<!--
+                <td class="condition-label">
+                    <label for="ddlUser" class="col-form-label">員工編號</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" id="ddlUser" th:field="*{ddlUser}">
+                        <option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"/>
+                    </select>
+                </td>
+                 -->
+
+				<td class="condition-label">
+					<label for="txtProgram_ID" class="col-form-label">畫面編號</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{txtProgram_ID}" maxlength="50" />
+				</td>
+				<td class="condition-input">
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label for="txtProgram_Name" class="col-form-label">功能名稱</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{txtProgram_Name}" maxlength="50" />
+				</td>
+<!--				<td class="condition-label">-->
+<!--					<label for="displayShowAudit" class="col-form-label">個資</label>-->
+<!--				</td>-->
+<!--				<td class="condition-input">-->
+<!--					<select class="form-control" th:field="*{displayShowAudit}">-->
+<!--						<option value="" selected="selected">皆顯示</option>-->
+<!--						<option value="0">無</option>-->
+<!--						<option value="1">有</option>-->
+<!--					</select>-->
+<!--				</td>-->
+				<td class="condition-input">
+				</td>
+			</tr>
+
+
+		</table>
+	</form>
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+	<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+	<div class="card-body table-responsive p-0">
+		<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+			<thead>
+			<tr>
+				<th><b>登入日期/時間</b></th>
+				<th><b>員工編號/姓名</b></th>
+				<th><b>畫面編號</b></th>
+				<th><b>功能名稱</b></th>
+				<th><b>操作行為</b></th>
+				<!-- <th><b>輸入值</b></th> -->
+				<!-- <th><b>個資</b></th> -->
+				<th><b>IP</b></th>
+			</tr>
+			</thead>
+			<tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+			<tr th:each="data, dataStat : ${pageData.list}">
+				<td align="center" width="10%" th:text="${T(com.syscom.fep.web.base.FEPWebBase).formatYMDHMS(data.auditTime)}"/>
+				<td align="center" width="10%" th:text="${data.AUDITUSERNAME}" />
+				<td align="center" width="10%" th:text="${data.auditProgramId}" />
+				<td align="left" width="20%" th:text="${data.auditProgramName}" style="word-wrap:break-word;white-space: pre-wrap;"/>
+				<td align="left" width="40%" th:text="${data.SQLCOMMANDTEXT}" style="word-wrap:break-word;white-space: pre-wrap;"/>
+				<!-- <td align="center" width="35%" th:text="${data.auditData}" style="word-wrap:break-word;white-space: pre-wrap;"/> -->
+				<!-- <td align="center" width="5%" th:text="${data.webAudit_ShowAudit}" /> -->
+				<td align="center" width="10%" th:text="${data.auditUserAddress}" />
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div layout:fragment="panel-script">
+	<script type="text/javascript" th:src="@{/js/common/UI080070.js}"></script>
+</div>
+</body>
+
+</html>

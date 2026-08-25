@@ -1,0 +1,17 @@
+# ============================================================
+# Batch Task 檔案清單 - FEPHIS_BatchTask_list.txt
+# 用途: 定義需要部署的 Batch Task 
+# ============================================================
+# 
+# 說明:
+# 1. 每行一個檔案路徑（相對於伺服器資料夾）
+# 2. # 開頭的行為註解
+# 3. 空行會被自動跳過
+# 4. 支援子目錄路徑，例如: fep-batch-task-AMLDaily.jar
+# ============================================================
+
+#fep-batch-task-ArchivingLogFile.jar
+#fep-batch-task-ArchivingTable.jar
+#fep-batch-task-ArchivingTableFEPTXN.jar
+#fep-batch-task-ArchivingTableFEPTXNHIS.jar
+#fep-batch-task-CreateFEPTXNPartition.jar

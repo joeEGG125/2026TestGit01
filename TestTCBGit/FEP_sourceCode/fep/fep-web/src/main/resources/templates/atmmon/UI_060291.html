@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .tableAlert {
+            border-collapse: collapse;
+            table-layout: fixed;
+            word-break: break-all
+        }
+
+        .tableAlert td {
+            border-top: 0;
+            border-right: 1px dashed #CCCCCC;
+            border-bottom: 1px dashed #CCCCCC;
+            border-left: 0;
+            height: 30px;
+            font-size: 14px;
+            padding-left: 5px
+        }
+
+        .tableAlert tr.lastrow td {
+            border-bottom: 0;
+        }
+
+        .tableAlert tr td.lastCol {
+            border-right: 0;
+        }
+
+        #rMenu {
+            position: fixed;
+            visibility: hidden;
+            top: 0;
+            background-color: #555;
+            text-align: left;
+            padding: 2px;
+        }
+
+        #rMenu ul li {
+            margin: 1px 0;
+            padding: 0 5px;
+            cursor: pointer;
+            list-style: none outside none;
+            background-color: #DFDFDF;
+        }
+
+        .table-zoo {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .table-zoo-tt {
+            border: 1px solid #95B8E7;
+        }
+
+        .table-zoo-tt-td {
+            border: 1px solid #95B8E7;
+            background: #E5EFFF;
+        }
+
+        .table-s {
+            padding-left: 10px;
+            font-size: 14px
+        }
+
+        .table-d {
+            height: 500px;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+        .table-d-auto {
+            height: max-content;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .table-zoo-tt-tt {
+            vertical-align: top;
+        }
+
+        .table-zoo-tt-tr {
+            padding-left: 10px
+        }
+
+        .table-zoo-tt-la {
+            font-size: 14px
+        }
+
+        .table-zoo-tt-i {
+            margin-bottom: 3px;
+            margin-top: 3px;
+            margin-left: 15px;
+        }
+    </style>
+    <title>UI060291</title>
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnConfirm">確認</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    <button type="button" class="btn btn-warning" id="btnLevel1">開啟交易類別</button>
+    <button type="button" class="btn btn-warning" id="btnLevel2">開啟業務分類</button>
+    <button type="button" class="btn btn-warning" id="btnLevel3">開啟交易控制</button>
+</div>
+<div layout:fragment="panel-grid">
+    <table class="table-zoo">
+        <tr>
+            <td>
+                <table id="outsize" class="table-zoo">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s">交易控制</span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-d-auto">
+                                <table id="insize" class="table-zoo">
+                                    <tr>
+                                        <td class="table-zoo-tt-tt">
+                                            <div class="content_wrap">
+                                                <div class="ztreeDemoBackground left top">
+                                                    <ul id="msgctlTree1" class="ztree"></ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="table-zoo-tt-tt">
+                                            <div class="content_wrap">
+                                                <div class="ztreeDemoBackground left top">
+                                                    <ul id="msgctlTree2" class="ztree"></ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="table-zoo-tt-tt">
+                                            <div class="content_wrap">
+                                                <div class="ztreeDemoBackground left top">
+                                                    <ul id="msgctlTree3" class="ztree"></ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="table-zoo-tt-tt">
+                                            <div class="content_wrap">
+                                                <div class="ztreeDemoBackground left top">
+                                                    <ul id="msgctlTree4" class="ztree"></ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr><tr>
+        <td>
+            <table class="table-zoo">
+                <tr>
+                    <td class="table-zoo-tt-td">
+                        <b><span class="table-s">通道</span></b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="table-d-auto">
+                            <table class="table-zoo">
+                                <tr>
+                                    <td colspan="8">
+                                        <button type="button" class="btn btn-warning" id="channelAll">全選</button>
+                                        <button type="button" class="btn btn-warning" id="channelNone">全部取消</button>
+                                    </td>
+                                </tr>
+                                <th:block th:each="u : ${#numbers.sequence(1, form.channelLoopSize)}">
+                                    <tr>
+                                        <td th:each="data,iter : ${form.channelList}" th:if="${iter.index >= form.oneRowSize*(u-1) and iter.index < form.oneRowSize*u}">
+                                            <input type="checkbox" class="col-form-checkbox" name="channelData" th:id="${data.channelChannelno}" th:checked="${data.channelEnable==1?true:false}">
+                                            <label class="col-form-label" th:text="${data.channelName}" />
+                                        </td>
+                                    </tr>
+                                </th:block>
+
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td></tr>
+        <tr>
+            <td>
+                <table class="table-zoo">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s">系統狀態</span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-d-auto">
+                                <table class="table-zoo">
+                                    <tr>
+                                        <td colspan="8">
+                                            <button type="button" class="btn btn-warning" id="sysstatAll">全選</button>
+                                            <button type="button" class="btn btn-warning" id="sysstatNone">全部取消</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="col-form-checkbox"
+                                                   th:id="sysstatCbs" th:name="sysstatCbs" th:checked="${form.sysstat.sysstatCbs==1?true:false}">CBS主機狀態
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="col-form-checkbox"
+                                                   th:id="sysstatFcs" th:name="sysstatFcs" th:checked="${form.sysstat.sysstatFcs==1?true:false}">FCS主機狀態
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="col-form-checkbox"
+                                                   th:id="sysstatCredit" th:name="sysstatCredit" th:checked="${form.sysstat.sysstatCredit==1?true:false}">信用卡主機狀態
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="col-form-checkbox"
+                                                   th:id="sysstatMtp" th:name="sysstatMtp" th:checked="${form.sysstat.sysstatMtp==1?true:false}">手機門號GW狀態
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="col-form-checkbox"
+                                                   th:id="sysstatTwmp" th:name="sysstatTwmp" th:checked="${form.sysstat.sysstatTwmp==1?true:false}">TWMP GW狀態
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="col-form-checkbox"
+                                                   th:id="sysstatFido" th:name="sysstatFido" th:checked="${form.sysstat.sysstatFido==1?true:false}">FIDO GW狀態
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/atmmon/UI060291.js}"></script>
+</div>
+</body>
+</html>

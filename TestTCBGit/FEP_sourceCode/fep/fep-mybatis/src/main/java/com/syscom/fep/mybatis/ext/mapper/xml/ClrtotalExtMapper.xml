@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.ClrtotalExtMapper">
+    <select id="getCntAmt" parameterType="map" resultType="java.util.HashMap">
+        SELECT CLRTOTAL_REMAIN_CNT, CLRTOTAL_REMAIN_AMT
+        FROM CLRTOTAL
+        Where CLRTOTAL_ST_DATE = #{date,jdbcType=CHAR}
+          AND CLRTOTAL_SOURCE = 1
+            FETCH FIRST 1 ROWS ONLY
+    </select>
+</mapper>

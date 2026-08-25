@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.MsgkbExtMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="msgkbNo" parameterType="com.syscom.fep.mybatis.model.Msgkb">
+        insert into MSGKB (ERRORCODE, EXTERNALCODE,
+                           SEVERITY, DESCRIPTION, REMARK,
+                           NOTIFY, ACTION, RESPONSIBLE,
+                           VISIBLE, UICOLOR, EXSUBCODE,
+                           MSGPATTERN, MSGKB_NOTIFYPHONE, NOTIFYMAIL)
+        values (#{errorcode,jdbcType=VARCHAR}, #{externalcode,jdbcType=VARCHAR},
+                #{severity,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+                #{notify,jdbcType=SMALLINT}, #{action,jdbcType=VARCHAR}, #{responsible,jdbcType=VARCHAR},
+                #{visible,jdbcType=SMALLINT}, #{uicolor,jdbcType=VARCHAR}, #{exsubcode,jdbcType=VARCHAR},
+                #{msgpattern,jdbcType=VARCHAR}, #{msgkbNotifyphone,jdbcType=VARCHAR}, #{notifymail,jdbcType=CLOB})
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="msgkbNo" parameterType="com.syscom.fep.mybatis.model.Msgkb">
+        insert into MSGKB
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="errorcode != null">
+                ERRORCODE,
+            </if>
+            <if test="externalcode != null">
+                EXTERNALCODE,
+            </if>
+            <if test="severity != null">
+                SEVERITY,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="notify != null">
+                NOTIFY,
+            </if>
+            <if test="action != null">
+                ACTION,
+            </if>
+            <if test="responsible != null">
+                RESPONSIBLE,
+            </if>
+            <if test="visible != null">
+                VISIBLE,
+            </if>
+            <if test="uicolor != null">
+                UICOLOR,
+            </if>
+            <if test="exsubcode != null">
+                EXSUBCODE,
+            </if>
+            <if test="msgpattern != null">
+                MSGPATTERN,
+            </if>
+            <if test="msgkbNotifyphone != null">
+                MSGKB_NOTIFYPHONE,
+            </if>
+            <if test="notifymail != null">
+                NOTIFYMAIL,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="errorcode != null">
+                #{errorcode,jdbcType=VARCHAR},
+            </if>
+            <if test="externalcode != null">
+                #{externalcode,jdbcType=VARCHAR},
+            </if>
+            <if test="severity != null">
+                #{severity,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="notify != null">
+                #{notify,jdbcType=SMALLINT},
+            </if>
+            <if test="action != null">
+                #{action,jdbcType=VARCHAR},
+            </if>
+            <if test="responsible != null">
+                #{responsible,jdbcType=VARCHAR},
+            </if>
+            <if test="visible != null">
+                #{visible,jdbcType=SMALLINT},
+            </if>
+            <if test="uicolor != null">
+                #{uicolor,jdbcType=VARCHAR},
+            </if>
+            <if test="exsubcode != null">
+                #{exsubcode,jdbcType=VARCHAR},
+            </if>
+            <if test="msgpattern != null">
+                #{msgpattern,jdbcType=VARCHAR},
+            </if>
+            <if test="msgkbNotifyphone != null">
+                #{msgkbNotifyphone,jdbcType=VARCHAR},
+            </if>
+            <if test="notifymail != null">
+                #{notifymail,jdbcType=CLOB},
+            </if>
+        </trim>
+    </insert>
+    <select id="getDataTableByPrimaryKey" resultMap="com.syscom.fep.mybatis.mapper.MsgkbMapper.BaseResultMap">
+        SELECT * FROM MSGKB
+        <where>
+            <if test="errorcode != null and errorcode != ''">
+                AND ERRORCODE = #{errorcode,jdbcType=VARCHAR}
+            </if>
+            <if test="externalcode != null and externalcode != ''">
+                AND EXTERNALCODE = #{externalcode,jdbcType=VARCHAR}
+            </if>
+            <if test="exsubcode != null and exsubcode != ''">
+                AND EXSUBCODE = #{exsubcode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="getMSGKB" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgkbMapper.BaseResultMap">
+        SELECT *
+        FROM MSGKB
+        WHERE ERRORCODE = #{errcode,jdbcType=VARCHAR}
+          AND EXSUBCODE = #{exSubCode,jdbcType=VARCHAR}
+    </select>
+    <select id="getMsgkbList" resultMap="com.syscom.fep.mybatis.mapper.MsgkbMapper.ResultMapWithBLOBs">
+        SELECT * FROM MSGKB
+        <where>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.errorcode)">
+                AND UPPER(ERRORCODE) LIKE UPPER(CONCAT('%', CONCAT(#{argsMap.errorcode}, '%')))
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.externalcode)">
+                AND UPPER(EXTERNALCODE) LIKE UPPER(CONCAT('%', CONCAT(#{argsMap.externalcode}, '%')))
+            </if>
+            <if test="argsMap.notify != null">
+                AND NOTIFY = #{argsMap.notify, jdbcType=SMALLINT}
+            </if>
+        </where>
+    </select>
+    <select id="selectByMSGKB" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgkbMapper.ResultMapWithBLOBs">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.MsgkbMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.mapper.MsgkbMapper.Blob_Column_List"/>
+        from MSGKB
+        where ERRORCODE = #{errorcode,jdbcType=VARCHAR}
+        and EXTERNALCODE = #{externalcode,jdbcType=VARCHAR}
+        and EXSUBCODE = #{exsubcode,jdbcType=VARCHAR}
+        FETCH FIRST 1 ROW ONLY
+    </select>
+</mapper>

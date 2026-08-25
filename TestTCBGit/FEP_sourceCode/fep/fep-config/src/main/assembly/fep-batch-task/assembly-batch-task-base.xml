@@ -1,0 +1,18 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+	<id>${assembly-base}</id>
+	<formats>
+		<format>${assembly-format-jar}</format>
+	</formats>
+	<baseDirectory>${project.build.directory}</baseDirectory>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<includes>
+				<include>META-INF/*</include>
+				<include>com/syscom/fep/batch/task/card/CardBatchBase*.class</include>
+			</includes>
+			<outputDirectory>.</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>

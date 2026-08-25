@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_013101/confirmClick}" method="post">
+            <div class="card-body">
+                <div class="condition-label row">
+                    <label for="apidddl" class="col-form-label col-1" >選擇AP-ID</label>
+                    <select class="form-control col-2" th:field="*{apidddl}">
+                        <option value="1000" selected="selected">1000跨行匯款系統</option>
+                        <option value="1600">1600外匯通匯系統</option>
+                    </select>
+                    <label for="curlbl" class="col-form-label col-1">幣別</label>
+                    <select class="form-control col-2" th:field="*{curlbl}" disabled="disabled" >
+                        <option value="000" selected="selected"></option>
+                        <option value="001">001-USD</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div>
+            目前 M-BANK AP STATUS
+        </div>
+        <div>
+            1000- AP Checkin
+        </div>
+        <div>
+            1600- 001USD-AP Checkin
+        </div>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnConfirm">確認</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden"></div>
+    <div layout:fragment="panel-grid" class="panel-hidden"></div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/inbk/UI013101.js}"></script>
+    </div>
+</body>
+</html>

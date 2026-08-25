@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028020/queryClick}" method="post">
+            <div class="card card-primary card-outline" >
+                <div class="card-header">
+                    <h5 class="card-title">查詢條件</h5>
+                </div>
+                <div class="card-body">
+                    <div class="condition-label row">
+                        <label for="inqFlag" class="col-form-label col-1">查詢方式</label>
+                        <select class="form-control col-2" th:field="*{inqFlag}">
+                            <option value="0" selected="selected">自動查詢中斷的最後一筆</option>
+                            <option value="1">STAN</option>
+                            <option value="2">電文序號</option>
+                            <option value="3">FEPTXN EJNO</option>
+                        </select>
+                        <label for="sno" class="col-form-label col-1">查詢序號</label>
+                        <input class="form-control col-2" type="text" th:field="*{sno}" maxlength="7"/>
+                    </div>
+                    <div class="condition-label row">
+                        <label for="orgKind" class="col-form-label col-1">查詢方式</label>
+                        <select class="form-control col-2" th:field="*{orgKind}">
+                            <option value="1" selected="selected">一般匯款</option>
+                            <option value="4">一般通訊</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h5 class="card-title">財金回應訊息</h5>
+                </div>
+                <div class="card-body">
+                    <div class="condition-label row">
+                        <label for="rc" class="col-form-label col-1">回應代號</label>
+                        <input class="form-control col-2" type="text" th:field="*{rc}"/>
+                        <label for="status" class="col-form-label col-1">狀況代號</label>
+                        <select class="form-control col-2" th:field="*{status}">
+                            <option value="00">00</option>
+                            <option value="01">01-財金未收到</option>
+                            <option value="02">02-財金收但對方行未收到</option>
+                            <option value="03">03-對方行已收到</option>
+                            <option value="04">04-對方行已回訊財金</option>
+                        </select>
+                    </div>
+                    <div class="condition-label row">
+                        <label for="resolve" class="col-form-label col-1">解決方式</label>
+                        <input class="form-control col-2" type="text" th:field="*{resolve}"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid">
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/rm/UI028020.js}"></script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ems.ext.mapper.FeplogExtMapper">
+    <insert id="insert" parameterType="com.syscom.fep.mybatis.ems.model.Feplog">
+        insert into <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+        (LOGDATE, THREADID,
+        EJ, CHANNEL, MESSAGEID,
+        MESSAGEFLOW, PROGRAMFLOW, PROGRAMNAME,
+        STAN, ATMSEQ, ATMNO,
+        TRINBANK, TRINACTNO, TROUTBANK,
+        TROUTACTNO, TXDATE, BKNO,
+        STEPS, TXRQUID, HOSTNAME,
+        TXMESSAGE, REMARK)
+        values (#{logdate,jdbcType=TIMESTAMP}, #{threadid,jdbcType=VARCHAR},
+        #{ej,jdbcType=DECIMAL}, #{channel,jdbcType=VARCHAR}, #{messageid,jdbcType=VARCHAR},
+        #{messageflow,jdbcType=VARCHAR}, #{programflow,jdbcType=VARCHAR}, #{programname,jdbcType=VARCHAR},
+        #{stan,jdbcType=VARCHAR}, #{atmseq,jdbcType=VARCHAR}, #{atmno,jdbcType=VARCHAR},
+        #{trinbank,jdbcType=VARCHAR}, #{trinactno,jdbcType=VARCHAR}, #{troutbank,jdbcType=VARCHAR},
+        #{troutactno,jdbcType=VARCHAR}, #{txdate,jdbcType=VARCHAR}, #{bkno,jdbcType=CHAR},
+        #{steps,jdbcType=DECIMAL}, #{txrquid,jdbcType=VARCHAR}, #{hostname,jdbcType=VARCHAR},
+        #{txmessage,jdbcType=CLOB}, #{remark,jdbcType=CLOB})
+    </insert>
+    <insert id="insertSelective" parameterType="com.syscom.fep.mybatis.ems.model.Feplog">
+        insert into <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logdate != null">
+                LOGDATE,
+            </if>
+            <if test="threadid != null">
+                THREADID,
+            </if>
+            <if test="ej != null">
+                EJ,
+            </if>
+            <if test="channel != null">
+                CHANNEL,
+            </if>
+            <if test="messageid != null">
+                MESSAGEID,
+            </if>
+            <if test="messageflow != null">
+                MESSAGEFLOW,
+            </if>
+            <if test="programflow != null">
+                PROGRAMFLOW,
+            </if>
+            <if test="programname != null">
+                PROGRAMNAME,
+            </if>
+            <if test="stan != null">
+                STAN,
+            </if>
+            <if test="atmseq != null">
+                ATMSEQ,
+            </if>
+            <if test="atmno != null">
+                ATMNO,
+            </if>
+            <if test="trinbank != null">
+                TRINBANK,
+            </if>
+            <if test="trinactno != null">
+                TRINACTNO,
+            </if>
+            <if test="troutbank != null">
+                TROUTBANK,
+            </if>
+            <if test="troutactno != null">
+                TROUTACTNO,
+            </if>
+            <if test="txdate != null">
+                TXDATE,
+            </if>
+            <if test="bkno != null">
+                BKNO,
+            </if>
+            <if test="steps != null">
+                STEPS,
+            </if>
+            <if test="txrquid != null">
+                TXRQUID,
+            </if>
+            <if test="hostname != null">
+                HOSTNAME,
+            </if>
+            <if test="txmessage != null">
+                TXMESSAGE,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logdate != null">
+                #{logdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="threadid != null">
+                #{threadid,jdbcType=VARCHAR},
+            </if>
+            <if test="ej != null">
+                #{ej,jdbcType=DECIMAL},
+            </if>
+            <if test="channel != null">
+                #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="messageid != null">
+                #{messageid,jdbcType=VARCHAR},
+            </if>
+            <if test="messageflow != null">
+                #{messageflow,jdbcType=VARCHAR},
+            </if>
+            <if test="programflow != null">
+                #{programflow,jdbcType=VARCHAR},
+            </if>
+            <if test="programname != null">
+                #{programname,jdbcType=VARCHAR},
+            </if>
+            <if test="stan != null">
+                #{stan,jdbcType=VARCHAR},
+            </if>
+            <if test="atmseq != null">
+                #{atmseq,jdbcType=VARCHAR},
+            </if>
+            <if test="atmno != null">
+                #{atmno,jdbcType=VARCHAR},
+            </if>
+            <if test="trinbank != null">
+                #{trinbank,jdbcType=VARCHAR},
+            </if>
+            <if test="trinactno != null">
+                #{trinactno,jdbcType=VARCHAR},
+            </if>
+            <if test="troutbank != null">
+                #{troutbank,jdbcType=VARCHAR},
+            </if>
+            <if test="troutactno != null">
+                #{troutactno,jdbcType=VARCHAR},
+            </if>
+            <if test="txdate != null">
+                #{txdate,jdbcType=VARCHAR},
+            </if>
+            <if test="bkno != null">
+                #{bkno,jdbcType=CHAR},
+            </if>
+            <if test="steps != null">
+                #{steps,jdbcType=DECIMAL},
+            </if>
+            <if test="txrquid != null">
+                #{txrquid,jdbcType=VARCHAR},
+            </if>
+            <if test="hostname != null">
+                #{hostname,jdbcType=VARCHAR},
+            </if>
+            <if test="txmessage != null">
+                #{txmessage,jdbcType=CLOB},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=CLOB},
+            </if>
+        </trim>
+    </insert>
+    <!-- Richard add for FEPLOG查詢 -->
+    <select id="getMultiFepLogByDef" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.ResultMapWithBLOBs">
+        select
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Blob_Column_List"/>
+        from <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+        <where>
+            <if test="logDateBegin != null">
+                AND LOGDATE &gt;= #{logDateBegin,jdbcType=TIMESTAMP}
+            </if>
+            <if test="logDateEnd != null">
+                AND LOGDATE &lt;= #{logDateEnd,jdbcType=TIMESTAMP}
+            </if>
+            <if test="@org.apache.commons.collections4.CollectionUtils@isNotEmpty(ejfnoList)">
+                AND EJ IN
+                <foreach item="item" index="index" collection="ejfnoList" open="(" close=")" separator=",">
+                    #{item,jdbcType=DECIMAL}
+                </foreach>
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.channel)">
+                AND CHANNEL = #{feplog.channel,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.messageid)">
+                AND MESSAGEID = #{feplog.messageid,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.messageflow)">
+                AND MESSAGEFLOW = #{feplog.messageflow,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.programflow)">
+                AND PROGRAMFLOW = #{feplog.programflow,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.programname)">
+                AND PROGRAMNAME = #{feplog.programname,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.stan)">
+                AND STAN = #{feplog.stan,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.atmseq)">
+                AND ATMSEQ = #{feplog.atmseq,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.atmno)">
+                AND ATMNO = #{feplog.atmno,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.troutactno)">
+                AND TROUTACTNO = #{feplog.troutactno,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.txdate)">
+                AND TXDATE = #{feplog.txdate,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.bkno)">
+                AND BKNO = #{feplog.bkno,jdbcType=CHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.hostname)">
+                AND HOSTNAME = #{feplog.hostname,jdbcType=VARCHAR}
+            </if>
+            ORDER BY LOGDATE
+        </where>
+    </select>
+
+    <select id="getMultiFepLogByDef_019050" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.ResultMapWithBLOBs">
+        select
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Blob_Column_List"/>
+        from <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+        <where>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.channel)">
+                AND CHANNEL = #{feplog.channel,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.messageid)">
+                AND MESSAGEID = #{feplog.messageid,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.txdate)">
+                AND TXDATE = #{feplog.txdate,jdbcType=VARCHAR}
+            </if>
+            ORDER BY LOGDATE
+        </where>
+    </select>
+
+    <select id="getFeplogByDef" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.ResultMapWithBLOBs">
+        select
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Blob_Column_List"/>
+        from <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+        <where>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.channel)">
+                AND CHANNEL = #{feplog.channel,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.messageflow)">
+                AND MESSAGEFLOW = #{feplog.messageflow,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.messageid)">
+                AND MESSAGEID = #{feplog.messageid,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.trinbank)">
+                AND TRINBANK = #{feplog.trinbank,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.troutbank)">
+                AND TROUTBANK = #{feplog.troutbank,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.txdate)">
+                AND TXDATE = #{feplog.txdate,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.ej)">
+                AND EJ = #{feplog.ej,jdbcType=DECIMAL}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.logno)">
+                AND LOGNO = #{feplog.logno,jdbcType=BIGINT}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.programflow)">
+                AND PROGRAMFLOW = #{feplog.programflow,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feplog.stan)">
+                AND STAN = #{feplog.stan,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="getFepLog" parameterType="map" resultType="com.syscom.fep.mybatis.ems.model.Feplog">
+        select
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Base_Column_List"/>
+        ,
+        <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.Blob_Column_List"/>
+        <bind name="tableNameSuffix" value="argsMap.tableNameSuffix"/>
+        from <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+        <where>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.hostname)">
+                AND HOSTNAME = #{argsMap.hostname,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.channelUc)">
+                <if test="argsMap.channelUc == 'HCE'">
+                    AND CHANNEL IN ('HCE','HCA')
+                </if>
+                <if test="argsMap.channelUc != 'HCE'">
+                    AND CHANNEL = #{argsMap.channelUc,jdbcType=VARCHAR}
+                </if>
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.feptxnTxTimeBegin)">
+                AND LOGDATE BETWEEN #{argsMap.feptxnTxTimeBegin,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.feptxnTxTimeEnd)">
+                AND #{argsMap.feptxnTxTimeEnd,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.txtAtmNo)">
+                AND ATMNO = #{argsMap.txtAtmNo,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.atmSeqTxt)">
+                AND ATMSeq = #{argsMap.atmSeqTxt,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.collections4.CollectionUtils@isNotEmpty(argsMap.ejfnoList)">
+                AND EJ IN
+                <foreach item="item" index="index" collection="argsMap.ejfnoList" open="(" close=")" separator=",">
+                    #{item,jdbcType=DECIMAL}
+                </foreach>
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.txtMessageId)">
+                AND MessageId = #{argsMap.txtMessageId,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.msgFlowUc2)">
+                AND MessageFlow = #{argsMap.msgFlowUc2,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.stanTxt)">
+                AND STAN = #{argsMap.stanTxt,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.txtBkNo)">
+                AND Bkno = #{argsMap.txtBkNo,jdbcType=VARCHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(argsMap.txtTroutActNo)">
+                AND TroutActNo = #{argsMap.txtTroutActNo,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by LOGDATE WITH UR
+    </select>
+	<delete id="deleteByLogDate" parameterType="com.syscom.fep.mybatis.ems.model.Feplog">
+		delete from <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+		where LOGDATE &gt;= #{logDateBegin,jdbcType=TIMESTAMP}
+			AND LOGDATE &lt;= #{logDateEnd,jdbcType=TIMESTAMP}
+	</delete>
+    <delete id="TruncateByLogDate" parameterType="com.syscom.fep.mybatis.ems.model.Feplog">
+        TRUNCATE TABLE <include refid="com.syscom.fep.mybatis.ems.mapper.FeplogMapper.chooseTableName"/>
+        IGNORE DELETE TRIGGERS
+        DROP STORAGE
+        IMMEDIATE
+    </delete>
+</mapper>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden"></div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" class="panel-detail">
+    <div th:if="${detailMap != null}">
+        <table border="0" cellspacing="0" class="table-detail">
+            <tr>
+                <td class="condition-input" colspan="2">
+                    <h3>Syscom AP Message Data</h3>
+                </td>
+            </tr>
+            <tr th:each="data,i : ${detailMap}">
+                <td class="condition-label" th:if="${i.index} == 0">
+                    <label class="col-form-label">[[${data.get('name')}]]:</label>
+                </td>
+                <td class="condition-input" th:if="${i.index} == 0">
+                    <pre class="col-form-label pre-content"><font color="blue"><b>[[${data.get('value')}]]</b></font></pre>
+                </td>
+                <td class="condition-label" th:if="${i.index > 0}">
+                    <label class="col-form-label">[[${data.get('name')}]]:</label>
+                </td>
+                <td class="condition-input" th:if="${i.index > 0}">
+                    <pre class="col-form-label pre-content">[[${data.get('value')}]]</pre>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

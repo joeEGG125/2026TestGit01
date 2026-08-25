@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.deslog.ext.mapper.DeslogExtMapper">
+  <insert id="insert" parameterType="com.syscom.fep.mybatis.deslog.model.Deslog">
+    insert into <include refid="com.syscom.fep.mybatis.deslog.mapper.DeslogMapper.chooseTableName" />
+      (DESLOG_FUNC, DESLOG_KEYID,
+      DESLOG_INPUTDATA1, DESLOG_INPUTDATA2, DESLOG_OUTPUTDATA1, 
+      DESLOG_OUTPUTDATA2, DESLOG_RC, DESLOG_SUIPCOMMAND, 
+      DESLOG_CALLOBJECT, DESLOG_PROGRAMNAME, DESLOG_EJ, 
+      DESLOG_PROGRAMFLOW, DESLOG_REMARK, DESLOG_UPDATETIME, 
+      TXRQUID, HOSTNAME)
+    values (#{deslogFunc,jdbcType=VARCHAR}, #{deslogKeyid,jdbcType=VARCHAR},
+      #{deslogInputdata1,jdbcType=VARCHAR}, #{deslogInputdata2,jdbcType=VARCHAR}, #{deslogOutputdata1,jdbcType=VARCHAR}, 
+      #{deslogOutputdata2,jdbcType=VARCHAR}, #{deslogRc,jdbcType=VARCHAR}, #{deslogSuipcommand,jdbcType=VARCHAR}, 
+      #{deslogCallobject,jdbcType=VARCHAR}, #{deslogProgramname,jdbcType=VARCHAR}, #{deslogEj,jdbcType=INTEGER}, 
+      #{deslogProgramflow,jdbcType=VARCHAR}, #{deslogRemark,jdbcType=VARCHAR}, #{deslogUpdatetime,jdbcType=TIMESTAMP}, 
+      #{txrquid,jdbcType=VARCHAR}, #{hostname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.syscom.fep.mybatis.deslog.model.Deslog">
+    insert into <include refid="com.syscom.fep.mybatis.deslog.mapper.DeslogMapper.chooseTableName" />
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deslogFunc != null">
+        DESLOG_FUNC,
+      </if>
+      <if test="deslogKeyid != null">
+        DESLOG_KEYID,
+      </if>
+      <if test="deslogInputdata1 != null">
+        DESLOG_INPUTDATA1,
+      </if>
+      <if test="deslogInputdata2 != null">
+        DESLOG_INPUTDATA2,
+      </if>
+      <if test="deslogOutputdata1 != null">
+        DESLOG_OUTPUTDATA1,
+      </if>
+      <if test="deslogOutputdata2 != null">
+        DESLOG_OUTPUTDATA2,
+      </if>
+      <if test="deslogRc != null">
+        DESLOG_RC,
+      </if>
+      <if test="deslogSuipcommand != null">
+        DESLOG_SUIPCOMMAND,
+      </if>
+      <if test="deslogCallobject != null">
+        DESLOG_CALLOBJECT,
+      </if>
+      <if test="deslogProgramname != null">
+        DESLOG_PROGRAMNAME,
+      </if>
+      <if test="deslogEj != null">
+        DESLOG_EJ,
+      </if>
+      <if test="deslogProgramflow != null">
+        DESLOG_PROGRAMFLOW,
+      </if>
+      <if test="deslogRemark != null">
+        DESLOG_REMARK,
+      </if>
+      <if test="deslogUpdatetime != null">
+        DESLOG_UPDATETIME,
+      </if>
+      <if test="txrquid != null">
+        TXRQUID,
+      </if>
+      <if test="hostname != null">
+        HOSTNAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deslogFunc != null">
+        #{deslogFunc,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogKeyid != null">
+        #{deslogKeyid,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogInputdata1 != null">
+        #{deslogInputdata1,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogInputdata2 != null">
+        #{deslogInputdata2,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogOutputdata1 != null">
+        #{deslogOutputdata1,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogOutputdata2 != null">
+        #{deslogOutputdata2,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogRc != null">
+        #{deslogRc,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogSuipcommand != null">
+        #{deslogSuipcommand,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogCallobject != null">
+        #{deslogCallobject,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogProgramname != null">
+        #{deslogProgramname,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogEj != null">
+        #{deslogEj,jdbcType=INTEGER},
+      </if>
+      <if test="deslogProgramflow != null">
+        #{deslogProgramflow,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogRemark != null">
+        #{deslogRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="deslogUpdatetime != null">
+        #{deslogUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="txrquid != null">
+        #{txrquid,jdbcType=VARCHAR},
+      </if>
+      <if test="hostname != null">
+        #{hostname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <delete id="TruncateByLogDate" parameterType="com.syscom.fep.mybatis.deslog.model.Deslog">
+    TRUNCATE TABLE <include refid="com.syscom.fep.mybatis.deslog.mapper.DeslogMapper.chooseTableName"/>
+    IGNORE DELETE TRIGGERS
+    DROP STORAGE
+    IMMEDIATE
+  </delete>
+</mapper>

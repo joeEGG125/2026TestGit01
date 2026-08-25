@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <div class="card card-primary card-outline" >
+            <div class="card-header">
+                <h5 class="card-title">調整選項</h5>
+            </div>
+            <div class="card-body">
+                <table border="0" cellspacing="0" class="table-condition">
+                    <tr>
+                        <td class="condition-label">
+                            <label for="kind" class="col-form-label">調整項目</label>
+                        </td>
+                        <td class="condition-input">
+                            <select class="form-control" id="kind">
+                                <option value="0" selected="selected"></option>
+                                <option value="1">送往財金</option>
+                                <option value="2">來自財金</option>
+                            </select>
+                        </td>
+                        <td class="condition-label">
+                            <label for="txKind" class="col-form-label">交易類別</label>
+                        </td>
+                        <td class="condition-input">
+                            <select class="form-control" id="txKind">
+                                <option value="1" selected="selected">一般匯款</option>
+                                <option value="4">一般通訊</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+        <button type="button" class="btn btn-primary" id="btnConfirm">執行</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid">
+        <div class="card card-primary card-outline" id="rm" v-cloak>
+            <div class="card-header">
+                <h5 class="card-title">調整內容</h5>
+            </div>
+            <div class="card-body">
+                <form id="form-validator">
+                    <table border="0" cellspacing="0" class="table-condition">
+                        <tr>
+                            <td></td>
+                            <td align="center">送往財金序號</td>
+                            <td align="center">來自財金序號</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                已使用序號
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="senderSeq" v-model="senderSeq" name="senderSeq" maxlength="7" disabled/>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="receiverSeq" v-model="receiverSeq" name="receiverSeq" maxlength="7" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                請輸入調整後序號
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="newSenderSeq" v-model="newSenderSeq" name="newSenderSeq" maxlength="7" />
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="newReceiverSeq" v-model="newReceiverSeq" name="newReceiverSeq" maxlength="7" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <hr>
+                <span style="color: red">*注意通匯序號是否也要調整</span>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/rm/UI028040.js}"></script>
+    </div>
+</body>
+</html>

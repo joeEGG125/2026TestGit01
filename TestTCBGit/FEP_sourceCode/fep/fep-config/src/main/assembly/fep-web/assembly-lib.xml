@@ -1,0 +1,18 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+	<id>${assembly-lib}${assembly-func}</id>
+	<formats>
+		<format>${assembly-format-tar-gz}</format>
+	</formats>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>${assembly-fep-app}/${project.artifactId}${assembly-func}</baseDirectory>
+	<fileSets>
+		<!-- 加入safeaa的jar檔 -->
+		<fileSet>
+			<directory>${project.basedir}/lib</directory>
+			<outputDirectory>${assembly-lib}</outputDirectory>
+			<includes>
+				<include>safeaa-core.jar</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

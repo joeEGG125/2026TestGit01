@@ -1,0 +1,25 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+	<id>${assembly-mybatis-table}</id>
+	<formats>
+		<format>${assembly-format-jar}</format>
+	</formats>
+	<baseDirectory>${project.build.directory}</baseDirectory>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<includes>
+				<include>**/dao/${assembly-mybatis-table}Dao.class</include>
+				<include>**/dao/impl/${assembly-mybatis-table}DaoImpl.class</include>
+				<include>**/dao/impl/${assembly-mybatis-table}DaoImpl$*.class</include>
+				<include>**/ext/mapper/${assembly-mybatis-table}ExtMapper.class</include>
+				<include>**/ext/mapper/xml/${assembly-mybatis-table}ExtMapper.xml</include>
+				<include>**/ext/model/${assembly-mybatis-table}*Ext.class</include>
+				<include>**/mapper/${assembly-mybatis-table}Mapper.class</include>
+				<include>**/mapper/xml/${assembly-mybatis-table}Mapper.xml</include>
+				<include>**/model/${assembly-mybatis-table}.class</include>
+			</includes>
+			<outputDirectory>.</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>

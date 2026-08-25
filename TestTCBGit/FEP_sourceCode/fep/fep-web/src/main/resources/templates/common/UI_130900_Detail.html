@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden"></div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnChange">變更儲存</button>
+    <button type="button" class="btn btn-primary" th:value="${'{' + '&quot;reportDep_depNo&quot;:&quot;'+form.reportDep_depNo + '&quot;' + ',' + '&quot;btnType&quot;:&quot;'+form.btnType + '&quot;' + '}' }"
+            id="btnClear1">放棄變更</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+    <form id="form-validator" th:object="${form}" th:action="@{/common/UI_130900/saveClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">
+                        分行代號<span style="color: red">*</span>
+                    </label>
+                </td>
+                <td th:if="*{btnType == 'insert'}" class="condition-input" width="300px">
+                    <input class="form-control" type="text" th:field="*{reportDep_depNo}" maxlength="4" />
+                </td>
+                <td th:if="*{btnType != 'insert'}" class="condition-input" width="300px">
+                    <input class="form-control" type="text" th:field="*{reportDep_depNo}" readonly="readonly" maxlength="4" />
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">
+                        報表分行名稱<span style="color: red">*</span>
+                    </label>
+                </td>
+                <td class="condition-input" width="500px">
+                    <input class="form-control" style="background-color: white" type="text" th:field="*{reportDep_depName}" maxlength="20" />
+                </td>
+            </tr>
+             <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">
+                        單位性質<span style="color: red">*</span>
+                    </label>
+                </td>
+                <td class="condition-input" width="500px">
+                	<select class="form-control" th:field="*{reportDep_type}">
+						<option value="" selected="selected"></option>
+						<option value="1">總行單位</option>
+						<option value="2">分行</option>
+						<option value="9">測試單位</option>
+					</select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        <input readonly="readonly" style="display: none" class="form-control" type="text" th:field="*{btnType}" />
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI130900_Detail.js}"></script>
+</div>
+</body>
+</html>

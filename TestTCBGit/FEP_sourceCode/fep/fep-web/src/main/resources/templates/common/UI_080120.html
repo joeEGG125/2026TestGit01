@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢全部</button>
+</div>
+<div layout:fragment="panel-grid" th:if="${list.size>0}" class="panel-detail">
+    <table style="width:100%" class="table-padding">
+        <tr th:each="row,rowState:${list}">
+            <td th:each="column,columnState:${row}">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>[[${column.server.name}]]</b></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive p-0 panel-detail" style="display: block;padding: 6px">
+                        <form class="form-nThreads">
+                            <input type="hidden" name="programName" th:value="${column.server.programName}">
+                            <table border="0" cellspacing="0" class="table-detail">
+                                <tr>
+                                    <td class="condition-label">
+                                        <label class="col-form-label">服務IP</label>
+                                    </td>
+                                    <td class="condition-input">
+                                        <label class="form-control label-text-left" th:text="${column.server.ip}"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="condition-label">
+                                        <label class="col-form-label">空閒線程數</label>
+                                    </td>
+                                    <td class="condition-input">
+                                        <label class="form-control label-text-left executorIdleCount" th:text="${column.eventExecutorData.executorIdleCount}"></label>
+                                    </td>
+                                    <td class="condition-label">
+                                        <label class="col-form-label">活動線程數</label>
+                                    </td>
+                                    <td class="condition-input">
+                                        <label class="form-control label-text-left executorActiveCount" th:text="${column.eventExecutorData.executorActiveCount}"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="condition-label">
+                                        <label class="col-form-label">設定線程數</label>
+                                    </td>
+                                    <td class="condition-input" style="padding-bottom: 5px;">
+                                        <input class="form-control executorSetupCount" type="text" name="nThreads" th:value="${column.eventExecutorData.executorSetupCount}"/>
+                                    </td>
+                                    <td class="condition-label">
+                                        <label class="col-form-label">設定檔線程數</label>
+                                    </td>
+                                    <td class="condition-input" style="padding-bottom: 5px;">
+                                        <label class="form-control label-text-left executorConfigurationCount" th:text="${column.eventExecutorData.executorConfigurationCount}"></label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="card-footer panel-button">
+                        <button type="button" class="btn btn-primary btn-get-nThreads">查詢</button>
+                        <button type="button" class="btn btn-primary btn-set-nThreads" th:disabled="${column.offline}">設置</button>
+                        <button type="button" class="btn btn-primary btn-reset-nThreads" th:disabled="${column.offline}">重置</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI080120.js}"></script>
+</div>
+</body>
+</html>

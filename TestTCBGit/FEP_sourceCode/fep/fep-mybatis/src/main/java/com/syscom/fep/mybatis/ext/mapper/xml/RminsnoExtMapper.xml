@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.RminsnoExtMapper">
+
+	<select id="queryByPrimaryKeyWithUpdLock" parameterType="com.syscom.fep.mybatis.model.Rminsno" resultMap="com.syscom.fep.mybatis.mapper.RminsnoMapper.BaseResultMap">
+		SELECT * FROM RMINSNO
+		where RMINSNO_SENDER_BANK = #{rminsnoSenderBank,jdbcType=CHAR}
+		and RMINSNO_RECEIVER_BANK = #{rminsnoReceiverBank,jdbcType=CHAR}
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<!-- 2021/09/29 wj Add -->
+	<update id="updateRMINSNOforCHKG" parameterType="map">
+		UPDATE RMINSNO
+		SET RMINSNO_CHGK_TIMES = NVL(RMINSNO_CHGK_TIMES,0) + 1
+		<if test="rminsnoNo != null">
+			, RMINSNO_NO = #{rminsnoNo,jdbcType=DECIMAL}
+		</if>
+		WHERE RMINSNO_SENDER_BANK = #{rminsnoSenderBank,jdbcType=CHAR}
+		and RMINSNO_RECEIVER_BANK = #{rminsnoReceiverBank,jdbcType=CHAR}
+	</update>
+
+	<update id="updateRMINSNOforBatchDaily">
+		update RMINSNO
+		set
+		RMINSNO_NO = 0,
+		RMINSNO_CHGK_TIMES = 0
+	</update>
+	<select id="queryRMINSNOByCDKEY_FLAG" parameterType="com.syscom.fep.mybatis.model.Rminsno" resultMap="com.syscom.fep.mybatis.mapper.RminsnoMapper.BaseResultMap">
+		SELECT * FROM RMINSNO
+		where RMINSNO_CDKEY_FLAG = #{rminsnoCdkeyFlag,jdbcType=CHAR}
+	</select>
+
+	<select id="selectByPrimaryKeyOne" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.RminsnoMapper.BaseResultMap">
+		select
+		<include refid="com.syscom.fep.mybatis.mapper.RminsnoMapper.Base_Column_List" />
+		from RMINSNO
+		where RMINSNO_SENDER_BANK = #{rminsnoSenderBank,jdbcType=CHAR}
+		and RMINSNO_RECEIVER_BANK = #{rminsnoReceiverBank,jdbcType=CHAR}
+	</select>
+</mapper>

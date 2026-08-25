@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/batch/UI_000110/doQuery}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" for="batchName">
+                    <label class="col-form-label">批次名稱</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="batchName" th:field="*{batchName}">
+                </td>
+                <td class="condition-label" for="batchName">
+                    <label class="col-form-label">(可輸入部分字串查詢)</label>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>啟動</b></th>
+                <th><b>批次名稱</b></th>
+                <th><b>批次説明</b></th>
+                <th><b>啓用</b></th>
+                <th><b>是否排程</b></th>
+                <th><b>每天做一次</b></th>
+                <th><b>檢查營業日</b></th>
+                <th><b>不允許重覆執行</b></th>
+                <th><b>最近執行狀態</b></th>
+                <th><b>最近執行時間</b></th>
+                <th><b>起始工作</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}"
+                th:with="style=${#strings.isEmpty(data.get('color')) ? '' : 'color: ' + data.get('color') + '; '},
+                                 startEnable=${data.get('startBtn')}">
+                <td align="center">
+                    <button th:if="${startEnable}" class="btn btn-primary btnStartBatch"
+                            th:value="${
+                                        '{' + '&quot;batchName&quot;:&quot;'+ form.batchName + '&quot;' + ','
+                                            + '&quot;batchId&quot;:&quot;'+ data.get('BATCH_BATCHID') + '&quot;' + ','
+                                            + '&quot;batchCurrentId&quot;:&quot;'+ data.get('BATCH_CURRENTID') + '&quot;'  + ','
+                                            + '&quot;batchStartJobId&quot;:&quot;'+ data.get('BATCH_STARTJOBID') + '&quot;' + ','
+                                            + '&quot;autoRefresh&quot;:&quot;true&quot;'
+                                        + '}'
+                                        }">啟動批次
+                    </button>
+                    <button th:if="!${startEnable}" class="btn btn-primary disabled">啟動批次</button>
+                </td>
+                <td th:text="${data.get('BATCH_NAME')}" th:style="${style}"/>
+                <td th:text="${data.get('BATCH_DESCRIPTION')}" th:style="${style}"/>
+                <td th:switch="${data.get('BATCH_ENABLE')}" th:style="${style}">
+                    <span th:case="0">否</span>
+                    <span th:case="1">是</span>
+                </td>
+                <td th:switch="${data.get('BATCH_SCHEDULE')}">
+                    <span th:case="0">否</span>
+                    <span th:case="1">是</span>
+                </td>
+                <td th:switch="${data.get('BATCH_SINGLETIME')}" th:style="${style}">
+                    <span th:case="0">否</span>
+                    <span th:case="1">是</span>
+                </td>
+                <td th:switch="${data.get('BATCH_CHECKBUSINESSDATE')}" th:style="${style}">
+                    <span th:case="0">否</span>
+                    <span th:case="1">是</span>
+                </td>
+                <td th:switch="${data.get('BATCH_DENYCONCURRENTEXEC')}">
+                    <span th:case="0">否</span>
+                    <span th:case="1">是</span>
+                </td>
+                <td th:switch="${data.get('BATCH_RESULT')}" th:style="${style}">
+                    <span th:case="0">執行中</span>
+                    <span th:case="1">成功</span>
+                    <span th:case="2">失敗</span>
+                    <span th:case="3">部分失敗</span>
+                </td>
+                <td>
+                    <a class="a-inquiry" href="#" th:text="${#dates.format(data.get('BATCH_LASTRUNTIME'),'yyyy/MM/dd a hh:mm:ss')}" th:style="${style}"
+                       th:value="${
+                                        '{' + '&quot;batchId&quot;:&quot;'+data.get('BATCH_BATCHID')+ '&quot;' + ','
+                                            + '&quot;batchCurrentId&quot;:&quot;'+data.get('BATCH_CURRENTID')+ '&quot;' + ','
+                                            + '&quot;batchStartJobId&quot;:&quot;'+data.get('BATCH_STARTJOBID')+ '&quot;' + ','
+                                            + '&quot;autoRefresh&quot;:&quot;false&quot;'
+                                        + '}'
+                                        }">
+                    </a>
+                </td>
+                <td th:text="${data.get('JOBS_NAME')}" th:style="${style}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/batch/UI000110.js}"></script>
+</div>
+</body>
+</html>

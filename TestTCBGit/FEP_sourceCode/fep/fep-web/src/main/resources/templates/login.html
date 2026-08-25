@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}"/>
+    <title>合作金庫商業銀行-FEP跨行前置處理系統</title>
+    <script type="text/javascript" th:src="@{/plugins/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/adminlte/js/adminlte.min.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/adminlte/css/adminlte.min.css}" media="all">
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}" media="all">
+</head>
+<body class="hold-transition login-page" style="background-image: URL(images/Logon_CO.png); background-size: 100% 100%; background-repeat: no-repeat; position: absolute; padding: 0px; width: 100%;">
+<div class="login-box" style="background-color: #fbfdef ; padding: 10px; width: 28%; min-width: 450px;">
+    <table style="width: 100%;">
+        <tbody>
+        <tr>
+            <td align="center" style="width: 50%;">
+                <input type="image" th:src="@{/images/Logon_LOGO.png}">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="card" style="padding: 10px;">
+                    <form name="loginForm" th:action="@{/logon}" method="post">
+                        <table class="table table-bordered" style="background-color: #fbfdef;margin-bottom: 0px;">
+                            <tbody>
+                            <tr>
+                                <td colspan="2" align="center" style="padding: 5px">
+                                    <h3 style="font-family: Kaiti, serif; margin-bottom: 0px;">FEP跨行前置處理系統</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="padding: 5px; background-color: #e8fbdb">
+                                    <h4 style="font-family: Kaiti, serif; margin-bottom: 0px;"><b>登入代號</b></h4>
+                                </td>
+                                <td align="left" style="padding: 5px">
+                                    <input name="userId" type="text" maxlength="15" id="userId" th:value="${userId}" style="width: 85%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="padding: 5px; background-color: #e8fbdb">
+                                    <h4 style="font-family: Kaiti, serif; margin-bottom: 0px;"><b>登入密碼</b></h4>
+                                </td>
+                                <td align="left" style="padding: 5px">
+                                    <input name="ssCode" type="password" maxlength="16" id="ssCode" th:value="${ssCode}" style="width: 85%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center" style="padding: 5px">
+                                    <button type="submit" class="btn btn-primary" style="color: black; background-color: #e8fbdb; border-color: #e8fbdb;">
+                                        <h4 style="font-family: Kaiti, serif; margin-bottom: 0px;">登入</h4>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" th:if="${errorMessage != null}">
+                                    <span id="InformationLbl" class="Description" style="color: Red;" th:text="${errorMessage}"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

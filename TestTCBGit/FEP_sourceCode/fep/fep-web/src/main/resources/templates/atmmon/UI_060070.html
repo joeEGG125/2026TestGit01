@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}"
+			th:action="@{/atmmon/UI_060070/queryComfirm}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label"><label for="txttxAMT"
+						class="col-form-label">系統簡稱</label></td>
+					<td class="condition-input col-5"><select
+						th:field="*{sysconfSubsysno}">
+							<option value=''></option>
+							<option th:each="subsysList: *{subsysList}"
+								th:value="${subsysList.subsysSubsysno}"
+								th:text="${subsysList.subsysNameS}"></option>
+					</select></td>
+					<td class="condition-label"><label class="col-form-label">變數名稱</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{sysconfName}" maxlength="30" />
+					</td>
+						
+						
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table
+				class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr align="center">
+						<th><b>系統簡稱</b></th>
+						<th><b>變數名稱</b></th>
+						<th><b>變數型態</b></th>
+						<th><b>設定類別</b></th>
+						<th><b>變數值</b></th>
+						<th><b>唯讀</b></th>
+						<th><b>加密 </b></th>
+						<th><b>說明 </b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data : ${pageData.list}">
+						<td align="center">
+							<a th:if="${data.SYSCONF_READONLYC} == '否'" class="a-inquiry" href="#" th:text="${data.SYSCONF_SUBSYSNOC}"
+								th:value="${
+										'{' + '&quot;SYSCONF_SUBSYSNOC&quot;:&quot;'+data.SYSCONF_SUBSYSNOC + '&quot;' + ',' 
+											+ '&quot;SYSCONF_SUBSYSNO&quot;:&quot;'+data.SYSCONF_SUBSYSNO + '&quot;' + ','
+											+ '&quot;SYSCONF_READONLYC&quot;:&quot;'+data.SYSCONF_READONLYC + '&quot;' + ',' 
+											+ '&quot;SYSCONF_NAME&quot;:&quot;'+data.SYSCONF_NAME + '&quot;'
+										+ '}'
+										}">
+							</a>
+							<span th:if="${data.SYSCONF_READONLYC} == '是'"  th:text="${data.SYSCONF_SUBSYSNOC}">
+							</span>
+						</td>
+						<td th:text="${data.SYSCONF_NAME}" />
+						<td th:text="${data.SYSCONF_DATATYPE}" />
+						<td th:text="${data.SYSCONF_TYPE}" />
+						<td th:text="${data.SYSCONF_VALUE}" />
+						<td th:text="${data.SYSCONF_READONLYC}" />
+						<td th:text="${data.SYSCONF_ENCRYPT}" />
+						<td th:text="${data.SYSCONF_REMARK}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI060070.js}"></script>
+	</div>
+</body>
+</html>

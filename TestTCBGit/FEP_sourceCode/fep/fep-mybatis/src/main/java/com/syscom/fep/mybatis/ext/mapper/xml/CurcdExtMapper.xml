@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.CurcdExtMapper">
+	<select id="selectAll" resultMap="com.syscom.fep.mybatis.mapper.CurcdMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CurcdMapper.Base_Column_List" />
+		FROM CURCD
+	</select>
+    <select id="queryAllCurcdAlpha3" parameterType="map" resultType="java.util.HashMap">
+		SELECT CURCD_ALPHA3,CURCD_FISC_CUR FROM CURCD
+		<if test="@com.syscom.fep.common.util.DbHelper@isSqlInOrderByValid(orderBy)">
+			ORDER BY ${orderBy} ASC
+		</if>
+	</select>
+</mapper>

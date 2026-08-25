@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/osm/UI_130100/inquiryMain}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label for="tbxTX_MM" class="col-form-label">年月</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{tbxTX_MM}" maxlength="6" />
+					</td>  		
+	               <td class="condition-label">
+	                    <label for="ddlSEQ_NO" class="col-form-label">手續費序號</label>
+	                </td>
+	                <td class="condition-input">
+	                    <select class="form-control" id="ddlSEQ_NO" th:field="*{ddlSEQ_NO}">
+	                        <option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"/>
+	                    </select>
+	                </td>							
+				</tr>
+				<tr>
+	               <td class="condition-label">
+	                    <label for="ddlSEQ_NO" class="col-form-label">跨行記號</label>
+	                </td>				
+					<td class="condition-input" style="width:200px">					
+						<input id="check_INTRA" class="col-form-checkbox" type="checkbox" th:field="*{check_INTRA}" checked="true"/>
+					    <label for="check_INTRA">自行</label>	
+					    <input id="check_OUT" class="col-form-checkbox" type="checkbox" th:field="*{check_OUT}" checked="true"/>
+					    <label for="check_OUT">跨行</label>					
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnInsert">新增</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+		<button type="button" class="btn btn-primary" id="btnDelete">刪除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">	
+				<thead>
+					<tr>
+						<th fep:table-th-check="demo">刪除</th>
+						<th><b>手續費序號</b></th>
+						<th><b>年月</b></th>
+						<th><b>手續費名稱</b></th>
+						<th><b>幣別</b></th>
+						<th><b>手續費</b></th>
+						<th><b>跨行記號</b></th>
+						<th><b>財金PCODE</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+					<tr th:each="data, dataStat : ${pageData.list}">
+						<td fep:table-td-check="demo" width="10%" table-td-check-value=
+							"${
+										'{' + '&quot;atmfeeSeqNo&quot;:&quot;'+data.atmfeeSeqNo + '&quot;' + ',' 
+											+ '&quot;atmfeeTxMm&quot;:&quot;'+data.atmfeeTxMm + '&quot;'
+										+ '}'
+							}">
+						</td>					
+						<td align="center" width="10%">
+							<a class="a-inquiry" href="#" th:text="${data.atmfeeSeqNo}" th:field="${data.atmfeeTxMm}"
+								th:value="${
+										'{' + '&quot;atmfeeSeqNo&quot;:&quot;'+data.atmfeeSeqNo + '&quot;' + ',' 
+											+ '&quot;atmfeeTxMm&quot;:&quot;'+data.atmfeeTxMm + '&quot;' + ','
+											+ '&quot;btnType&quot;:&quot;update&quot;'
+										+ '}'
+										}">
+							</a>
+						</td>					
+						<td align="center" width="10%" th:text="${data.atmfeeTxMm}" />
+						<td align="center" width="10%" th:text="${data.atmfeeName}" />
+						<td align="center" width="10%" th:text="${data.atmfeeCur}" />
+						<td align="center" width="10%" th:text="${#numbers.formatDecimal(data.atmfeeFee,1,'COMMA',5,'POINT')}" />
+						<td align="center" width="10%" th:if="${data.atmfeeFiscFlag} == 0" >自行</td>
+						<td align="center" width="10%" th:if="${data.atmfeeFiscFlag} == 1" >跨行</td>
+						<td align="center" width="10%" th:text="${data.atmfeePcode}" />
+					</tr>
+				</tbody>				
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+	    <script type="text/javascript" th:src="@{/js/osm/UI130100.js}"></script>
+	</div>	
+</body>
+</html>

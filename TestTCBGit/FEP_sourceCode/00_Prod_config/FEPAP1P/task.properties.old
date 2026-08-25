@@ -1,0 +1,24 @@
+spring.datasource.fepdb.driver-class-name=com.ibm.db2.jcc.DB2Driver
+spring.datasource.fepdb.jdbc-url=jdbc:db2://10.0.58.99:50000/FEPDB:currentSchema=FEP;fullyMaterializeInputStreams=true;progressiveStreaming=2;
+
+spring.datasource.fephis.driver-class-name=com.ibm.db2.jcc.DB2Driver
+spring.datasource.fephis.jdbc-url=jdbc:db2://10.0.58.99:60000/FEPHISDB:currentSchema=FEP;fullyMaterializeInputStreams=true;progressiveStreaming=2;
+
+spring.datasource.hikari.minimum-idle=10
+spring.datasource.hikari.maximum-pool-size=20
+spring.datasource.hikari.idle-timeout=540000
+spring.datasource.hikari.max-lifetime=600000
+spring.datasource.hikari.connection-timeout=60000
+spring.datasource.hikari.connection-test-query=SELECT 1 FROM SYSIBM.SYSDUMMY1
+
+spring.fep.task.log.path=/fep/logs/
+
+#PKI
+spring.fep.pki.path=/PKI/fapinst1/acdu,/PKI/fapinst1/acdp,/PKI/fbpinst1/acdu,/PKI/fbpinst1/acdp
+
+
+spring.datasource.fepdb-batch.driver-class-name=com.ibm.db2.jcc.DB2Driver
+spring.datasource.fepdb-batch.jdbc-url=jdbc:db2://10.0.58.99:50000/FEPDB:currentSchema=FEP;fullyMaterializeInputStreams=true;progressiveStreaming=2;
+
+spring.datasource.fephis-batch.driver-class-name=com.ibm.db2.jcc.DB2Driver
+spring.datasource.fephis-batch.jdbc-url=jdbc:db2://10.0.58.99:60000/FEPHISDB:currentSchema=FEP;fullyMaterializeInputStreams=true;progressiveStreaming=2;

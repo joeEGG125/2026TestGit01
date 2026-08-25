@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label for="NOTICE_IDDdl" class="col-form-label">訊息通知代碼:</label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" id="NOTICE_IDDdl" name="noticeidd" onchange="doChange(this.value)">
+							<option value="3000">3000</option>
+							<option th:if="false" value="4102">4102</option>
+						</select>
+					</td>
+				</tr>
+				<tr id="tr3000">
+					<td class="condition-label">
+						<label for="NOTICE_DATAText" class="col-form-label">訊息通知內容:</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" id="NOTICE_DATAText" name="noticetext" maxlength="40" />
+					</td>
+				</tr>
+				<tr id="tr4102">
+					<td class="condition-label">
+						<label for="TextNoTxt" class="col-form-label">文 號:</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" id="TextNoTxt" name="textnotxt" maxLength="12" />
+					</td>
+				</tr>
+				<tr id="tr4102">
+					<td class="condition-label">
+						<label for="IDTxt" class="col-form-label">身份証字號／營利事業統一編號:</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" id="IDTxt" name="idtext" maxLength="10" />
+					</td>
+				</tr>
+				<tr id="tr4102">
+					<td class="condition-label">
+						<label for="ResultTxt" class="col-form-label">回覆結果(Y/N): </label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" id="ResultTxt" name="resulttxt">
+							<option value="Y">Y</option>
+							<option value="N">N</option>
+						</select>
+					</td>
+				</tr>
+				<tr id="tr4102">
+					<td class="condition-label">
+						<label for="BankIDLbl" class="col-form-label">回覆金融機構代號:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control label-text-left" id="BankIDLbl" th:text="${bankId}"></label>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnConfirm">確認</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-hidden"></div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/inbk/UI013100.js}"></script>
+	</div>
+</body>
+</html>

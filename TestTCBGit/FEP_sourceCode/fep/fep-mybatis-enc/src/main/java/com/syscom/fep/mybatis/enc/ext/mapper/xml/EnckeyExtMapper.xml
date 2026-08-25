@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.enc.ext.mapper.EnckeyExtMapper">
+  <!-- 2021-05-24 Richard add -->
+  <update id="updateKey" parameterType="map">
+    UPDATE ENCKEY
+    <set>
+      UPDATEDATE = SYSDATE
+      <if test="updateType == 0">
+        , PENDINGKEY = #{newKey,jdbcType=VARCHAR},
+      </if>
+      <if test="updateType == 3">
+        , CURKEY = PENDINGKEY
+        , BEGINDATE = ''
+      </if>
+      <if test="updateType == 1">
+        , CURKEY = #{newKey,jdbcType=VARCHAR}
+      </if>
+      <if test="updateType == 2">
+        , OLDKEY = #{newKey,jdbcType=VARCHAR}
+      </if>
+    </set>
+    WHERE BANKID = #{bankid,jdbcType=VARCHAR}
+      AND KEYTYPE = #{keytype,jdbcType=CHAR}
+      AND KEYKIND = #{keykind,jdbcType=VARCHAR}
+      AND KEYFN = #{keyfn,jdbcType=VARCHAR}
+  </update>
+</mapper>

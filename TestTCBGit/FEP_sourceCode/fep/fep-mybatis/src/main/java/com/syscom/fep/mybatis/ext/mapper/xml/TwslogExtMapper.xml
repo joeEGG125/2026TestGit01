@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.TwslogExtMapper">
+	<select id="getTwslogQuery" resultType="java.util.HashMap">
+		SELECT * FROM TWSLOG
+		<where>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(twsTaskname)">
+				AND LOWER(TWS_TASKNAME) LIKE LOWER(CONCAT('%', CONCAT(#{twsTaskname}, '%')))
+			</if>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(batchStartDate)">
+				AND TWS_DATETIME BETWEEN to_date(CONCAT(#{batchStartDate}, '00:00:00'),'yyyy-mm-dd hh24:mi:ss') AND  to_date(CONCAT(#{batchStartDate}, '23:59:59'),'yyyy-mm-dd hh24:mi:ss')
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertTwslog" parameterType="com.syscom.fep.mybatis.model.Twslog">
+		INSERT INTO TWSLOG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="twsDatetime != null">
+				TWS_DATETIME,
+			</if>
+			<if test="twsHostname != null">
+				TWS_HOSTNAME,
+			</if>
+			<if test="twsDuration != null">
+				TWS_DURATION,
+			</if>
+			<if test="twsResult != null">
+				TWS_RESULT,
+			</if>
+			<if test="twsTaskname != null">
+				TWS_TASKNAME,
+			</if>
+			<if test="twsJarfile != null">
+				TWS_JARFILE,
+			</if>
+			<if test="twsLogfilecontent != null">
+				TWS_LOGFILECONTENT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="twsDatetime != null">
+				#{twsDatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="twsHostname != null">
+				#{twsHostname,jdbcType=VARCHAR},
+			</if>
+			<if test="twsDuration != null">
+				#{twsDuration,jdbcType=INTEGER},
+			</if>
+			<if test="twsResult != null">
+				#{twsResult,jdbcType=VARCHAR},
+			</if>
+			<if test="twsTaskname != null">
+				#{twsTaskname,jdbcType=VARCHAR},
+			</if>
+			<if test="twsJarfile != null">
+				#{twsJarfile,jdbcType=VARCHAR},
+			</if>
+			<if test="twsLogfilecontent != null">
+				#{twsLogfilecontent,jdbcType=CLOB},
+			</if>
+		</trim>
+	</insert>
+</mapper>

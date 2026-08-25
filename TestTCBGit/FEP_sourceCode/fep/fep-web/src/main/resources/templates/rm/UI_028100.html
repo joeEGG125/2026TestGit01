@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <div class="card card-primary card-outline" >
+            <div class="card-header">
+                <h5 class="card-title">查詢條件</h5>
+            </div>
+            <div class="card-body">
+                <form id="form-validator">
+                    <table border="0" cellspacing="0" class="table-condition">
+                        <tr>
+                            <td class="condition-label">
+                                <label for="txDate" class="col-form-label">交易日期</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="txDate" name="txDate" readonly/>
+                            </td>
+                            <td class="condition-label">
+                                <label for="stan" class="col-form-label">STAN</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="stan" name="stan" maxlength="7" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label for="fepNo" class="col-form-label">FEP登錄序號</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="fepNo" name="fepNo" />
+                            </td>
+                            <td class="condition-label">
+                                <label for="ejfno" class="col-form-label">EJFNO</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="ejfno" name="ejfno" maxlength="8" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label for="fiscSno" class="col-form-label">電文序號</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="fiscSno" name="fiscSno" maxlength="7" />
+                            </td>
+                            <td class="condition-label">
+                                <label for="senderBank" class="col-form-label">發信行</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="senderBank" name="senderBank" maxlength="3" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label for="rmSno" class="col-form-label">通匯序號</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="rmSno" name="rmSno" maxlength="7"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+        <button type="button" class="btn btn-primary" id="btnConfirm">執行</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid">
+        <div id="rm" v-cloak>
+            <table border="0" cellspacing="0" class="table-condition">
+                <tr>
+                    <td class="condition-label">
+                        <label for="oTxDate" class="col-form-label">匯款日期</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="oTxDate" v-model="oTxDate" name="oTxDate" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="oFepNo" class="col-form-label">FEP登錄序號</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="oFepNo" v-model="oFepNo" name="oFepNo" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="oEjno" class="col-form-label">EJFNO</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="oEjno" v-model="oEjno" name="oEjno" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="actno" class="col-form-label">收款人帳號</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="actno" v-model="actno" name="actno" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="amt" class="col-form-label">交易金額</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="amt" v-model="amt" name="amt" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="oRmSno" class="col-form-label">通匯序號</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="oRmSno" v-model="oRmSno" name="oRmSno" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="oFiscSno" class="col-form-label">電文序號</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="oFiscSno" v-model="oFiscSno" name="oFiscSno" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="oSenderBank" class="col-form-label">發信行</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="oSenderBank" v-model="oSenderBank" name="oSenderBank" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="receiverBank" class="col-form-label">收信行</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="receiverBank" v-model="receiverBank" name="receiverBank" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="bkno" class="col-form-label">收款人姓名</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="inName" v-model="inName" name="inName" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="outName" class="col-form-label">匯款人姓名</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="outName" v-model="outName" name="outName" readonly/>
+                    </td>
+                    <td class="condition-label">
+                        <label for="memo" class="col-form-label">附言</label>
+                    </td>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="memo" v-model="memo" name="memo" readonly/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/rm/UI028100.js}"></script>
+    </div>
+</body>
+</html>

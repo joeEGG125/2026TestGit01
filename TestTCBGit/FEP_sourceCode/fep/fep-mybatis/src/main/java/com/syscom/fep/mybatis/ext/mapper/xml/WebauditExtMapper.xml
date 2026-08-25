@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.WebauditExtMapper">
+  <insert id="insert" parameterType="com.syscom.fep.mybatis.model.Webaudit">
+    insert into WEBAUDIT (AUDITTIME, AUDITUSER,
+      AUDITPAGE, AUDITPROGRAMNAME, AUDITBROWSER, 
+      AUDITUSERADDRESS, AUDITREQUESTHOST, AUDITDATA, 
+      SHOWAUDIT, SHOWQUERYDATA, SQLCOMMANDTEXT, 
+      AUDITDATE, TXCLASS, PROGRAMID
+      )
+    values (#{audittime,jdbcType=TIMESTAMP}, #{audituser,jdbcType=VARCHAR},
+      #{auditpage,jdbcType=VARCHAR}, #{auditprogramname,jdbcType=NVARCHAR}, #{auditbrowser,jdbcType=VARCHAR}, 
+      #{audituseraddress,jdbcType=VARCHAR}, #{auditrequesthost,jdbcType=VARCHAR}, #{auditdata,jdbcType=VARCHAR}, 
+      #{showaudit,jdbcType=DECIMAL}, #{showquerydata,jdbcType=DECIMAL}, #{sqlcommandtext,jdbcType=NVARCHAR}, 
+      #{auditdate,jdbcType=NVARCHAR}, #{txclass,jdbcType=NVARCHAR}, #{programid,jdbcType=NVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.syscom.fep.mybatis.model.Webaudit">
+    insert into WEBAUDIT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="audittime != null">
+        AUDITTIME,
+      </if>
+      <if test="audituser != null">
+        AUDITUSER,
+      </if>
+      <if test="auditpage != null">
+        AUDITPAGE,
+      </if>
+      <if test="auditprogramname != null">
+        AUDITPROGRAMNAME,
+      </if>
+      <if test="auditbrowser != null">
+        AUDITBROWSER,
+      </if>
+      <if test="audituseraddress != null">
+        AUDITUSERADDRESS,
+      </if>
+      <if test="auditrequesthost != null">
+        AUDITREQUESTHOST,
+      </if>
+      <if test="auditdata != null">
+        AUDITDATA,
+      </if>
+      <if test="showaudit != null">
+        SHOWAUDIT,
+      </if>
+      <if test="showquerydata != null">
+        SHOWQUERYDATA,
+      </if>
+      <if test="sqlcommandtext != null">
+        SQLCOMMANDTEXT,
+      </if>
+      <if test="auditdate != null">
+        AUDITDATE,
+      </if>
+      <if test="txclass != null">
+        TXCLASS,
+      </if>
+      <if test="programid != null">
+        PROGRAMID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="audittime != null">
+        #{audittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="audituser != null">
+        #{audituser,jdbcType=VARCHAR},
+      </if>
+      <if test="auditpage != null">
+        #{auditpage,jdbcType=VARCHAR},
+      </if>
+      <if test="auditprogramname != null">
+        #{auditprogramname,jdbcType=NVARCHAR},
+      </if>
+      <if test="auditbrowser != null">
+        #{auditbrowser,jdbcType=VARCHAR},
+      </if>
+      <if test="audituseraddress != null">
+        #{audituseraddress,jdbcType=VARCHAR},
+      </if>
+      <if test="auditrequesthost != null">
+        #{auditrequesthost,jdbcType=VARCHAR},
+      </if>
+      <if test="auditdata != null">
+        #{auditdata,jdbcType=VARCHAR},
+      </if>
+      <if test="showaudit != null">
+        #{showaudit,jdbcType=DECIMAL},
+      </if>
+      <if test="showquerydata != null">
+        #{showquerydata,jdbcType=DECIMAL},
+      </if>
+      <if test="sqlcommandtext != null">
+        #{sqlcommandtext,jdbcType=NVARCHAR},
+      </if>
+      <if test="auditdate != null">
+        #{auditdate,jdbcType=NVARCHAR},
+      </if>
+      <if test="txclass != null">
+        #{txclass,jdbcType=NVARCHAR},
+      </if>
+      <if test="programid != null">
+        #{programid,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button th:disabled="*{webType == 'SSTQ'}" style="width:100px" type="button" class="btn btn-primary" id="btnChange">變更儲存</button>
+		<button th:disabled="*{webType == 'SSTQ'}" style="width:100px" type="button" class="btn btn-primary" id="btnDiscard">放棄變更</button>
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+	<form id="form-validator" th:object="${form}" th:action="@{/dbmaintain/UI_070030/saveClick}" method="post">
+		<input type="hidden" name="btnType" th:value="*{btnType}">
+		<table border="0" cellspacing="0" class="table-detail">
+			<tr>
+				<td class="condition-label">
+				    <label class="col-form-label">
+				    財金APID<span style="color: red">*</span>
+				    </label>
+				</td>
+				<td class="condition-input" width="300px">
+						<input class="form-control" th:disabled="*{btnType ne 'insert'}" type="text" th:field="*{INBKPARM_APID}" maxlength="4" />
+					</td>
+                <td class="condition-label">
+				    <label class="col-form-label">
+				    財金PCODE<span style="color: red">*</span>
+				    </label>
+				</td>
+				<td class="condition-input" width="300px">
+						<input class="form-control" th:disabled="*{btnType ne 'insert'}" type="text" th:field="*{INBKPARM_PCODE}" maxlength="4" />
+					</td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">代理/被代理<span style="color: red">*</span></label></td>
+				<td class="condition-input"><select class="form-control" th:disabled="*{btnType ne 'insert'}" 
+					id="INBKPARM_ACQ_FLAG" th:field="*{INBKPARM_ACQ_FLAG}">
+						<option value="A" selected="selected">代理</option>
+						<option value="I">被代理</option>
+						<option value="O">被代理-跨行 轉出</option>
+				</select></td>
+				<td class="condition-label">
+                       <label for="tradingDate" class="col-form-label">生效日期:</label>
+                   </td>
+                   <td class="condition-input">
+                       <div class="input-group date" id="INBKPARM_EFFECT_DATE" data-target-input="nearest">
+                           <input type="text" th:disabled="*{btnType ne 'insert'}"  class="form-control datetimepicker-input" data-target="#tradingDate" th:field="*{INBKPARM_EFFECT_DATE}" />
+                           <div class="input-group-append" data-target="#INBKPARM_EFFECT_DATE" data-toggle="datetimepicker">
+                               <div class="input-group-text">
+                                   <i class="fa fa-calendar"></i>
+                               </div>
+                           </div>
+                       </div>
+                   </td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">幣別<span style="color: red">*</span></td>
+				<td class="condition-input"><select class="form-control" th:disabled="*{btnType ne 'insert'}" 
+					id="INBKPARM_CUR" th:field="*{INBKPARM_CUR}">
+						<option value="AED" selected="selected">AED</option>
+						<option value="AUD">AUD</option>
+						<option value="BRL">BRL</option>
+						<option value="CAD">CAD</option>
+						<option value="CHF">CHF</option>
+						<option value="CNY">CNY</option>
+						<option value="DKK">DKK</option>
+						<option value="EGP">EGP</option>
+						<option value="EUR">EUR</option>
+						<option value="GBP">GBP</option>
+						<option value="HKD">HKD</option>
+						<option value="HUF">HUF</option>
+						<option value="IDR">IDR</option>
+						<option value="ILS">ILS</option>
+						<option value="INR">INR</option>
+						<option value="JPY">JPY</option>
+						<option value="KRW">KRW</option>
+						<option value="MOP">MOP</option>
+						<option value="MVR">MVR</option>
+						<option value="MXN">MXN</option>
+						<option value="MYR">MYR</option>
+						<option value="NOK">NOK</option>
+						<option value="NPR">NPR</option>
+						<option value="NZD">NZD</option>
+						<option value="OTH">OTH</option>
+						<option value="PHP">PHP</option>
+						<option value="PLN">PLN</option>
+						<option value="RUB">RUB</option>
+						<option value="SAR">SAR</option>
+						<option value="SEK">SEK</option>
+						<option value="SGD">SGD</option>
+						<option value="THB">THB</option>
+						<option value="TWD">TWD</option>
+						<option value="USD">USD</option>
+						<option value="VND">VND</option>
+						<option value="MYR">MYR</option>
+						<option value="ZAR">ZAR</option>
+				</select></td>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">金額起始範圍<span style="color: red">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;" th:disabled="*{btnType ne 'insert'}" 
+					th:field="*{INBKPARM_RANGE_FROM}" id="INBKPARM_RANGE_FROM" name="INBKPARM_RANGE_FROM" RequireFieldCheck="true" FixNumberFormat="7,2"/></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">金額結束範圍<span style="color: green">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;"
+					th:field="*{INBKPARM_RANGE_TO}" id="INBKPARM_RANGE_TO" name="INBKPARM_RANGE_TO" RequireFieldCheck="true" FixNumberFormat="7,2"/></td>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">手續費型態<span style="color: green">*</span></label></td>
+				<td class="condition-input"><select class="form-control"
+					id="lblINBKPARM_FEE_TYPE" th:field="*{INBKPARM_FEE_TYPE}">
+						<option value="0" selected="selected">固定金額</option>
+						<option value="1">百分比</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">應收財金手續費<span style="color: green">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;"
+					th:field="*{INBKPARM_FEE_MBR_DR}" id="INBKPARM_FEE_MBR_DR" name="INBKPARM_FEE_MBR_DR" RequireFieldCheck="true" FixNumberFormat="3,4"/></td>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">應付財金手續費<span style="color: green">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;"
+					th:field="*{INBKPARM_FEE_MBR_CR}" id="INBKPARM_FEE_MBR_CR" name="INBKPARM_FEE_MBR_CR" RequireFieldCheck="true" FixNumberFormat="3,4" /></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">應收同業/銀行公會手續費<span style="color: green">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;"
+					th:field="*{INBKPARM_FEE_ASS_DR}" id="INBKPARM_FEE_ASS_DR" name="INBKPARM_FEE_ASS_DR" RequireFieldCheck="true" FixNumberFormat="3,4" /></td>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">應付同業/銀行公會手續費<span style="color: green">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;"
+					th:field="*{INBKPARM_FEE_ASS_CR}" id="INBKPARM_FEE_ASS_CR" name="INBKPARM_FEE_ASS_CR" RequireFieldCheck="true" FixNumberFormat="3,4" /></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">客戶需付手續費<span style="color: green">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;"
+					th:field="*{INBKPARM_FEE_CUSTPAY}" id="INBKPARM_FEE_CUSTPAY" name="INBKPARM_FEE_CUSTPAY" RequireFieldCheck="true" FixNumberFormat="3,4" /></td>
+					<td class="condition-label"><label for="trad"
+					class="col-form-label">本金借貸別<span style="color: green">*</span></label></td>
+				<td class="condition-input"><select class="form-control"
+					id="INBKPARM_PRNCRDBDdl" th:field="*{INBKPARM_PRNCRDB}">
+						<option value=" " selected="selected">自行轉帳或國際提款</option>
+						<option value="D">借方</option>
+						<option value="C">貸方</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label for="trad"
+					class="col-form-label">客戶需付手續費<span style="color: green">*</span></label></td>
+				<td class="condition-input"><input class="form-control"
+					type="text" style="width: 185px;"
+					th:field="*{INBKPARM_FEE_MIN}" id="INBKPARM_FEE_MIN" name="INBKPARM_FEE_MIN" RequireFieldCheck="true" FixNumberFormat="5,2"/></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/dbmaintain/UI070030Detail.js}"></script>
+	</div>
+</body>
+</html>

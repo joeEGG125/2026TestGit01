@@ -1,0 +1,7 @@
+package com.syscom.fep.gateway.netty.fisc.server;
+
+import com.syscom.fep.gateway.netty.NettyTransmissionChannelInboundHandlerAdapterServer;
+import io.netty.channel.ChannelHandler.Sharable;
+
+@Sharable
+public class FISCGatewayServerChannelInboundHandlerAdapter extends NettyTransmissionChannelInboundHandlerAdapterServer<FISCGatewayServerConfiguration, FISCGatewayServerProcessRequestManager, FISCGatewayServerProcessRequest> {}

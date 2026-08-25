@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.UpbinExtMapper">
+	<!-- 2021-04-20 ZhaoKai add -->
+	<select id="queryAllData" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.UpbinMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.UpbinMapper.Base_Column_List" />
+		FROM UPBIN
+		<if test="@com.syscom.fep.common.util.DbHelper@isSqlInOrderByValid(orderBy)">
+			ORDER BY ${orderBy}
+		</if>
+	</select>
+	<delete id="deleteAll">
+	  DELETE FROM UPBIN
+	</delete>
+</mapper>

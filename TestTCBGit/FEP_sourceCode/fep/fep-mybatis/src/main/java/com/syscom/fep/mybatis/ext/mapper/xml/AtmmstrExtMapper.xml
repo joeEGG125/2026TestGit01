@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.AtmmstrExtMapper">
+    <sql id="Base_Column_Alias_List">
+        atm.ATM_ATMNO, atm.ATM_ZONE, atm.ATM_CUR_ST, atm.ATM_BRNO_ST, atm.ATM_BRNO_MA, atm.ATM_ATMTYPE,
+        atm.ATM_VENDOR, atm.ATM_MODELNO, atm.ATM_DEVICES, atm.ATM_NOTES, atm.ATM_HW_CARETAKER,
+        atm.ATM_RS_CARETAKER, atm.ATM_IP,atm.ATM_ATMP_IP, atm.ATM_ATMP_PORT, atm.ATM_AREA, atm.ATM_LOC,
+        atm.ATM_24_SERVICE, atm.ATM_LOCATION, atm.ATM_STOCK_LOC,atm.ATM_PROPERTYNO, atm.ATM_SNO,
+        atm.ATM_GUARD_CASH, atm.ATM_GUARD_SECURE, atm.ATM_TEL_BRANCH, atm.ATM_BRANCH_NAME_C,atm.ATM_CITY_C,
+        atm.ATM_ADDRESS_C, atm.ATM_BRANCH_NAME_E, atm.ATM_CITY_E, atm.ATM_ADDRESS_E, atm.ATM_TEL_NO,
+        atm.ATM_START_DATE,atm.ATM_MEMO, atm.ATM_DELETE_FG, atm.ATM_CHANNEL_TYPE, atm.ATM_RECORDING,
+        atm.ATM_HW_CARETAKER1, atm.ATM_HW_CARETAKER2,atm.ATM_HW_CARETAKER3, atm.ATM_HW_CARETAKER_TELNO1,
+        atm.ATM_HW_CARETAKER_TELNO2, atm.ATM_HW_CARETAKER_TELNO3,atm.ATM_HW_CARETAKER_EMAIL1,
+        atm.ATM_HW_CARETAKER_EMAIL2, atm.ATM_HW_CARETAKER_EMAIL3, atm.ATM_ADSL_TLENO,atm.ATM_ATNO,
+        atm.ATM_DIRECT_TELNO, atm.ATM_FEP_CONNECTION, atm.ATM_SCOPE, atm.ATM_CHECK_MAC, atm.UPDATE_USERID,
+        atm.UPDATE_TIME, atm.ATM_BRNO_CL, atm.ATM_COIN, atm.ATM_COIN_VENDOR, atm.ATM_CORP,
+        atm.USER_UPDATE_TIME, atm.ATM_GROUP_NO, atm.ATM_LOC_NO, atm.ATM_DIST_C, atm.ATM_DIST_E,
+        atm.ATM_LONGITUDE, atm.ATM_LATITUDE, atm.ATM_MTYPE, atm.ATM_INS_BRNO, atm.ATM_DIVIDE,
+        atm.ATM_DEL_DATE, atm.ATM_PASSBOOK_NO, atm.ATM_HILIFE_NO, atm.ATM_PRO_DATE, atm.ATM_ARRIVE_HOUR,
+        atm.ATM_KIND, atm.ATM_MARKETBDM, atm.ATM_EMV, atm.ATM_OS, atm.ATM_WATER_PCT, atm.ATM_WATER_AMT ,
+        <!--A.GUARD_NAME_S AS GUARD_CASH , B.GUARD_NAME_S AS GUARD_SECURE ,
+          C.BCTL_ALIAS AS ATM_BRNO_ST_ALIAS ,
+        D.BCTL_ALIAS AS ATM_BRNO_MA_ALIAS , E.BCTL_ALIAS AS ATM_BRNO_CL_ALIAS , -->
+        ATM_ZONE,ATM_ATMTYPE , ATM_CERTALIAS,
+        ATM_24_SERVICE , ATM_LOC , ATM_START_DATE
+    </sql>
+    <!-- 2021-11-08 Richard add for ATM Gateway -->
+    <select id="getAtmmstrByAtmIp" parameterType="map" resultType="map">
+        SELECT ATM_ATMNO,
+               ATM_ZONE,
+               ATM_CHECK_MAC,
+               ATMSTAT_SEC,
+               ATMSTAT_SOCKET,
+               ATMSTAT_INIKEY,
+               ATM_ATMP_PORT,
+               ATM_IP,
+               ATM_CERTALIAS,
+               ATM_FEP_CONNECTION
+        FROM ATMMSTR
+        INNER JOIN ATMSTAT ON ATM_ATMNO = ATMSTAT_ATMNO
+        WHERE ATM_IP = #{atmIp,jdbcType=VARCHAR}
+    </select>
+    <!-- 2025-06-19 Zonghao add for GrayList -->
+    <select id="getATMAddressCByAtmno" parameterType="String" resultType="String">
+        SELECT ATM_ADDRESS_C
+        FROM ATMMSTR
+        WHERE ATM_ATMNO = #{atmAtmno,jdbcType=CHAR}
+    </select>
+    <!-- 2021-11-09 Richard add for ATM Gateway -->
+    <update id="updateAtmmstrByAtmNoSelective" parameterType="com.syscom.fep.mybatis.model.Atmmstr">
+        UPDATE ATMMSTR
+        <set>
+            <if test="atmIp != null">
+                ATM_IP = #{atmIp,jdbcType=VARCHAR},
+            </if>
+            <if test="atmAtmpIp != null">
+                ATM_ATMP_IP = #{atmAtmpIp,jdbcType=VARCHAR},
+            </if>
+            <if test="atmAtmpPort != null">
+                ATM_ATMP_PORT = #{atmAtmpPort,jdbcType=VARCHAR},
+            </if>
+            <if test="atmCertalias != null">
+                ATM_CERTALIAS = #{atmCertalias,jdbcType=VARCHAR},
+            </if>
+            <if test="atmFepConnection != null">
+                ATM_FEP_CONNECTION = #{atmFepConnection,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE ATM_ATMNO = #{atmAtmno,jdbcType=CHAR}
+    </update>
+    <update id="updateAtmpByAtmmon" parameterType="map">
+        UPDATE ATMMSTR
+        <set>
+            <if test="atmBrnoSt != null">
+                ATM_BRNO_ST = #{atmBrnoSt,jdbcType=VARCHAR},
+            </if>
+            <if test="atmBrnoSt != null">
+                ATM_BRNO_MA = #{atmBrnoSt,jdbcType=VARCHAR},
+            </if>
+            <if test="atmModelno != null">
+                ATM_MODELNO = #{atmModelno,jdbcType=VARCHAR},
+            </if>
+   	        <if test="atmVendor != null"> 
+            	 ATM_VENDOR = #{atmVendor,jdbcType=CHAR}, 
+            </if>	 
+            <if test="atmIp != null">
+                ATM_IP = #{atmIp,jdbcType=VARCHAR},
+            </if>
+            <if test="atmStartDate != null and atmStartDate != ''">
+            	ATM_START_DATE = #{atmStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="atmCityC != null and atmCityC != ''">
+            	ATM_CITY_C = #{atmCityC,jdbcType=VARCHAR},
+            </if>
+            <if test="atmAddressC != null and atmAddressC != ''">
+            	ATM_ADDRESS_C = #{atmAddressC,jdbcType=VARCHAR},
+            </if>
+            <if test="atmLocation != null and atmLocation != ''">
+            	ATM_LOCATION = #{atmLocation,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE ATM_ATMNO = #{atmno,jdbcType=CHAR}
+    </update>
+    <!-- 2023-03-22 Bruce add for ATM Gateway -->
+    <!-- 2023-12-27 Troy Change SQL -->
+    <update id="updateAtmmstrByAtmatmNo" parameterType="map">
+        UPDATE ATMMSTR
+        set ATM_FEP_CONNECTION = #{argsMap.atmFepConnection,jdbcType=VARCHAR}
+        WHERE ATM_ATMNO = #{argsMap.atmAtmNo,jdbcType=CHAR}
+    </update>
+    <!-- 2022-01-26 Richard add for ATM Gateway -->
+    <select id="getAtmmstrByAtmNo" parameterType="map" resultType="map">
+        SELECT ATM_ATMNO,
+               ATM_ZONE,
+               ATM_CHECK_MAC,
+               ATMSTAT_SEC,
+               ATMSTAT_SOCKET,
+               ATMSTAT_INIKEY,
+               ATM_ATMP_PORT,
+               ATM_IP,
+               ATM_CERTALIAS,
+               ATM_FEP_CONNECTION
+        FROM ATMMSTR
+                 INNER JOIN ATMSTAT ON ATM_ATMNO = ATMSTAT_ATMNO
+        WHERE ATM_ATMNO = #{atmAtmno,jdbcType=CHAR}
+    </select>
+    <select id="getAtmpIpList" resultType="map">
+    	 SELECT DISTINCT atm_atmp_ip FROM atmmstr WHERE ATM_ATMP_IP <![CDATA[<>]]> ''
+    </select>
+    <!-- 2022-06-24 Bruce add for ATM 基本資料查詢 -->
+    <select id="getAtmBasicList" parameterType="map" resultType="map">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.ext.mapper.AtmmstrExtMapper.Base_Column_Alias_List"/>
+        ,stat.* 
+        FROM ATMMSTR atm inner join atmstat stat on atm.atm_atmno = stat.atmstat_atmno 
+        <if test="argsMap.atmstatStatus != null and argsMap.atmstatStatus != '' ">
+            AND stat.ATMSTAT_STATUS = #{argsMap.atmstatStatus,jdbcType=VARCHAR}
+        </if>
+        <!--  LEFT JOIN GUARD A ON A.GUARD_NO = ATM_GUARD_CASH
+          LEFT JOIN GUARD B ON B.GUARD_NO = ATM_GUARD_SECURE
+            LEFT JOIN BCTL C ON C.BCTL_BRNO = ATM_BRNO_ST
+          LEFT JOIN BCTL D ON D.BCTL_BRNO = ATM_BRNO_MA
+          LEFT JOIN BCTL E ON E.BCTL_BRNO = ATM_BRNO_CL -->
+        <where>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.atmAtmNoTxt)">
+        	AND atm.ATM_ATMNO LIKE CONCAT('%', CONCAT(#{argsMap.atmAtmNoTxt}, '%'))
+        </if>
+       	<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.branchNameCTxt)">
+            AND ATM_BRANCH_NAME_C LIKE CONCAT('%', CONCAT(#{argsMap.branchNameCTxt}, '%'))
+        </if>
+        <if test="argsMap.atmAtmpIp != null and argsMap.atmAtmpIp != '' ">
+        	AND ATM_ATMP_IP = #{argsMap.atmAtmpIp,jdbcType=VARCHAR}
+        </if>
+        <if test="argsMap.atmFepConnection != null and argsMap.atmFepConnection != '' ">
+        	AND ATM_FEP_CONNECTION = #{argsMap.atmFepConnection,jdbcType=VARCHAR}
+        </if>
+        <if test="argsMap.atmModelnoTxt != null and argsMap.atmModelnoTxt != '' ">
+            AND ATM_MODELNO LIKE CONCAT('%', CONCAT(#{argsMap.atmModelnoTxt}, '%'))
+        </if>
+        <if test="argsMap.atmVendor != null and argsMap.atmVendor != '' ">
+            AND ATM_VENDOR = #{argsMap.atmVendor,jdbcType=VARCHAR}
+        </if>
+        <if test="argsMap.atmIpTxt != null and argsMap.atmIpTxt != '' ">
+            AND ATM_IP LIKE CONCAT('%', CONCAT(#{argsMap.atmIpTxt}, '%'))
+        </if>
+        <if test="argsMap.atmCertaliasTxt != null and argsMap.atmCertaliasTxt != '' ">
+            AND ATM_CERTALIAS LIKE CONCAT('%', CONCAT(#{argsMap.atmCertaliasTxt}, '%'))
+        </if>
+        <if test="argsMap.atmStatApVersionNTxt != null and argsMap.atmStatApVersionNTxt != '' ">
+            AND stat.ATMSTAT_AP_VERSION_N LIKE CONCAT('%', CONCAT(#{argsMap.atmStatApVersionNTxt}, '%'))
+        </if>
+        </where> 
+    </select>
+    <!-- 2022-05-06 Han add for SingleATM -->
+    <select id="getSingleATM" parameterType="map" resultType="map">
+        SELECT *
+        FROM ATMMSTR
+        WHERE ATM_ATMNO = #{atmAtmno,jdbcType=CHAR}
+    </select>
+    <!-- 2026-03-24 Richard add for ATM Gateway -->
+    <select id="getAtmmstrByAtmFepConnection" parameterType="map" resultType="map">
+        SELECT ATM_ATMNO,
+        ATM_ZONE,
+        ATM_CHECK_MAC,
+        ATMSTAT_SEC,
+        ATMSTAT_SOCKET,
+        ATMSTAT_INIKEY,
+        ATM_ATMP_PORT,
+        ATM_IP,
+        ATM_CERTALIAS,
+        ATM_FEP_CONNECTION
+        FROM ATMMSTR
+        INNER JOIN ATMSTAT ON ATM_ATMNO = ATMSTAT_ATMNO
+        <where>
+            <if test="atmFepConnection != null">
+                AND ATM_FEP_CONNECTION = #{atmFepConnection,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </select>
+</mapper>

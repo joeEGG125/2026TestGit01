@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028060/executeClick}" method="post">
+        <div class="card card-primary card-outline" >
+            <div class="card-header">
+                <h5 class="card-title">調整選項</h5>
+            </div>
+            <div class="card-body">
+                <div class="condition-label row">
+                    <label for="kind" class="col-form-label col-1">調整項目</label>
+                    <select class="form-control col-2" th:field="*{kind}">
+                        <option value="1" selected="selected">送往財金</option>
+                        <option value="2">來自財金</option>
+                        <option value="3">送往財金,不自動調整序號</option>
+                    </select>
+                    <label for="txkind" class="col-form-label col-1">調整交易類別</label>
+                    <select class="form-control col-2" th:field="*{txKind}">
+                        <option value="1" selected="selected">匯款</option>
+                        <option value="4">一般通訊</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnExecute">執行</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary">
+</div>
+<div layout:fragment="panel-grid">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h5 class="card-title">調整內容</h5>
+        </div>
+        <div class="card-body">
+            <table width="60%">
+                <tr>
+                    <td width="33%" align="center"><b>現存收送狀態</b></td>
+                    <td width="33%" align="center"><b>送往財金</b></td>
+                    <td width="33%" align="center"><b>來自財金</b></td>
+                </tr>
+                <tr>
+                    <td align="center"><b>匯款</b></td>
+                    <td align="center">
+                        <input class="col-form-radio" type="radio" id="FISCO_FLAG1_Y" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCO_FLAG1).Y}" th:field="${form.fISCO_FLAG1}"  fep:checked="${form.fISCO_FLAG1}">
+                        <label for="FISCO_FLAG1_Y" class="col-form-label">可匯出/入</label> <br>
+                        <input class="col-form-radio" type="radio" id="FISCO_FLAG1_N" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCO_FLAG1).N}" th:field="${form.fISCO_FLAG1}"  fep:checked="${form.fISCO_FLAG1}">
+                        <label for="FISCO_FLAG1_N" class="col-form-label">暫停匯出/入</label>
+                    </td>
+                    <td align="center">
+                        <input class="col-form-radio" type="radio" id="FISCI_FLAG1_Y" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCI_FLAG1).Y}" th:field="${form.fISCI_FLAG1}"  fep:checked="${form.fISCI_FLAG1}">
+                        <label for="FISCI_FLAG1_Y" class="col-form-label">可匯出/入</label> <br>
+                        <input class="col-form-radio" type="radio" id="FISCI_FLAG1_N" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCI_FLAG1).N}" th:field="${form.fISCI_FLAG1}"  fep:checked="${form.fISCI_FLAG1}">
+                        <label for="FISCI_FLAG1_N" class="col-form-label">暫停匯出/入</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center"><b>一般通訊</b></td>
+                    <td align="center">
+                        <input class="col-form-radio" type="radio" id="FISCO_FLAG4_Y" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCO_FLAG4).Y}" th:field="${form.fISCO_FLAG4}"  fep:checked="${form.fISCO_FLAG4}">
+                        <label for="FISCO_FLAG4_Y" class="col-form-label">可匯出/入</label>
+                        <input class="col-form-radio" type="radio" id="FISCO_FLAG4_N" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCO_FLAG4).N}" th:field="${form.fISCO_FLAG4}"  fep:checked="${form.fISCO_FLAG4}">
+                        <label for="FISCO_FLAG4_N" class="col-form-label">暫停匯出/入</label>
+                    </td>
+                    <td align="center">
+                        <input class="col-form-radio" type="radio" id="FISCI_FLAG4_Y" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCI_FLAG4).Y}" th:field="${form.fISCI_FLAG4}"  fep:checked="${form.fISCI_FLAG4}">
+                        <label for="FISCI_FLAG4_Y" class="col-form-label">可匯出/入</label>
+                        <input class="col-form-radio" type="radio" id="FISCI_FLAG4_N" th:value="${T(com.syscom.fep.web.form.rm.UI_028060_Form.FISCI_FLAG4).N}" th:field="${form.fISCI_FLAG4}"  fep:checked="${form.fISCI_FLAG4}">
+                        <label for="FISCI_FLAG4_N" class="col-form-label">暫停匯出/入</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <td>本程式執行狀態:</td>
+            <td th:style="'color:'+${PRGSTAT_FLAGColor}+''" th:text="${PRGSTAT_FLAG}"></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028060.js}"></script>
+</div>
+</body>
+</html>

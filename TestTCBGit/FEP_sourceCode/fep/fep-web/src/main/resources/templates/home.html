@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Home</title>
+</head>
+<body>
+	<div layout:fragment="panel-content">
+		<div th:if="${session.logonUser != null && session.logonUser.selectedMenu != null}">
+			<div class="card card-olive card-condition">
+				<div class="card-header card-header-condition">
+					<h3 class="card-title" th:text="${#strings.isEmpty(changedTitle) ? session.logonUser.selectedMenu.name : changedTitle}"></h3>
+				</div>
+				<div class="card-body card-body-condition">
+					<div layout:fragment="panel-condition" class="panel-condition"></div>
+				</div>
+			</div>
+			<div class="card card-olive card-content">
+				<div layout:fragment="panel-button" class="card-footer panel-button"></div>
+				<div th:replace="~{layout/messagebar :: messagebar}"></div>
+				<div layout:fragment="panel-summary" class="card-body panel-summary"></div>
+				<div th:replace="~{layout/pagination :: pagination}"></div>
+				<div layout:fragment="panel-grid" class="card-body panel-grid"></div>
+				<div th:replace="~{layout/pagination :: pagination}"></div>
+				<div layout:fragment="panel-script" class="panel-script"></div>
+				<div layout:fragment="panel-dialog" class="panel-dialog"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

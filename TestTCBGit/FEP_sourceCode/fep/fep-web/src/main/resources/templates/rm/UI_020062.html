@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_020062/btnExecute}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" for="countyDDL">
+                    <label class="col-form-label">縣市</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{countyDDL}">
+                        <option value=""></option>
+                        <option th:each="oCountyDDL : ${oCountyDDLs}" th:text="${oCountyDDL.text}" th:value="${oCountyDDL.value}" />
+                    </select>
+                </td>
+                <td class="condition-label" for="regionDDL">
+                    <label class="col-form-label">鄉鎮區</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{regionDDL}">
+                        <option value=""></option>
+                        <option th:each="oRegionDDL : ${oRegionDDLs}" th:text="${oRegionDDL.text}" th:value="${oRegionDDL.value}" />
+                    </select>
+                </td>
+                <td class="condition-label" for="ElseTb">
+                    <label class="col-form-label">其他</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{elseTb}" maxlength="3">
+                </td>
+                <td class="condition-label" for="excuteTypeDdl">
+                    <label class="col-form-label">xx縣xx區(鄉/鎮)</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="excuteTypeDdl">
+                    <label class="col-form-label">服務狀態</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{flagDDL}">
+                        <option value="0">0-可匯出</option>
+                        <option value="1" selected="selected">1-暫停匯出</option>
+                        <option value="9">9-全面解除</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnExecute">執行</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid">
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI020062.js}"></script>
+</div>
+</body>
+</html>

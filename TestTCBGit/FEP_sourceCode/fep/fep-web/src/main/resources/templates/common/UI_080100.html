@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden"></div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+    <div class="card-body table-responsive p-0">
+        <div id="monitor" v-cloak>
+            <table border="0" cellspacing="0" class="table-condition">
+                <tr>
+                    <td class="condition-label">
+                        &nbsp;&nbsp;
+                        <!-- 更新時間 -->
+                        <span>更新時間:</span>
+                        &nbsp;&nbsp;
+                        <span style="color: #79b9ff">{{updateTime}}</span>
+                        <!-- 暫停發送通知 -->
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>暫停發送通知:</span>
+                        &nbsp;&nbsp;
+                        <label style="font-weight: normal;padding: 0;margin: 0;"><input type="radio" value="true" name="stopNotificationFlag" v-model="stopNotification"
+                                                                                        v-on:click="doStopNotification('true')">&nbsp;&nbsp;是</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label style="font-weight: normal;padding: 0;margin: 0;"><input type="radio" value="false" name="stopNotificationFlag" v-model="stopNotification"
+                                                                                        v-on:click="doStopNotification('false')">&nbsp;&nbsp;否</label>
+                        <!-- 啟用自動重啟 -->
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>啟用自動重啟:</span>
+                        &nbsp;&nbsp;
+                        <label style="font-weight: normal;padding: 0;margin: 0;"><input type="radio" value="true" name="enableAutoRestartFlag" v-model="enableAutoRestart"
+                                                                                        v-on:click="doEnableAutoRestart('true')">&nbsp;&nbsp;是</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label style="font-weight: normal;padding: 0;margin: 0;"><input type="radio" value="false" name="enableAutoRestartFlag" v-model="enableAutoRestart"
+                                                                                        v-on:click="doEnableAutoRestart('false')">&nbsp;&nbsp;否</label>
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%" class="table-padding table-width">
+                <tr>
+                    <td colspan="2">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>系統狀態</b></h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="display: block;padding: 6px">
+                                <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th align="center"><b>服務主機名稱</b></th>
+                                        <th align="center"><b>服務主機IP</b></th>
+                                        <th align="center"><b>CPU</b></th>
+                                        <th align="center"><b>RAM(MB)</b></th>
+                                        <!-- <th align="center"><b>使用中連接埠</b></th> -->
+                                        <th align="center" width="5%"><b>FEPDB</b></th>
+                                        <th align="center" width="5%"><b>EMSDB</b></th>
+                                        <th align="center" width="5%"><b>DESDB</b></th>
+                                        <th align="center" width="5%"><b>DESLOGDB</b></th>
+                                        <th align="center" width="5%"><b>FEPHISDB</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(systemStatus, i) in systemStatusList">
+                                        <td align="center">{{systemStatus.sysHostname}}</td>
+                                        <td align="center">{{systemStatus.sysServiceIP}}</td>
+                                        <td align="center">{{systemStatus.sysCpu}}</td>
+                                        <td align="center">{{systemStatus.sysRam}}</td>
+                                        <!-- <td align="center">{{systemStatus.sysUserport}}</td> -->
+                                        <!-- sysFEPDB -->
+                                        <td align="center" v-if="systemStatus.sysFEPDB == 'true'"><input type="image" th:src="@{/images/Circle_Green.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else-if="systemStatus.sysFEPDB == 'false'"><input type="image" th:src="@{/images/Circle_Red.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else></td>
+                                        <!-- sysEMSDB -->
+                                        <td align="center" v-if="systemStatus.sysEMSDB == 'true'"><input type="image" th:src="@{/images/Circle_Green.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else-if="systemStatus.sysEMSDB == 'false'"><input type="image" th:src="@{/images/Circle_Red.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else></td>
+                                        <!-- sysENCDB -->
+                                        <td align="center" v-if="systemStatus.sysENCDB == 'true'"><input type="image" th:src="@{/images/Circle_Green.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else-if="systemStatus.sysENCDB == 'false'"><input type="image" th:src="@{/images/Circle_Red.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else></td>
+                                        <!-- sysENCLOGDB -->
+                                        <td align="center" v-if="systemStatus.sysENCLOGDB == 'true'"><input type="image" th:src="@{/images/Circle_Green.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else-if="systemStatus.sysENCLOGDB == 'false'"><input type="image" th:src="@{/images/Circle_Red.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else></td>
+                                        <!-- sysFEPHIS -->
+                                        <td align="center" v-if="systemStatus.sysFEPHIS == 'true'"><input type="image" th:src="@{/images/Circle_Green.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else-if="systemStatus.sysFEPHIS == 'false'"><input type="image" th:src="@{/images/Circle_Red.png}" style="vertical-align:middle;"></td>
+                                        <td align="center" v-else></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top" colspan="2">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>主機TimeOut狀態</b></h3>
+                                <span v-if="(ifepTXNList.length > 0) && (parseInt(ifepTXNList[0].tocount)>parseInt(ifepTXNList[0].timeouttotalcount))" style="margin-left: 50px; color: red;">{{ifepTXNList[0].tocount}} /分</span>
+                                <span v-if="(ifepTXNList.length > 0) && (parseInt(ifepTXNList[0].tocount)<=parseInt(ifepTXNList[0].timeouttotalcount))" style="margin-left: 50px;">{{ifepTXNList[0].tocount}} /分</span>
+                                <span v-if="(ifepTXNList.length <= 0)" style="margin-left: 50px;">0 /分</span>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="display: block;padding: 6px">
+                                <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width: 100%;"
+                                       v-if="(ifepTXNList.length > 0)">
+                                    <thead>
+                                    <tr>
+                                        <th align="center"><b>交易來源</b></th>
+                                        <th align="center"><b>TimeOut數量</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(ifepTXN, i) in ifepTXNList">
+
+                                        <td v-if="(parseInt(ifepTXNList[0].tocount)>parseInt(ifepTXNList[0].timeouttotalcount))" style="color: red">{{ifepTXN.source}}</td>
+                                        <td v-if="(parseInt(ifepTXNList[0].tocount)>parseInt(ifepTXNList[0].timeouttotalcount))" style="color: red">{{ifepTXN.count}}</td>
+                                        <td v-if="(parseInt(ifepTXNList[0].tocount)<=parseInt(ifepTXNList[0].timeouttotalcount))">{{ifepTXN.source}}</td>
+                                        <td v-if="(parseInt(ifepTXNList[0].tocount)<=parseInt(ifepTXNList[0].timeouttotalcount))">{{ifepTXN.count}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <label style="padding-left: 15px;" v-if="(ifepTXNList.length <= 0)">
+                                    無資料
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top" colspan="2">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>服務狀態</b></h3>
+                                &nbsp;&nbsp;
+                                <label style="font-weight: normal;padding: 0;margin: 0;" for="serviceFlag"><input type="checkbox" checked id="serviceFlag" v-on:click="checkboxStatus('serviceFlag')">
+                                    &nbsp;全部顯示</label>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="display: block;padding: 6px">
+                                <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width: 100%;"
+                                       v-if="(serviceFlag == 'true' && (serviceStartList.length > 0 || serviceStopList.length > 0)) || (serviceStopList.length > 0 && serviceFlag == 'false')">
+                                    <thead>
+                                    <tr>
+                                        <th align="center"><b>服務主機名稱</b></th>
+                                        <th align="center"><b>服務名稱</b></th>
+                                        <th align="center"><b>服務IP</b></th>
+                                        <th align="center"><b>狀態</b></th>
+                                        <th v-if="showPid" align="center"><b>PID</b></th>
+                                        <th align="center"><b>啟動時間</b></th>
+                                        <th align="center"><b>停止時間</b></th>
+                                        <th align="center"><b>CPU</b></th>
+                                        <th align="center"><b>RAM(MB)</b></th>
+                                        <th align="center"><b>執行緒</b></th>
+                                        <th align="center"><b>JVM HeapSize(MB)</b></th>
+                                        <th align="center"><b>JVM CPU Usage</b></th>
+                                        <th align="center"><b>DB Connection PoolSize</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(serviceStatus, i) in serviceStopList" style="color: red">
+                                        <td>{{serviceStatus.serviceHostName}}</td>
+                                        <td>{{serviceStatus.serviceName}}</td>
+                                        <td>{{serviceStatus.serviceIP}}</td>
+                                        <td align="center">{{serviceStatus.serviceState}}</td>
+                                        <td v-if="showPid" align="center"></td>
+                                        <td>{{serviceStatus.startTime}}</td>
+                                        <td>{{serviceStatus.stopTime}}</td>
+                                        <td align="right">{{serviceStatus.serviceCpu}}</td>
+                                        <td align="right">{{serviceStatus.serviceRam}}</td>
+                                        <td align="right">{{serviceStatus.serviceThreads}}</td>
+                                        <td align="right">{{serviceStatus.jvmHeapSize}}</td>
+                                        <td align="right">{{serviceStatus.jvmCpuUsage}}</td>
+                                        <td align="right">{{serviceStatus.dbConnectionPoolSize}}</td>
+                                    </tr>
+                                    <tr v-for="(serviceStatus, i) in serviceStartList" v-if="serviceFlag == 'true'">
+                                        <td>{{serviceStatus.serviceHostName}}</td>
+                                        <td>{{serviceStatus.serviceName}}</td>
+                                        <td>{{serviceStatus.serviceIP}}</td>
+                                        <td align="center">{{serviceStatus.serviceState}}</td>
+                                        <td v-if="showPid" align="center">{{serviceStatus.pid}}</td>
+                                        <td>{{serviceStatus.startTime}}</td>
+                                        <td>{{serviceStatus.stopTime}}</td>
+                                        <td v-if="serviceStatus.overCpuThreshold" align="right" style="color:red">{{serviceStatus.serviceCpu}}</td>
+                                        <td v-else align="right">{{serviceStatus.serviceCpu}}</td>
+                                        <td v-if="serviceStatus.overRamThreshold" align="right" style="color:red">{{serviceStatus.serviceRam}}</td>
+                                        <td v-else align="right">{{serviceStatus.serviceRam}}</td>
+                                        <td v-if="serviceStatus.overThreadThreshold" align="right" style="color:red">{{serviceStatus.serviceThreads}}</td>
+                                        <td v-else align="right">{{serviceStatus.serviceThreads}}</td>
+                                        <td align="right">{{serviceStatus.jvmHeapSize}}</td>
+                                        <td align="right">{{serviceStatus.jvmCpuUsage}}</td>
+                                        <td align="right">{{serviceStatus.dbConnectionPoolSize}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <label style="padding-left: 15px;" v-if="(serviceStopList.length <= 0 && serviceFlag == 'false') || (serviceStartList.length <= 0 && serviceStopList.length <= 0)">
+                                    無資料
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>網路狀態-CLIENT</b></h3>
+                                &nbsp;&nbsp;
+                                <label style="font-weight: normal;padding: 0;margin: 0;" for="clientNetworkFlag">
+                                    <input type="checkbox" checked id="clientNetworkFlag" v-on:click="checkboxStatus('clientNetworkFlag')"> &nbsp;全部顯示
+                                </label>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="display: block;padding: 6px">
+                                <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width: 100%;"
+                                       v-if="(clientNetworkFlag == 'true' && (clientNetworkStopList.length > 0 || clientNetworkStartList.length > 0)) || (clientNetworkStopList.length > 0 && clientNetworkFlag == 'false')">
+                                    <thead>
+                                    <tr>
+                                        <th align="center"><b>服務主機名稱</b></th>
+                                        <th align="center"><b>服務名稱</b></th>
+                                        <!-- <th align="center"><b>本機連接埠</b></th> -->
+                                        <th align="center"><b>遠端連接埠</b></th>
+                                        <th align="center"><b>連線狀態</b></th>
+                                        <th align="center"><b>目前連接數</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(clientNetworkStar, i) in clientNetworkStopList" style="color: red">
+                                        <td>{{clientNetworkStar.serviceHostName}}</td>
+                                        <td>{{clientNetworkStar.serviceName}}</td>
+                                        <!-- <td>{{clientNetworkStar.localEndPoint}}</td> -->
+                                        <td>{{clientNetworkStar.remoteEndPoint}}</td>
+                                        <td>{{clientNetworkStar.state}}</td>
+                                        <td align="right">{{clientNetworkStar.socketCount}}</td>
+                                    </tr>
+                                    <tr v-for="(clientNetworkStar, i) in clientNetworkStartList" v-if="clientNetworkFlag == 'true'">
+                                        <td>{{clientNetworkStar.serviceHostName}}</td>
+                                        <td>{{clientNetworkStar.serviceName}}</td>
+                                        <!-- <td>{{clientNetworkStar.localEndPoint}}</td> -->
+                                        <td>{{clientNetworkStar.remoteEndPoint}}</td>
+                                        <td>{{clientNetworkStar.state}}</td>
+                                        <td align="right">{{clientNetworkStar.socketCount}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <label style="padding-left: 15px;"
+                                       v-if="(clientNetworkStopList.length <= 0 && clientNetworkFlag == 'false') || (clientNetworkStopList.length <= 0 && clientNetworkStartList.length <= 0)">
+                                    無資料
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                    <td valign="top">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>網路狀態-SERVER</b></h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="display: block;padding: 6px">
+                                <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width: 100%;" v-if="serverNetworkStatusList.length > 0">
+                                    <thead>
+                                    <tr>
+                                        <th align="center"><b>服務主機名稱</b></th>
+                                        <th align="center"><b>服務名稱</b></th>
+                                        <th align="center"><b>服務主機IP</b></th>
+                                        <th align="center"><b>使用連接埠</b></th>
+                                        <th align="center"><b>目前連接數</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(serverNetworkStatus, i) in serverNetworkStatusList">
+                                        <td v-if="serverNetworkStatus.serviceState == '1'">{{serverNetworkStatus.serviceHostName}}</td>
+                                        <td v-else style="color: red">{{serverNetworkStatus.serviceHostName}}</td>
+                                        <td v-if="serverNetworkStatus.serviceState == '1'">{{serverNetworkStatus.serviceName}}</td>
+                                        <td v-else style="color: red">{{serverNetworkStatus.serviceName}}</td>
+                                        <td v-if="serverNetworkStatus.serviceState == '1'">{{serverNetworkStatus.serviceIP}}</td>
+                                        <td v-else style="color: red">{{serverNetworkStatus.serviceIP}}</td>
+                                        <td v-if="serverNetworkStatus.serviceState == '1'" align="right">{{serverNetworkStatus.servicePort}}</td>
+                                        <td v-else style="color: red" align="right">{{serverNetworkStatus.servicePort}}</td>
+                                        <td v-if="serverNetworkStatus.serviceState == '1'" align="right">{{serverNetworkStatus.socketCount}}</td>
+                                        <td v-else style="color: red" align="right">{{serverNetworkStatus.socketCount}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <label style="padding-left: 15px;" v-if="serverNetworkStatusList.length <= 0">
+                                    無資料
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>IBM MQ 狀態</b></h3>
+                                &nbsp;
+                                <label style="font-weight: normal;padding: 0;margin: 0;" for="ibmMqFlag"><input type="checkbox" checked id="ibmMqFlag" v-on:click="checkboxStatus('ibmMqFlag')"> &nbsp;全部顯示</label>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="display: block;padding: 6px">
+                                <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width: 100%;"
+                                       v-if="(ibmMqFlag == 'true' && (ibmMQStartStatusList.length > 0 || ibmMQStopStatusList.length > 0)) || (ibmMQStopStatusList.length > 0 && ibmMqFlag == 'false')">
+                                    <thead>
+                                    <tr width="40%">
+                                        <th align="center"><b>名稱</b></th>
+                                        <th align="center"><b>服務主機名稱</b></th>
+                                        <th align="center"><b>服務IP</b></th>
+                                        <th align="center"><b>類型</b></th>
+                                        <th align="center"><b>目前訊息</b></th>
+                                        <th align="center"><b>通道狀態</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(ibmMQStart, i) in ibmMQStartStatusList" v-if="ibmMqFlag == 'true'">
+                                        <td>{{ibmMQStart.name}}</td>
+                                        <td>{{ibmMQStart.serviceHostName}}</td>
+                                        <td>{{ibmMQStart.serviceIP}}</td>
+                                        <td>{{ibmMQStart.objectType}}</td>
+                                        <td>{{ibmMQStart.queueCount}}</td>
+                                        <td>{{ibmMQStart.status}}</td>
+                                    </tr>
+                                    <tr v-for="(ibmMQStop, i) in ibmMQStopStatusList" style="color: red">
+                                        <td>{{ibmMQStop.name}}</td>
+                                        <td>{{ibmMQStop.serviceHostName}}</td>
+                                        <td>{{ibmMQStop.serviceIP}}</td>
+                                        <td>{{ibmMQStop.objectType}}</td>
+                                        <td>{{ibmMQStop.queueCount}}</td>
+                                        <td>{{ibmMQStop.status}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <label style="padding-left: 15px;"
+                                       v-if="(ibmMQStopStatusList.length <= 0 && ibmMqFlag == 'false') || (ibmMQStartStatusList.length <= 0 && ibmMQStopStatusList.length <= 0)">
+                                    無資料
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                    <td valign="top">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>磁碟空間</b></h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="display: block;padding: 6px">
+                                <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width: 100%;" v-if="diskSpaceList.length > 0">
+                                    <thead>
+                                    <tr>
+                                        <th align="center"><b>服務主機名稱</b></th>
+                                        <th align="center"><b>服務IP</b></th>
+                                        <th align="center"><b>磁碟代號</b></th>
+                                        <th align="center"><b>磁碟總空間</b></th>
+                                        <th align="center"><b>磁碟已使用空間</b></th>
+                                        <th align="center"><b>已使用比例</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(diskSpace, i) in diskSpaceList">
+                                        <td v-if="diskSpace.red" style="color: red">{{diskSpace.serviceHostName}}</td>
+                                        <td v-else>{{diskSpace.serviceHostName}}</td>
+                                        <td v-if="diskSpace.red" style="color: red">{{diskSpace.serviceIP}}</td>
+                                        <td v-else>{{diskSpace.serviceIP}}</td>
+                                        <td v-if="diskSpace.red" style="color: red">{{diskSpace.serviceName}}</td>
+                                        <td v-else>{{diskSpace.serviceName}}</td>
+                                        <td v-if="diskSpace.red" style="color: red">{{diskSpace.totalDisk}}</td>
+                                        <td v-else>{{diskSpace.totalDisk}}</td>
+                                        <td v-if="diskSpace.red" style="color: red">{{diskSpace.useDisk}}</td>
+                                        <td v-else>{{diskSpace.useDisk}}</td>
+                                        <td v-if="diskSpace.red" style="color: red">{{diskSpace.disk}}</td>
+                                        <td v-else>{{diskSpace.disk}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <label style="padding-left: 15px;" v-if="diskSpaceList.length <= 0">
+                                    無資料
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI080100.js}"></script>
+</div>
+</body>
+</html>

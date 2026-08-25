@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_019020/inquiryMain}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label" colspan="2">
+						<label for="tradingDate" class="col-form-label">交易日期</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<div class="input-group date" id="tradingDate" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#tradingDate" th:field="*{tradingDate}" />
+							<div class="input-group-append" data-target="#tradingDate" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<input class="col-form-radio" type="radio" id="radioPCode" th:field="*{radioOption}" 
+							th:value="${T(com.syscom.fep.web.form.inbk.UI_019020_FormMain.RadioOption).PCODE}" fep:checked="*{radioOption}">
+					</td>
+					<td class="condition-label">
+						<label for="radioPCode" class="col-form-label">PCODE</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<select class="form-control" th:field="*{pcode}" 
+							th:disabled="*{radioOption==T(com.syscom.fep.web.form.inbk.UI_019020_FormMain.RadioOption).PCODE?null:'disabled'}" >
+							<option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"/>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<input class="col-form-radio" type="radio" id="radioStan" th:field="*{radioOption}" 
+							th:value="${T(com.syscom.fep.web.form.inbk.UI_019020_FormMain.RadioOption).STAN}" fep:checked="*{radioOption}">
+					</td>
+					<td class="condition-label">
+						<label for="radioStan" class="col-form-label">STAN</label>
+					</td>
+					<td class="condition-label">
+						<label for="bkno" class="col-form-label">BKNO</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" maxlength="3" th:field="*{bkno}" 
+							th:disabled="*{radioOption==T(com.syscom.fep.web.form.inbk.UI_019020_FormMain.RadioOption).STAN?null:'disabled'}" />
+					</td>
+					<td class="condition-label">
+						<label for="stan" class="col-form-label">STAN</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" maxlength="7" th:field="*{stan}" 
+							th:disabled="*{radioOption==T(com.syscom.fep.web.form.inbk.UI_019020_FormMain.RadioOption).STAN?null:'disabled'}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<input class="col-form-radio" type="radio" id="radioEjno" th:field="*{radioOption}" 
+							th:value="${T(com.syscom.fep.web.form.inbk.UI_019020_FormMain.RadioOption).EJNO}" fep:checked="*{radioOption}">
+					</td>
+					<td class="condition-label">
+						<label for="radioEjno" class="col-form-label">EJNO</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<input class="form-control" type="text" th:field="*{ejno}" 
+							th:disabled="*{radioOption==T(com.syscom.fep.web.form.inbk.UI_019020_FormMain.RadioOption).EJNO?null:'disabled'}" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th width="50px"></th>
+						<th><b>交易代號</b></th>
+						<th><b>交易日期</b></th>
+						<th><b>交易時間</b></th>
+						<th><b>財金STAN</b></th>
+						<th><b>EJ序號</b></th>
+						<th><b>財金REQ回應代碼</b></th>
+						<th><b>財金REP回應代碼</b></th>
+						<th><b>財金CON回應代碼</b></th>
+						<th><b>FEP內部錯誤代碼</b></th>
+						<th><b>APID(KeyID)</b></th>
+						<th><b>NOTICE ID</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data : ${pageData.list}">
+						<td align="center">
+							<button type="button" class="btn btn-primary btn-inquiry"
+								th:value="${
+										'{' + '&quot;feptxnTxDate&quot;:&quot;'+data.feptxnTxDate + '&quot;' + ',' 
+											+ '&quot;feptxnEjfno&quot;:&quot;'+data.feptxnEjfno + '&quot;'
+										+ '}'
+										}">查詢</button>
+						</td>
+						<td th:text="${data.feptxnPcode}" />
+						<td th:text="${T(com.syscom.fep.web.base.FEPWebBase).charDateToDate(data.feptxnTxDate)}" />
+						<td th:text="${T(com.syscom.fep.web.base.FEPWebBase).charTimeToTime(data.feptxnTxTime)}" />
+						<td th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',data.feptxnBkno,data.feptxnStan)}" />
+						<td th:text="${data.feptxnEjfno}" />
+						<td th:text="${data.feptxnReqRc}" />
+						<td th:text="${data.feptxnRepRc}" />
+						<td th:text="${data.feptxnConRc}" />
+						<td th:text="${data.feptxnAaRc}" />
+						<td th:text="${data.feptxnApid}" />
+						<td th:text="${data.feptxnNoticeId}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/inbk/UI019020.js}"></script>
+	</div>
+</body>
+</html>

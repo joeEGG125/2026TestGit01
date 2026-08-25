@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.NpsbatchExtMapper">
+<!--    xy 2021/08/26 add-->
+    <select id="queryNPSBATCH" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.NpsbatchMapper.BaseResultMap">
+        SELECT * FROM NPSBATCH 
+        <where>
+            <if test="fileid != ''">
+                AND NPSBATCH_FILE_ID = #{fileid,jdbcType=CHAR}
+            </if>
+            <if test="fileid == ''">
+                AND NPSBATCH_FILE_ID != '' AND NPSBATCH_FILE_ID IS NOT NULL 
+            </if>
+            <if test="txdate != ''">
+                AND NPSBATCH_TX_DATE = #{txdate,jdbcType=CHAR}
+            </if>
+        </where>
+        ORDER BY NPSBATCH_BATCH_NO
+    </select>
+    <select id="queryNPSBATCHbyBatchNo" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.NpsbatchMapper.BaseResultMap">
+        SELECT * FROM NPSBATCH
+        <where>
+            <if test="txdate != ''">
+                AND NPSBATCH_TX_DATE = #{txdate,jdbcType=CHAR}
+            </if>
+            <if test="BatchNo != ''">
+                AND NPSBATCH_BATCH_NO = #{BatchNo,jdbcType=CHAR}
+            </if>
+        </where>
+        ORDER BY NPSBATCH_BATCH_NO
+    </select>
+
+    <select id="queryNPSBATCHWithOne" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.NpsbatchMapper.BaseResultMap">
+        SELECT * FROM NPSBATCH
+        <where>
+            <if test="fileid != ''">
+                AND NPSBATCH_FILE_ID = #{fileid,jdbcType=CHAR}
+            </if>
+            <if test="BatchNo != ''">
+                AND NPSBATCH_BATCH_NO = #{BatchNo,jdbcType=CHAR}
+            </if>
+            <if test="txdate != ''">
+                AND NPSBATCH_TX_DATE = #{txdate,jdbcType=CHAR}
+            </if>
+        </where>
+        ORDER BY NPSBATCH_BATCH_NO
+    </select>
+    <select id="selectNpsbatchWithNpsdtl" parameterType="map" resultType="java.util.Map">
+        SELECT * FROM NPSBATCH
+        INNER JOIN NPSDTL
+        ON NPSDTL.NPSDTL_BAT_NO = NPSBATCH.NPSBATCH_BATCH_NO
+        WHERE NPSBATCH.NPSBATCH_FILE_ID = #{filename, jdbcType=CHAR}
+        AND NPSBATCH.NPSBATCH_TX_DATE = #{txDate, jdbcType=CHAR}
+        AND NPSBATCH.NPSBATCH_BATCH_NO = #{batchNo, jdbcType=CHAR}
+    </select>
+    <select id="selectNpsbatchWithNpsdtlbyVip" parameterType="map" resultType="com.syscom.fep.mybatis.model.Npsbatch">
+        SELECT * FROM NPSBATCH
+        WHERE NPSBATCH_FILE_ID = #{filename, jdbcType=CHAR}
+        AND NPSBATCH_TX_DATE = #{txDate, jdbcType=CHAR}
+        AND NPSBATCH_BATCH_NO = #{batchNo, jdbcType=CHAR}
+        AND NPSBATCH_BRANCH = #{branch, jdbcType=CHAR}
+        AND NPSBATCH_RESULT IS NULL
+    </select>
+    <select id="getNpsbatchForResponse" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.NpsbatchMapper.BaseResultMap">
+        SELECT * FROM NPSBATCH
+        <where>
+            <choose>
+                <when test="W_FILENAME == null or W_FILENAME == ''">
+                    NPSBATCH_TX_DATE = #{W_DATE,jdbcType=CHAR}
+                    AND NPSBATCH_RESULT = '00'
+                </when>
+                <otherwise>
+                    NPSBATCH_FILE_ID = #{W_FILENAME,jdbcType=CHAR}
+                    AND NPSBATCH_TX_DATE = #{W_DATE,jdbcType=CHAR}
+                    AND NPSBATCH_BATCH_NO = #{W_BATCHNO,jdbcType=CHAR}
+                    AND NPSBATCH_RESULT = '02'
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY NPSBATCH_BATCH_NO
+    </select>
+</mapper>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Pagination</title>
+</head>
+<body>
+	<div th:fragment="pagination" class="card-body panel-pagination" th:if="${pageData != null&&pageData.pages>1}">
+		<div class="panel-pagination-container">
+			<div class="panel-pagination-summary">第[[${pageData.pageNum}]]頁, 共[[${pageData.pages}]]頁, 共[[${pageData.total}]]筆記錄</div>
+			<ul class="pagination pagination-sm m-0 float-right">
+				<li class="page-item" th:if="${pageData.hasPreviousPage}">
+					<a class="page-link" href="#" th:onclick="'pageOnChanged('+${1}+')'">首頁</a>
+				</li>
+				<li class="prev" th:if="${pageData.hasPreviousPage}">
+					<a class="page-link" href="#" th:onclick="'pageOnChanged('+${pageData.prePage}+')'">
+						<i class="ace-icon fa fa-angle-double-left"></i>
+					</a>
+				</li>
+				<li class="page-item" th:each="nav:${pageData.navigatepageNums}">
+					<a class="page-link" href="#" th:onclick="'pageOnChanged('+${nav}+')'" th:text="${nav}" th:if="${nav!=pageData.pageNum}"></a>
+					<span class="page-link selected" th:if="${nav==pageData.pageNum}" th:text="${nav}"></span>
+				</li>
+				<li class="next" th:if="${pageData.hasNextPage}">
+					<a class="page-link" href="#" th:onclick="'pageOnChanged('+${pageData.nextPage}+')'">
+						<i class="ace-icon fa fa-angle-double-right"></i>
+					</a>
+				</li>
+				<li class="page-item" th:if="${pageData.hasNextPage}">
+					<a class="page-link" href="#" th:onclick="'pageOnChanged('+${pageData.pages}+')'">尾頁</a>
+				</li>
+			</ul>
+		</div>
+		<script th:inline="javascript">
+			function pageOnChanged(pageNum) {
+				var form = {'pageNum' : pageNum};
+				doFormSubmit('/doPageChanged', form);
+			}
+		</script>
+	</div>
+</body>
+</html>

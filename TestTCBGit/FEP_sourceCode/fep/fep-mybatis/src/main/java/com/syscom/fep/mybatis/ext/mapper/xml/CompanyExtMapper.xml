@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.CompanyExtMapper">
+	<!-- 2021-05-08 ZhaoKai add -->
+	<select id="getCompanyByBranch" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.CompanyMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CompanyMapper.Base_Column_List" />
+		FROM COMPANY
+		WHERE SUBSTR(RECID, LENGTH(RECID)-3, 3) = #{recid,jdbcType=VARCHAR}
+	</select>
+</mapper>

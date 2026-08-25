@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-warning" id="btnClearUser">清除登入者訊息</button>
+</div>
+<div layout:fragment="panel-grid">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>檔案</b></th>
+                <th><b>下載</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+            <tr th:each="data, dataStat : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btn-download"
+                            th:value="${data.path}">下載</button>
+                </td>
+                <td th:text="${data.path}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/demo/DemoDownload.js}"></script>
+</div>
+</body>
+</html>

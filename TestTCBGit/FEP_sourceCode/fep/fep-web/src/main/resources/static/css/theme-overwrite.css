@@ -1,0 +1,168 @@
+.main-sidebar {
+	background-color: #005540;
+}
+
+.main-footer a {
+	color: #008061;
+}
+
+.card-primary.card-outline {
+	border-top: 3px solid #3D9970;
+}
+
+.card .overlay, 
+.info-box .overlay, 
+.overlay-wrapper .overlay, 
+.small-box .overlay {
+	background-color: rgba(42,42,42,.65);
+}
+
+.l-loading-animate {
+	margin-top: 2rem;
+}
+
+.c-loadingAnmiate {
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
+	position: relative;
+	-webkit-animation: loader12-u9dfa41e1 1s linear alternate infinite;
+	animation: loader12-u9dfa41e1 1s linear alternate infinite;
+	top: -2rem;
+	margin: auto;
+}
+
+.panel-loading-message {
+	color: #fff;
+}
+
+.badge-info {
+	color: #fff;
+	background-color: #62B874;
+}
+
+.btn-primary {
+	border-color: #3d9970;
+	background-color: #3d9970;
+}
+
+.btn-primary:hover {
+	background-color: #005540;
+	border-color: #005540;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, 
+.btn-primary:not(:disabled):not(.disabled):active, 
+.show>.btn-primary.dropdown-toggle {
+	background-color: #005540;
+	border-color: #005540;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+	background-color: #7fbba0;
+	border-color: #7fbba0;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+	background-color: #005540;
+	border-color: #005540;
+}
+
+.panel-pagination .page-item .selected {
+	color: white !important;
+	background: #3d9970;
+}
+
+.panel-pagination .panel-pagination-summary,
+.panel-pagination .prev .page-link, 
+.panel-pagination .next .page-link, 
+.panel-pagination .page-item .page-link {
+	color: #3d9970;
+}
+
+.panel-detail {
+	background: #E0F0E7;
+}
+
+.panel-grid .table-striped > thead > tr > th,
+.panel-info .table-striped > thead > tr > th {
+	color: #FFF;
+	text-align: center;
+	background: #008061;
+	background: -webkit-linear-gradient(bottom, #008061 30%, #48ae61 60%, #82c58b 100%);
+	background: -moz-linear-gradient(bottom, #008061 30%, #48ae61 60%, #82c58b 100%);
+	background: -ms-linear-gradient(bottom, #008061 30%, #48ae61 60%, #82c58b 100%);
+	background: -o-linear-gradient(bottom, #008061 30%, #48ae61 60%, #82c58b 100%);
+	background: linear-gradient(to bottom, #008061 30%, #48ae61 60%, #82c58b 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#008061', endColorstr='#82c58b', GradientType=0);
+}
+
+.panel-grid .table-striped > tbody > tr,
+.panel-info .table-striped > tbody > tr {
+	background: #DDF3D1;
+	background: -webkit-linear-gradient(top, #DDF3D1 0%, #DDF3D1 50%, #a8ebae 100%);
+	background: -moz-linear-gradient(top, #DDF3D1 0%, #DDF3D1 50%, #a8ebae 100%);
+	background: -ms-linear-gradient(top, #DDF3D1 0%, #DDF3D1 50%, #a8ebae 100%);
+	background: -o-linear-gradient(top, #DDF3D1 0%, #DDF3D1 50%, #a8ebae 100%);
+	background: linear-gradient(to bottom, #DDF3D1 0%, #DDF3D1 50%, #a8ebae 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDF3D1', endColorstr='#a8ebae', GradientType=0);
+}
+
+.panel-grid .table-striped > tbody > tr:nth-of-type(odd),
+.panel-info .table-striped > tbody > tr:nth-of-type(odd) {
+	background: rgb(240, 240, 240);
+	background: -webkit-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+	background: -moz-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+	background: -ms-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+	background: -o-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+	background: linear-gradient(to bottom, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#F0F0F0', GradientType=0);
+}
+
+.panel-grid .table-hover > tbody > tr:hover,
+.panel-info .table-hover > tbody > tr:hover {
+	color: #ffffff;
+	background: #009140;
+	background: -webkit-linear-gradient(top, #009140 0%, #009140 50%, #009140 100%);
+	background: -moz-linear-gradient(top, #009140 0%, #009140 50%, #009140 100%);
+	background: -ms-linear-gradient(top, #009140 0%, #009140 50%, #009140 100%);
+	background: -o-linear-gradient(top, #009140 0%, #009140 50%, #009140 100%);
+	background: linear-gradient(to bottom, #009140 0%, #009140 50%, #009140 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#009140', endColorstr='#009140', GradientType=0);
+}
+
+.bootstrap-datetimepicker-widget table td span:hover {
+	background: #3D9970;
+}
+
+.bootstrap-datetimepicker-widget table td.day:hover, 
+.bootstrap-datetimepicker-widget table td.hour:hover, 
+.bootstrap-datetimepicker-widget table td.minute:hover, 
+.bootstrap-datetimepicker-widget table td.second:hover {
+	background: #3D9970;
+}
+
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
+	background: #3D9970;
+}
+
+.bootstrap-datetimepicker-widget table td.today:before {
+	border-bottom-color: #3D9970;
+}
+
+.bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover {
+	background-color: #3D9970;
+}
+
+.bootstrap-datetimepicker-widget table td span.active {
+	background-color: #3D9970;
+}
+
+.bootstrap-datetimepicker-widget table a[data-action] {
+	color: #3D9970 !important;
+}
+
+.panel-calendar .bootstrap-datetimepicker-widget .calendar-active {
+	background: #3D9970;
+	color: white;
+}

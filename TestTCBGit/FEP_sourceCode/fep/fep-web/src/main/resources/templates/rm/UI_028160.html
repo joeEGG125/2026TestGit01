@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+	<form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028160/queryClick}" method="post">
+		<div class="card card-primary card-outline" >
+			<div class="card-header">
+				<h5 class="card-title">查詢條件</h5>
+			</div>
+			<div class="card-body">
+				<table border="0" cellspacing="0" class="table-condition">
+					<tr>
+						<td class="condition-label">
+							<label for="kind" class="col-form-label">查詢類別</label>
+						</td>
+						<td class="condition-input">
+							<select class="form-control" th:field="*{kind}">
+								<option value="5" selected="selected">查詢全行匯出未解筆數金額</option>
+								<option value="6">查詢全行匯入未解筆數金額</option>
+								<option value="3">查詢全行之匯出狀態</option>
+								<option value="4">查詢全行之匯入狀態</option>
+								<option value="1">依分行別查詢匯出狀態</option>
+								<option value="2">依分行別查詢匯入狀態</option>
+							</select>
+						</td>
+						<td class="condition-label">
+							<label for="brno" class="col-form-label">分行別</label>
+						</td>
+						<td class="condition-input">
+							<input class="form-control" type="text" th:field="*{brno}" maxlength="3" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</form>
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+	<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+	<div class="card card-primary card-outline">
+		<div class="card-header">
+			<h5 class="card-title">查詢結果</h5>
+		</div>
+		<div class="card-body">
+			<div class="card-body table-responsive p-0">
+				<div th:if="${pageData != null} and ${pageData.list.size() gt 0} and ${form.resultGrdv eq 'true'}">
+					<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+						<thead>
+							<tr>
+								<th><b>匯款日期</b></th>
+								<th><b>匯款行</b></th>
+								<th><b>解款行</b></th>
+								<th><b>帳號</b></th>
+								<th><b>金額</b></th>
+								<th><b>狀態</b></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="data : ${pageData.list}">
+								<td align="left" th:text="${data.get('TXDATE')}" />
+								<td align="left" th:text="${data.get('SENDER_BANK')}" />
+								<td align="left" th:text="${data.get('RECEIVER_BANK')}" />
+								<td align="right" th:text="${data.get('ACTNO')}" />
+								<td align="right" th:text="${data.get('AMT')}" />
+								<td align="left" th:text="${data.get('O_STAT')}" />
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:if="${form.resultLoadCntText eq 'true'}">
+					<label class="col-form-label" style="width:50%">[[${form.unDownloadCntText}]]</label>
+					<label class="col-form-label">[[${form.downloadingCntText}]]</label>
+				</div>
+				<div th:if="${pageData != null} and ${pageData.list.size() gt 0} and ${form.resultGrdv2 eq 'true'}">
+					<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+						<thead>
+							<tr>
+								<th><b>分行別</b></th>
+								<th><b>筆數</b></th>
+								<th><b>未下傳金額</b></th>
+								<th><b>分行別</b></th>
+								<th><b>筆數</b></th>
+								<th><b>下傳中金額</b></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="data : ${pageData.list}">
+								<td align="left" th:text="${data.get('unDownloadBRNO')}" />
+								<td align="right" th:text="${data.get('unDownloadCNT')}" />
+								<td align="right" th:text="${data.get('unDownloadTXAMT')}" />
+								<td align="left" th:text="${data.get('DownloadingBRNO')}" />
+								<td align="right" th:text="${data.get('DownloadingCNT')}" />
+								<td align="right" th:text="${data.get('DownloadingTXAMT')}" />
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div layout:fragment="panel-script">
+	<script type="text/javascript" th:src="@{/js/rm/UI028160.js}"></script>
+</div>
+</body>
+</html>

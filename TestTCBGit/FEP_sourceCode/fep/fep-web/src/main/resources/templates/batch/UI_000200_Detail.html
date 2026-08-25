@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnChange">變更儲存</button>
+		<button type="button" class="btn btn-primary" th:value="${'{' + '&quot;task_Id&quot;:&quot;'+form.task_Id + '&quot;' + ',' + '&quot;btnType&quot;:&quot;'+form.btnType + '&quot;' + '}' }"
+			id="btnClear1">放棄變更</button>
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+		<form id="form-validator" th:object="${form}" th:action="@{/batch/UI_000200/saveClick}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr th:if="${taskIdBoolean}">
+					<td class="condition-label">
+						<label class="col-form-label">
+							程式編號(系統自動產生)<span style="color: red">*</span>
+						</label>
+					</td>
+					<td class="condition-input" width="300px">
+						<input class="form-control" type="text" th:field="*{task_Id}" readonly="readonly" maxlength="10" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">
+							程式簡稱<span style="color: green">*</span>
+						</label>
+					</td>
+					<td class="condition-input" width="500px">
+						<input class="form-control" style="background-color: white" type="text" th:field="*{task_Name}" maxlength="30" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">
+							程式名稱<span style="color: green">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{task_Command}" maxlength="200" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">
+							程式説明<span style="color: green">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{task_Description}" maxlength="50" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">程式引數</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{task_Commandargs}" maxlength="200" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">
+							逾時(Sec)<span style="color: green">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+
+						<input class="form-control" type="text" th:field="*{task_Timeout}" maxlength="8" />
+
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>
+							<input readonly="readonly" style="display: none" class="form-control" type="text" th:field="*{btnType}" />
+						</label>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/batch/UI000200Detail.js}"></script>
+	</div>
+</body>
+</html>

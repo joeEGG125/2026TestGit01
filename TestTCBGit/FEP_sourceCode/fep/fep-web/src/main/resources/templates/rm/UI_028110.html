@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028110/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <div class="card-header">
+                <h5 class="card-title">查詢條件</h5>
+            </div>
+            <tr>
+                <td class="condition-label">
+                    <label for="kindddl" class="col-form-label">查詢類別:</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{kindddl}">
+                        <option value="" selected="selected"></option>
+                        <option value="1">電文序號</option>
+                        <option value="2">通匯序號</option>
+                        <option value="3">FEP登錄序號</option>
+                        <option value="4">STAN</option>
+                        <option value="5">EJ</option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label for="tradingDate" class="col-form-label">交易日:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" id="tradingDate" data-target="#tradingDate" th:field="*{tradingDate}" />
+                        <div class="input-group-append" data-target="#tradingDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="condition-label">
+                    <label for="remtypeddl" class="col-form-label">匯款類別:</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{remtypeddl}">
+                        <option value=""></option>
+                        <option value="11">11-入戶</option>
+                        <option value="12">12-國庫</option>
+                        <option value="13">13-同業</option>
+                        <option value="14">14-一般通訊</option>
+                        <option value="17">17-退匯</option>
+                        <option value="18">18-證券</option>
+                        <option value="19">19-票券</option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label for="ioflag" class="col-form-label">匯出/匯入:</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{ioflag}">
+                        <option value="1">匯出</option>
+                        <option value="2">匯入</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="senderBankTxt" class="col-form-label">匯款行:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{senderBankTxt}" maxlength="7">
+                </td>
+                <td class="condition-label">
+                    <label for="receiverBankTxt" class="col-form-label">解款行:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{receiverBankTxt}" maxlength="7">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="brnoTxt" class="col-form-label">登錄分行:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{brnoTxt}" maxlength="3">
+                </td>
+                <td class="condition-label">
+                    <label for="orginalddl" class="col-form-label">來源別:</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{orginalddl}">
+                        <option value=""></option>
+                        <option value="0">0-臨櫃</option>
+                        <option value="1">1-FCS</option>
+                        <option value="2">2-FEDI</option>
+                        <option value="3">3-FISC</option>
+                        <option value="4">4-MMAB2B</option>
+                        <option value="5">5-緊急匯款</option>
+                        <option value="6">6-匯入款退匯</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="snoTxt" class="col-form-label">序號:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{snoTxt}" maxlength="8">
+                </td>
+                <td class="condition-label">
+                    <label for="batchnoTxt" class="col-form-label">批號:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{batchnoTxt}" maxlength="32">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="txamtkindddl" class="col-form-label">匯款金額類別:</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{txamtkindddl}">
+                        <option value=""></option>
+                        <option value="1">大於</option>
+                        <option value="2">小於</option>
+                        <option value="3">等於</option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label for="txamtTxt" class="col-form-label">匯款金額:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{txamtTxt}" maxlength="20">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="rmstatddl" class="col-form-label">匯款狀態:</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{rmstatddl}">
+                        <option value="00">00-全部</option>
+                        <option value="02">02-待補登</option>
+                        <option value="03">03-待放行</option>
+                        <option value="04">04-已放行</option>
+                        <option value="05">05-傳送中</option>
+                        <option value="06">06-已解款</option>
+                        <option value="07">07-財金拒絕</option>
+                        <option value="08">08-匯出退匯</option>
+                        <option value="09">09-已刪除未更帳</option>
+                        <option value="10">10-已刪除已更帳</option>
+                        <option value="11">11-磁片整批匯出失敗</option>
+                        <option value="12">12-緊急匯款已刪除</option>
+                        <option value="99">99-系統問題</option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label for="owpriorityddl" class="col-form-label">匯出優先順序:</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{owpriorityddl}">
+                        <option value=""></option>
+                        <option value="0">0：NORMAL</option>
+                        <option value="*">*：HIGH</option>
+                        <option value="2">2：LOW</option>
+                        <option value="8">8：SYSTEM SUSPEND</option>
+                        <option value="9">9：SUSPEND</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" th:if="${pageData != null}">
+    <table border="0" cellspacing="0" class="table-condition">
+        <div class="card-header">
+            <h5 class="card-title">查詢結果</h5>
+        </div>
+        <tr>
+            <td class="condition-label">
+                <label for="totalCount" class="col-form-label">總筆數:</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:text="${totalCount}"></label>
+            </td>
+            <td class="condition-label">
+                <label for="sumOfFeptxnTxAmt" class="col-form-label">總金額:</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:text="${#numbers.formatDecimal(sumOfFeptxnTxAmt,1,'COMMA',2,'POINT')}"></label>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th width="50px"></th>
+                <th><b>匯款行</b></th>
+                <th><b>解款行</b></th>
+                <th><b>中心總行</b></th>
+                <th><b>STAN</b></th>
+                <th><b>種類</b></th>
+                <th><b>帳號</b></th>
+                <th><b>通匯序號</b></th>
+                <th><b>FEP登錄序號</b></th>
+                <th><b>金額</b></th>
+                <th><b>電文序號</b></th>
+                <th><b>狀態</b></th>
+                <th><b>AML狀態</b></th>
+                <th><b>AMLBypass</b></th>
+            </tr>
+            </thead>
+            <tbody th:if='${pageData.list != null && gridview == "rmout"}'>
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btn-inquiry"
+                            th:value="${
+										'{' + '&quot;tabSrc&quot;:&quot;'+data.tabSrc + '&quot;' + ','
+										    + '&quot;rmoutTxdate&quot;:&quot;'+data.rmoutTxdate + '&quot;' + ','
+											+ '&quot;rmoutSenderBank&quot;:&quot;'+data.rmoutSenderBank + '&quot;' + ','
+											+ '&quot;rmoutReceiverBank&quot;:&quot;'+data.rmoutReceiverBank + '&quot;' + ','
+											+ '&quot;rmoutStanBkno&quot;:&quot;'+data.rmoutStanBkno + '&quot;' + ','
+											+ '&quot;rmoutFepno&quot;:&quot;'+data.rmoutFepno + '&quot;' + ','
+											+ '&quot;rmoutPending&quot;:&quot;'+data.rmoutPending + '&quot;' + ','
+											+ '&quot;rmoutOriginal&quot;:&quot;'+data.rmoutOriginal + '&quot;' + ','
+											+ '&quot;rmoutBrno&quot;:&quot;'+data.rmoutBrno + '&quot;' + ','
+											+ '&quot;rmoutFepsubno&quot;:&quot;'+data.rmoutFepsubno + '&quot;' + ','
+											+ '&quot;rmoutBackReason&quot;:&quot;'+data.rmoutBackReason + '&quot;' + ','
+											+ '&quot;rmoutOrgdate&quot;:&quot;'+data.rmoutOrgdate + '&quot;' + ','
+											+ '&quot;rmoutOrgregFepno&quot;:&quot;'+data.rmoutOrgregFepno + '&quot;' + ','
+											+ '&quot;rmoutStan&quot;:&quot;'+data.rmoutStan + '&quot;'
+
+										+ '}'
+										}">查詢</button>
+                </td>
+                <td align="center" th:text="${data.rmoutSenderBank}" />
+                <td align="center" th:text="${data.rmoutReceiverBank}" />
+                <td align="center" th:text="${data.rmoutGlUnit1}" />
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',data.rmoutStanBkno,data.rmoutStan)}" />
+                <td align="center" th:text="${data.rmoutRemtype}" />
+                <td align="center" th:text="${data.rmoutInAccIdNo}" />
+                <td align="center" th:text="${data.rmoutRmsno}" />
+                <td align="center" th:text="${data.rmoutFepno}" />
+                <td align="right" th:text="${data.rmoutTxamt}" />
+                <td align="center" th:text="${data.rmoutFiscsno}" />
+                <td align="center" th:text="${data.rmoutFiscRtnCode}" />
+                <td align="center">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+            </tr>
+            </tbody>
+
+            <tbody th:if='${pageData.list != null && gridview == "rmin"}'>
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btn-inquiry"
+                            th:value="${
+										'{' + '&quot;rminTxdate&quot;:&quot;'+data.rminTxdate + '&quot;' + ','
+											+ '&quot;rminSenderBank&quot;:&quot;'+data.rminSenderBank + '&quot;' + ','
+											+ '&quot;rminReceiverBank&quot;:&quot;'+data.rminReceiverBank + '&quot;' + ','
+											+ '&quot;rminStanBkno&quot;:&quot;'+data.rminStanBkno + '&quot;' + ','
+											+ '&quot;rminFepno&quot;:&quot;'+data.rminFepno + '&quot;' + ','
+											+ '&quot;rminBrno&quot;:&quot;'+data.rminBrno + '&quot;' + ','
+											+ '&quot;rminStat&quot;:&quot;'+data.rminStat + '&quot;' + ','
+											+ '&quot;rminTmpStat&quot;:&quot;'+data.rminTmpStat + '&quot;' + ','
+											+ '&quot;rminBackReason&quot;:&quot;'+data.rminBackReason + '&quot;' + ','
+											+ '&quot;rminPending&quot;:&quot;'+data.rminPending + '&quot;' + ','
+											+ '&quot;rminAmlstat&quot;:&quot;'+data.rminAmlstat + '&quot;' + ','
+											+ '&quot;rminAmlbypass&quot;:&quot;'+data.rminAmlbypass + '&quot;' + ','
+											+ '&quot;rminStan&quot;:&quot;'+data.rminStan + '&quot;'
+										+ '}'
+										}">查詢</button>
+                </td>
+                <td align="center" th:text="${data.rminSenderBank}" />
+                <td align="center" th:text="${data.rminReceiverBank}" />
+                <td align="center" th:text="${data.rminSupno1}" />
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',data.rminStanBkno,data.rminStan)}" />
+                <td align="center" th:text="${data.rminFiscSndCode}" />
+                <td align="center" th:text="${data.rminInAccIdNo}" />
+                <td align="center" th:text="${data.rminRmsno}" />
+                <td align="center" th:text="${data.rminFepno}" />
+                <td align="center" th:text="${data.rminTxamt}" />
+                <td align="center" th:text="${data.rminFiscsno}" />
+                <td align="center" th:text="${data.rminStat}" />
+                <td align="center" th:text="${data.rminAmlstat}" />
+                <td align="center" th:text="${data.rminAmlbypass}" />
+            </tr>
+            </tbody>
+
+            <tbody th:if='${pageData.list != null && gridview == "msgout"}'>
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btn-inquiry"
+                            th:value="${
+										'{' + '&quot;msgoutTxdate&quot;:&quot;'+data.msgoutTxdate + '&quot;' + ','
+											+ '&quot;msgoutSenderBank&quot;:&quot;'+data.msgoutSenderBank + '&quot;' + ','
+											+ '&quot;msgoutReceiverBank&quot;:&quot;'+data.msgoutReceiverBank + '&quot;' + ','
+											+ '&quot;msgoutStan&quot;:&quot;'+data.msgoutStan + '&quot;'
+										+ '}'
+										}">查詢</button>
+                </td>
+                <td align="center" th:text="${data.msgoutSenderBank}" />
+                <td align="center" th:text="${data.msgoutReceiverBank}" />
+                <td align="center">&nbsp;</td>
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',data.msgoutSupno2,data.msgoutStan)}" />
+                <td align="center">一般通訊</td>
+                <td align="center">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+                <td align="center" th:text="${data.msgoutFepno}" />
+                <td align="center">0</td>
+                <td align="center" th:text="${data.msgoutFiscsno}" />
+                <td align="center" th:text="${data.msgoutStat}" />
+                <td align="center">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+            </tr>
+            </tbody>
+
+            <tbody th:if='${pageData.list != null && gridview == "msgin"}'>
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btn-inquiry"
+                            th:value="${
+										'{' + '&quot;msginTxdate&quot;:&quot;'+data.msginTxdate + '&quot;' + ','
+											+ '&quot;msginSenderBank&quot;:&quot;'+data.msginSenderBank + '&quot;' + ','
+											+ '&quot;msginReceiverBank&quot;:&quot;'+data.msginReceiverBank + '&quot;' + ','
+											+ '&quot;msginStan&quot;:&quot;'+data.msginStan + '&quot;'
+										+ '}'
+										}">查詢</button>
+                </td>
+                <td align="center" th:text="${data.msginSenderBank}" />
+                <td align="center" th:text="${data.msginReceiverBank}" />
+                <td align="center">&nbsp;</td>
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',data.msginSupno2,data.msginStan)}" />
+                <td align="center">一般通訊</td>
+                <td align="center">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+                <td align="center" th:text="${data.msginFepno}" />
+                <td align="center">0</td>
+                <td align="center" th:text="${data.msginFiscsno}" />
+                <td align="center" th:text="${data.msginStat}" />
+                <td align="center">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028110.js}"></script>
+</div>
+</body>
+</html>

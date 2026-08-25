@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition"></div>
+	<div layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnChange">變更儲存</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnDiscard">放棄變更</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>	
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">	
+	    <form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060080/saveClick}" method="post">
+	        <table border="0" cellspacing="0" class="table-condition">
+	            <tr>
+	                <td class="condition-label" >
+	                    <label class="col-form-label">警示代碼<span style="color: red">*</span></label>
+	                </td>
+	                <td class="condition-input">
+	            		<input class="form-control" type="text" th:if="*{btnType eq 'I'}" th:field="*{alarm_no}" maxlength="4"/>
+	            		<input class="form-control" type="text" th:if="*{btnType eq 'E'}" readonly th:field="*{alarm_no}" maxlength="4"/>
+	                </td>
+	                <td class="condition-label">
+						<label class="col-form-label">警示說明</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{alarm_name}" maxlength="30" />
+					</td>
+	            </tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">警示訊息<span style="color: green">*</span></label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" id="alarm_names" th:field="*{alarm_names}" maxlength="10" />
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">警示圖示URL(Http://網址格式)</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{alarm_icon}" maxlength="100" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">是否送EMS<span style="color: green">*</span></label>
+					</td>
+					<td colspan="2">
+						<input type="radio" name="rbtnNotifyType" value="0" th:field="*{alarm_sendems}">否
+						<input type="radio" name="rbtnNotifyType" value="1" th:field="*{alarm_sendems}">是
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">是否記錄Log<span style="color: green">*</span></label>
+					</td>
+					<td colspan="2">
+						<input type="radio" name="rbtnNotifyType" value="0" th:field="*{alarm_log}">否
+						<input type="radio" name="rbtnNotifyType" value="1" th:field="*{alarm_log}">是
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">自動停止服務<span style="color: green">*</span></label>
+					</td>
+					<td colspan="2">
+						<input type="radio" name="rbtnNotifyType" value="0" th:field="*{alarm_autostop}">否
+						<input type="radio" name="rbtnNotifyType" value="1" th:field="*{alarm_autostop}">是
+					</td>
+						<td class="condition-label">
+						<label class="col-form-label">顯示警示<span style="color: green">*</span></label>
+					</td>
+					<td colspan="2">
+						<input type="radio" name="rbtnNotifyType" value="0" th:field="*{alarm_console}">否
+						<input type="radio" name="rbtnNotifyType" value="1" th:field="*{alarm_console}">是
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">Email警示(Email address格式)</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{alarm_notify_email}" maxlength="50" />
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">通知次數</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{alarm_notify_times}" maxlength="3" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">備註</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{alarm_remark}" maxlength="100" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>
+							<input readonly="readonly" style="display: none" class="form-control" type="text" th:field="*{btnType}" />
+						</label>
+					</td>
+				</tr>
+	        </table>
+	    </form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI060080_Detail.js}"></script>
+	</div>
+</body>
+</html>

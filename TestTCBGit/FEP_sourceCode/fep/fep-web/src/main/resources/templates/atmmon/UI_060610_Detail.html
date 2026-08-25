@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" style="width:100px" class="btn btn-primary" id="btnQuery" th:if="false">查詢</button>
+		<button type="button" style="width:100px" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060610/queryFepTxnClick}" method="post">
+			<table border="0" cellspacing="0" class="table-detail">
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATM代號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+			         	<input th:disabled="true" class="form-control" type="text" th:field="*{atmno}" />
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATM序號:</label>	
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{atmseq}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">訊息ID:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{messageid}" />
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">EJ序號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text"  th:field="*{ej}" />					
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">通道:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="form-control" type="text" th:field="*{channel}" />				
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">訊息流程:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="form-control" type="text" th:field="*{messageflow}" />				
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">程式流程:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+					    <input th:disabled="true" class="form-control" type="text" th:field="*{programflow}" />			
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">程式名稱:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+				    	<textarea th:disabled="true" class="form-control" type="text" th:field="*{programname}" ></textarea>			
+					</td>			
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">財金 STAN:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{bknoStan}" />			
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">記錄代碼:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{logno}" />			
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">轉入銀行代碼:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{trinbank}" />	
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">轉入帳號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{trinactno}" />			
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">轉出銀行代碼:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{troutbank}" />		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">轉出帳號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{troutactno}" />			
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">交易日期:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{txdate}" />		
+					</td>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">記錄日期/時間:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{logdateTxt}"/>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">RQUID:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+						<input th:disabled="true" class="form-control" type="text" th:field="*{txrquid}" />
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">主機名稱:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+						<input th:disabled="true" class="form-control" type="text" th:field="*{hostname}"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">訊息內容:</label>
+					</td>
+					<td colspan="2" class="condition-input" style="width:200px">					
+                    	<textarea th:disabled="true" style="width:600px;height:400px;" class="form-control" type="text" th:field="*{txmessage}" ></textarea>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">訊息內容(ASCII):</label>
+					</td>
+					<td colspan="2" class="condition-input" style="width:200px">					
+                    	<textarea th:disabled="true" style="width:600px;height:200px;" class="form-control" type="text" th:field="*{txMessageAscii}" ></textarea>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">備註:</label>
+					</td>
+					<td colspan="3" class="condition-input" style="width:200px">					
+                    	<textarea th:disabled="true" style="width:600px;height:100px;" class="form-control" type="text" th:field="*{remark}"></textarea>		
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI060610_Detail.js}"></script>
+	</div>
+</body>
+</html>

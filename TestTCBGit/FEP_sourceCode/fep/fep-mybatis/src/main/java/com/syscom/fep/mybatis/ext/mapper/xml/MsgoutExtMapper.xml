@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.MsgoutExtMapper">
+    <select id="getMsgOutForCheckOutData" resultMap="com.syscom.fep.mybatis.mapper.MsgoutMapper.BaseResultMap">
+        SELECT * FROM MSGOUT
+            <where>
+                <if test="msgoutTxdate != null and msgoutTxdate !=''">
+                    AND MSGOUT_TXDATE = #{msgoutTxdate,jdbcType=VARCHAR}
+                </if>
+                <if test="msgoutSenderBank != null and msgoutSenderBank !=''">
+                    AND SUBSTR(MSGOUT_SENDER_BANK,1,3) = #{msgoutSenderBank,jdbcType=VARCHAR}
+                </if>
+                <if test="msgoutFiscsno != null and msgoutFiscsno !=''">
+                    AND MSGOUT_FISCSNO = #{msgoutFiscsno,jdbcType=VARCHAR}
+                </if>
+            </where>
+    </select>
+    <select id="getMsgOutByDef" resultMap="com.syscom.fep.mybatis.mapper.MsgoutMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.MsgoutMapper.Base_Column_List" />
+        FROM MSGOUT
+            <where>
+                <if test='msgoutTxdate != null and msgoutTxdate !=" "'>
+                    AND MSGOUT_TXDATE = #{msgoutTxdate,jdbcType=VARCHAR}
+                </if>
+                <if test='msgoutBrno != null and msgoutBrno !=" "'>
+                    AND MSGOUT_BRNO = #{msgoutBrno,jdbcType=VARCHAR}
+                </if>
+                <if test='msgoutFepno != null and msgoutFepno !=" "'>
+                    AND MSGOUT_FEPNO = #{msgoutFepno,jdbcType=VARCHAR}
+                </if>
+                <if test="msgoutFiscsno != null and msgoutFiscsno !=''">
+                    AND MSGOUT_FISCSNO = #{msgoutFiscsno,jdbcType=VARCHAR}
+                </if>
+                <if test="msgoutEjno != null and msgoutEjno !=''">
+                    AND MSGOUT_EJNO = #{msgoutEjno,jdbcType=INTEGER}
+                </if>
+                <if test="msgoutStat != null and msgoutStat !=''">
+                    AND MSGOUT_STAT = #{msgoutStat,jdbcType=VARCHAR}
+                </if>
+                <if test="msgoutRegTlrno != null and msgoutRegTlrno !=''">
+                    AND MSGOUT_REG_TLRNO = #{msgoutRegTlrno,jdbcType=VARCHAR}
+                </if>
+                <if test="msgoutStan != null and msgoutStan !=''">
+                    AND MSGOUT_STAN = #{msgoutStan,jdbcType=VARCHAR}
+                </if>
+                <if test="msgoutReceiverBank != null and msgoutReceiverBank !=''">
+                    <if test="msgoutReceiverBank.length() == 3">
+                        AND SUBSTR(MSGOUT_RECEIVER_BANK,1,3)= #{msgoutReceiverBank,jdbcType=VARCHAR}
+                    </if>
+                    <if test="msgoutReceiverBank.length() == 6">
+                        AND SUBSTR(MSGOUT_RECEIVER_BANK,1,6)= #{msgoutReceiverBank,jdbcType=VARCHAR}
+                    </if>
+                    <if test="msgoutReceiverBank.length() == 7">
+                        AND MSGOUT_RECEIVER_BANK= #{msgoutReceiverBank,jdbcType=VARCHAR}
+                    </if>
+                </if>
+                <if test="msgoutSenderBank != null and msgoutSenderBank !=''">
+                    <if test="msgoutSenderBank.length() == 3">
+                        AND SUBSTR(MSGOUT_SENDER_BANK,1,3) = #{msgoutTxdate,jdbcType=VARCHAR}
+                    </if>
+                    <if test="msgoutSenderBank.length() == 6">
+                        AND SUBSTR(MSGOUT_SENDER_BANK,1,6) = #{msgoutTxdate,jdbcType=VARCHAR}
+                    </if>
+                    <if test="msgoutSenderBank.length() == 7">
+                        AND MSGOUT_SENDER_BANK = #{msgoutTxdate,jdbcType=VARCHAR}
+                    </if>
+                </if>
+            </where>
+        ORDER BY MSGOUT_FISCSNO,MSGOUT_STAN
+    </select>
+<!--    zk  add -->
+    <select id="getArrayListForService1411" resultMap="com.syscom.fep.mybatis.mapper.MsgoutMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.MsgoutMapper.Base_Column_List" />
+        FROM MSGOUT
+        where (MSGOUT_STAT = '02' OR MSGOUT_STAT = '99')
+        <if test='msgoutTxdate != null'>
+            AND MSGOUT_TXDATE = #{msgoutTxdate,jdbcType=VARCHAR}
+        </if>
+        <if test='msgoutOwpriority != null'>
+            AND (MSGOUT_OWPRIORITY IS NULL OR MSGOUT_OWPRIORITY &lt;&gt; #{msgoutOwpriority,jdbcType=CHAR})
+        </if>
+        ORDER BY MSGOUT_OWPRIORITY,MSGOUT_BRNO,MSGOUT_FEPNO,MSGOUT_TXDATE
+    </select>
+
+<!--    cy  add -->
+    <select id="getmsgoutByMaxFiscsno" resultMap="com.syscom.fep.mybatis.mapper.MsgoutMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.MsgoutMapper.Base_Column_List" />
+        FROM MSGOUT
+        where MSGOUT_FISCSNO = (select MAX(MSGOUT_FISCSNO) from MSGOUT)
+        <if test='msgoutTxdate != null'>
+            AND MSGOUT_TXDATE = #{msgoutTxdate,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <update id="updateMSGOUTByFISCNO" parameterType="com.syscom.fep.mybatis.model.Msgout">
+        <!--
+          WARNING - @mbg.generated
+          This element is automatically generated by MyBatis Generator, do not modify.
+        -->
+        update MSGOUT
+        SET
+        MSGOUT_STAT = #{msgoutStat,jdbcType=CHAR},
+        MSGOUT_FISC_RTN_CODE = #{msgoutFiscRtnCode,jdbcType=CHAR}
+        WHERE MSGOUT_FISCSNO = #{msgoutFiscsno,jdbcType=CHAR}
+        AND MSGOUT_TXDATE = #{msgoutTxdate,jdbcType=CHAR}
+    </update>
+    
+    <!-- 2021/11/25 wj Add -->
+    <select id="getMSGINDtByDef2" parameterType="map" resultType="java.util.HashMap">
+	SELECT MSGOUT_FISCSNO AS HBKNO_FISCSNO, MSGOUT_SENDTIME AS SENDTIME,
+	MSGOUT_SENDER_BANK AS SENDER_BANK,
+	MSGOUT_STAN AS STAN,
+	MSGOUT_RECEIVER_BANK AS RECEIVER_BANK, MSGOUT_ENGMEMO AS ENGMEMO,
+	MSGOUT_FISC_RTN_CODE AS RC,
+	CASE WHEN SUBSTR(MSGOUT_ENGMEMO,1,3) = 'CHG'
+	THEN MSGOUT_FISCSNO
+	WHEN SUBSTR(MSGOUT_ENGMEMO,1,3) = 'REP' THEN
+	SUBSTR(MSGOUT_ENGMEMO,5,7)
+	END AS FISCSNO
+	FROM MSGOUT
+	<where>
+		<if test='msgoutTxdate != null and msgoutTxdate !=" "'>
+			AND MSGOUT_TXDATE = #{msgoutTxdate,jdbcType=VARCHAR}
+		</if>
+		<if test="msgoutEngmemo != null and msgoutEngmemo !=''">
+			AND SUBSTR(MSGOUT_ENGMEMO,1,3)=
+			#{msgoutEngmemo,jdbcType=VARCHAR}
+		</if>
+		<if test="msgoutFiscsno != null and msgoutFiscsno !=''">
+			AND MSGOUT_FISCSNO = #{msgoutFiscsno,jdbcType=VARCHAR}
+		</if>
+		<if test="msgoutSenderBank != null and msgoutSenderBank !=''">
+			AND SUBSTR(MSGOUT_RECEIVER_BANK,1,3) =
+			#{msgoutSenderBank,jdbcType=VARCHAR}
+		</if>
+	</where>
+</select>
+</mapper>

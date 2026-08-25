@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Confirm Dialog</title>
+</head>
+<body>
+	<div th:fragment="cmnConfirm(id,body,size)" class="modal fade panel-confirm" th:id="${id}" tabindex="-1" role="dialog" th:aria-labelledby="${id}" aria-hidden="true">
+		<div class="modal-dialog-info modal-dialog-confirm">
+			<div th:class="${'modal-dialog modal-dialog-scrollable modal-'+size}" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" th:id="${id+'Title'}">[[${T(com.syscom.fep.web.configurer.WebConfiguration).getInstance().getAppTitle()}]]</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div th:replace="${body}" class="row" style="margin: 1rem;">
+							<div class="col-md-1">
+								<h5>
+									<i class="icon fas fa-question"></i>
+								</h5>
+							</div>
+							<div class="col">
+								<pre th:id="${id+'MessageContent'}" class="pre-content"></pre>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" th:id="${id+'BtnConfirm'}" class="btn btn-primary" data-dismiss="modal">確認</button>
+						<button type="button" th:id="${id+'BtnCancel'}" class="btn btn-secondary" data-dismiss="modal">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script th:if="${session.logonUser != null}" th:inline="javascript">
+			function showConfirmDialog(id, confirmMsg, confirmFunc, cancelFunc) {
+				var confirmDialog = $("#" + id);
+				if (confirmDialog.length > 0) {
+					var modalOpt = {
+						"backdrop" : "static",
+						"show" : false,
+						"keyboard" : false
+					};
+					if (stringIsBlank(id)) {
+						id = 'cmnConfirm';
+					}
+					var confirmModal = confirmDialog.modal(modalOpt);
+					var btnConfirm = $("#" + id + "BtnConfirm");
+					var btnCancel = $("#" + id + "BtnCancel");
+					var messageContent = $("#" + id + "MessageContent");
+					if (messageContent.length > 0) {
+						messageContent.html(confirmMsg);
+					}
+					btnConfirm.off('click');
+					btnCancel.off('click');
+					if ('undefined' !== typeof confirmFunc) {
+						btnConfirm.on('click', confirmFunc);
+					}
+					if ('undefined' !== typeof cancelFunc) {
+						btnCancel.on('click', cancelFunc);
+					}
+					confirmModal.modal("show");
+				}
+			}
+		</script>
+	</div>
+</body>
+</html>

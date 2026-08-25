@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">調撥序號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" id="fgSeqnoTxt" name="fgSeqnoTxt" type="text">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button" id="btnM">
+    <button type="button" class="btn btn-primary" id="btnQuery" v-on:click="btnQueryClick()">查詢</button>
+    <button type="button" class="btn btn-primary" id="delQuery" v-on:click="btnConfirm()">確認</button>
+    <button type="button" class="btn btn-primary" id="btnClear" v-on:click="btnClearClick()">清除</button>
+
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+    <form id="form-detailed">
+        <table border="0" cellspacing="0" class="table-condition" id="fundlogM">
+            <tr>
+                <td class="condition-label" width="229px">
+                    <label class="col-form-label">輸入日期</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="txDate" v-model="txDate" disabled>
+                </td>
+                <td class="condition-input">
+                    <input style="display:none" class="form-control" id="QueryFlag" v-model="queryFlag" type="text" >
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">撥轉金額</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="fgAmt" v-model="fgAmt"  name="fgAmt" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">財金序號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="stan" v-model="stan" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">已放行否</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" id="atmWorkStatus" v-model="atmWorkStatus" disabled>
+                        <option Value=""></option>
+                        <option value="N">N-未放行</option>
+                        <option value="Y">Y=已放行</option>
+                        <option value="P">P=已送出放行,但PENDING中</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">輸入ＩＤ</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="tlrID" v-model="tlrID" disabled >
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">放行ＩＤ</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="supID" v-model="supID" disabled>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/inbk/UI015313.js}"></script>
+</div>
+</body>
+</html>

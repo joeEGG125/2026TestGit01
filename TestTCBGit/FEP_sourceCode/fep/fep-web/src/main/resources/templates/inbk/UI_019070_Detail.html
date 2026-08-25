@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<!-- 		<button type="button" class="btn btn-primary" id="btnQuery" -->
+		<!-- 			th:if="${detailMap!=null}">查詢</button> -->
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<table border="0" cellspacing="0" class="table-detail"
+			th:object="${form}">
+			<tr>
+				<td class="condition-label"><label class="col-form-label">交易日期時間</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{T(com.syscom.fep.web.base.FEPWebBase).formatYMD(obtltxn.obtltxnTxDate)}+' '+*{T(com.syscom.fep.web.base.FEPWebBase).charTimeToTime(obtltxn.obtltxnTxTime)}"
+					readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">電子日誌序號</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnEjfno}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">財金追蹤序號</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnStan}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">原交易財金追蹤序號</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnOriStan}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">櫃員機代號</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnAtmno}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">交易啟動銀行</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnBkno}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">財金
+						PCODE</label></td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnPcode}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">財金營業日</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{T(com.syscom.fep.web.base.FEPWebBase).formatYMD(obtltxn.obtltxnTbsdyFisc)}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">端末設備型態</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnAtmType}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">結算匯率</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnSetExrate}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">交易處理結果</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnTxrust}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">訂單號碼</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnOrderNo}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">特店代號</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnMerchantId}" readonly="true"></label></td>
+			</tr>
+			<br />
+			<tr>
+				<td class="condition-label"><label class="col-form-label">結算幣別碼</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnSetCur}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">結算金額</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnSetAmt}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">台方手續費(台幣)</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnTwnFee}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">台幣結算金額</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnTotTwdAmt}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">外幣總手續費</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnTotForFee}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">外幣總金額</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnTotForAmt}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">晶片卡交易序號</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnIcSeqno}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">退貨金額</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnTotRetAmt}" readonly="true"></label></td>
+			</tr>
+			<br />
+			<tr>
+				<td class="condition-label"><label class="col-form-label">分行別</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnBrno}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">使用者同意註記</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnYesfg}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">原訂單編號</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnOriOrderNo}" readonly="true"></label></td>
+				<td class="condition-label"><label class="col-form-label">原營業日</label>
+				</td>
+				<td class="condition-input"><label
+					class="form-control label-text-left"
+					th:text="*{obtltxn.obtltxnOriTxDate}" readonly="true"></label></td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">轉出帳號銀行別/帳號/類別</label>
+				</td>
+				<td class="condition-input">
+					<div class="row">
+						<div class="col-3">
+							<input class="form-control" type="text" style="width: 52px"
+								th:value="*{obtltxn.obtltxnTroutBkno}" readonly="true" />
+						</div>
+						<label class="label-text-symbol">-</label>
+						<div class="col">
+							<input class="form-control" type="text"
+								th:value="*{obtltxn.obtltxnTroutActno}" readonly="true" />
+						</div>
+						<label class="label-text-symbol">-</label>
+						<div class="col-3">
+							<input class="form-control" type="text" style="width: 46px"
+								th:value="*{obtltxn.obtltxnTroutKind}" readonly="true" />
+						</div>
+					</div>
+				</td>
+				<td rowspan="2" colspan="2" align="left" style="width: 500px">
+					<table border="0">
+						<tr>
+							<td style="width: 600px">註:匯率之格式：<br> 第1位：0~9表示後續7位之小數位<br>
+								第2~8位：清算匯率
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 300px">例:'61234567'=1.234567</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label"><label class="col-form-label">財金回應代碼REQ-REP-CON</label>
+				</td>
+
+				<td class="condition-input">
+					<div class="row">
+						<div class="col-3">
+							<input class="form-control" type="text" style="width: 60px"
+								th:value="*{obtltxn.obtltxnReqRc}" readonly="true" />
+						</div>
+						<label class="label-text-symbol">-</label>
+						<div class="col-3">
+							<input class="form-control" type="text" style="width: 60px"
+								th:value="*{obtltxn.obtltxnRepRc}" readonly="true" />
+						</div>
+						<label class="label-text-symbol">-</label>
+						<div class="col-3">
+							<input class="form-control" type="text" style="width: 60px"
+								th:value="*{obtltxn.obtltxnConRc}" readonly="true" />
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div layout:fragment="panel-script"></div>
+</body>
+</html>

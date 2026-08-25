@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028080/queryClick}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label for="kind" class="col-form-label">查詢項目:</label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" th:field="*{kind}">
+							<option value="1" selected="selected">1-EJFNO順序</option>
+							<option value="2">2-STAN順序</option>
+						</select>
+					</td>
+					<td class="condition-label">
+						<label for="tradingDate" class="col-form-label">交易日期:</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" id="tradingDate" data-target="#tradingDate" th:field="*{tradingDate}" />
+							<div class="input-group-append" data-target="#tradingDate" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label for="senderBankTxt" class="col-form-label">發信行:</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{senderBankTxt}" maxlength="7">
+					</td>
+					<td class="condition-label">
+						<label for="receiverBankTxt" class="col-form-label">收信行:</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{receiverBankTxt}" maxlength="7">
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label for="msgPcode" class="col-form-label">交易PCODE:</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{msgPcode}" maxlength="4">
+					</td>
+					<td class="condition-label">
+						<label for="msgflow" class="col-form-label">FLOW:</label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" th:field="*{msgflow}">
+							<option value="1" selected="selected">1-Request</option>
+							<option value="2">2-Response</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label for="uiStan" class="col-form-label">STAN:</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:field="*{uiStan}" maxlength="7">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null && pageData.list != null}">
+		<div class="panel-layout" th:each="data : ${pageData.list}">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">財金原始電文內容:</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-input" colspan="8">
+						<textarea class="form-control" rows="4" th:text="${data.TxMessage}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">交易代號:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.TRNCD}" maxlength="8"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">交易啟動行:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control label-text-left" th:text="${data.SOURID}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">財金RC:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control label-text-left" th:text="${data.RC}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">STAN:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.STAN}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">交易目的行:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.DESTID}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">交易時間:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.TXTIME}"></label>
+					</td>
+				</tr>
+				<tr class="tr-gap" />
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">收款人帳號:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.ACTNO}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">電文序號:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.FISCSNO}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">匯款行:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.UI_SENDER_BANK}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">匯款日期:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.REMDATE}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">解款行:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.UI_RECEIVER_BANK}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">狀況:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.STAT}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">交易金額:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.TXAMT}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">通匯序號:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.RMSNO}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">原通匯序號:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.ORGRMSNO}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">原交易類別代碼:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.ORG_PCODE}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">待解筆數:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.RM_PENDING_CNT}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">待解金額:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.RM_PENDING_AMT}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">原交易序號:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.ORG_STAN}"></label>
+					</td>
+					<td class="td-gap" />
+					<td class="condition-label">
+						<label class="col-form-label">原交易日期時間:</label>
+					</td>
+					<td class="condition-input">
+						<label class="form-control" th:text="${data.ORG_TX_DATETIME}"></label>
+					</td>
+					<td class="td-gap" colspan="3" />
+				</tr>
+				<tr class="tr-gap" />
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">銀行簡稱:</label>
+					</td>
+					<td class="condition-input" colspan="7">
+						<label class="form-control" th:text="${data.ALIASNAME}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">解款人姓名:</label>
+					</td>
+					<td class="condition-input" colspan="7">
+						<label class="form-control" th:text="${data.IN_NAME}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">匯款人姓名:</label>
+					</td>
+					<td class="condition-input" colspan="7">
+						<label class="form-control" th:text="${data.OUT_NAME}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">附言:</label>
+					</td>
+					<td class="condition-input" colspan="7">
+						<label class="form-control" th:text="${data.CHNMEMO}"></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">一般通訊:</label>
+					</td>
+					<td class="condition-input" colspan="7">
+						<label class="form-control" th:text="${data.ENGMEMO}"></label>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/rm/UI028080.js}"></script>
+	</div>
+</body>
+</html>

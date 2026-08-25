@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.BatchExtMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="batchBatchid" parameterType="com.syscom.fep.mybatis.model.Batch">
+        insert into BATCH (BATCH_NAME, BATCH_ENABLE,
+        BATCH_DESCRIPTION, BATCH_SCHEDULE, BATCH_STARTJOBID,
+        BATCH_NOTIFYMAIL, BATCH_SCHEDULE_TYPE, BATCH_SCHEDULE_STARTTIME,
+        BATCH_SCHEDULE_DAYINTERVAL, BATCH_SCHEDULE_WEEKINTERVAL,
+        BATCH_SCHEDULE_WEEKDAYS, BATCH_SCHEDULE_MONTHS,
+        BATCH_SCHEDULE_MONTHDAYS, BATCH_SCHEDULE_WHICKWEEKS,
+        BATCH_RESULT, BATCH_LASTRUNTIME, BATCH_SINGLETIME,
+        BATCH_EDITGROUP, BATCH_STARTGROUP, BATCH_CURRENTID,
+        BATCH_SCHEDULE_REPETITIONINTERVAL, BATCH_SCHEDULE_REPETITIONINDURATION,
+        BATCH_NOTIFYTYPE, BATCH_NEXTRUNTIME, BATCH_ACTION,
+        BATCH_CHECKBUSINESSDATE, BATCH_ZONE, BATCH_SUBSYS,
+        BATCH_EXECUTE_HOST_NAME, BATCH_NOTIFYPHONE, BATCH_DENYCONCURRENTEXEC,
+        BATCH_DAILY_REPETITION_TYPE)
+        values (#{batchName,jdbcType=VARCHAR}, #{batchEnable,jdbcType=SMALLINT},
+        #{batchDescription,jdbcType=VARCHAR}, #{batchSchedule,jdbcType=SMALLINT}, #{batchStartjobid,jdbcType=INTEGER},
+        #{batchNotifymail,jdbcType=VARCHAR}, #{batchScheduleType,jdbcType=CHAR}, #{batchScheduleStarttime,jdbcType=TIMESTAMP},
+        #{batchScheduleDayinterval,jdbcType=SMALLINT}, #{batchScheduleWeekinterval,jdbcType=DECIMAL},
+        #{batchScheduleWeekdays,jdbcType=VARCHAR}, #{batchScheduleMonths,jdbcType=VARCHAR},
+        #{batchScheduleMonthdays,jdbcType=VARCHAR}, #{batchScheduleWhickweeks,jdbcType=VARCHAR},
+        #{batchResult,jdbcType=CHAR}, #{batchLastruntime,jdbcType=TIMESTAMP}, #{batchSingletime,jdbcType=SMALLINT},
+        #{batchEditgroup,jdbcType=VARCHAR}, #{batchStartgroup,jdbcType=VARCHAR}, #{batchCurrentid,jdbcType=CHAR},
+        #{batchScheduleRepetitioninterval,jdbcType=SMALLINT}, #{batchScheduleRepetitioninduration,jdbcType=SMALLINT},
+        #{batchNotifytype,jdbcType=DECIMAL}, #{batchNextruntime,jdbcType=TIMESTAMP}, #{batchAction,jdbcType=VARCHAR},
+        #{batchCheckbusinessdate,jdbcType=SMALLINT}, #{batchZone,jdbcType=CHAR}, #{batchSubsys,jdbcType=DECIMAL},
+        #{batchExecuteHostName,jdbcType=VARCHAR}, #{batchNotifyphone,jdbcType=VARCHAR}, #{batchDenyconcurrentexec,jdbcType=SMALLINT},
+        #{batchDailyRepetitionType,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="batchBatchid" parameterType="com.syscom.fep.mybatis.model.Batch">
+        insert into BATCH
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="batchName != null">
+                BATCH_NAME,
+            </if>
+            <if test="batchEnable != null">
+                BATCH_ENABLE,
+            </if>
+            <if test="batchDescription != null">
+                BATCH_DESCRIPTION,
+            </if>
+            <if test="batchSchedule != null">
+                BATCH_SCHEDULE,
+            </if>
+            <if test="batchStartjobid != null">
+                BATCH_STARTJOBID,
+            </if>
+            <if test="batchNotifymail != null">
+                BATCH_NOTIFYMAIL,
+            </if>
+            <if test="batchScheduleType != null">
+                BATCH_SCHEDULE_TYPE,
+            </if>
+            <if test="batchScheduleStarttime != null">
+                BATCH_SCHEDULE_STARTTIME,
+            </if>
+            <if test="batchScheduleDayinterval != null">
+                BATCH_SCHEDULE_DAYINTERVAL,
+            </if>
+            <if test="batchScheduleWeekinterval != null">
+                BATCH_SCHEDULE_WEEKINTERVAL,
+            </if>
+            <if test="batchScheduleWeekdays != null">
+                BATCH_SCHEDULE_WEEKDAYS,
+            </if>
+            <if test="batchScheduleMonths != null">
+                BATCH_SCHEDULE_MONTHS,
+            </if>
+            <if test="batchScheduleMonthdays != null">
+                BATCH_SCHEDULE_MONTHDAYS,
+            </if>
+            <if test="batchScheduleWhickweeks != null">
+                BATCH_SCHEDULE_WHICKWEEKS,
+            </if>
+            <if test="batchResult != null">
+                BATCH_RESULT,
+            </if>
+            <if test="batchLastruntime != null">
+                BATCH_LASTRUNTIME,
+            </if>
+            <if test="batchSingletime != null">
+                BATCH_SINGLETIME,
+            </if>
+            <if test="batchEditgroup != null">
+                BATCH_EDITGROUP,
+            </if>
+            <if test="batchStartgroup != null">
+                BATCH_STARTGROUP,
+            </if>
+            <if test="batchCurrentid != null">
+                BATCH_CURRENTID,
+            </if>
+            <if test="batchScheduleRepetitioninterval != null">
+                BATCH_SCHEDULE_REPETITIONINTERVAL,
+            </if>
+            <if test="batchScheduleRepetitioninduration != null">
+                BATCH_SCHEDULE_REPETITIONINDURATION,
+            </if>
+            <if test="batchNotifytype != null">
+                BATCH_NOTIFYTYPE,
+            </if>
+            <if test="batchNextruntime != null">
+                BATCH_NEXTRUNTIME,
+            </if>
+            <if test="batchAction != null">
+                BATCH_ACTION,
+            </if>
+            <if test="batchCheckbusinessdate != null">
+                BATCH_CHECKBUSINESSDATE,
+            </if>
+            <if test="batchZone != null">
+                BATCH_ZONE,
+            </if>
+            <if test="batchSubsys != null">
+                BATCH_SUBSYS,
+            </if>
+            <if test="batchExecuteHostName != null">
+                BATCH_EXECUTE_HOST_NAME,
+            </if>
+            <if test="batchNotifyphone != null">
+                BATCH_NOTIFYPHONE,
+            </if>
+            <if test="batchDenyconcurrentexec != null">
+                BATCH_DENYCONCURRENTEXEC,
+            </if>
+            <if test="batchDailyRepetitionType != null">
+                BATCH_DAILY_REPETITION_TYPE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="batchName != null">
+                #{batchName,jdbcType=VARCHAR},
+            </if>
+            <if test="batchEnable != null">
+                #{batchEnable,jdbcType=SMALLINT},
+            </if>
+            <if test="batchDescription != null">
+                #{batchDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="batchSchedule != null">
+                #{batchSchedule,jdbcType=SMALLINT},
+            </if>
+            <if test="batchStartjobid != null">
+                #{batchStartjobid,jdbcType=INTEGER},
+            </if>
+            <if test="batchNotifymail != null">
+                #{batchNotifymail,jdbcType=VARCHAR},
+            </if>
+            <if test="batchScheduleType != null">
+                #{batchScheduleType,jdbcType=CHAR},
+            </if>
+            <if test="batchScheduleStarttime != null">
+                #{batchScheduleStarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="batchScheduleDayinterval != null">
+                #{batchScheduleDayinterval,jdbcType=SMALLINT},
+            </if>
+            <if test="batchScheduleWeekinterval != null">
+                #{batchScheduleWeekinterval,jdbcType=DECIMAL},
+            </if>
+            <if test="batchScheduleWeekdays != null">
+                #{batchScheduleWeekdays,jdbcType=VARCHAR},
+            </if>
+            <if test="batchScheduleMonths != null">
+                #{batchScheduleMonths,jdbcType=VARCHAR},
+            </if>
+            <if test="batchScheduleMonthdays != null">
+                #{batchScheduleMonthdays,jdbcType=VARCHAR},
+            </if>
+            <if test="batchScheduleWhickweeks != null">
+                #{batchScheduleWhickweeks,jdbcType=VARCHAR},
+            </if>
+            <if test="batchResult != null">
+                #{batchResult,jdbcType=CHAR},
+            </if>
+            <if test="batchLastruntime != null">
+                #{batchLastruntime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="batchSingletime != null">
+                #{batchSingletime,jdbcType=SMALLINT},
+            </if>
+            <if test="batchEditgroup != null">
+                #{batchEditgroup,jdbcType=VARCHAR},
+            </if>
+            <if test="batchStartgroup != null">
+                #{batchStartgroup,jdbcType=VARCHAR},
+            </if>
+            <if test="batchCurrentid != null">
+                #{batchCurrentid,jdbcType=CHAR},
+            </if>
+            <if test="batchScheduleRepetitioninterval != null">
+                #{batchScheduleRepetitioninterval,jdbcType=SMALLINT},
+            </if>
+            <if test="batchScheduleRepetitioninduration != null">
+                #{batchScheduleRepetitioninduration,jdbcType=SMALLINT},
+            </if>
+            <if test="batchNotifytype != null">
+                #{batchNotifytype,jdbcType=DECIMAL},
+            </if>
+            <if test="batchNextruntime != null">
+                #{batchNextruntime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="batchAction != null">
+                #{batchAction,jdbcType=VARCHAR},
+            </if>
+            <if test="batchCheckbusinessdate != null">
+                #{batchCheckbusinessdate,jdbcType=SMALLINT},
+            </if>
+            <if test="batchZone != null">
+                #{batchZone,jdbcType=CHAR},
+            </if>
+            <if test="batchSubsys != null">
+                #{batchSubsys,jdbcType=DECIMAL},
+            </if>
+            <if test="batchExecuteHostName != null">
+                #{batchExecuteHostName,jdbcType=VARCHAR},
+            </if>
+            <if test="batchNotifyphone != null">
+                #{batchNotifyphone,jdbcType=VARCHAR},
+            </if>
+            <if test="batchDenyconcurrentexec != null">
+                #{batchDenyconcurrentexec,jdbcType=SMALLINT},
+            </if>
+            <if test="batchDailyRepetitionType != null">
+                #{batchDailyRepetitionType,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="getSingleBATCHByDef" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BatchMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.BatchMapper.Base_Column_List"/>
+        from BATCH
+        where BATCH_NAME = #{batchName,jdbcType=VARCHAR}
+    </select>
+    <select id="queryBatchByName" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BatchMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.BatchMapper.Base_Column_List"/>
+        from BATCH
+        where BATCH_NAME = #{batchName,jdbcType=VARCHAR}
+    </select>
+    <select id="getAllBatch" resultType="java.util.HashMap">
+        SELECT BATCH.*,JOBS_NAME
+        FROM BATCH LEFT JOIN JOBS ON BATCH.BATCH_STARTJOBID = JOBS.JOBS_JOBID
+        <where>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(batchName)">
+                AND LOWER(BATCH.BATCH_NAME) LIKE LOWER(CONCAT('%', CONCAT(#{batchName}, '%')))
+            </if>
+            <if test='@org.apache.commons.collections4.CollectionUtils@isNotEmpty(subsysList)'>
+                AND BATCH.BATCH_SUBSYS IN
+                <foreach collection="subsysList" item="stat" index="index" open="(" close=")" separator=",">
+                    #{stat}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY BATCH_NAME
+    </select>
+    <select id="getBatchFirstTaskById" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+        SELECT BATCH.*, TASK.*
+        FROM BATCH
+                 INNER JOIN JOBS ON BATCH_BATCHID = JOBS_BATCHID
+                 INNER JOIN JOBTASK ON JOBS_JOBID = JOBTASK.JOBTASK_JOBID AND JOBS.JOBS_STARTTASKID = JOBTASK.JOBTASK_TASKID
+                 INNER JOIN TASK ON JOBTASK_TASKID = TASK.TASK_ID
+        where BATCH_BATCHID = #{batchBatchid,jdbcType=INTEGER}
+    </select>
+    <select id="getBatchContext" parameterType="map" resultType="java.util.Map">
+        SELECT BATCH_EXECUTE_HOST_NAME,
+        BATCH_BATCHID,
+        BATCH_NAME,
+        BATCH_NOTIFYMAIL,
+        BATCH_NOTIFYPHONE,
+        BATCH_SINGLETIME,
+        BATCH_LASTRUNTIME,
+        BATCH_CHECKBUSINESSDATE,
+        BATCH_ZONE,
+        BATCH_RESULT,
+        BATCH_ENABLE,
+        BATCH_NOTIFYTYPE,
+        BATCH_STARTJOBID,
+        BATCH_SUBSYS,
+        BATCH_DENYCONCURRENTEXEC,
+        JOBS.JOBS_JOBID,
+        JOBS_SEQ,
+        JOBS_STARTTASKID,
+        JOBS_DELAY,
+        JOBTASK.*,
+        TASK_COMMAND,
+        TASK_COMMANDARGS,
+        TASK_TIMEOUT,
+        JOBS.JOBS_CONTINUEONFAIL
+        FROM BATCH
+        INNER JOIN JOBS ON BATCH_BATCHID = JOBS_BATCHID
+        INNER JOIN JOBTASK ON JOBS_JOBID = JOBTASK_JOBID
+        INNER JOIN TASK ON JOBTASK_TASKID = TASK_ID
+        <where>
+            BATCH_BATCHID = #{batchBatchid,jdbcType=INTEGER}
+            <if test="jobsJobid > 0">
+                AND JOBS_JOBID = #{jobsJobid,jdbcType=INTEGER}
+            </if>
+            <if test="jobtaskStepid > 0">
+                AND JOBTASK_STEPID = #{jobtaskStepid,jdbcType=INTEGER}
+            </if>
+            <if test="jobsSeq > 0">
+                AND JOBS_SEQ = #{jobsSeq,jdbcType=INTEGER}
+            </if>
+        </where>
+        ORDER BY JOBS_SEQ
+    </select>
+    <select id="queryScheduledBatchByNameAndSubsys" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BatchMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.BatchMapper.Base_Column_List"/>
+        from BATCH
+        <where>
+            BATCH_SCHEDULE = 1
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(batchName)">
+                AND UPPER(BATCH_NAME) LIKE UPPER(CONCAT('%', CONCAT(#{batchName}, '%')))
+            </if>
+            <if test="@org.apache.commons.collections4.CollectionUtils@isNotEmpty(batchSubsys)">
+                AND BATCH_SUBSYS IN
+                <foreach collection="batchSubsys" item="subsys" index="index" open="(" close=")" separator=",">
+                    #{subsys,jdbcType=DECIMAL}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY BATCH_NAME
+    </select>
+    <select id="getBatchAll" resultMap="com.syscom.fep.mybatis.mapper.BatchMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.BatchMapper.Base_Column_List"/>
+        FROM BATCH
+    </select>
+    <select id="getAllBatchByLastRunTime" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BatchMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.BatchMapper.Base_Column_List"/>
+        from BATCH
+        <where>
+            BATCH_ENABLE = 1 AND BATCH_SCHEDULE = 1 AND BATCH_SCHEDULE_REPETITIONINTERVAL = 0
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(batchName)">
+                AND UPPER(BATCH_NAME) LIKE UPPER(CONCAT('%', CONCAT(#{batchName}, '%')))
+            </if>
+        </where>
+        <if test="@com.syscom.fep.common.util.DbHelper@isSqlInOrderByValid(sqlSortExpression)">
+            ORDER BY ${sqlSortExpression}
+        </if>
+    </select>
+    <update id="updateBatchHost">
+        UPDATE BATCH SET BATCH_EXECUTE_HOST_NAME=#{sourceHost,jdbcType=VARCHAR}
+        WHERE BATCH_EXECUTE_HOST_NAME=#{targetHost,jdbcType=VARCHAR}
+    </update>
+    <update id="updateBatchResult">
+        UPDATE BATCH SET BATCH_RESULT = #{batchResult,jdbcType=CHAR}
+        <where>
+            <if test="batchBatchid != null">
+                BATCH_BATCHID = #{batchBatchid,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+    <select id="getAllScheduledBatch" resultMap="com.syscom.fep.mybatis.mapper.BatchMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.BatchMapper.Base_Column_List"/>
+        from BATCH
+        where BATCH_ENABLE = 1 AND BATCH_SCHEDULE = 1
+        order by BATCH_NEXTRUNTIME
+    </select>
+    <update id="updateBatchNextruntime" parameterType="map">
+        UPDATE BATCH SET BATCH_NEXTRUNTIME = #{batchNextruntime,jdbcType=TIMESTAMP} WHERE BATCH_BATCHID = #{batchBatchid,jdbcType=INTEGER}
+    </update>
+</mapper>

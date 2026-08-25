@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+	<form id="form-validator" th:object="${form}" method="post">
+		<table border="0" cellspacing="0" class="table-condition">
+			<tr>
+				<td class="condition-label">
+					<label for="lblBankNo" class="col-form-label">銀行代號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" id="lblBankNo" th:text="*{lblBankNo}"></label>
+				</td>
+				<td class="condition-label">
+					<label for="lblTxDate" class="col-form-label">查詢日期</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" id="lblTxDate" th:text="*{lblTxDate}"></label>
+				</td>
+				<td class="condition-label">
+					<label for="lblTxTime" class="col-form-label">查詢時間</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" style="width:89.89px;display:block" th:text="*{lblTxTime}"></label>
+				</td>
+				<td class="condition-label">
+					<label for="lblBknoStan" class="col-form-label">查詢序號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" style="width:124.5px;display:block" th:text="*{lblBknoStan}"></label>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+	<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+	<div class="card-body table-responsive p-0">
+		<table class="table-bordered table-head-fixed text-nowrap">
+			<thead>
+			<tr align="center" width="1000px">
+				<th></th>
+				<th><b>借方筆數</b></th>
+				<th><b>借方金額</b></th>
+				<th><b>貸方筆數</b></th>
+				<th><b>貸方金額</b></th>
+			</tr>
+			</thead>
+			<tr>
+				<td>CD 小計</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalAtmCntDr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalAtmAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalAtmCntCr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalAtmAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>CD沖正小計</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalAtmEcCntDr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalAtmEcAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalAtmEcCntCr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalAtmEcAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>通匯小計</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalRmCntDr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalRmAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalRmCntCr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalRmAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>手續費小計</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFeeAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFeeAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>沖正手續費小計</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFeeEcAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFeeEcAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>ＰＯＳ　信用卡</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalPosCntDr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalPosAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalPosCntCr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalPosAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>ＦＥＤＩ</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalFediCntDr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFediAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalFediCntCr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFediAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>網際網路作業</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalNbCntDr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalNbAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalNbCntCr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalNbAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>合 計</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalSumAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalSumAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>差 額</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalOddsDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td></td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalOddsCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>待解資料</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalRemainCnt}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalRemainAmt,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>撥轉金額</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalFgCntDr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFgAmtDr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${detailEntity.clrtotalFgCntCr}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="right">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalFgAmtCr,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5">------------------------------------------------------------------------------------------------------------------------------------------------------</td>
+			</tr>
+			<tr>
+				<td align="center">今日總餘額</td>
+				<td align="center" colspan="2">撥回週轉金戶金額</td>
+				<td align="center" colspan="2">留存財金戶金額</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(totalBal,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="center" colspan="2">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalRevolAmt,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+				<td align="center" colspan="2">
+					<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrtotalActBal,1,'COMMA',2,'POINT')}"></span>
+					<span th:if="${detailEntity==null}"></span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div layout:fragment="panel-script">
+	<script type="text/javascript" th:src="@{/js/inbk/UI015201.js}"></script>
+</div>
+</body>
+</html>

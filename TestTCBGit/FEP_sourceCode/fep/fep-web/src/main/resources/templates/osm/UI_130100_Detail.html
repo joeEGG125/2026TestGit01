@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition"></div>
+	<div layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnChange">變更儲存</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnDiscard">放棄變更</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>	
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">	
+	    <form id="form-validator" th:object="${form}" th:action="@{/osm/UI_130100/saveClick}" method="post">
+	        <table border="0" cellspacing="0" class="table-condition">
+	            <tr>
+	                <td class="condition-label" >
+	                    <label class="col-form-label">手續費序號<span style="color: red">*</span></label>
+	                </td>
+	                <td class="condition-input">
+	            		<input class="form-control" type="text" th:if="*{btnType eq 'insert'}" th:field="*{atmfeeSeqNo}" maxlength="1"/>
+	            		<input class="form-control" type="text" th:if="*{btnType eq 'update'}" readonly th:field="*{atmfeeSeqNo}" maxlength="1" style="color: red"/>
+	                </td>
+	                <td class="condition-label">
+						<label class="col-form-label">年月<span style="color: red">*</span></label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="number" id="atmfeeTxMm" th:if="*{btnType eq 'insert'}" th:field="*{atmfeeTxMm}" maxlength="6"/>
+	            		<input class="form-control" type="number" id="atmfeeTxMm" th:if="*{btnType eq 'update'}" readonly th:field="*{atmfeeTxMm}" maxlength="6" style="color: red"/>
+					</td>
+	            </tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">手續費名稱<span style="color: red">*</span></label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" id="atmfeeName" th:field="*{atmfeeName}" maxlength="20" />
+					</td>
+					<td class="condition-label">
+					</td>
+					<td class="condition-input">
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">幣別<span style="color: red">*</span></label>
+					</td>
+					<td class="condition-input">
+						<select th:field="*{atmfeeCur}">
+							<option value=""></option>
+							<option th:text="新台幣" 		th:value="TWD" 		th:selected="${atmfeeCur == 'TWD'}"></option>
+							<option th:text="人民幣" 	th:value="CNY"      th:selected="${atmfeeCur == 'CNY'}"></option>
+							<option th:text="美金" 		th:value="USD" 		    th:selected="${atmfeeCur == 'USD'}"></option>
+							<option th:text="港幣"  th:value="HKD"     th:selected="${atmfeeCur == 'HKD'}"></option>
+							<option th:text="日元" 	th:value="JPY"       th:selected="${atmfeeCur == 'JPY'}"></option>
+						</select>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">手續費<span style="color: red">*</span></label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="number" th:field="*{atmfeeFee}" maxlength="10"/>
+					</td>
+				</tr>				
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">跨行記號<span style="color: red">*</span></label>
+					</td>
+					<td>
+						<input type="radio" name="atmfeeFiscFlag" value="0" th:field="*{atmfeeFiscFlag}" th:checked="*{atmfeeFiscFlag == 0}">自行
+						<input type="radio" name="atmfeeFiscFlag" value="1" th:field="*{atmfeeFiscFlag}" th:checked="*{atmfeeFiscFlag == 1}">跨行
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">財金PCODE</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" id="atmfeePcode" th:field="*{atmfeePcode}" maxlength="4" />
+					</td>					
+				</tr>
+				<tr>
+					<td>
+						<label>
+							<input readonly="readonly" style="display: none" class="form-control" type="text" th:field="*{btnType}" />
+						</label>
+					</td>
+				</tr>
+	        </table>
+	    </form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/osm/UI130100_Detail.js}"></script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:fep="http://www.w3.org/1999/xhtml" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>UI019030</title>
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_019030/inquiryMain}" method="post">
+            <table border="0" cellspacing="0" class="table-condition">
+                <tr>
+                    <td class="condition-label">
+                        <label for="tradingDate" class="col-form-label">交易日期:</label>
+                    </td>
+                    <td class="condition-input">
+                        <div class="input-group date"  data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" id="tradingDate" data-target="#tradingDate" th:field="*{tradingDate}" />
+                            <div class="input-group-append" data-target="#tradingDate" data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-label">
+                        <label for="ejnotxt" class="col-form-label">EJ序號:</label>
+                    </td>
+                    <td class="condition-input">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" id="ejnotxt" type="text" th:field="*{ejnotxt}"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div  layout:fragment="panel-button">
+        <button type="submit" class="btn btn-primary" id="BtnQuery">查詢</button>
+        <button type="button" class="btn btn-primary" id="BtnComit">確認</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid" class="panel-detail" th:object="${form}">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td colspan="6">
+                    <input class="col-form-radio rcrbl" type="radio" checked value="1" name="ewq">
+                    <label class="col-form-label " >Positive Confirm(RC=4001)</label>
+                    <input class="col-form-radio rcrbl" type="radio" value="2" name="ewq">
+                    <label class="col-form-label" >Negative Confirm(RC=0501)</label>
+                    <input class="col-form-radio rcrbl" type="radio" value="3" name="ewq">
+                    <label class="col-form-label" >Negative Confirm(RC=0601)</label>
+                <td>
+<!--                    <input class="col-form-radio" type="radio" th:checked="${checked == '4001'}" th:value="${T(com.syscom.fep.web.form.inbk.UI_019030_Form.RadioOption).POSITIVE}" th:field="*{radioOption}" fep:checked="*{radioOption}">-->
+<!--                    <label class="col-form-label" >Positive Confirm(RC=4001)</label>-->
+<!--                    <input class="col-form-radio" type="radio" th:checked="${checked == '0501'}"  th:value="${T(com.syscom.fep.web.form.inbk.UI_019030_Form.RadioOption).NEGARTIVE0501}" th:field="*{radioOption}"  fep:checked="*{radioOption}">-->
+<!--                    <label class="col-form-label" >Negative Confirm(RC=0501)</label>-->
+<!--                    <input class="col-form-radio" type="radio" th:checked="${checked == '0601'}"  th:value="${T(com.syscom.fep.web.form.inbk.UI_019030_Form.RadioOption).NEGATIVE0601}" th:field="*{radioOption}"  fep:checked="*{radioOption}">-->
+<!--                    <label class="col-form-label" >Negative Confirm(RC=0601)</label>-->
+<!--                </td>-->
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">失敗原因:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-control label-text-left" id="redio" name="redio"  maxlength="4"></label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">財金STAN:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnBkno}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnStan}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                    </div>
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">財金營業日:</label>
+                </td>
+                <td class="condition-input">
+                    <label class="form-control label-text-left" th:if="${detailEntity!=null}" id="feptxnTbsdyFisctxt" th:text="${detailEntity.feptxnTbsdyFisc}"></label>
+                    <label class="form-control" th:if="${detailEntity==null}"></label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">PCODE:</label>
+                </td>
+                <td class="condition-input">
+                    <label class="form-control label-text-left" th:if="${detailEntity!=null}" id="pcodetxt" th:text="${detailEntity.feptxnPcode}"></label>
+                    <label class="form-control" th:if="${detailEntity==null}"></label>
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">交易金額:</label>
+                </td>
+                <td class="condition-input">
+                    <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnTxAmt}"></label>
+                    <label class="form-control" th:if="${detailEntity==null}"></label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">扣款帳號:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnTroutBkno}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnTroutActno}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                    </div>
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">轉入帳號:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnTrinBkno}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnTrinActno}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">卡片帳號:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnMajorActno}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                    </div>
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">入帳帳號:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnTrinActnoActual}"></label>
+                            <label class="form-control" th:if="${detailEntity==null}"></label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">ATM代號:</label>
+                </td>
+                <td class="condition-input">
+                    <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnAtmno}"></label>
+                    <label class="form-control" th:if="${detailEntity==null}"></label>
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">RC1:</label>
+                </td>
+                <td class="condition-input">
+                    <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnRepRc}"></label>
+                    <label class="form-control" th:if="${detailEntity==null}"></label>
+<!--                    <input  type="text" id="QueryOK">-->
+                    <label  style="display:none" type="text" id="QueryOK"  th:text="${querok}"></label>
+<!--                    <input style="display:none" type="text" id="MSGID">-->
+                    <label  style="display:none" type="text" id="MSGID" th:if="${detailEntity!=null}" th:text="${detailEntity.feptxnMsgid}"></label>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/inbk/UI019030.js}"></script>
+    </div>
+</body>
+</html>

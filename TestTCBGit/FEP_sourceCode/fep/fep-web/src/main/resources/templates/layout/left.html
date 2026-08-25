@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<left th:fragment="left" th:if="${session.logonUser != null}">
+	<aside class="main-sidebar sidebar-dark-olive elevation-4">
+		<div class="sidebar">
+			<nav class="mt-2">
+				<ul th:if="${session.logonUser != null && session.logonUser.menuList != null&& session.logonUser.menuList.size > 0}" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+					<li th:if="${parent.childList.size > 0}" th:each="parent, parentStat : ${session.logonUser.menuList}" th:class="'nav-item nav-item-function' + ${parent.selected ? ' menu-open' : ''}">
+						<a href="#" th:class="'nav-link' + ${parent.selected ? ' active' : ''}">
+							<i th:class="'nav-icon far fa-folder' + ${parent.selected ? '-open' : ''}"></i>
+							<p>
+								[[${parent.name}]]
+								<i class="fas fa-angle-left right"></i>
+								<span class="badge badge-info right" th:text="${parent.childList.size}"></span>
+							</p>
+						</a>
+						<ul th:if="!${#lists.isEmpty(parent.childList)}" class="nav nav-treeview">
+							<li th:each="child : ${parent.childList}" class="nav-item nav-item-program">
+								<a th:href="${child.url}" th:class="'nav-link' + ${child.selected ? ' active' : ''}">
+									<i class="nav-icon far fa-file"></i>
+									<p th:text="${child.name}"></p>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<script th:if="${session.logonUser != null}" th:inline="javascript">
+			$('.nav-item-function').find('a:first').on('click', function() {
+				var isOpen = !$(this).parent().hasClass('menu-open');
+				$(this).find('i:first').attr('class', 'nav-icon far fa-folder' + (isOpen ? '-open' : ''))
+			});
+		</script>
+	</aside>
+	</left>
+</body>
+</html>

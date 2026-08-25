@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_020061_C/index}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" for="allbankBkno">
+                    <label class="col-form-label">財金銀行代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="allbankBkno" th:field="*{allbankBkno}" maxlength="3">
+                </td>
+                <td class="condition-label" for="allbankBrno">
+                    <label class="col-form-label">財金分行代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="allbankBrno" th:field="*{allbankBrno}" maxlength="3">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="countyDDL">
+                    <label class="col-form-label">縣市</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{countyDDL}">
+                        <option value=""></option>
+                        <option th:each="oCountyDDL : ${oCountyDDLs}" th:text="${oCountyDDL.text}" th:value="${oCountyDDL.value}" />
+                    </select>
+                </td>
+                <td class="condition-label" for="regionDDL">
+                    <label class="col-form-label">鄉鎮區</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{regionDDL}">
+                        <option value=""></option>
+                        <option th:each="oRegionDDL : ${oRegionDDLs}" th:text="${oRegionDDL.text}" th:value="${oRegionDDL.value}" />
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear1">清除</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>修改</b></th>
+                <th><b>銀行代號</b></th>
+                <th><b>分行代號</b></th>
+                <th><b>檢查碼</b></th>
+                <th><b>銀行簡稱</b></th>
+                <th><b>銀行地址</b></th>
+                <th><b>匯出狀態</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btnUpdate" href="#"
+                            th:value="${
+										'{' + '&quot;allbankBkno&quot;:&quot;'+data.allbankBkno + '&quot;' + ','
+											+ '&quot;allbankBrno&quot;:&quot;'+data.allbankBrno + '&quot;'
+											+ '}'
+										}"
+                    >修改</button>
+                </td>
+                <td align="center" th:text="${data.allbankBkno}" />
+                <td align="center" th:text="${data.allbankBrno}" />
+                <td align="center" th:text="${data.allbankBrnoChkcode}" />
+                <td align="center" th:text="${data.allbankAliasname}" />
+                <td align="center" th:text="${data.allbankAddrress}" />
+                <td align="center" th:text="${data.allbankRmforward}==0?'0-正常':(${data.allbankRmforward}==1?'1-禁止':'2-颱風天暫停')" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI020061_C.js}"></script>
+</div>
+</body>
+</html>

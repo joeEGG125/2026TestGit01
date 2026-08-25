@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syscom.fep.mybatis.ext.mapper.MerchantExtMapper">
+
+	<update id="deleteMERCHANT">
+		DELETE FROM MERCHANT
+	</update>
+	<insert id="batchInsertMERCHANT" parameterType="java.util.List">
+		INSERT INTO MERCHANT (
+		MERCHANT_BANK,
+		MERCHANT_ID,
+		MERCHANT_NAME,
+		MERCHANT_ABBNM,
+		MERCHANT_MCC,
+		UPDATE_USERID,
+		UPDATE_TIME
+		) VALUES
+		<foreach collection="list" item="item" separator=",">
+			(
+			#{item.merchantBank},
+			#{item.merchantId},
+			#{item.merchantName},
+			#{item.merchantAbbnm},
+			#{item.merchantMcc},
+			#{item.updateUserid},
+			#{item.updateTime}
+			)
+		</foreach>
+	</insert>
+
+</mapper>

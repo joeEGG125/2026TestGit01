@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_013109/confirmClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" for="bkno">
+                    <label class="col-form-label">會員單位代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{bkno}" maxlength="3">
+                </td>
+                <td class="condition-label" for="apId">
+                    <label class="col-form-label">應用系統代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{apId}" maxlength="4" onchange="apidChange()">
+                </td>
+                <td class="condition-label" for="curDdl" th:if="false">
+                    <label class="col-form-label">幣別</label>
+                </td>
+                <td class="condition-input" th:if="false">
+                    <select class="form-control" th:field="*{curDdl}">
+                        <option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}" />
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnConfirm">確認</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid">
+    <div class="card-body table-responsive p-0">
+        <div class="card card-outline card-primary">
+            <div class="card-body" style="display: block;">
+                <br>
+                <table border="0" cellspacing="0" class="table-condition" width="100%">
+                    <tr>
+                        <td>財金系統狀態</td>
+                    </tr>
+                    <tr>
+                        <td>系統狀態</td>
+                        <td th:text="${soctlbl}" />
+                    </tr>
+                    <tr>
+                        <td>應用系統狀態</td>
+                        <td th:text="${aoctlbl}" />
+                    </tr>
+                </table>
+                <br>
+                <table border="0" cellspacing="0" class="table-condition" width="100%">
+                    <tr>
+                        <td>M-BANK系統狀態</td>
+                    </tr>
+                    <tr>
+                        <td>系統狀態</td>
+                        <td th:text="${mboctlbl}" />
+                    </tr>
+                    <tr>
+                        <td>應用系統狀態</td>
+                        <td th:text="${mbactlbl}" />
+                    </tr>
+                </table>
+                <br>
+                <table border="0" cellspacing="0" class="table-condition" width="100%">
+                    <tr>應用系統代號說明</tr>
+<!--                    <tr>-->
+<!--                        <td>1100 匯款類子系統</td>-->
+<!--                        <td>1200 代收款項類子系統</td>-->
+<!--                        <td>1300 代繳代發類子系統</td>-->
+<!--                        <td>1400 一般通信類子系統</td>-->
+<!--                        <td>1600 外匯匯款類子系統</td>-->
+<!--                    </tr>-->
+                    <tr>
+                        <td>2000 ATM共用系統提款</td>
+                        <td>2200 ATM共用系統轉帳</td>
+                        <td>2510 晶片卡提款</td>
+                        <td>2520 晶片卡轉帳</td>
+                        <td>2530 晶片卡繳款</td>
+                    </tr>
+                    <tr>
+                        <td>2540 晶片卡消費扣款</td>
+                        <td>2550 晶片卡預先授權</td>
+                        <td>2560 晶片卡全國繳費</td>
+                        <td>2570 晶片卡跨國提款</td>
+                        <td>2700 資金調撥</td>
+                    </tr>
+                    <tr>
+                        <td>7100 FEDI 轉帳退款類交易</td>
+                    </tr>
+<!--                    <tr>-->
+<!--                        <td>7300 FXML 跨行付款交易</td>-->
+<!--                    </tr>-->
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/inbk/UI013109.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.MsgctlExtMapper">
+	<select id="selectAll" resultMap="com.syscom.fep.mybatis.mapper.MsgctlMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgctlMapper.Base_Column_List" />
+		FROM MSGCTL
+	</select>
+	<select id="selectCountOfMsgctl" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM MSGCTL where MSGCTL_MSGID LIKE CONCAT(#{msgctlMsgid}, '%')
+					  AND MSGCTL_MSGID != #{msgctlMsgid,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectOne" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgctlMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgctlMapper.Base_Column_List" />
+		FROM MSGCTL where MSGCTL_MSGID LIKE CONCAT(#{msgctlMsgid}, '%')
+		AND MSGCTL_MSGID != #{msgctlMsgid,jdbcType=VARCHAR}
+	</select>
+
+	<select id="select" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgctlMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgctlMapper.Base_Column_List" />
+		FROM MSGCTL
+		<where>
+			<if test="msgctlMsgid != null and msgctlMsgid != ''">
+				AND MSGCTL_MSGID = #{msgctlMsgid,jdbcType=SMALLINT}
+			</if>
+			<if test="msgctltxtype1 != null">
+				AND MSGCTL_TXTYPE1 = #{msgctltxtype1,jdbcType=SMALLINT}
+			</if>
+			<if test="msgctltxtype2 != null">
+				AND MSGCTL_TXTYPE2 = #{msgctltxtype2,jdbcType=SMALLINT}
+			</if>
+		</where>
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	<select id="selectByTxType" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgctlMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgctlMapper.Base_Column_List" />
+		FROM MSGCTL
+		<where>
+			<if test="txType1 != null">
+				AND MSGCTL_TXTYPE1 = #{txType1,jdbcType=SMALLINT}
+			</if>
+			<if test="txType2 != null">
+				AND MSGCTL_TXTYPE2 = #{txType2,jdbcType=SMALLINT}
+			</if>
+		</where>
+	</select>
+	<select id="selectAllTxTypeMsgctl" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgctlMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.MsgctlMapper.Base_Column_List" />
+		FROM MSGCTL
+		WHERE MSGCTL_TXTYPE1 IS NOT NULL
+		AND MSGCTL_TXTYPE2 IS NOT NULL
+	</select>
+	<select id="selectByLikeMsgidNotFisc" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsgctlMapper.BaseResultMap">
+    	SELECT 
+    	<include refid="com.syscom.fep.mybatis.mapper.MsgctlMapper.Base_Column_List" />
+    	FROM MSGCTL
+    	WHERE MSGCTL_MSGID LIKE CONCAT('%', #{msgctlMsgid})
+    	AND MSGCTL_CHANNEL != 'FISC'
+    	AND (MSGCTL_REQMAC_TYPE IS NOT NULL AND MSGCTL_REPMAC_TYPE IS NOT NULL) 
+    	ORDER BY MSGCTL_CHANNEL ASC
+    	FETCH FIRST 1 ROWS ONLY
+	</select>
+	<select id="selectMsgName" parameterType="String" resultType="String" >
+		SELECT
+		MSGCTL_MSG_NAME
+		FROM MSGCTL
+		WHERE MSGCTL_MSGID = #{msgctlMsgid, jdbcType=VARCHAR}
+	</select>
+	<update id="updateMsgctlStatus" parameterType="com.syscom.fep.mybatis.model.Msgctl">
+		UPDATE MSGCTL
+    	<set>
+	    MSGCTL_STATUS = #{msgctlStatus, jdbcType=DECIMAL},
+	    </set>
+	    WHERE MSGCTL_MSGID = #{msgctlMsgid, jdbcType=VARCHAR}
+	</update>
+	<update id="updateMsgctlCbsProc" parameterType="com.syscom.fep.mybatis.model.Msgctl">
+		UPDATE MSGCTL
+    	<set>
+	    MSGCTL_CBS_PROC = #{msgctlCbsProc, jdbcType=VARCHAR},
+	    </set>
+	    WHERE MSGCTL_MSGID = #{msgctlMsgid, jdbcType=VARCHAR}
+	</update>
+</mapper>

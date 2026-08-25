@@ -1,0 +1,2 @@
+spring.datasource.fepdb.username=db2admin
+spring.datasource.desdb.username=db2admin

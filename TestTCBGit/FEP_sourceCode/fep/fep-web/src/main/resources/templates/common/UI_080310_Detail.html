@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<style>
+		.table-zoo{
+			width:95%;
+			margin-left: 10px;
+			margin-top: 20px;
+		}
+		.table-zoo-tt{
+			width: 100%;
+			border:1px solid #95B8E7;
+		}
+		.table-zoo-tt-td{
+			border:1px solid #95B8E7;
+			background: #E5EFFF;
+		}
+		.table-s{
+			padding-left: 10px;
+			font-size:14px
+		}
+		.table-d{
+			height: 610px;
+			overflow-x: auto;
+		}
+		.table-zoo-tt-tt{
+			margin-left: 20px;
+			margin-top: 10px;
+		}
+		.table-zoo-tt-tr{
+			padding-left: 10px
+		}
+		.table-zoo-tt-la{
+			font-size: 14px
+		}
+		.table-zoo-tt-i{
+			margin-bottom: 3px;
+			margin-top: 3px;
+			margin-left: 15px;
+		}
+	</style>
+</head>
+
+<body>	
+	<div layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+        	<div class="card-body table-responsive p-0">        			
+        	    &nbsp;&nbsp;&nbsp;<label th:text="${form.fepgroupGroupId}"></label>-
+        	    <label th:text="${form.fepgroupName}"></label>        	   
+        		<table class="table-zoo" style="width:90%;" th:if="${gridData!= null and detailEntity!= null}">
+					<thead>
+						<tr align="center">
+							<th><b>未授權程式</b></th>
+							<th style="width: 5%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+							<th><b>已授權程式</b></th>
+						</tr>   
+					</thead>   
+                    <tbody> 
+                    	<tr>
+							<td valign="top" style="width: 35%">
+							<div class="table-d">
+								<table border="1" style="width:100%" class="table-zoo-tt">
+									<thead>
+										<tr align="center" style="background-color:#FDf0f0;">
+											<th style="width: 50%"><b>程式名稱</b></th>
+											<th style="width: 50%"><b>程式代碼</b></th>
+										</tr>   
+									</thead> 	
+									<tbody th:if="${gridData!= null}">
+										<tr th:each="data : ${gridData}">
+											<td align="left" th:text="${data.PROGRAM_NAME}"/>
+											<td align="left" th:text="${data.PROGRAM_ID}"></td>
+										</tr>
+									</tbody>								
+								</table>
+							</div>
+							</td>
+							<td/>
+							<td valign="top" style="width: 35%">
+								<div class="table-d">
+								<table border="1" style="width:100%" class="table-zoo-tt">
+									<thead>
+										<tr align="center" style="background-color:#FDf0f0;">
+											<th style="width: 50%"><b>程式名稱</b></th>
+											<th style="width: 50%"><b>程式代碼</b></th>
+										</tr>   
+									</thead> 	
+									<tbody th:if="${detailEntity!= null}">
+										<tr th:each="data : ${detailEntity}">
+											<td align="left" th:text="${data.PROGRAM_NAME}"/>
+											<td align="left" th:text="${data.PROGRAM_ID}"></td>
+										</tr>
+									</tbody>								
+								</table>
+								</div>
+							</td>								
+                    	</tr>
+                    </tbody>		
+        		</table>   
+        	</div>	
+	</div>
+</body>
+
+</html>

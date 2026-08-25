@@ -1,0 +1,166 @@
+	<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+	<div layout:fragment="panel-condition">
+		
+	</div>
+	<div layout:fragment="panel-button">
+		<button style="width: 100px" type="button" class="btn btn-primary"
+			id="btnInsert">儲存變更</button>
+		<button style="width: 100px" type="button" class="btn btn-primary"
+			id="btnClear">放棄變更</button>
+		<button type="button" th:if="${form.style eq 'update'}" class="btn btn-primary" id="btnUpdateFisc">設定成財金營業日</button>
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" >
+		<form id="form-validator" th:object="${form}"
+			th:action="@{/dbmaintain/UI_070020/insertActionClick}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label" style="width: 200px"><label
+						class="col-form-label">分行代號<span style="color: red">*</span> <br /></label></td>
+					<td class="condition-input" style="width: 200px" id="bsdayZoneCode">
+						<select  th:field="*{BSDAYS_ZONE_CODEDdl}" class="form-control">
+								<option value="TWN" selected="selected">台灣</option>
+						</select>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">日曆日* 
+							<br />
+						</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="txtBSDAYS_DATE"   data-target-input="nearest">
+							<input type="text" th:field="*{txtBSDAYS_DATE}" class="form-control datetimepicker-input" data-target="#txtBSDAYS_DATE" />
+							<div class="input-group-append" data-target="#txtBSDAYS_DATE" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="condition-label" style="width: 200px">
+						<label class="col-form-label">本年的第幾天*
+							<br />
+						</label></td>
+					<td class="condition-input" style="width: 200px">
+						<input type="text" th:field="*{txtBSDAYS_JDAY}">
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">工作日記號*
+								<br />
+						</label>
+					</td>
+					<td class="condition-input" style="width: 200px">
+						<select th:field="*{BSDAYS_WORKDAYDdl}" class="form-control">
+								<option value="0">0-假日</option>
+								<option value="1">1-工作日</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="condition-label" style="width: 200px">
+						<label class="col-form-label">星期幾*
+							<br />
+						</label></td>
+						
+					<td class="condition-input" style="width: 200px">
+						<input type="text" th:field="*{txtBSDAYS_WEEKNO}">
+					</td>
+					
+					<td class="condition-label" style="display: none; width: 200px">
+							<label class="col-form-label">清算記號
+								<input type="text" th:field="*{txtBSDAYS_ST_FLAG}" th:value=*{txtBSDAYS_ST_FLAG}>
+							</label>
+					</td>
+					<td class="condition-label" style="display: none; width: 200px">
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="condition-label" style="width: 200px">
+						<label class="col-form-label">下營業日*
+							<br />
+						</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="txtBSDAYS_NBSDY" data-target-input="nearest">
+							<input type="text" th:field="*{txtBSDAYS_NBSDY}" class="form-control datetimepicker-input" data-target="#txtBSDAYS_NBSDY" />
+							<div class="input-group-append" data-target="#txtBSDAYS_NBSDY" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+					<td class="condition-label d-none" style="width: 200px">
+						<label class="col-form-label">ATM清算日*
+							<br />
+						</label>
+					</td>
+					<td class="condition-input d-none">
+						<div class="input-group date" id="txtBSDAYS_ST_DATE_ATM" data-target-input="nearest">
+							<input type="text" th:field="*{txtBSDAYS_ST_DATE_ATM}" class="form-control datetimepicker-input" data-target="#txtBSDAYS_ST_DATE_ATM" />
+							<div class="input-group-append" data-target="#txtBSDAYS_ST_DATE_ATM" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label d-none" style="width: 200px">
+						<label class="col-form-label">RM清算日*
+							<br />
+						</label></td>
+					<td class="condition-input d-none">
+						<div class="input-group date" id="txtBSDAYS_ST_DATE_RM" data-target-input="nearest">
+							<input type="text" th:field="*{txtBSDAYS_ST_DATE_RM}" class="form-control datetimepicker-input" data-target="#txtBSDAYS_ST_DATE_RM" />
+							<div class="input-group-append" data-target="#txtBSDAYS_ST_DATE_RM" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+			</table>
+		</form>
+	</div>
+
+
+	<div layout:fragment="panel-script">
+		<script th:inline="javascript">
+			var form = /*[[${form}]]*/'';
+			if(form.style == 'update'){
+				$('#BSDAYS_ZONE_CODEDdl').attr('disabled', true);
+				
+			}
+			if(form.style == 'update'){
+				$('#txtBSDAYS_DATE').css({
+				    color: "#F00000"
+				  });
+				$('#txtBSDAYS_DATE').attr('disabled', true);
+				$('#txtBSDAYS_DATE').val(form.txtBSDAYS_DATE);
+				
+			}
+		</script>
+		<script type="text/javascript" th:src="@{/js/dbmaintain/UI070020_Detail.js}"></script>
+	</div>
+
+</body>
+	
+</html>

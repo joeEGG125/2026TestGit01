@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.BrapExtMapper">
+    <select id="getBRAPSumAmtByStDateAPIDKind" resultType="java.util.HashMap">
+        SELECT 	SUM(BRAP_TX_CNT_DR) AS CNT_DR,SUM(BRAP_TX_AMT_DR) AS AMT_DR,
+                  SUM(BRAP_TX_CNT_CR) AS CNT_CR,SUM(BRAP_TX_AMT_CR) AS AMT_CR,
+                  SUM(BRAP_MOD_TX_CNT_DR) AS TX_CNT_DR,SUM(BRAP_MOD_TX_AMT_DR) AS TX_AMT_DR,
+                  SUM(BRAP_MOD_TX_CNT_CR) AS TX_CNT_CR,SUM(BRAP_MOD_TX_AMT_CR) AS TX_AMT_CR,
+                  SUM(BRAP_MBANK_CNT_DR) AS PROFIT_CNT,SUM(BRAP_MBANK_FEE_DR) AS PROFIT_AMT,
+                  SUM(BRAP_MBANK_CNT_CR) AS LOSS_CNT,SUM(BRAP_MBANK_FEE_CR+BRAP_FISC_FEE_CR) AS LOSS_AMT,
+                  SUM(BRAP_MOD_PROFIT_CNT) AS MOD_PROFIT_CNT,SUM(BRAP_MOD_PROFIT_AMT) AS MOD_PROFIT_AMT,
+                  SUM(BRAP_MOD_LOSS_CNT) AS MOD_LOSS_CNT,SUM(BRAP_MOD_LOSS_AMT) AS MOD_LOSS_AMT
+        FROM BRAP
+        <where>
+            <if test="brapStDate != null">
+                AND BRAP_ST_DATE = #{brapStDate,jdbcType=VARCHAR}
+            </if>
+            <if test="apId != null">
+                AND BRAP_APID = #{apId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="getBRAPBySTDateForUI" resultType="java.util.HashMap">
+        SELECT BRAP_SEQNO,BRAP_ST_DATE,BRAP_APID,BRAP_BRNO,
+               BRAP_TX_TYPE,BRAP_ACC_TYPE,BRAP_MONTHLY_FLAG,
+               BRAP_PCODE,BRAP_ZONE_CODE,'TWD' AS BRAP_CUR,
+               BRAP_TX_CNT_DR,BRAP_TX_AMT_DR,
+               BRAP_TX_CNT_CR,BRAP_TX_AMT_CR,
+               BRAP_CNT_CUSTPAY,BRAP_FEE_CUSTPAY,
+               BRAP_MBANK_CNT_DR,BRAP_MBANK_FEE_DR,
+               BRAP_MBANK_CNT_CR,BRAP_MBANK_FEE_CR,
+               BRAP_FISC_CNT_DR,BRAP_FISC_FEE_DR,
+               BRAP_FISC_CNT_CR,BRAP_FISC_FEE_CR,
+               BRAP_PROFIT_CNT,BRAP_PROFIT_AMT,
+               BRAP_LOSS_CNT,BRAP_LOSS_AMT,
+               BRAP_DEPT_CODE,BRAP_PBTYPE,
+               BRAP_MOD_TX_CNT_DR,BRAP_MOD_TX_AMT_DR,
+               BRAP_MOD_CNT_CUSTPAY,BRAP_MOD_FEE_CUSTPAY,
+               BRAP_MOD_PROFIT_CNT,BRAP_MOD_PROFIT_AMT,
+               BRAP_MOD_TX_CNT_CR,BRAP_MOD_TX_AMT_CR,
+               BRAP_MOD_FISC_CNT_CR,BRAP_MOD_FISC_FEE_CR,
+               BRAP_MOD_LOSS_CNT,BRAP_MOD_LOSS_AMT
+        FROM BRAP
+        <where>
+            <if test="stDate != null and stDate != ''">
+                AND BRAP_ST_DATE = #{stDate,jdbcType=VARCHAR}
+            </if>
+            <if test="pcode != null and pcode != ''">
+                AND BRAP_PCODE = #{pcode,jdbcType=VARCHAR}
+            </if>
+            <if test="apId != null and apId != ''">
+                AND BRAP_APID = #{apId,jdbcType=VARCHAR}
+            </if>
+            <if test="txType != null and txType != ''">
+                AND BRAP_TX_TYPE = #{txType,jdbcType=VARCHAR}
+            </if>
+            <if test="brno != null and brno != ''">
+                AND BRAP_BRNO = #{brno,jdbcType=VARCHAR}
+            </if>
+            <if test="deptCode != null and deptCode != ''">
+                AND BRAP_DEPT_CODE = #{deptCode,jdbcType=VARCHAR}
+            </if>
+            <if test="brapCur == 'TWD'">
+               
+            </if>             
+            <choose>
+                <when test="brapCur == null or brapCur == '' or brapCur == 'TWD'">
+                    AND (BRAP_CUR = 'TWD' OR BRAP_CUR IS NULL)
+                </when>
+                <otherwise>
+                    AND   BRAP_CUR = 'a'
+                </otherwise>
+            </choose>            
+        </where>
+    </select>
+    
+    <!-- Bruce add ProcBRAP 刪除分行清算日結檔BRAP 已存在資料 -->
+    <delete id="deleteByDatePCode" parameterType="map">
+    	DELETE FROM BRAP
+    	<where>
+            BRAP_ST_DATE BETWEEN #{beginDate,jdbcType=VARCHAR} AND #{endDate,jdbcType=VARCHAR} AND SUBSTRING(BRAP_PCODE,1,1) = '2'
+    	</where>
+    </delete>
+</mapper>

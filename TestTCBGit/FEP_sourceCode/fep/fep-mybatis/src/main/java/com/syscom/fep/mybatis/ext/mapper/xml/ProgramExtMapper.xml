@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.ProgramExtMapper">
+	<!-- 2022-06-13 Bruce add -->
+	<select id="getProgramf" resultType="java.util.Map">
+	   SELECT PROGRAM_NAME,
+	          PROGRAM_ID 
+	     FROM program
+	 ORDER BY PROGRAM_ID
+	</select>
+</mapper>

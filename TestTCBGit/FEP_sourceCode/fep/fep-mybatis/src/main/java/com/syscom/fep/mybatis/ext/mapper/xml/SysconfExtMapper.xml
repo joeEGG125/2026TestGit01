@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.SysconfExtMapper">
+	<!-- 2021/04/28 ZhaoKai Add -->
+	<select id="queryAllData" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.SysconfMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.SysconfMapper.Base_Column_List" />
+		FROM SYSCONF
+		<if test="@com.syscom.fep.common.util.DbHelper@isSqlInOrderByValid(orderBy)">
+			ORDER BY ${orderBy}
+		</if>
+	</select>
+	
+	<!-- 2021/05/28 Han Add -->
+	<select id="getDataBySubSystem" parameterType="map"
+		resultType="map">
+		SELECT SYSCONF_SUBSYSNO,SUBSYS.SUBSYS_NAME_S AS
+		SYSCONF_SUBSYSNOC,SYSCONF_NAME,
+		SYSCONF_DATATYPE,SYSCONF_VALUE,SYSCONF_READONLY,
+		CASE WHEN SYSCONF_TYPE is null THEN ' ' ELSE SYSCONF_TYPE END AS
+		SYSCONF_TYPE ,
+		CASE WHEN
+		SYSCONF_READONLY =1 THEN '是' ELSE '否' END AS SYSCONF_READONLYC ,
+		SYSCONF_FREQ,SYSCONF_REMARK,CASE
+		WHEN SYSCONF_ENCRYPT =1 THEN '是' ELSE
+		'否' END AS SYSCONF_ENCRYPT
+		FROM SYSCONF
+		LEFT JOIN SUBSYS ON
+		SYSCONF.SYSCONF_SUBSYSNO = SUBSYS.SUBSYS_SUBSYSNO
+		WHERE
+		SYSCONF_SUBSYSNO= #{sysconfSubsysno,jdbcType=INTEGER}
+	</select>
+
+	<!-- 2021/05/28 Han Add -->
+	<select id="getAllBySubSystemName" parameterType="map"
+		resultType="map">
+
+		SELECT SYSCONF_SUBSYSNO,SUBSYS.SUBSYS_NAME_S AS
+		SYSCONF_SUBSYSNOC,
+		SYSCONF_NAME,SYSCONF_DATATYPE,SYSCONF_VALUE,SYSCONF_READONLY,
+		CASE WHEN SYSCONF_TYPE is null THEN ' ' ELSE SYSCONF_TYPE END AS
+		SYSCONF_TYPE ,
+		CASE WHEN SYSCONF_READONLY =1 THEN '是' ELSE '否' END AS
+		SYSCONF_READONLYC ,
+		SYSCONF_FREQ,SYSCONF_REMARK,CASE WHEN
+		SYSCONF_ENCRYPT =1 THEN '是' ELSE '否' END AS SYSCONF_ENCRYPT
+		FROM
+		SYSCONF
+		LEFT JOIN SUBSYS ON SYSCONF.SYSCONF_SUBSYSNO =
+		SUBSYS.SUBSYS_SUBSYSNO
+		WHERE SYSCONF_NAME like CONCAT('%', CONCAT(#{sysconfName}, '%'))
+	</select>
+
+	<!-- 2021/05/28 Han Add -->
+	<select id="getAllData" parameterType="map" resultType="map">
+		SELECT
+		SYSCONF_SUBSYSNO,SUBSYS.SUBSYS_NAME_S AS SYSCONF_SUBSYSNOC,
+		SYSCONF_NAME,SYSCONF_DATATYPE,SYSCONF_VALUE,SYSCONF_READONLY,
+		CASE WHEN SYSCONF_TYPE is null THEN ' ' ELSE SYSCONF_TYPE END AS
+		SYSCONF_TYPE ,
+		CASE WHEN SYSCONF_READONLY =1 THEN '是' ELSE '否' END AS
+		SYSCONF_READONLYC ,
+		SYSCONF_FREQ,SYSCONF_REMARK,
+		CASE WHEN
+		SYSCONF_ENCRYPT =1 THEN '是' ELSE '否' END AS SYSCONF_ENCRYPT
+		FROM SYSCONF
+		LEFT JOIN SUBSYS ON SYSCONF.SYSCONF_SUBSYSNO = SUBSYS.SUBSYS_SUBSYSNO
+	</select>
+
+
+	<!-- 2021/05/28 Han Add -->
+	<select id="getAllDataByPk" parameterType="map" resultType="map">
+		SELECT SYSCONF_SUBSYSNO,SUBSYS.SUBSYS_NAME_S AS
+		SYSCONF_SUBSYSNOC,SYSCONF_NAME,
+		SYSCONF_DATATYPE,SYSCONF_VALUE,
+		SYSCONF_READONLY,
+		CASE WHEN SYSCONF_TYPE is null THEN ' ' ELSE SYSCONF_TYPE END AS
+		SYSCONF_TYPE ,
+		CASE WHEN SYSCONF_READONLY =1 THEN '是' ELSE '否' END AS SYSCONF_READONLYC ,
+		SYSCONF_FREQ,SYSCONF_REMARK,
+		CASE WHEN SYSCONF_ENCRYPT =1 THEN '是' ELSE
+		'否' END AS SYSCONF_ENCRYPT
+		FROM SYSCONF 
+		LEFT JOIN SUBSYS ON SUBSYS.SUBSYS_SUBSYSNO =
+		SYSCONF.SYSCONF_SUBSYSNO
+		WHERE SYSCONF_SUBSYSNO= #{sysconfSubsysno,jdbcType=INTEGER} AND
+		SYSCONF_NAME LIKE CONCAT('%', CONCAT(#{sysconfName}, '%'))
+	</select>
+	
+	<!-- 2021/06/13 Han Add -->
+	<select id="getAllDataByPk2" parameterType="map" resultType="map">
+		SELECT SYSCONF_SUBSYSNO,SUBSYS.SUBSYS_NAME_S AS
+		SYSCONF_SUBSYSNOC,SYSCONF_NAME,
+		SYSCONF_DATATYPE,SYSCONF_VALUE,
+		SYSCONF_READONLY,
+		CASE WHEN SYSCONF_TYPE is null THEN ' ' ELSE SYSCONF_TYPE END AS
+		SYSCONF_TYPE ,
+		CASE WHEN SYSCONF_READONLY =1 THEN '是' ELSE '否' END AS SYSCONF_READONLYC ,
+		SYSCONF_FREQ,SYSCONF_REMARK,
+		CASE WHEN SYSCONF_ENCRYPT =1 THEN '是' ELSE
+		'否' END AS SYSCONF_ENCRYPT
+		FROM SYSCONF 
+		LEFT JOIN SUBSYS ON SUBSYS.SUBSYS_SUBSYSNO =
+		SYSCONF.SYSCONF_SUBSYSNO
+		WHERE SYSCONF_SUBSYSNO= #{sysconfSubsysno,jdbcType=INTEGER} AND
+		SYSCONF_NAME LIKE CONCAT('%', CONCAT(#{sysconfName}, '%'))
+	</select>
+	
+	<update id="updateByPrimaryKey" parameterType="map">
+    	UPDATE SYSCONF
+    <set>
+		SYSCONF_VALUE = #{sysconfValue,jdbcType=VARCHAR},
+		SYSCONF_REMARK = #{sysconfRemark,jdbcType=VARCHAR},
+      	SYSCONF_TYPE = #{sysconfType,jdbcType=VARCHAR},
+ 		SYSCONF_READONLY = #{sysconfReadonly,jdbcType=INTEGER},
+ 		SYSCONF_DATATYPE = #{sysconfDatatype,jdbcType=VARCHAR},
+ 		UPDATE_TIME = sysdate 
+    </set>
+    	WHERE SYSCONF_SUBSYSNO= #{sysconfSubsysno,jdbcType=INTEGER} AND
+		SYSCONF_NAME like CONCAT('%', CONCAT(#{sysconfName}, '%'))
+  </update>
+</mapper>

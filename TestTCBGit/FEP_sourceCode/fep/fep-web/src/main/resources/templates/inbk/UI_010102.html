@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form>
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label for="selectKeyId" class="col-form-label">選擇 KEY-ID</label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" id="selectKeyId">
+							<option value="04" selected="selected">04:OPC 3-DES MAC KEY</option>
+							<option value="05">05:CD/ATM 3-DES MAC KEY</option>
+							<option value="06">06:RM 3-DES MAC KEY</option>
+							<option value="12">12:3-DES PPKEY</option>
+							<option value="20">20:TR-31 KEY Block PPKEY</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnExecute">執行</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-hidden"></div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/inbk/UI010102.js}"></script>
+	</div>
+</body>
+</html>

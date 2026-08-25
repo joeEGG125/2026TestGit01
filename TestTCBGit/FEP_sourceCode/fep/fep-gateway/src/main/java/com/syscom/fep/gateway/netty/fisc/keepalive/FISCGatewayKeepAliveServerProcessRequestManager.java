@@ -1,0 +1,5 @@
+package com.syscom.fep.gateway.netty.fisc.keepalive;
+
+import com.syscom.fep.gateway.netty.NettyTransmissionChannelProcessRequestServerManager;
+
+public class FISCGatewayKeepAliveServerProcessRequestManager extends NettyTransmissionChannelProcessRequestServerManager<FISCGatewayKeepAliveServerConfiguration, FISCGatewayKeepAliveServerProcessRequest> {}

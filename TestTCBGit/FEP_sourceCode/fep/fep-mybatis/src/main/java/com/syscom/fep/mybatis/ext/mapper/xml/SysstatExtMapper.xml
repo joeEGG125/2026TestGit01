@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syscom.fep.mybatis.ext.mapper.SysstatExtMapper">
+	<!-- 2021-04-20 Richard add -->
+	<select id="selectAll"
+		resultMap="com.syscom.fep.mybatis.mapper.SysstatMapper.BaseResultMap">
+		SELECT
+		<include
+			refid="com.syscom.fep.mybatis.mapper.SysstatMapper.Base_Column_List" />
+		FROM SYSSTAT
+	</select>
+
+	<!-- 2022-07-22 Han add -->
+	<select id="getQueryAll" resultType="map">
+		SELECT * FROM SYSSTAT
+	</select>
+
+
+	<!-- 2024-03-06 Richard modified for SYSSTATE 調整 -->
+	<!-- 2022-08-11 Han add -->
+	<!-- <update id="updateByHbkno" parameterType="map">
+		UPDATE SYSSTAT 
+		SET SYSSTAT_INTRA = #{SYSSTAT_INTRA,jdbcType=SMALLINT},
+		SYSSTAT_AGENT = #{SYSSTAT_AGENT,jdbcType=SMALLINT},
+		SYSSTAT_ISSUE = #{SYSSTAT_ISSUE,jdbcType=SMALLINT},
+		SYSSTAT_IWD_I = #{SYSSTAT_IWD_I,jdbcType=SMALLINT},
+		SYSSTAT_IWD_A = #{SYSSTAT_IWD_A,jdbcType=SMALLINT},
+		SYSSTAT_IWD_F = #{SYSSTAT_IWD_F,jdbcType=SMALLINT},
+		SYSSTAT_IFT_I = #{SYSSTAT_IFT_I,jdbcType=SMALLINT},
+		SYSSTAT_IFT_A = #{SYSSTAT_IFT_A,jdbcType=SMALLINT},
+		SYSSTAT_IFT_F = #{SYSSTAT_IFT_F,jdbcType=SMALLINT},
+		SYSSTAT_IPY_I = #{SYSSTAT_IPY_I,jdbcType=SMALLINT},
+		SYSSTAT_IPY_A = #{SYSSTAT_IPY_A,jdbcType=SMALLINT},
+		SYSSTAT_IPY_F = #{SYSSTAT_IPY_F,jdbcType=SMALLINT},
+		SYSSTAT_CDP_F = #{SYSSTAT_CDP_F,jdbcType=SMALLINT},
+		SYSSTAT_ICCDP_I = #{SYSSTAT_ICCDP_I,jdbcType=SMALLINT},
+		SYSSTAT_ICCDP_A = #{SYSSTAT_ICCDP_A,jdbcType=SMALLINT},
+		SYSSTAT_ICCDP_F = #{SYSSTAT_ICCDP_F,jdbcType=SMALLINT},
+		SYSSTAT_ETX_I = #{SYSSTAT_ETX_I,jdbcType=SMALLINT},
+		SYSSTAT_ETX_A = #{SYSSTAT_ETX_A,jdbcType=SMALLINT},
+		SYSSTAT_ETX_F = #{SYSSTAT_ETX_F,jdbcType=SMALLINT},
+		SYSSTAT_2525_A = #{SYSSTAT_2525_A,jdbcType=SMALLINT},
+		SYSSTAT_2525_F = #{SYSSTAT_2525_F,jdbcType=SMALLINT},
+		SYSSTAT_CPU_A = #{SYSSTAT_CPU_A,jdbcType=SMALLINT},
+		SYSSTAT_CPU_F = #{SYSSTAT_CPU_F,jdbcType=SMALLINT},
+		SYSSTAT_CAU_A = #{SYSSTAT_CAU_A,jdbcType=SMALLINT},
+		SYSSTAT_CAU_F = #{SYSSTAT_CAU_F,jdbcType=SMALLINT},
+		SYSSTAT_CWV_A = #{SYSSTAT_CWV_A,jdbcType=SMALLINT},
+		SYSSTAT_CWM_A = #{SYSSTAT_CWM_A,jdbcType=SMALLINT},
+		SYSSTAT_GPCWD_F = #{SYSSTAT_GPCWD_F,jdbcType=SMALLINT},
+		SYSSTAT_CA_I = #{SYSSTAT_CA_I ,jdbcType=SMALLINT},
+		SYSSTAT_CAV_A = #{SYSSTAT_CAV_A,jdbcType=SMALLINT},
+		SYSSTAT_CAF_A = #{SYSSTAT_CAF_A,jdbcType=SMALLINT},
+		SYSSTAT_CAM_A = #{SYSSTAT_CAM_A,jdbcType=SMALLINT},
+		SYSSTAT_GPCAD_F = #{SYSSTAT_GPCAD_F,jdbcType=SMALLINT},
+		SYSSTAT_CAA_I = #{SYSSTAT_CAA_I,jdbcType=SMALLINT},
+		SYSSTAT_FWD_I = #{SYSSTAT_FWD_I,jdbcType=SMALLINT},
+		SYSSTAT_ADM_I = #{SYSSTAT_ADM_I,jdbcType=SMALLINT},
+		SYSSTAT_AIG = #{SYSSTAT_AIG,jdbcType=SMALLINT},
+		SYSSTAT_HK_ISSUE = #{SYSSTAT_HK_ISSUE,jdbcType=SMALLINT},
+		SYSSTAT_HK_FISCMB = #{SYSSTAT_HK_FISCMB,jdbcType=SMALLINT},
+		SYSSTAT_HK_PLUS = #{SYSSTAT_HK_PLUS,jdbcType=SMALLINT},
+		SYSSTAT_MO_ISSUE = #{SYSSTAT_MO_ISSUE,jdbcType=SMALLINT},
+		SYSSTAT_MO_FISCMB = #{SYSSTAT_MO_FISCMB,jdbcType=SMALLINT},
+		SYSSTAT_T24_TWN = #{SYSSTAT_T24_TWN,jdbcType=SMALLINT},
+		SYSSTAT_T24_HKG = #{SYSSTAT_T24_HKG,jdbcType=SMALLINT},
+		SYSSTAT_T24_MAC = #{SYSSTAT_T24_MAC,jdbcType=SMALLINT},
+		SYSSTAT_HK_FISCMQ = #{SYSSTAT_HK_FISCMQ,jdbcType=SMALLINT},
+		SYSSTAT_MO_FISCMQ = #{SYSSTAT_MO_FISCMQ,jdbcType=SMALLINT},
+		SYSSTAT_FAW_A = #{SYSSTAT_FAW_A,jdbcType=SMALLINT},
+		SYSSTAT_EAF_A = #{SYSSTAT_EAF_A,jdbcType=SMALLINT},
+		SYSSTAT_EAV_A = #{SYSSTAT_EAV_A,jdbcType=SMALLINT},
+		SYSSTAT_EAM_A = #{SYSSTAT_EAM_A,jdbcType=SMALLINT},
+		SYSSTAT_EWV_A = #{SYSSTAT_EWV_A,jdbcType=SMALLINT},
+		SYSSTAT_EWM_A = #{SYSSTAT_EWM_A,jdbcType=SMALLINT},
+		SYSSTAT_GPEMV_F= #{SYSSTAT_GPEMV_F,jdbcType=SMALLINT},
+		SYSSTAT_PURE = #{SYSSTAT_PURE,jdbcType=SMALLINT},
+		SYSSTAT_IIQ_I = #{SYSSTAT_IIQ_I,jdbcType=SMALLINT},
+		SYSSTAT_IIQ_F = #{SYSSTAT_IIQ_F,jdbcType=SMALLINT},
+		SYSSTAT_IIQ_P = #{SYSSTAT_IIQ_P,jdbcType=SMALLINT},
+		SYSSTAT_IFT_P = #{SYSSTAT_IFT_P,jdbcType=SMALLINT},
+		SYSSTAT_ICCDP_P= #{SYSSTAT_ICCDP_P,jdbcType=SMALLINT},
+		SYSSTAT_IPY_P = #{SYSSTAT_IPY_P,jdbcType=SMALLINT},
+		SYSSTAT_CDP_A = #{SYSSTAT_CDP_A,jdbcType=SMALLINT},
+		SYSSTAT_CDP_P = #{SYSSTAT_CDP_P,jdbcType=SMALLINT},
+		SYSSTAT_IQV_P = #{SYSSTAT_IQV_P,jdbcType=SMALLINT},
+		SYSSTAT_IQM_P = #{SYSSTAT_IQM_P,jdbcType=SMALLINT},
+		SYSSTAT_IQC_P = #{SYSSTAT_IQC_P,jdbcType=SMALLINT},
+		SYSSTAT_EQP_P = #{SYSSTAT_EQP_P,jdbcType=SMALLINT},
+		SYSSTAT_EQC_P = #{SYSSTAT_EQC_P,jdbcType=SMALLINT},
+		SYSSTAT_EQU_P = #{SYSSTAT_EQU_P,jdbcType=SMALLINT},
+		SYSSTAT_ADM_A = #{SYSSTAT_ADM_A,jdbcType=SMALLINT},
+		SYSSTAT_NWD_I = #{SYSSTAT_NWD_I,jdbcType=SMALLINT},
+		SYSSTAT_NWD_A = #{SYSSTAT_NWD_A,jdbcType=SMALLINT},
+		SYSSTAT_GPIWD_F = #{SYSSTAT_GPIWD_F,jdbcType=SMALLINT},
+		SYSSTAT_GPOB_F = #{SYSSTAT_GPOB_F,jdbcType=SMALLINT},
+		SYSSTAT_NFW_I = #{SYSSTAT_NFW_I,jdbcType=SMALLINT},
+		SYSSTAT_VAA_F = #{SYSSTAT_VAA_F,jdbcType=SMALLINT},
+		SYSSTAT_VAA_A = #{SYSSTAT_VAA_A,jdbcType=SMALLINT}
+
+		WHERE SYSSTAT_HBKNO = #{SYSSTAT_HBKNO,jdbcType=CHAR}
+	</update> -->
+	<update id="updateByHbkno" parameterType="map">
+		UPDATE SYSSTAT
+		SET SYSSTAT_AOCT_1000 = #{SYSSTAT_AOCT_1000,jdbcType=CHAR},
+		SYSSTAT_AOCT_1100 = #{SYSSTAT_AOCT_1100,jdbcType=CHAR},
+		SYSSTAT_AOCT_1200 = #{SYSSTAT_AOCT_1200,jdbcType=CHAR},
+		SYSSTAT_AOCT_1300 = #{SYSSTAT_AOCT_1300,jdbcType=CHAR},
+		SYSSTAT_AOCT_1400 = #{SYSSTAT_AOCT_1400,jdbcType=CHAR},
+		SYSSTAT_MBACT_1000 = #{SYSSTAT_MBACT_1000,jdbcType=CHAR},
+		SYSSTAT_MBACT_1100 = #{SYSSTAT_MBACT_1100,jdbcType=CHAR},
+		SYSSTAT_MBACT_1200 = #{SYSSTAT_MBACT_1200,jdbcType=CHAR},
+	    SYSSTAT_MBACT_1300 = #{SYSSTAT_MBACT_1300,jdbcType=CHAR},
+	    SYSSTAT_MBACT_1400 = #{SYSSTAT_MBACT_1400,jdbcType=CHAR},
+	    SYSSTAT_MBACT_2000 = #{SYSSTAT_MBACT_2000,jdbcType=CHAR},
+		SYSSTAT_MBACT_2200 = #{SYSSTAT_MBACT_2200,jdbcType=CHAR},
+		SYSSTAT_MBACT_2500 = #{SYSSTAT_MBACT_2500,jdbcType=CHAR},
+		SYSSTAT_MBACT_2510 = #{SYSSTAT_MBACT_2510,jdbcType=CHAR},
+		SYSSTAT_MBACT_2520 = #{SYSSTAT_MBACT_2520,jdbcType=CHAR},
+		SYSSTAT_MBACT_2530 = #{SYSSTAT_MBACT_2530,jdbcType=CHAR},
+		SYSSTAT_MBACT_2540 = #{SYSSTAT_MBACT_2540,jdbcType=CHAR},
+		SYSSTAT_MBACT_2550 = #{SYSSTAT_MBACT_2550,jdbcType=CHAR},
+		SYSSTAT_MBACT_2560 = #{SYSSTAT_MBACT_2560,jdbcType=CHAR},
+		SYSSTAT_MBACT_2570 = #{SYSSTAT_MBACT_2570,jdbcType=CHAR},
+		SYSSTAT_MBACT_2700 = #{SYSSTAT_MBACT_2700,jdbcType=CHAR},
+		SYSSTAT_MBACT_7100 = #{SYSSTAT_MBACT_7100,jdbcType=CHAR},
+		SYSSTAT_MBACT_7300 = #{SYSSTAT_MBACT_7300,jdbcType=CHAR}
+		WHERE SYSSTAT_HBKNO = #{SYSSTAT_HBKNO,jdbcType=CHAR}
+	</update>
+	<select id="getSysstatTbsdy" resultType="String">
+		SELECT SYSSTAT_TBSDY_FISC FROM SYSSTAT
+		WHERE SYSSTAT_HBKNO = '006'
+	</select>
+	<select id="getSysstatLbsdy" resultType="String">
+		SELECT SYSSTAT_LBSDY_FISC FROM SYSSTAT
+		WHERE SYSSTAT_HBKNO = '006'
+	</select>
+	<select id="selectFirstByLbsdyFisc"
+		resultMap="com.syscom.fep.mybatis.mapper.SysstatMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.SysstatMapper.Base_Column_List" />
+		FROM SYSSTAT
+		ORDER BY SYSSTAT_LBSDY_FISC DESC 
+		FETCH FIRST 1 ROW ONLY
+	</select>
+	<update id="updateByHbknoForSystemStatus" parameterType="map">
+		UPDATE SYSSTAT
+		SET SYSSTAT_CBS = #{SYSSTAT_CBS,jdbcType=SMALLINT},
+		SYSSTAT_FCS = #{SYSSTAT_FCS,jdbcType=SMALLINT},
+		SYSSTAT_CREDIT = #{SYSSTAT_CREDIT,jdbcType=SMALLINT},
+		SYSSTAT_MTP = #{SYSSTAT_MTP,jdbcType=SMALLINT},
+		SYSSTAT_TWMP = #{SYSSTAT_TWMP,jdbcType=SMALLINT},
+		SYSSTAT_FIDO = #{SYSSTAT_FIDO,jdbcType=SMALLINT}
+		WHERE SYSSTAT_HBKNO = #{SYSSTAT_HBKNO,jdbcType=CHAR}
+	</update>
+	
+	<update id="updateSyssTatLTNbsdyFisc" parameterType="map">
+		UPDATE SYSSTAT
+		SET SYSSTAT_LBSDY_FISC = #{SYSSTAT_LBSDY_FISC,jdbcType=VARCHAR},
+		SYSSTAT_TBSDY_FISC = #{SYSSTAT_TBSDY_FISC,jdbcType=VARCHAR},
+		SYSSTAT_NBSDY_FISC = #{SYSSTAT_NBSDY_FISC,jdbcType=VARCHAR}
+		WHERE SYSSTAT_HBKNO = #{SYSSTAT_HBKNO,jdbcType=CHAR}
+	</update>
+
+
+	<update id="updateKeySyncForChangeKey" parameterType="com.syscom.fep.mybatis.model.Sysstat">
+		UPDATE SYSSTAT
+		<set>
+			<if test="sysstatOpckeyst != null">
+				SYSSTAT_OPCKEYST =  #{sysstatOpckeyst,jdbcType=SMALLINT},
+			</if>
+			<if test="sysstatAtmkeyst != null">
+				SYSSTAT_ATMKEYST =  #{sysstatAtmkeyst,jdbcType=SMALLINT},
+			</if>
+			<if test="sysstatRmkeyst != null">
+				SYSSTAT_RMKEYST =  #{sysstatRmkeyst,jdbcType=SMALLINT},
+			</if>
+			<if test="sysstatPpkeyst != null">
+				SYSSTAT_PPKEYST =  #{sysstatPpkeyst,jdbcType=SMALLINT},
+			</if>
+			<if test="sysstat3enckeyst != null">
+				SYSSTAT_3ENCKEYST =  #{sysstat3enckeyst,jdbcType=SMALLINT},
+			</if>
+			<if test="sysstatKeyblockst != null">
+				SYSSTAT_KEYBLOCKST = #{sysstatKeyblockst,jdbcType=SMALLINT},
+			</if>
+			<if test="sysstatFopcsync != null">
+				SYSSTAT_FOPCSYNC = #{sysstatFopcsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatTopcsync != null">
+				SYSSTAT_TOPCSYNC = #{sysstatTopcsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatFcdsync != null">
+				SYSSTAT_FCDSYNC = #{sysstatFcdsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatTcdsync != null">
+				SYSSTAT_TCDSYNC = #{sysstatTcdsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatFrmsync != null">
+				SYSSTAT_FRMSYNC = #{sysstatFrmsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatTrmsync != null">
+				SYSSTAT_TRMSYNC = #{sysstatTrmsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatFppsync != null">
+				SYSSTAT_FPPSYNC = #{sysstatFppsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatTppsync != null">
+				SYSSTAT_TPPSYNC = #{sysstatTppsync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatF3dessync != null">
+				SYSSTAT_F3DESSYNC = #{sysstatF3dessync,jdbcType=CHAR},
+			</if>
+			<if test="sysstatT3dessync != null">
+				SYSSTAT_T3DESSYNC = #{sysstatT3dessync,jdbcType=CHAR},
+			</if>
+			
+		</set>
+		WHERE SYSSTAT_HBKNO =  #{sysstatHbkno,jdbcType=CHAR}
+	</update>
+</mapper>

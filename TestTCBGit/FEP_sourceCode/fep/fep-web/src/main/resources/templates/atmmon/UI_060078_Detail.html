@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden"></div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+			<div align="left" layout:fragment="panel-button">
+	            <button type="button" style="width:100px" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+			</div>
+<div layout:fragment="panel-grid" class="panel-detail">
+		<form id="form-validator" th:object="${form}">
+			<br/>
+
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td style="width:200px" align="right"><label class="col-form-label">財金營業日:</label></td>
+					<td style="width:200px"><input class="form-control" type="text" disabled="true" th:field="*{atmcTbsdyFisc}" /></td>
+					<td style="width:200px" align="right"><label class="col-form-label">本行營業日:</label></td>
+					<td style="width:200px"><input class="form-control" type="text" disabled="true" th:field="*{atmcTbsdy}" /></td>
+					<td style="width:100px"></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">清算分行:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcBrnoSt}" /></td>
+					<td align="right"><label class="col-form-label">ATM代號:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcAtmno}" /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">幣別:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcCur}" /></td>
+					<td align="right"><label class="col-form-label">交易別:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcTxCode}" /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">摘要:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcDscpt}" /></td>
+					<td align="right"><label class="col-form-label">保留:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcSelfcd}" /></td>
+					<td></td>
+				</tr>
+				<tr style="background-color:#FFD9E6">
+					<td align="right"><label class="col-form-label">借方筆數:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcDrCnt}" /></td>
+					<td align="right"><label class="col-form-label">借方金額:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcDrAmt}" /></td>
+				    <td></td>
+				</tr>
+				<tr style="background-color:#CEEDF4">
+					<td align="right"><label class="col-form-label">貸方筆數:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcCrCnt}" /></td>
+					<td align="right"><label class="col-form-label">貸方金額:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcCrAmt}" /></td>
+				    <td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">應付手續費筆數:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcTxCntCr}" /></td>
+					<td align="right"><label class="col-form-label">應付手續費金額:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcTxFeeCr}" /></td>
+				    <td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">應收手續費筆數:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcTxCntDr}" /></td>
+					<td align="right"><label class="col-form-label">應收手續費金額:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcTxFeeDr}" /></td>
+				    <td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">暫收款筆數:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcTmCnt}" /></td>
+					<td align="right"><label class="col-form-label">暫收款金額:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcTmAmt}" /></td>
+				    <td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">行外記號:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcLoc}" /></td>
+					<td align="right"><label class="col-form-label">ATM所在區域:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcZone}" /></td>
+				    <td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">ATM主清算幣別:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcCurSt}" /></td>
+					<td align="right"><label class="col-form-label">跨區交易記號:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{atmcCrossFlag}" /></td>
+				    <td></td>
+				</tr>
+				<tr>
+					<td align="right"><label class="col-form-label">更新人員:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{updateUserid}" /></td>
+					<td align="right"><label class="col-form-label">更新日期時間:</label></td>
+					<td><input class="form-control" type="text" disabled="true" th:field="*{updateTime}" /></td>
+				    <td></td>
+				</tr>
+			</table>
+			
+		</form>
+		</div>
+</body>
+</html>

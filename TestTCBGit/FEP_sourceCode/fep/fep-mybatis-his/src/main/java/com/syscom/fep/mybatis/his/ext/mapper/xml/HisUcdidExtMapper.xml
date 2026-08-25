@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.his.ext.mapper.HisUcdidExtMapper">
+
+    <select id="queryByIdnoAndHealthId" parameterType="map" resultMap="com.syscom.fep.mybatis.his.mapper.UcdidMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.his.mapper.UcdidMapper.Base_Column_List"/>
+        from UCDID
+        where UCDID_2566_APISTATUS = '1'
+        and UCDID_HISTORY = 'N'
+        <choose>
+            <when test="ucdidIdno != null and ucdidIdno != '' and ucdidHealthid != null and ucdidHealthid != ''">
+                and UCDID_IDNO = #{ucdidIdno,jdbcType=CHAR}
+                and UCDID_HEALTHID = #{ucdidHealthid,jdbcType=CHAR}
+                <if test="'N'.equals(nocondition)">
+                    and UCDID_2510_STATUS = '0'
+                    and UCDID_LASTSTATUS = 'F'
+                </if>
+            </when>
+            <otherwise>
+                and ((UCDID_2510_STATUS != '0' and UCDID_2510_STATUS != '3')
+                or UCDID_2510_STATUS IS NULL)
+                and UCDID_LASTSTATUS != 'C'
+            </otherwise>
+        </choose>
+        ORDER BY UCDID_IDNO, UCDID_HEALTHID
+    </select>
+    <update id="updateByPrimaryKeySelective" parameterType="com.syscom.fep.mybatis.his.model.Ucdid">
+        update UCDID
+        <set>
+            <if test="ucdidUcdrApiseqno != null">
+                UCDID_UCDR_APISEQNO = #{ucdidUcdrApiseqno,jdbcType=CHAR},
+            </if>
+            <if test="ucdidUcdrTxno != null">
+                UCDID_UCDR_TXNO = #{ucdidUcdrTxno,jdbcType=CHAR},
+            </if>
+            <if test="ucdidUcdrResptime != null">
+                UCDID_UCDR_RESPTIME = #{ucdidUcdrResptime,jdbcType=CHAR},
+            </if>
+            <if test="ucdidUcdrRc != null">
+                UCDID_UCDR_RC = #{ucdidUcdrRc,jdbcType=CHAR},
+            </if>
+            <if test="ucdidUcdrChannel != null">
+                UCDID_UCDR_CHANNEL = #{ucdidUcdrChannel,jdbcType=VARCHAR},
+            </if>
+            <if test="ucdidLaststatus != null">
+                UCDID_LASTSTATUS = #{ucdidLaststatus,jdbcType=CHAR},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where UCDID_IDNO = #{ucdidIdno,jdbcType=CHAR}
+        and UCDID_HEALTHID = #{ucdidHealthid,jdbcType=CHAR}
+        and UCDID_HISTORY = 'N'
+    </update>
+    <!-- 2025-09-03 Zonghao add -->
+    <select id="selectByIdno" parameterType="map" resultMap="com.syscom.fep.mybatis.his.mapper.UcdidMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.his.mapper.UcdidMapper.Base_Column_List" />
+        FROM UCDID
+        WHERE UCDID_IDNO = #{ucdidIdno,jdbcType=CHAR}
+        AND UCDID_HEALTHID = #{ucdidHealthid,jdbcType=CHAR}
+        AND UCDID_HISTORY = 'N'
+    </select>
+    <update id="updateHistory">
+        UPDATE UCDID SET UCDID_HISTORY = 'Y', UPDATE_TIME = CURRENT_TIMESTAMP
+        WHERE UCDID_IDNO = #{ucdidIdno,jdbcType=CHAR}
+        AND UCDID_HEALTHID = #{ucdidHealthid,jdbcType=CHAR}
+        AND UCDID_HISTORY = 'N'
+    </update>
+    <!-- 2025-10-23 LeYun add 普發同步UI-->
+    <select id="getUcdidDataBySeleted" resultType="java.util.Map">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.his.mapper.UcdidMapper.Base_Column_List"/>
+        FROM UCDID
+        WHERE UCDID_IDNO = #{idno,jdbcType=CHAR}
+        AND UCDID_HEALTHID = #{healthId,jdbcType=CHAR}
+        <if test="txCode != null and txCode != ''">
+            <choose>
+                <when test="txCode.startsWith('LF')">
+                    AND UCDID_2566_TXDATE = #{txDate,jdbcType=CHAR}
+                    AND UCDID_2566_STAN = #{stan,jdbcType=VARCHAR}
+                </when>
+                <when test="txCode.startsWith('WP')">
+                    AND UCDID_2510_TXDATE = #{txDate,jdbcType=CHAR}
+                    AND UCDID_2510_STAN = #{stan,jdbcType=VARCHAR}
+                </when>
+            </choose>
+        </if>
+    </select>
+
+</mapper>

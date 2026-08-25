@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Search</title>
+</head>
+<body>
+	<div th:fragment="search" class="panel-search">
+		<div class="input-group">
+			<input type="text" class="form-control txt-search" placeholder="程式編號" th:value="${(session.logonUser != null && session.logonUser.selectedMenu != null) ? session.logonUser.selectedMenu.code : ''}"/>
+			<div class="input-group-append">
+				<button type="button" class="btn btn-primary btn-search">
+					<i class="fas fa-search"></i>
+				</button>
+			</div>
+		</div>
+		<script th:if="${session.logonUser != null}" th:inline="javascript">
+			var search = $('.panel-search .txt-search');
+			search.on('keydown', function(e) {
+				if (e.keyCode === 13) {
+					$('.panel-search .btn-search').click();
+				}
+			});
+			$('.panel-search .btn-search').on('click', function() {
+				var code = search.val();
+				if (stringIsBlank(code)) {
+					showDangerCmnAlert('請輸入程式編號', function() {
+						search.focus();
+					});
+					return;
+				}
+				search.off("keydown"); // 在這裡一定要off掉, 否則一直按下enter會一直觸發
+				var jsonData = {
+					'code' : code
+				};
+				doAjax(jsonData, "/change", false, true, function(resp) {
+					if ('undefined' !== typeof resp) {
+						if (!resp.result) {
+							showCmnAlert(resp.messageType, resp.message);
+						} else {
+							setTimeout(() => {
+								showCmnConfirmDialog(resp.message, function() {
+									window.location.href = resp.data.url;
+								}, function () {
+									// 如果點了cancel, 要恢復
+									search.on('keydown', function(e) {
+										if (e.keyCode === 13) {
+											$('.panel-search .btn-search').click();
+										}
+									});
+								});
+							}, 200);
+						}
+					}
+				});
+			});
+		</script>
+		<script th:if="${session.logonUser != null && session.logonUser.selectedMenu != null}" th:inline="javascript">
+			var search = $('.panel-search .txt-search');
+			search.on('focus', function() {
+				$(this).css('border', '1px solid #ced4da');
+				$(this).select();
+			});
+		</script>
+	</div>
+</body>
+</html>

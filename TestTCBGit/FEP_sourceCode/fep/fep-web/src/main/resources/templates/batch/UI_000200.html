@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/batch/UI_000200/queryClick}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label" for="task_Name">
+						<label class="col-form-label">程式簡稱 </label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" id="task_Name" th:field="*{task_Name}">
+					</td>
+					<td class="condition-label" for="task_Name">
+						<label class="col-form-label">可輸入部分字串查詢</label>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnInsert">新增</button>
+		<button type="button" class="btn btn-primary" id="btnDelete">刪除</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b>刪除</b></th>
+						<th><b>程式簡稱</b></th>
+						<th><b>程式説明</b></th>
+						<th><b>程式名稱</b></th>
+						<th><b>程式引數</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data : ${pageData.list}">
+						<td align="center">
+							<input type="checkbox" class="checked" th:value="${'{' + '&quot;task_Id&quot;:&quot;'+data.taskId + '&quot;'
+											+ '}'
+										}" />
+						</td>
+						<td>
+							<a class="btn-inquiry" href="#" th:text="${data.taskName}" th:value="${data.taskId}"> </a>
+						</td>
+						<td align="left" th:text="${data.taskDescription}" />
+						<td align="left" th:text="${data.taskCommand}" />
+						<td align="left" th:text="${data.taskCommandargs}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/batch/UI000200.js}"></script>
+	</div>
+</body>
+</html>

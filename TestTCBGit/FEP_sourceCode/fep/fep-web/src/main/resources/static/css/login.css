@@ -1,0 +1,125 @@
+a {
+	text-decoration: none;
+}
+
+a:link {
+	color: #D72523;
+}
+
+a:visited {
+	color: #D72523;
+}
+
+a:active {
+	color: #FA8000;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #FA8000;
+	text-decoration: underline;
+}
+
+.Title {
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Times New Roman, 新細明體;
+}
+
+.SubTitle {
+	font-size: 14px;
+	font-family: Times New Roman, 新細明體;
+}
+
+.Description {
+	font-size: 12px;
+	font-family: Times New Roman, 新細明體;
+}
+
+.b1 {
+	height: 1px;
+	overflow: hidden;
+	display: block;
+	background: #aaa;
+	margin: 0 5px;
+}
+
+.b2 {
+	height: 1px;
+	overflow: hidden;
+	display: block;
+	background: #fff;
+	border-right: 2px solid #aaa;
+	border-left: 2px solid #aaa;
+	margin: 0 3px;
+}
+
+.b3 {
+	height: 1px;
+	overflow: hidden;
+	display: block;
+	background: #fff;
+	border-right: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	margin: 0 2px;
+}
+
+.b4 {
+	height: 2px;
+	overflow: hidden;
+	display: block;
+	background: #fff;
+	border-right: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	margin: 0 1px;
+}
+
+#LogOnArea {
+	position: absolute;
+	left: 790px;
+	top: 30px;
+	width: 228px;
+	z-index: 2;
+}
+
+#NewsArea {
+	position: absolute;
+	left: 15px;
+	width: 785px;
+	height: 540px;
+	margin-top: 10px;
+	background-color: White;
+	z-index: 1;
+}
+
+#TopBanner {
+	position: absolute;
+	top: 0px;
+	left: 10px;
+	z-index: 0;
+}
+
+#BottomBanner {
+	position: absolute;
+	top: 570px;
+	left: 10px;
+	z-index: 0;
+}
+
+#CopyRight {
+	position: absolute;
+	top: 600px;
+	left: 300px;
+	font-family: Arial;
+	font-size: 10pt;
+}
+
+#BroswerInfo {
+	position: absolute;
+	top: 523px;
+	left: 300px;
+	font-family: Arial;
+	font-size: 12pt;
+	color: Red;
+	font-weight: bold;
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/dbmaintain/UI_070060/bindGrid}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">來源通道:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+						<select id="msgfileChannel" class="form-control" th:field="*{msgfileChannel}">
+							<option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}" th:selected="${option.value == msgfileChannel}" />
+						</select>
+					</td>
+					<td style="width:50px"></td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">訊息代碼:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+						<input id="msgfileErrorcode" style="width:150px" type="text" class="form-control" th:field="*{msgfileErrorcode}" th:maxlength="10"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">子系統:</label>
+					</td>
+					<td class="condition-input">
+						<select id="msgfileSubsys" class="form-control" th:field="*{msgfileSubsys}">
+							<option th:each="option : ${options2}" th:text="${option.text}" th:value="${option.value}" th:selected="${option.value == msgfileSubsys}" />
+						</select>
+					</td>
+					<td></td>
+					<td class="condition-label">
+						<label class="col-form-label">訊息嚴重性:</label>
+					</td>
+					<td class="condition-input">
+						<select id="msgfileSeverity" class="form-control" th:field="*{msgfileSeverity}">
+							<option value="" selected="selected">全部</option>
+							<option value="Info" th:selected="${msgfileSeverity == 'Info'}">Info</option>
+							<option value="Warning" th:selected="${msgfileSeverity == 'Warning'}">Warning</option>
+							<option value="Error" th:selected="${msgfileSeverity == 'Error'}">Error</option>
+							<option value="Fatal" th:selected="${msgfileSeverity == 'Fatal'}">Fatal</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">訊息簡述:</label>
+					</td>
+					<td class="condition-input" colspan="3">
+						<input id="msgfileShortmsg" style="width:400px" type="text" class="form-control" th:field="*{msgfileShortmsg}" th:maxlength="30"/>
+					</td>
+				</tr>
+			</table>
+        </form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button style="width:100px" type="button" class="btn btn-primary" th:disabled="${form.webType == 'SSTQ'}" id="btnInsert">新增</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+        	<div class="card-body table-responsive p-0">
+        		<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+					<thead>
+						<tr>
+							<th><b>來源通道</b></th>
+							<th><b>訊息代碼</b></th>
+							<th><b>子系統</b></th>
+							<th><b>訊息嚴重性</b></th>
+							<th><b>送事件監控</b></th>
+							<th><b>輸出訊息代碼</b></th>
+							<th><b>財金訊息代碼</b></th>
+							<th><b>ATM訊息代碼</b></th>
+							<th><b>CBS訊息代碼</b></th>
+							<th><b>CBS主機訊息代碼</b></th>
+							<th><b>信用卡訊息代號</b></th>
+							<th><b>訊息簡述</b></th>
+						</tr>
+					</thead>
+                    <tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+                    	<tr th:each="data, dataStat : ${pageData.list}">
+                    		<td align="center">
+                    			<!--來源通道-->
+                  				<a class="msgfileChannel" href="#" th:text="${data.msgfileChannelTxt}" th:value="${
+                    			         '{'
+                    			            + '&quot;msgfileChannel&quot;:&quot;'+(data.msgfileChannel == null ? '': data.msgfileChannel) + '&quot;' + ','
+											+ '&quot;msgfileErrorcode&quot;:&quot;'+(data.msgfileErrorcode == null ? '':data.msgfileErrorcode) + '&quot;' + ','
+											+ '&quot;msgfileSubsys&quot;:&quot;'+(data.msgfileSubsys == null ? '':data.msgfileSubsys) + '&quot;' + ','
+											+ '&quot;msgfileSeverity&quot;:&quot;'+(data.msgfileSeverity == null ? '':data.msgfileSeverity) + '&quot;' + ','
+											+ '&quot;msgfileSendEms&quot;:&quot;'+(data.msgfileSendEms == null ? '':data.msgfileSendEms) + '&quot;' + ','
+											+ '&quot;msgfileRetain&quot;:&quot;'+(data.msgfileRetain == null ? '':data.msgfileRetain) + '&quot;' + ','
+											+ '&quot;msgfileAuth&quot;:&quot;'+(data.msgfileAuth == null ? '':data.msgfileAuth) + '&quot;' + ','
+											+ '&quot;msgfileWarning&quot;:&quot;'+(data.msgfileWarning == null ? '':data.msgfileWarning) + '&quot;' + ','
+											+ '&quot;msgfileExternal&quot;:&quot;'+(data.msgfileExternal == null ? '':data.msgfileExternal) + '&quot;' + ','
+											+ '&quot;msgfileFisc&quot;:&quot;'+(data.msgfileFisc == null ? '':data.msgfileFisc) + '&quot;' + ','
+											+ '&quot;msgfileAtm&quot;:&quot;'+(data.msgfileAtm == null ? '':data.msgfileAtm) + '&quot;' + ','
+											+ '&quot;msgfileUatmp&quot;:&quot;'+(data.msgfileUatmp == null ? '':data.msgfileUatmp) + '&quot;' + ','
+											+ '&quot;msgfileT24&quot;:&quot;'+(data.msgfileT24 == null ? '':data.msgfileT24) + '&quot;' + ','
+											+ '&quot;msgfileCredit&quot;:&quot;'+(data.msgfileCredit == null ? '':data.msgfileCredit) + '&quot;' + ','
+											+ '&quot;msgfileShortmsg&quot;:&quot;'+(data.msgfileShortmsg == null ? '':data.msgfileShortmsg) + '&quot;' + ','
+											+ '&quot;msgfileMsgdscpt&quot;:&quot;'+(data.msgfileMsgdscpt == null ? '':data.msgfileMsgdscpt) + '&quot;' + ','
+											+ '&quot;msgfileAction&quot;:&quot;'+(data.msgfileAction == null ? '':data.msgfileAction) + '&quot;' + ','
+											+ '&quot;msgfileResponsible&quot;:&quot;'+(data.msgfileResponsible == null ? '':data.msgfileResponsible) + '&quot;' + ','
+											+ '&quot;msgfileNotify&quot;:&quot;'+(data.msgfileNotify == null ? '':data.msgfileNotify) + '&quot;' + ','
+											+ '&quot;msgfileVisible&quot;:&quot;'+(data.msgfileVisible == null ? '':data.msgfileVisible) + '&quot;' + ','
+											+ '&quot;msgfileUicolor&quot;:&quot;'+(data.msgfileUicolor == null ? '':data.msgfileUicolor) + '&quot;' + ','
+											+ '&quot;msgfileNotifyphone&quot;:&quot;'+(data.msgfileNotifyphone == null ? '':data.msgfileNotifyphone) + '&quot;' + ','
+											+ '&quot;actionType&quot;:&quot;E&quot;' + ','
+											+ '&quot;webType&quot;:&quot;'+form.webType+'&quot;'
+										+ '}'
+										}">
+								</a>
+                    		</td>
+                    		<td align="center" th:text="${data.msgfileErrorcode}" /><!--訊息代碼-->
+                    		<td align="center" th:text="${data.msgfileSubsysTxt}" /><!--子系統-->
+                    		<td align="center" th:text="${data.msgfileSeverity}" /><!--訊息嚴重性-->
+                    		<td align="center" th:text="${data.msgfileSendEmsTxt}"/><!--送事件監控-->
+                    		<td align="center" th:text="${data.msgfileExternal}" /><!--輸出訊息代碼-->
+                    		<td align="center" th:text="${data.msgfileFisc}" /><!--財金訊息代碼-->
+                    		<td align="center" th:text="${data.msgfileAtm}" /><!--ATM訊息代碼-->
+                    		<td align="center"  th:text="${data.msgfileUatmp}" /><!--優利訊息代碼-->
+                    		<td align="center" th:text="${data.msgfileT24}" /><!--CBS主機訊息代碼-->
+                    		<td align="center"  th:text="${data.msgfileCredit}" /><!--信用卡訊息代號-->
+                    		<td align="left"  th:text="${data.msgfileShortmsg}" /><!--訊息簡述-->
+                    	</tr>
+                    </tbody>
+        		</table>
+        	</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/dbmaintain/UI070060.js}"></script>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.EmvcExtMapper">
+  <!--  2021-04-22 ZhaoKai add-->
+  <select id="getEmvcByMonth" parameterType="map" resultType="java.math.BigDecimal">
+    SELECT NVL(SUM(EMVC_TX_AMT), 0) AS EMVC_TX_AMT
+    FROM EMVC
+    WHERE EMVC_TX_DATE &gt; #{emvcTxDateStart,jdbcType=CHAR}
+    AND EMVC_TX_DATE &lt;= #{emvcTxDateEnd,jdbcType=CHAR}
+    AND EMVC_PAN = #{emvcPan,jdbcType=VARCHAR}
+  </select>
+</mapper>

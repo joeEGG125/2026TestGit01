@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden">
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" class="panel-detail">
+	<table border="0" cellspacing="0" class="table-detail">
+		<tbody th:if="${detailMap != null}" th:object="${detailMap}" th:each="data, dataStat : ${detailMap}">
+		<tr>
+			<td class="condition-label">
+				<label class="col-form-label" th:if="${data!=null}" th:text="${data.key}"></label>
+				<label class="form-control" th:if="${data.key==null}"></label>
+			</td>
+			<td class="condition-input">
+				<label class="form-control label-text-left" th:if="${data!=null}" th:text="${data.value}"></label>
+				<label class="form-control" th:if="${data.value==null}"></label>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

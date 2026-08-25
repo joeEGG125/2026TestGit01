@@ -1,0 +1,1457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.FeptxnExtMapper">
+    <insert id="addFeptxnPartition">
+        ALTER TABLE FEP.FEPTXN ADD PARTITION $(partitionName)
+            STARTING #{starting,jdbcType=CHAR} ENDING #{ending,jdbcType=CHAR}
+            IN #{in,jdbcType=CHAR} INDEX IN #{indexIn,jdbcType=CHAR};
+    </insert>
+    <insert id="addFeptxnTcbPartition">
+        ALTER TABLE FEP.FEPTXNTCB ADD PARTITION $(partitionName)
+            STARTING #{starting,jdbcType=CHAR} ENDING #{ending,jdbcType=CHAR}
+            IN #{in,jdbcType=CHAR} INDEX IN #{indexIn,jdbcType=CHAR};
+    </insert>
+    <!-- Richad add for test  -->
+    <select id="forTest" parameterType="com.syscom.fep.mybatis.model.Feptxn"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        <where>
+            <if test="feptxnTxDate != null">
+                AND FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+            </if>
+            <if test="feptxnEjfno != null">
+                AND FEPTXN_EJFNO = #{feptxnEjfno,jdbcType=INTEGER}
+            </if>
+        </where>
+        FOR UPDATE WAIT 5
+    </select>
+    <select id="getFEPTXNForTMO" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE_ATM = #{feptxnTxDateAtm,jdbcType=VARCHAR}
+        AND FEPTXN_ATMNO = #{feptxnAtmNo,jdbcType=VARCHAR}
+        AND FEPTXN_ATM_SEQNO = #{feptxnAtmSeqNo,jdbcType=VARCHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+	<select id="getFEPTXNForConData" parameterType="map"
+			resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+		FROM FEPTXN
+		WHERE FEPTXN_TX_DATE_ATM = #{feptxnTxDateAtm,jdbcType=VARCHAR}
+		AND FEPTXN_ATMNO = #{feptxnAtmNo,jdbcType=VARCHAR}
+		AND FEPTXN_ATM_SEQNO = #{feptxnAtmSeqNo,jdbcType=VARCHAR}
+		AND FEPTXN_TX_CODE = #{feptxnTxCode,jdbcType=VARCHAR}
+        AND FEPTXN_CHANNEL_EJFNO  = #{feptxnChannelEjfno,jdbcType=VARCHAR}
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+    <select id="getFEPTXNForATMConData" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        <bind name="msgidLike" value="feptxnMsgid + '%'" />
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE_ATM = #{feptxnTxDateAtm,jdbcType=VARCHAR}
+        AND FEPTXN_ATMNO = #{feptxnAtmNo,jdbcType=VARCHAR}
+        AND FEPTXN_ATM_SEQNO = #{feptxnAtmSeqNo,jdbcType=VARCHAR}
+        AND FEPTXN_TX_CODE = #{feptxnTxCode,jdbcType=VARCHAR}
+        AND FEPTXN_MSGID LIKE #{msgidLike,jdbcType=VARCHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <select id="getFEPTXNForATMCheckConData" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        <bind name="msgidLike" value="feptxnMsgid + '%'" />
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE_ATM = #{feptxnTxDateAtm,jdbcType=VARCHAR}
+        AND FEPTXN_ATMNO = #{feptxnAtmNo,jdbcType=VARCHAR}
+        AND FEPTXN_ATM_SEQNO = #{feptxnAtmSeqNo,jdbcType=VARCHAR}
+        AND FEPTXN_TX_CODE = #{feptxnTxCode,jdbcType=VARCHAR}
+        AND FEPTXN_MSGID LIKE #{msgidLike,jdbcType=VARCHAR}
+        AND FEPTXN_TRACE_EJFNO = #{feptxnTraceEjfno,jdbcType=INTEGER}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <select id="getFEPTXNByStanAndBkno" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR}
+        AND FEPTXN_BKNO = #{feptxnBkno,jdbcType=CHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <select id="getFEPTXNByReqDateAndStan" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR}
+        AND SUBSTR(FEPTXN_REQ_DATETIME, 1, 8) = #{feptxnReqDatetime,jdbcType=CHAR}
+        AND FEPTXN_BKNO = #{feptxnBkno,jdbcType=CHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <select id="queryByChannelEJ" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE = #{txdate,jdbcType=CHAR}
+        AND FEPTXN_CHANNEL_EJFNO = #{channelejfno,jdbcType=VARCHAR}
+        <if test="txrust != ''">
+            AND FEPTXN_TXRUST = #{txrust,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="queryByChannelEJAndChannel" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE = #{txdate,jdbcType=CHAR}
+        AND FEPTXN_CHANNEL_EJFNO = #{channelejfno,jdbcType=VARCHAR}
+        AND FEPTXN_CHANNEL = #{channel,jdbcType=VARCHAR}
+        <if test="txrust != ''">
+            AND FEPTXN_TXRUST = #{txrust,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="selectFEPTXNForCheckATMSeq" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE_ATM = #{feptxnTxDateAtm,jdbcType=VARCHAR}
+        AND FEPTXN_ATMNO = #{feptxnAtmNo,jdbcType=VARCHAR}
+        AND FEPTXN_ATM_SEQNO = #{feptxnAtmSeqNo,jdbcType=VARCHAR}
+        order by FEPTXN_TX_TIME DESC
+        FETCH FIRST 2 ROWS ONLY
+    </select>
+    <!-- FEP Web 查詢OPC交易記錄 -->
+    <select id="selectByDatetimeAndPcodesAndBknosAndStansAndEjnos" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE = #{datetime,jdbcType=CHAR}
+        <if test="pcodes != null and pcodes != ''">
+            AND FEPTXN_PCODE = #{pcodes,jdbcType=VARCHAR}
+        </if>
+        <if test="bknos != null and bknos != ''">
+            AND FEPTXN_BKNO = #{bknos,jdbcType=CHAR}
+        </if>
+        <if test="stans != null and stans != ''">
+            AND FEPTXN_STAN = #{stans,jdbcType=VARCHAR}
+        </if>
+        <if test="ejnos != null">
+            AND FEPTXN_EJFNO = #{ejnos,jdbcType=INTEGER}
+        </if>
+    </select>
+    <!-- FEP Web 交易日誌(FEPTXN)查詢 -->
+    <select id="getFeptxn" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        <include refid="getFeptxnWhereStatement"/>
+        <include refid="getFeptxnOrderByStatement"/>
+    </select>
+    <!-- FEP Web 交易日誌(FEPTXN)查詢 -->
+    <select id="getFeptxnSummary" parameterType="map" resultType="map">
+        SELECT NVL(SUM(FEPTXN_TX_AMT), 0) AS FEPTXN_TX_AMT
+        <include refid="getFeptxnWhereStatement"/>
+    </select>
+    <!-- FEP Web 交易日誌(FEPTXN)查詢 -->
+    <sql id="getFeptxnWhereStatement">
+        FROM FEPTXN
+        <where>
+            <!-- 交易日期 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTxDate)">
+                AND FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+            </if>
+            <!-- EJ序號 -->
+            <if test="@org.apache.commons.collections4.CollectionUtils@isNotEmpty(feptxnEjfno)">
+                AND FEPTXN_EJFNO IN
+                <foreach item="item" index="index" collection="feptxnEjfno" open="(" close=")" separator=",">
+                    #{item,jdbcType=INTEGER}
+                </foreach>
+            </if>
+            <!-- 交易時間起訖 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTxTimeBegin)
+					and @org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTxTimeEnd) ">
+                AND FEPTXN_TX_TIME BETWEEN #{feptxnTxTimeBegin,jdbcType=VARCHAR} AND #{feptxnTxTimeEnd,jdbcType=VARCHAR}
+            </if>
+            <!-- ATM代號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnAtmno)">
+                AND FEPTXN_ATMNO = #{feptxnAtmno,jdbcType=VARCHAR}
+            </if>
+            <!-- 交易結果 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTxrust)">
+                <choose>
+                    <when test="'0'.equals(feptxnTxrust)">
+                        AND FEPTXN_TXRUST = '0'
+                    </when>
+                    <otherwise>
+                        AND FEPTXN_TXRUST = #{feptxnTxrust,jdbcType=CHAR}
+                    </otherwise>
+                </choose>
+            </if>
+            <!-- CON EJ序號 -->
+            <if test='feptxnTraceEjfno != null and feptxnTraceEjfno != "" and feptxnTraceEjfno != "0"'>
+                AND FEPTXN_TRACE_EJFNO = #{feptxnTraceEjfno,jdbcType=INTEGER}
+            </if>
+            <!-- ClientTraceId -->
+            <if test="feptxnChannel != null">
+                AND FEPTXN_CHANNEL = #{feptxnChannel,jdbcType=VARCHAR}
+            </if>
+			<!-- ClientTraceId -->
+			<if test="feptxnChannelEjfno != null">
+				AND FEPTXN_CHANNEL_EJFNO = #{feptxnChannelEjfno,jdbcType=VARCHAR}
+			</if>
+            <!-- ATM交易序號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnAtmSeqno)">
+                AND FEPTXN_ATM_SEQNO = #{feptxnAtmSeqno,jdbcType=VARCHAR}
+            </if>
+            <!-- ATM CON交易序號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnConAtmSeqno2)">
+                AND FEPTXN_CON_ATM_SEQNO2 = #{feptxnConAtmSeqno2,jdbcType=VARCHAR}
+            </if>
+            <!-- ATM交易代號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTxCode)">
+                AND FEPTXN_TX_CODE = #{feptxnTxCode,jdbcType=CHAR}
+            </if>
+            <!-- 交易金額 -->
+            <if test="feptxnTxAmt !=null and feptxnTxAmt != -1">
+                AND FEPTXN_TX_AMT = #{feptxnTxAmt,jdbcType=DECIMAL}
+            </if>
+            <!-- 扣款賬號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTroutBkno)">
+                AND FEPTXN_TROUT_BKNO = #{feptxnTroutBkno,jdbcType=CHAR}
+            </if>
+            <!-- 扣款賬號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTroutActno)">
+                AND FEPTXN_TROUT_ACTNO LIKE CONCAT(#{feptxnTroutActno,jdbcType=CHAR}, '%')
+            </if>
+            <!-- 轉入帳號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTrinBkno)">
+                AND FEPTXN_TRIN_BKNO = #{feptxnTrinBkno,jdbcType=CHAR}
+            </if>
+            <!-- 轉入帳號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTrinActno)">
+                AND FEPTXN_TRIN_ACTNO LIKE CONCAT(#{feptxnTrinActno,jdbcType=CHAR}, '%')
+            </if>
+            <!-- 發卡區T24序號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnCbsRrn)">
+                AND FEPTXN_CBS_RRN = #{feptxnCbsRrn,jdbcType=VARCHAR}
+            </if>
+            <!-- 交易區T24序號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnVirCbsRrn)">
+                AND FEPTXN_VIR_CBS_RRN = #{feptxnVirCbsRrn,jdbcType=VARCHAR}
+            </if>
+            <!-- 財金STAN -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnBkno)">
+                AND FEPTXN_BKNO = #{feptxnBkno,jdbcType=CHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnStan)">
+                AND FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR}
+            </if>
+            <!-- 財金營業日 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTbsdyFisc)">
+                AND FEPTXN_TBSDY_FISC = #{feptxnTbsdyFisc,jdbcType=VARCHAR}
+            </if>
+            <!-- 財金交易代號(PCODE) -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnPcode)">
+                AND FEPTXN_PCODE = #{feptxnPcode,jdbcType=CHAR}
+            </if>
+            <!-- 自行or跨行 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(fiscFlag)">
+                <choose>
+                    <when test="fiscFlag == '0'">
+                        AND FEPTXN_FISC_FLAG = 0
+                    </when>
+                    <when test="fiscFlag == '1'">
+                        AND FEPTXN_FISC_FLAG = 1
+                    </when>
+                </choose>
+            </if>
+            <!-- 排除交易別 -->
+            <if test="@org.apache.commons.collections4.CollectionUtils@isNotEmpty(feptxnExcludeTxCode)">
+                <foreach item="item" index="index" collection="feptxnExcludeTxCode">
+                    <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(item)">
+                        AND NVL(FEPTXN_PCODE, '''') != #{item,jdbcType=CHAR}
+                    </if>
+                </foreach>
+            </if>
+            <!-- 記帳類別 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnAccType)">
+                AND FEPTXN_ACC_TYPE = #{feptxnAccType,jdbcType=VARCHAR}
+            </if>
+            <!-- 提領幣別 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTxCurAct)">
+                AND FEPTXN_TX_CUR = #{feptxnTxCurAct,jdbcType=CHAR}
+            </if>
+            <!-- 手機門號轉帳 -->
+            <if test="checkFeptxnMtp">
+                AND FEPTXN_MTP = 'Y'
+            </if>
+            <!-- 卡片帳號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTroutBknoForCard)">
+                AND FEPTXN_TROUT_BKNO = #{feptxnTroutBknoForCard,jdbcType=CHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnMajorActno)">
+                AND FEPTXN_MAJOR_ACTNO = #{feptxnMajorActno,jdbcType=CHAR}
+            </if>
+            <!-- 無卡提款查詢條件 -->
+            <if test="checkCtrlnwd">
+                AND FEPTXN_PCODE = '2510'
+                AND FEPTXN_ATM_TYPE = '6071'
+            </if>
+            <!-- 訊息代號 -->
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnMsgid)">
+                AND FEPTXN_MSGID = #{feptxnMsgid,jdbcType=VARCHAR}
+            </if>
+            <!-- 小額跨行轉帳每日優惠 -->
+            <!-- 轉帳繳納口罩費用免手續費 -->
+            <choose>
+                <when test="checkFeptxnBenefit">
+                    <choose>
+                        <when test="checkMask">
+                            AND (FEPTXN_BENEFIT = 'Y' OR FEPTXN_BENEFIT = 'M')
+                        </when>
+                        <otherwise>
+                            AND FEPTXN_BENEFIT = 'Y'
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                    <if test="checkMask">
+                        AND FEPTXN_BENEFIT = 'M'
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnCbsProc)">
+			AND FEPTXN_CBS_PROC = #{feptxnCbsProc,jdbcType=CHAR}
+        </if>
+    </sql>
+    <sql id="getFeptxnOrderByStatement">
+        <if test="@com.syscom.fep.common.util.DbHelper@isSqlInOrderByValid(sqlSortExpression)">
+            ORDER BY ${sqlSortExpression}
+        </if>
+    </sql>
+    <!-- Bruce add -->
+    <select id="getFeptxnByEj" parameterType="map" resultType="com.syscom.fep.mybatis.model.Feptxn">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        <bind name="tableNameSuffix" value="argsMap.tableNameSuffix"/>
+        FROM FEPTXN
+        <where>
+            <if test="argsMap.feptxnEjfno != null and argsMap.feptxnEjfno != '' ">
+                AND FEPTXN_EJFNO IN
+                <foreach item="item" index="index" collection="argsMap.feptxnEjfno" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <!-- FEP Web 交易日誌(FEPTXN)查詢明細資料 -->
+    <select id="getFeptxnIntltxn" parameterType="map" resultType="map">
+        SELECT *
+        FROM FEPTXN A
+                 LEFT JOIN INTLTXN B ON A.FEPTXN_TX_DATE = B.INTLTXN_TX_DATE AND A.FEPTXN_EJFNO = B.INTLTXN_EJFNO
+                 LEFT JOIN ICTLTXN C ON A.FEPTXN_TX_DATE = C.ICTLTXN_TX_DATE AND A.FEPTXN_EJFNO = C.ICTLTXN_EJFNO
+                 LEFT JOIN OBTLTXN D ON A.FEPTXN_TX_DATE = D.OBTLTXN_TX_DATE AND A.FEPTXN_EJFNO = D.OBTLTXN_EJFNO
+                 LEFT JOIN VATXN E ON A.FEPTXN_TX_DATE = E.VATXN_TX_DATE AND A.FEPTXN_EJFNO = E.VATXN_EJFNO
+        WHERE A.FEPTXN_EJFNO = #{feptxnEjfno,jdbcType=INTEGER}
+          AND A.FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+    </select>
+    <!-- FEP Web 交易日誌(FEPTXN)查詢明細資料 -->
+    <select id="getFeptxnIntltxnFor019050" parameterType="map" resultType="map">
+        SELECT *
+        FROM FEPTXN A
+                 LEFT JOIN INTLTXN B ON A.FEPTXN_TX_DATE = B.INTLTXN_TX_DATE AND A.FEPTXN_EJFNO = B.INTLTXN_EJFNO
+                 LEFT JOIN ICTLTXN C ON A.FEPTXN_TX_DATE = C.ICTLTXN_TX_DATE AND A.FEPTXN_EJFNO = C.ICTLTXN_EJFNO
+                 LEFT JOIN OBTLTXN D ON A.FEPTXN_TX_DATE = D.OBTLTXN_TX_DATE AND A.FEPTXN_EJFNO = D.OBTLTXN_EJFNO
+                 LEFT JOIN VATXN E ON A.FEPTXN_TX_DATE = E.VATXN_TX_DATE AND A.FEPTXN_EJFNO = E.VATXN_EJFNO
+        WHERE A.FEPTXN_EJFNO = #{feptxnEjfno,jdbcType=INTEGER}
+    </select>
+    <!-- zk add -->
+    <select id="getFEPTXNFor2280" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE BETWEEN #{wk_TXDATE_S,jdbcType=VARCHAR} AND #{wk_TXDATE_E,jdbcType=VARCHAR}
+        AND FEPTXN_TBSDY_FISC = #{feptxnTbsdyFisc,jdbcType=VARCHAR}
+        AND FEPTXN_TX_DATE || FEPTXN_TX_TIME <![CDATA[ < ]]> #{sysDatetime,jdbcType=VARCHAR}
+        <if test='feptxnTxDate != null and feptxnTxDate != " "'>
+            AND FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+        </if>
+        <choose>
+            <when test='feptxnBkno != null and sysstatHbkno != null and feptxnBkno != " " and sysstatHbkno != " "'>
+                AND FEPTXN_BKNO = #{feptxnBkno,jdbcType=CHAR}
+                AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+            </when>
+            <otherwise>
+                AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+            </otherwise>
+        </choose>
+        <if test='feptxnStan != null and feptxnStan != " "'>
+            AND FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR}
+        </if>
+        AND FEPTXN_SUBSYS = '1'
+        AND FEPTXN_PENDING = '1'
+        AND FEPTXN_REP_RC = '4001'
+        AND FEPTXN_TRACE_EJFNO = 0
+        AND FEPTXN_CBS_PROC = 'N'
+    </select>
+	<select id="getFEPTXNFor2290" parameterType="map"
+			resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+		FROM FEPTXN
+		<where>
+        AND FEPTXN_TX_DATE BETWEEN #{wk_TXDATE_S,jdbcType=VARCHAR} AND #{wk_TXDATE_E,jdbcType=VARCHAR}
+        <if test='feptxnTbsdyFisc != null and feptxnTbsdyFisc != " "'>
+            AND FEPTXN_TBSDY_FISC = #{feptxnTbsdyFisc,jdbcType=VARCHAR}
+        </if>
+		<if test='feptxnTxDate != null and feptxnTxDate != " "'>
+			AND FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+		</if>
+		<choose>
+			<when test='feptxnBkno != null and sysstatHbkno != null and feptxnBkno != " " and sysstatHbkno != " "'>
+				AND FEPTXN_BKNO = #{feptxnBkno,jdbcType=CHAR}
+				AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+			</when>
+			<otherwise>
+				AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+			</otherwise>
+		</choose>
+		<if test='feptxnStan != null and feptxnStan != " "'>
+			AND FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR}
+		</if>
+		AND FEPTXN_SUBSYS = '1'
+		AND FEPTXN_PENDING = '1'
+		AND FEPTXN_REP_RC = '4001'
+		AND FEPTXN_TRACE_EJFNO = 0
+		AND FEPTXN_CBS_PROC = 'N'
+        AND FEPTXN_PCODE NOT IN ('2500', '2505', '2566', '2410', '2450', '2430', '2470','2700')
+		</where>
+	</select>
+    <select id="selectByRetention" resultMap="com.syscom.fep.mybatis.ext.mapper.FeptxnExtMapper.BaseResultMap1">
+        SELECT
+        a.*, b.INBKPEND_ORI_BKNO, b.INBKPEND_ORI_STAN, b.INBKPEND_ORI_TX_DATE, b.INBKPEND_ORI_TBSDY_FISC
+        FROM FEPTXN a
+        JOIN INBKPEND b
+        ON a.FEPTXN_TX_DATE = b.INBKPEND_TX_DATE
+        AND a.FEPTXN_EJFNO = b.INBKPEND_EJFNO
+        WHERE
+        <!-- 營業日期 -->
+        FEPTXN_TBSDY_FISC = #{datetime,jdbcType=VARCHAR}
+        <!-- 交易日期 -->
+        <if test="datetimeo != ''">
+            AND FEPTXN_TX_DATE = #{datetimeo,jdbcType=CHAR}
+        </if>
+        <!-- 查詢方式 -->
+        <if test='way != "" and way == "1"'>
+            AND FEPTXN_DES_BKNO = #{sysstatHbkno,jdbcType=CHAR}
+        </if>
+        <if test='way != "" and way == "2"'>
+            AND FEPTXN_BKNO = #{sysstatHbkno,jdbcType=CHAR}
+        </if>
+        <!-- 交易起止時間 -->
+        <if test="stime != '' and etime != ''">
+            AND FEPTXN_TX_TIME between #{stime,jdbcType=VARCHAR} AND #{etime,jdbcType=VARCHAR}
+        </if>
+        <!-- 財金交易代號(PCODE) -->
+        <if test="trad != ''">
+            AND FEPTXN_PCODE = #{trad,jdbcType=VARCHAR}
+        </if>
+        <!-- 財金STAN銀行代號 -->
+        <if test="bkno != '' and stan != ''">
+            AND FEPTXN_BKNO = #{bkno,jdbcType=CHAR} AND FEPTXN_STAN = #{stan,jdbcType=VARCHAR}
+        </if>
+        AND FEPTXN_SUBSYS = 1
+        AND FEPTXN_WAY = 3
+        AND FEPTXN_TRACE_EJFNO = 0
+        ORDER BY FEPTXN_TX_DATE,FEPTXN_EJFNO
+    </select>
+    <select id="get01FEPTXNFor2280" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE (FEPTXN_TX_DATE + FEPTXN_TX_TIME) &lt; #{sysDatetime,jdbcType=VARCHAR}
+        <if test='feptxnTxDate != null and feptxnTxDate != " "'>
+            AND FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+        </if>
+        <choose>
+            <when test='feptxnBkno != null and sysstatHbkno != null and feptxnBkno != " " and sysstatHbkno != " "'>
+                AND FEPTXN_BKNO = #{feptxnBkno,jdbcType=CHAR}
+                AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+            </when>
+            <otherwise>
+                AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+            </otherwise>
+        </choose>
+        <if test='feptxnStan != null and feptxnStan != " "'>
+            AND FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR}
+        </if>
+        <if test='feptxnTbsdyFisc != null and feptxnTbsdyFisc != " "'>
+            AND FEPTXN_TBSDY_FISC = #{feptxnTbsdyFisc,jdbcType=VARCHAR}
+        </if>
+        AND FEPTXN_SUBSYS = '1'
+        AND FEPTXN_PENDING = '1'
+        AND FEPTXN_REP_RC = '4001'
+        AND FEPTXN_TRACE_EJFNO = 0
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <select id="getFEPTXNMSTRByStan" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_STAN = #{stan,jdbcType=VARCHAR}
+        AND FEPTXN_TX_DATE = #{txDate,jdbcType=CHAR}
+        AND FEPTXN_BKNO = #{bkno,jdbcType=CHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <select id="getFeptxnByStanbkno" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_STAN = #{stan,jdbcType=VARCHAR}
+        AND FEPTXN_TX_DATE = #{txDate,jdbcType=CHAR}
+        AND FEPTXN_BKNO = #{bkno,jdbcType=CHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <select id="queryFEPTXNForCheckPVDATA" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE_ATM = #{txDateAtm,jdbcType=VARCHAR}
+        AND FEPTXN_ATMNO = #{atmno,jdbcType=VARCHAR}
+        AND FEPTXN_ATM_SEQNO = #{atmSeqno,jdbcType=VARCHAR}
+        AND FEPTXN_TX_CODE = #{txCode,jdbcType=CHAR}
+        AND FEPTXN_IDNO = #{idno,jdbcType=CHAR}
+        AND FEPTXN_ASC_RC = #{ascRc,jdbcType=VARCHAR}
+        AND FEPTXN_CHANNEL_EJFNO IS NULL
+        FETCH FIRST 2 ROWS ONLY
+    </select>
+    <!-- Han add -->
+    <select id="GetFEPTXNForBT010080" parameterType="map" resultType="map">
+    	SELECT *,CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)AS DD FROM FEPTXN
+    	WHERE 1=1
+    	<!-- ben start -->
+     	<!-- AND FEPTXN_TBSDY_FISC =  #{_fiscTbsdy,jdbcType=VARCHAR}  -->
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ >= ]]>  #{txdateb,jdbcType=VARCHAR}
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ <= ]]>  #{txdatee,jdbcType=VARCHAR}
+		AND RTRIM(FEPTXN_REQ_RC) != ''
+    </select>
+     <!-- Han add -->
+    <select id="getgetCallAa2130Data" parameterType="map" resultType="map">
+    	SELECT * FROM FEPTXN
+		WHERE FEPTXN_TX_DATE =  #{FEPTXN_TX_DATE,jdbcType=CHAR}
+		AND FEPTXN_BKNO = #{FEPTXN_BKNO,jdbcType=CHAR}
+		AND FEPTXN_STAN = #{FEPTXN_STAN,jdbcType=VARCHAR}
+		AND FEPTXN_PCODE = #{FEPTXN_PCODE,jdbcType=VARCHAR}
+    </select>
+    <select id="getOldFeptxndata" parameterType="map" resultType="map" resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE_ATM = #{FEPTXN_TX_DATE_ATM,jdbcType=VARCHAR}
+        AND FEPTXN_CHANNEL_EJFNO = #{FEPTXN_CHANNEL_EJFNO,jdbcType=VARCHAR}
+		AND FEPTXN_CHANNEL = #{FEPTXN_CHANNEL,jdbcType=VARCHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <select id="getPartion" resultType="java.util.HashMap">
+        SELECT * FROM SYSCAT.DATAPARTITIONS WHERE TABNAME=#{tableName,jdbcType=VARCHAR}
+            AND DATAPARTITIONNAME = #{partitionName,jdbcType=VARCHAR}
+    </select>
+    <select id="getoriFEPTXNData2270" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_STAN = #{stan,jdbcType=VARCHAR}
+        AND FEPTXN_TBSDY_FISC = #{tbsdyfisc,jdbcType=VARCHAR}
+        AND FEPTXN_BKNO = #{bkno,jdbcType=CHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+	<select id="GetFEPTXNForRecoveryCd" parameterType="map" resultType="map">
+    	SELECT *,CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)AS DD FROM FEPTXN
+    	WHERE 1=1
+     	AND FEPTXN_PCODE IN ('2510', '2541', '2542', '2543')
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ >= ]]>  #{txdateb,jdbcType=VARCHAR}
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ <= ]]>  #{txdatee,jdbcType=VARCHAR}
+		AND RTRIM(FEPTXN_REQ_RC) != ''
+    	AND FEPTXN_CBS_PROC = 'N'
+    </select>
+	<select id="GetFEPTXNForRecoveryTf" parameterType="map" resultType="map">
+    	SELECT *,CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)AS DD FROM FEPTXN
+    	WHERE 1=1
+     	AND FEPTXN_PCODE IN ('2521', '2522', '2523', '2524', '2525')
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ >= ]]>  #{txdateb,jdbcType=VARCHAR}
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ <= ]]>  #{txdatee,jdbcType=VARCHAR}
+		AND RTRIM(FEPTXN_REQ_RC) != ''
+    	AND FEPTXN_CBS_PROC = 'N'
+    </select>
+	<select id="GetFEPTXNForRecoveryTa" parameterType="map" resultType="map">
+    	SELECT *,CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)AS DD FROM FEPTXN
+    	WHERE 1=1
+     	AND FEPTXN_PCODE IN ('2531', '2532')
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ >= ]]>  #{txdateb,jdbcType=VARCHAR}
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ <= ]]>  #{txdatee,jdbcType=VARCHAR}
+		AND RTRIM(FEPTXN_REQ_RC) != ''
+    	AND FEPTXN_CBS_PROC = 'N'
+    </select>
+	<select id="GetFEPTXNForRecoveryBt" parameterType="map" resultType="map">
+    	SELECT *,CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)AS DD FROM FEPTXN
+    	WHERE 1=1
+     	AND FEPTXN_PCODE IN ('2567', '2568', '2569')
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ >= ]]>  #{txdateb,jdbcType=VARCHAR}
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ <= ]]>  #{txdatee,jdbcType=VARCHAR}
+		AND RTRIM(FEPTXN_REQ_RC) != ''
+    	AND FEPTXN_CBS_PROC = 'N'
+    </select>
+	<select id="GetFEPTXNForRecoveryBf" parameterType="map" resultType="map">
+    	SELECT *,CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)AS DD FROM FEPTXN
+    	WHERE 1=1
+     	AND FEPTXN_PCODE IN ('2261', '2262', '2263', '2264',  '2561', '2562', '2563', '2564')
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ >= ]]>  #{txdateb,jdbcType=VARCHAR}
+     	AND CONCAT(FEPTXN_TX_DATE,FEPTXN_TX_TIME)  <![CDATA[ <= ]]>  #{txdatee,jdbcType=VARCHAR}
+		AND RTRIM(FEPTXN_REQ_RC) != ''
+    	AND FEPTXN_CBS_PROC = 'N'
+    </select>
+	<select id="getFEPTXN2290Count" parameterType="map" resultType="map">
+		SELECT FEPTXN_BKNO, COUNT(FEPTXN_BKNO) AS COUNTS
+		FROM FEPTXN
+		WHERE FEPTXN_TX_DATE BETWEEN #{wk_TXDATE_S,jdbcType=VARCHAR} AND #{wk_TXDATE_E,jdbcType=VARCHAR}
+        AND FEPTXN_TBSDY_FISC = #{wk_DATE,jdbcType=VARCHAR}
+		AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+		AND FEPTXN_SUBSYS = '1'
+		AND FEPTXN_PENDING = '1'
+		AND FEPTXN_REP_RC = '4001'
+		AND FEPTXN_TRACE_EJFNO = 0
+		AND FEPTXN_CBS_PROC = 'N'
+        AND FEPTXN_PCODE NOT IN ('2500', '2505', '2566', '2410', '2450', '2430', '2470','2700')
+		GROUP BY  FEPTXN_BKNO
+	</select>
+	<select id="getFEPTXN2280Count" parameterType="map" resultType="map">
+		SELECT FEPTXN_BKNO, COUNT(FEPTXN_BKNO) AS COUNTS
+		FROM FEPTXN
+		WHERE FEPTXN_TX_DATE BETWEEN #{wk_TXDATE_S,jdbcType=VARCHAR} AND #{wk_TXDATE_E,jdbcType=VARCHAR}
+        AND FEPTXN_TBSDY_FISC = #{wk_DATE,jdbcType=VARCHAR}
+		AND FEPTXN_TX_DATE || FEPTXN_TX_TIME <![CDATA[ < ]]> #{systemDateTime,jdbcType=CHAR}
+		AND FEPTXN_BKNO != #{sysstatHbkno,jdbcType=CHAR}
+		AND FEPTXN_SUBSYS = '1'
+		AND FEPTXN_PENDING = '1'
+		AND FEPTXN_REP_RC = '4001'
+		AND FEPTXN_TRACE_EJFNO = 0
+		AND FEPTXN_CBS_PROC = 'N'
+		GROUP BY  FEPTXN_BKNO
+	</select>
+	<select id="getFEPTXNForDSA" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        <bind name="msgidLike" value="feptxnMsgid + '%'" />
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE_ATM = #{feptxnTxDateAtm,jdbcType=VARCHAR}
+        AND FEPTXN_ATMNO = #{feptxnAtmNo,jdbcType=VARCHAR}
+        AND FEPTXN_TX_CODE = #{feptxnTxCode,jdbcType=VARCHAR}
+        AND FEPTXN_ATM_SEQNO = #{feptxnTxSeq,jdbcType=VARCHAR}
+        AND FEPTXN_MSGID LIKE #{msgidLike,jdbcType=VARCHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+    <update id="updateForP1AaRc" parameterType="com.syscom.fep.mybatis.model.Feptxn">
+		update FEPTXN
+		<set>
+    	<if test="feptxnAaRc != null">
+			FEPTXN_AA_RC = #{feptxnAaRc,jdbcType=INTEGER},
+		</if>
+		<if test="feptxnAaComplete != null">
+			FEPTXN_AA_COMPLETE = #{feptxnAaComplete,jdbcType=SMALLINT},
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnTxrust)">
+			FEPTXN_TXRUST = #{feptxnTxrust,jdbcType=CHAR},
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(feptxnStan)">
+			FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR},
+		</if>
+		</set>
+		where FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+		and FEPTXN_EJFNO = #{feptxnEjfno,jdbcType=INTEGER}
+    </update>
+    <select id="getFeptxnByStan" resultMap="MsgRsResultMap">
+        SELECT
+        A.FEPTXN_TX_DATE,
+        A.FEPTXN_TX_TIME,
+        A.FEPTXN_TBSDY_FISC,
+        A.FEPTXN_BKNO,
+        A.FEPTXN_PCODE,
+        A.FEPTXN_ATMNO,
+        A.FEPTXN_ATM_TYPE,
+        A.FEPTXN_MSGID,
+        A.FEPTXN_ATM_SEQNO,
+        A.FEPTXN_IC_SEQNO,
+        A.FEPTXN_TX_CUR,
+        A.FEPTXN_TROUT_BKNO,
+        A.FEPTXN_BRNO,
+        A.FEPTXN_TRIN_BRNO,
+        A.FEPTXN_CBS_TIMEOUT,
+        A.FEPTXN_FISC_TIMEOUT,
+        A.FEPTXN_TXRUST,
+        A.FEPTXN_PENDING,
+        A.FEPTXN_AA_RC,
+        A.FEPTXN_ACC_TYPE,
+        A.FEPTXN_CBS_RC,
+        A.FEPTXN_REPLY_CODE,
+        A.FEPTXN_CHANNEL,
+        A.FEPTXN_BUSINESS_UNIT,
+        A.FEPTXN_PAYTYPE,
+        A.FEPTXN_PAYNO,
+        A.FEPTXN_RECON_SEQNO,
+        A.FEPTXN_TAX_UNIT,
+        A.FEPTXN_IDNO,
+        A.FEPTXN_MERCHANT_ID,
+        A.FEPTXN_LUCKYNO,
+        A.FEPTXN_TO_NAME,
+        A.FEPTXN_TO_IDNO,
+        A.FEPTXN_FROM_NAME,
+        A.FEPTXN_FXML_MEMO,
+        B.INBKPEND_ORI_TX_DATE,
+        B.INBKPEND_ORI_TBSDY_FISC,
+        B.INBKPEND_ORI_PCODE,
+        B.INBKPEND_TX_AMT,
+        B.INBKPEND_PRC_RESULT,
+        C.VATXN_TYPE,
+        C.VATXN_CATE,
+        C.VATXN_TROUT_ACTNO,
+        C.VATXN_ITEM,
+        C.VATXN_RESULT,
+        C.VATXN_ACRESULT,
+        C.VATXN_ACSTAT,
+        C.VATXN_TELRESULT,
+        D.INTLTXN_ATM_AMT,
+        D.INTLTXN_POS_MODE,
+        D.INTLTXN_RRN,
+        D.INTLTXN_SET_AMT,
+        F.FEPTXNTCB_CARDFMT,
+        F.FEPTXNTCB_PBMCRD,
+        F.FEPTXNTCB_IMSACCT_FLAG,
+        F.FEPTXNTCB_IMSRVS_FLAG,
+        F.FEPTXNTCB_IMSRC_TCB,
+        F.FEPTXNTCB_IMSRC4_FISC,
+        F.FEPTXNTCB_O_DEDUCT_POINT,
+        F.FEPTXNTCB_O_REDEEM_STATE,
+        F.FEPTXNTCB_O_EXTRA_AMOUNT,
+        F.FEPTXNTCB_TXNFLOW,
+        CONCAT(A.FEPTXN_BKNO, A.FEPTXN_STAN) AS FEPTXN_STAN,
+        CASE
+        WHEN F.FEPTXNTCB_FSCODE IS NOT NULL
+        THEN F.FEPTXNTCB_FSCODE
+        ELSE A.FEPTXN_TX_CODE
+        END AS FEPTXN_TX_CODE,
+        CASE WHEN B.INBKPEND_ORI_BKNO IS NOT NULL AND B.INBKPEND_ORI_STAN IS NOT NULL
+        THEN CONCAT(B.INBKPEND_ORI_BKNO, B.INBKPEND_ORI_STAN)
+        ELSE NULL
+        END AS INBKPEND_ORI_STAN,
+        CASE WHEN A.FEPTXN_PCODE = '2546' THEN E.ICTLTXN_ORI_STAN
+        ELSE A.FEPTXN_ORI_STAN
+        END AS FEPTXN_ORI_STAN,
+        CASE WHEN A.FEPTXN_PCODE = '2572' THEN E.ICTLTXN_ORI_STAN
+        ELSE D.INTLTXN_ORI_STAN
+        END AS INTLTXN_ORI_STAN,
+        CASE WHEN SUBSTRING(A.FEPTXN_PCODE, 1, 2) = '24' THEN SUBSTRING(A.FEPTXN_TRK2, 1, 16)
+        WHEN A.FEPTXN_MAJOR_ACTNO IS NULL THEN A.FEPTXN_TROUT_ACTNO
+        ELSE A.FEPTXN_MAJOR_ACTNO
+        END AS FEPTXN_MAJOR_ACTNO,
+        CASE
+        WHEN F.FEPTXNTCB_FROMACT IS NOT NULL
+        THEN F.FEPTXNTCB_FROMACT
+        ELSE A.FEPTXN_TROUT_ACTNO
+        END AS FEPTXN_TROUT_ACTNO,
+        CASE
+        WHEN F.FEPTXNTCB_TOBANK IS NOT NULL
+        THEN F.FEPTXNTCB_TOBANK
+        ELSE A.FEPTXN_TRIN_BKNO
+        END AS FEPTXN_TRIN_BKNO,
+        CASE
+        WHEN A.FEPTXN_TRIN_ACTNO_ACTUAL IS NOT NULL
+        THEN A.FEPTXN_TRIN_ACTNO_ACTUAL
+        ELSE A.FEPTXN_TRIN_ACTNO
+        END AS FEPTXN_TRIN_ACTNO,
+        CASE
+        WHEN A.FEPTXN_PCODE = '2545' THEN E.ICTLTXN_TWD_FEE
+        WHEN A.FEPTXN_TX_CUR = 'TWD'
+        THEN A.FEPTXN_FEE_CUSTPAY
+        ELSE A.FEPTXN_FEE_CUSTPAY_ACT
+        END AS FEPTXN_FEE_CUSTPAY_ACT,
+        CASE
+        WHEN F.FEPTXNTCB_IMSERRPGM IS NULL
+        THEN A.FEPTXN_ERR_MSG
+        ELSE F.FEPTXNTCB_IMSERRPGM
+        END AS FEPTXNTCB_IMSERRPGM,
+        CASE
+        WHEN A.FEPTXN_CON_RC IS NULL OR A.FEPTXN_CON_RC = ''
+        THEN A.FEPTXN_REP_RC
+        ELSE A.FEPTXN_CON_RC
+        END AS FEPTXN_CON_RC,
+        CASE
+        WHEN B.INBKPEND_ORI_CON_RC IS NULL OR B.INBKPEND_ORI_CON_RC = ''
+        THEN B.INBKPEND_ORI_REP_RC
+        ELSE B.INBKPEND_ORI_CON_RC
+        END AS INBKPEND_ORI_CON_RC,
+        CASE
+        WHEN A.FEPTXN_CHANNEL IN ('FISC', 'ATM', 'EAT', 'POS') AND A.FEPTXN_TX_AMT_ACT IS NOT NULL
+        THEN A.FEPTXN_TX_AMT_ACT
+        ELSE A.FEPTXN_TX_AMT
+        END AS FEPTXN_TX_AMT,
+        CASE
+        WHEN F.FEPTXNTCB_IMSRVS_FLAG = 'Y'
+        THEN A.FEPTXN_TX_AMT
+        ELSE 0
+        END AS FEPTXN_RVS_AMT
+        FROM FEPTXN A
+        Left JOIN INBKPEND B
+        ON A.FEPTXN_TX_DATE = B.INBKPEND_TX_DATE AND A.FEPTXN_EJFNO = B.INBKPEND_EJFNO
+        Left JOIN VATXN C
+        ON A.FEPTXN_TX_DATE = C.VATXN_TX_DATE AND A.FEPTXN_EJFNO = C.VATXN_EJFNO
+        Left JOIN INTLTXN D
+        ON A.FEPTXN_TX_DATE = D.INTLTXN_TX_DATE AND A.FEPTXN_EJFNO = D.INTLTXN_EJFNO
+        Left JOIN ICTLTXN E
+        ON A.FEPTXN_TX_DATE = E.ICTLTXN_TX_DATE AND A.FEPTXN_EJFNO = E.ICTLTXN_EJFNO
+        Left JOIN FEPTXNTCB F
+        ON A.FEPTXN_TX_DATE = F.FEPTXNTCB_TX_DATE AND A.FEPTXN_EJFNO = F.FEPTXNTCB_EJFNO
+        WHERE A.FEPTXN_TX_DATE >= #{FeptxnTxDate,jdbcType=CHAR}
+        AND A.FEPTXN_STAN = #{StanNo,jdbcType=VARCHAR}
+        AND A.FEPTXN_BKNO = #{BankNo,jdbcType=CHAR}
+        ORDER BY A.FEPTXN_TX_DATE
+    </select>
+    <resultMap id="MsgRsResultMap" type="com.syscom.fep.mybatis.ext.model.FeptxnMsgRsExt">
+        <!-- 基本查詢資訊 -->
+        <result column="FEPTXN_STAN" property="stanNo" />
+        <result column="FEPTXN_TX_DATE" property="txnDate" />
+        <result column="FEPTXN_TX_TIME" property="txnTime" />
+        <result column="FEPTXN_TBSDY_FISC" property="tbsdy" />
+        <result column="FEPTXN_BKNO" property="bankNo" />
+        <result column="FEPTXN_PCODE" property="pcode" />
+        <result column="FEPTXN_TX_CODE" property="fscode" />
+        <result column="FEPTXN_ATMNO" property="atmNo" />
+        <result column="FEPTXN_ATM_TYPE" property="atmType" />
+
+        <!-- 卡片資訊 -->
+        <result column="FEPTXN_MAJOR_ACTNO" property="troutCardNo" />
+        <result column="FEPTXNTCB_CARDFMT" property="cardFMT" />
+
+        <!-- 交易資訊 -->
+        <result column="FEPTXN_MSGID" property="txnType" />
+        <result column="FEPTXN_ATM_SEQNO" property="atmSeqNo" />
+        <result column="FEPTXN_IC_SEQNO" property="icSeqNo" />
+        <result column="FEPTXN_TX_CUR" property="txnCur" />
+        <result column="FEPTXNTCB_TXNFLOW" property="tcbFlow" />
+
+        <!-- 帳戶資訊 -->
+        <result column="FEPTXN_TROUT_BKNO" property="troutBKNo" />
+        <result column="FEPTXN_TROUT_ACTNO" property="troutACCNo" />
+        <result column="FEPTXN_TRIN_BKNO" property="trinBKNo" />
+        <result column="FEPTXN_TRIN_ACTNO" property="trinACCNo" />
+
+        <!-- 金額資訊 -->
+        <result column="FEPTXN_TX_AMT" property="txnAmt" />
+        <result column="FEPTXN_FEE_CUSTPAY_ACT" property="txnFee" />
+<!--        <result column="FEPTXN_FEE_CUSTPAY" property="txnFee" />-->
+        <result column="FEPTXN_RVS_AMT" property="txnRvsAmt" />
+
+        <!-- 狀態資訊 -->
+        <result column="FEPTXNTCB_PBMCRD" property="pbmcrd" />
+        <result column="FEPTXNTCB_IMSACCT_FLAG" property="acctStat" />
+        <result column="FEPTXNTCB_IMSRVS_FLAG" property="rvsStat" />
+        <result column="FEPTXN_BRNO" property="troutBRNo" />
+        <result column="FEPTXN_TRIN_BRNO" property="trinBRNo" />
+        <result column="FEPTXN_CBS_TIMEOUT" property="cbsTimeout" />
+        <result column="FEPTXN_FISC_TIMEOUT" property="fiscTimeout" />
+        <result column="FEPTXN_TXRUST" property="txnRust" />
+        <result column="FEPTXN_PENDING" property="pending" />
+        <result column="FEPTXN_AA_RC" property="aarc" />
+        <result column="FEPTXN_ACC_TYPE" property="accType" />
+
+        <!-- 回應碼 -->
+        <result column="FEPTXNTCB_IMSRC_TCB" property="cbsrc3" />
+        <result column="FEPTXNTCB_IMSRC4_FISC" property="cbsrc4" />
+        <result column="FEPTXNTCB_IMSERRPGM" property="imsErrPgm" />
+        <result column="FEPTXN_CON_RC" property="fiscrc" />
+        <result column="FEPTXN_REPLY_CODE" property="feprc" />
+        <result column="FEPTXN_CHANNEL" property="channel" />
+
+        <!-- 21XX、22XX、2573、2574、2549 原交易Data -->
+        <result column="INBKPEND_ORI_TX_DATE" property="oriTxDate" />
+        <result column="INBKPEND_ORI_TBSDY_FISC" property="oriTBSDY" />
+        <result column="INBKPEND_ORI_PCODE" property="oriPCODE" />
+        <result column="INBKPEND_ORI_STAN" property="oriStanNo" />
+        <result column="INBKPEND_TX_AMT" property="oriTxAmt" />
+        <result column="INBKPEND_ORI_CON_RC" property="oriFISCRC" />
+        <result column="INBKPEND_PRC_RESULT" property="prcResult" />
+
+        <!-- 256X、226X、253X交易Data -->
+        <result column="FEPTXN_BUSINESS_UNIT" property="bussinessUnit" />
+        <result column="FEPTXN_PAYTYPE" property="payType" />
+        <result column="FEPTXN_PAYNO" property="payNo" />
+        <result column="FEPTXN_RECON_SEQNO" property="reconSeqNo" />
+        <result column="FEPTXN_TAX_UNIT" property="taxUNIT" />
+        <result column="FEPTXN_IDNO" property="idNO" />
+
+        <!-- 2566 交易Data -->
+        <result column="VATXN_TYPE" property="vaType" />
+        <result column="VATXN_CATE" property="vaCate" />
+        <result column="VATXN_TROUT_ACTNO" property="vaAccNo" />
+        <result column="VATXN_ITEM" property="vaItem" />
+        <result column="VATXN_RESULT" property="vaTxRust" />
+        <result column="VATXN_ACRESULT" property="vaAcRust" />
+        <result column="VATXN_ACSTAT" property="vaAcStat" />
+        <result column="VATXN_TELRESULT" property="vaTelRust" />
+
+        <!-- 254X 交易Data -->
+        <result column="FEPTXN_MERCHANT_ID" property="merchantId" />
+        <result column="FEPTXNTCB_O_DEDUCT_POINT" property="deductPoint" />
+        <result column="FEPTXNTCB_O_REDEEM_STATE" property="redeemState" />
+        <result column="FEPTXNTCB_O_EXTRA_AMOUNT" property="extraAmt" />
+        <result column="FEPTXN_LUCKYNO" property="luckyNo" />
+        <result column="FEPTXN_ORI_STAN" property="txOriStan" />
+
+        <!-- 24XX、26XX 交易Data -->
+        <result column="INTLTXN_ATM_AMT" property="intlTxAmt" />
+        <result column="INTLTXN_POS_MODE" property="intlTxPosMode" />
+        <result column="INTLTXN_RRN" property="intlTxRRN" />
+        <result column="INTLTXN_ORI_STAN" property="intlTxOriStan" />
+        <result column="INTLTXN_SET_AMT" property="intlTxSetAmt" />
+
+        <!-- 2700 交易Data -->
+        <result column="FEPTXN_TO_NAME" property="fxmlToName" />
+        <result column="FEPTXN_TO_IDNO" property="fxmlToIdno" />
+        <result column="FEPTXN_FROM_NAME" property="fxmlFromName" />
+        <result column="FEPTXN_FXML_MEMO" property="fxmlMemo" />
+    </resultMap>
+    <update id="updateConfirmByPrimaryKey" parameterType="com.syscom.fep.mybatis.model.Feptxn">
+        update FEPTXN
+        set FEPTXN_TXSEQ = #{feptxnTxseq,jdbcType=VARCHAR},
+        FEPTXN_CON_TXSEQ = #{feptxnConTxseq,jdbcType=VARCHAR},
+        FEPTXN_VIR_TXSEQ = #{feptxnVirTxseq,jdbcType=VARCHAR},
+        FEPTXN_CON_VIR_TXSEQ = #{feptxnConVirTxseq,jdbcType=VARCHAR},
+        FEPTXN_TX_DATE_ATM = #{feptxnTxDateAtm,jdbcType=VARCHAR},
+        FEPTXN_ATM_SEQNO = #{feptxnAtmSeqno,jdbcType=VARCHAR},
+        FEPTXN_CON_ATM_SEQNO1 = #{feptxnConAtmSeqno1,jdbcType=VARCHAR},
+        FEPTXN_CON_ATM_SEQNO2 = #{feptxnConAtmSeqno2,jdbcType=VARCHAR},
+        FEPTXN_CBS_TX_CODE = #{feptxnCbsTxCode,jdbcType=VARCHAR},
+        FEPTXN_CBS_RRN = #{feptxnCbsRrn,jdbcType=VARCHAR},
+        FEPTXN_EC_CBS_RRN = #{feptxnEcCbsRrn,jdbcType=VARCHAR},
+        FEPTXN_STAN = #{feptxnStan,jdbcType=VARCHAR},
+        FEPTXN_ORI_STAN = #{feptxnOriStan,jdbcType=VARCHAR},
+        FEPTXN_TX_CUR_ACT = #{feptxnTxCurAct,jdbcType=CHAR},
+        FEPTXN_TX_CUR = #{feptxnTxCur,jdbcType=CHAR},
+        FEPTXN_BKNO = #{feptxnBkno,jdbcType=CHAR},
+        FEPTXN_ATMNO = #{feptxnAtmno,jdbcType=VARCHAR},
+        FEPTXN_TX_TIME = #{feptxnTxTime,jdbcType=VARCHAR},
+        FEPTXN_CON_TX_TIME = #{feptxnConTxTime,jdbcType=VARCHAR},
+        FEPTXN_TX_CODE = #{feptxnTxCode,jdbcType=CHAR},
+        FEPTXN_CON_TX_CODE = #{feptxnConTxCode,jdbcType=CHAR},
+        FEPTXN_TBSDY_FISC = #{feptxnTbsdyFisc,jdbcType=VARCHAR},
+        FEPTXN_TBSDY = #{feptxnTbsdy,jdbcType=VARCHAR},
+        FEPTXN_TBSDY_ACT = #{feptxnTbsdyAct,jdbcType=VARCHAR},
+        FEPTXN_MAJOR_ACTNO = #{feptxnMajorActno,jdbcType=CHAR},
+        FEPTXN_CARD_SEQ = #{feptxnCardSeq,jdbcType=DECIMAL},
+        FEPTXN_TRIN_BKNO = #{feptxnTrinBkno,jdbcType=CHAR},
+        FEPTXN_TRIN_ACTNO = #{feptxnTrinActno,jdbcType=CHAR},
+        FEPTXN_TRIN_ACTNO_ACTUAL = #{feptxnTrinActnoActual,jdbcType=CHAR},
+        FEPTXN_TRIN_KIND = #{feptxnTrinKind,jdbcType=CHAR},
+        FEPTXN_TROUT_BKNO = #{feptxnTroutBkno,jdbcType=CHAR},
+        FEPTXN_TROUT_ACTNO = #{feptxnTroutActno,jdbcType=CHAR},
+        FEPTXN_TROUT_KIND = #{feptxnTroutKind,jdbcType=CHAR},
+        FEPTXN_TX_AMT_ACT = #{feptxnTxAmtAct,jdbcType=DECIMAL},
+        FEPTXN_TX_AMT = #{feptxnTxAmt,jdbcType=DECIMAL},
+        FEPTXN_CBS_RC = #{feptxnCbsRc,jdbcType=VARCHAR},
+        FEPTXN_ASC_RC = #{feptxnAscRc,jdbcType=VARCHAR},
+        FEPTXN_EXCP_CODE = #{feptxnExcpCode,jdbcType=VARCHAR},
+        FEPTXN_CON_EXCP_CODE = #{feptxnConExcpCode,jdbcType=VARCHAR},
+        FEPTXN_REPLY_CODE = #{feptxnReplyCode,jdbcType=VARCHAR},
+        FEPTXN_CON_REPLY_CODE = #{feptxnConReplyCode,jdbcType=VARCHAR},
+        FEPTXN_ACC_TYPE = #{feptxnAccType,jdbcType=DECIMAL},
+        FEPTXN_CLR_TYPE = #{feptxnClrType,jdbcType=DECIMAL},
+        FEPTXN_NEED_SEND_CBS = #{feptxnNeedSendCbs,jdbcType=DECIMAL},
+        FEPTXN_ATMOD = #{feptxnAtmod,jdbcType=DECIMAL},
+        FEPTXN_BALA = #{feptxnBala,jdbcType=DECIMAL},
+        FEPTXN_BALB = #{feptxnBalb,jdbcType=DECIMAL},
+        FEPTXN_CBS_TIMEOUT = #{feptxnCbsTimeout,jdbcType=SMALLINT},
+        FEPTXN_ASC_TIMEOUT = #{feptxnAscTimeout,jdbcType=SMALLINT},
+        FEPTXN_FISC_FLAG = #{feptxnFiscFlag,jdbcType=SMALLINT},
+        FEPTXN_PENDING = #{feptxnPending,jdbcType=DECIMAL},
+        FEPTXN_REQ_RC = #{feptxnReqRc,jdbcType=CHAR},
+        FEPTXN_REP_RC = #{feptxnRepRc,jdbcType=CHAR},
+        FEPTXN_CON_RC = #{feptxnConRc,jdbcType=CHAR},
+        FEPTXN_AA_RC = #{feptxnAaRc,jdbcType=INTEGER},
+        FEPTXN_FISC_TIMEOUT = #{feptxnFiscTimeout,jdbcType=SMALLINT},
+        FEPTXN_MSGFLOW = #{feptxnMsgflow,jdbcType=CHAR},
+        FEPTXN_SUBSYS = #{feptxnSubsys,jdbcType=DECIMAL},
+        FEPTXN_CHANNEL = #{feptxnChannel,jdbcType=VARCHAR},
+        FEPTXN_PCODE = #{feptxnPcode,jdbcType=CHAR},
+        FEPTXN_TRACE_EJFNO = #{feptxnTraceEjfno,jdbcType=INTEGER},
+        FEPTXN_CHANNEL_EJFNO = #{feptxnChannelEjfno,jdbcType=VARCHAR},
+        FEPTXN_TXRUST = #{feptxnTxrust,jdbcType=CHAR},
+        FEPTXN_TXNMODE = #{feptxnTxnmode,jdbcType=DECIMAL},
+        FEPTXN_FEE_CUR = #{feptxnFeeCur,jdbcType=CHAR},
+        FEPTXN_FEE_CUSTPAY_ACT = #{feptxnFeeCustpayAct,jdbcType=DECIMAL},
+        FEPTXN_FEE_CUSTPAY = #{feptxnFeeCustpay,jdbcType=DECIMAL},
+        FEPTXN_DES_BKNO = #{feptxnDesBkno,jdbcType=CHAR},
+        FEPTXN_TX_DATETIME_FISC = #{feptxnTxDatetimeFisc,jdbcType=CHAR},
+        FEPTXN_AA_COMPLETE = #{feptxnAaComplete,jdbcType=SMALLINT},
+        FEPTXN_TMO_FLAG = #{feptxnTmoFlag,jdbcType=SMALLINT},
+        FEPTXN_FISCSNO = #{feptxnFiscsno,jdbcType=CHAR},
+        FEPTXN_RMSNO = #{feptxnRmsno,jdbcType=CHAR},
+        FEPTXN_ORGRMSNO = #{feptxnOrgrmsno,jdbcType=CHAR},
+        FEPTXN_ORGDATE = #{feptxnOrgdate,jdbcType=CHAR},
+        FEPTXN_SENDER_BANK = #{feptxnSenderBank,jdbcType=CHAR},
+        FEPTXN_RECEIVER_BANK = #{feptxnReceiverBank,jdbcType=CHAR},
+        FEPTXN_MSGID = #{feptxnMsgid,jdbcType=VARCHAR},
+        FEPTXN_REQ_DATETIME = #{feptxnReqDatetime,jdbcType=CHAR},
+        FEPTXN_CASH_AMT = #{feptxnCashAmt,jdbcType=DECIMAL},
+        FEPTXN_COIN_AMT = #{feptxnCoinAmt,jdbcType=DECIMAL},
+        FEPTXN_FISC_CUR_MEMO = #{feptxnFiscCurMemo,jdbcType=CHAR},
+        FEPTXN_BRNO = #{feptxnBrno,jdbcType=VARCHAR},
+        FEPTXN_DEPT = #{feptxnDept,jdbcType=VARCHAR},
+        FEPTXN_TRIN_BRNO = #{feptxnTrinBrno,jdbcType=VARCHAR},
+        FEPTXN_TRIN_DEPT = #{feptxnTrinDept,jdbcType=VARCHAR},
+        FEPTXN_TX_BRNO = #{feptxnTxBrno,jdbcType=VARCHAR},
+        FEPTXN_TX_DEPT = #{feptxnTxDept,jdbcType=VARCHAR},
+        FEPTXN_ZONE_CODE = #{feptxnZoneCode,jdbcType=VARCHAR},
+        FEPTXN_ATM_BRNO = #{feptxnAtmBrno,jdbcType=VARCHAR},
+        FEPTXN_ATM_ZONE = #{feptxnAtmZone,jdbcType=VARCHAR},
+        FEPTXN_ATMNO_VIR = #{feptxnAtmnoVir,jdbcType=VARCHAR},
+        FEPTXN_ORDER_DATE = #{feptxnOrderDate,jdbcType=VARCHAR},
+        FEPTXN_ATM_CHK = #{feptxnAtmChk,jdbcType=VARCHAR},
+        FEPTXN_ATM_TYPE = #{feptxnAtmType,jdbcType=VARCHAR},
+        FEPTXN_TBSDY_INTL = #{feptxnTbsdyIntl,jdbcType=VARCHAR},
+        FEPTXN_ICMARK = #{feptxnIcmark,jdbcType=CHAR},
+        FEPTXN_YYMMDD = #{feptxnYymmdd,jdbcType=CHAR},
+        FEPTXN_TRK2 = #{feptxnTrk2,jdbcType=VARCHAR},
+        FEPTXN_TRK3 = #{feptxnTrk3,jdbcType=VARCHAR},
+        FEPTXN_IC_SEQNO = #{feptxnIcSeqno,jdbcType=CHAR},
+        FEPTXN_IC_TAC = #{feptxnIcTac,jdbcType=CHAR},
+        FEPTXN_PINBLOCK = #{feptxnPinblock,jdbcType=CHAR},
+        FEPTXN_INCRE = #{feptxnIncre,jdbcType=CHAR},
+        FEPTXN_AUTHCD = #{feptxnAuthcd,jdbcType=CHAR},
+        FEPTXN_TX_ACTNO = #{feptxnTxActno,jdbcType=CHAR},
+        FEPTXN_EXRATE = #{feptxnExrate,jdbcType=DECIMAL},
+        FEPTXN_SCASH = #{feptxnScash,jdbcType=DECIMAL},
+        FEPTXN_ACRATE = #{feptxnAcrate,jdbcType=DECIMAL},
+        FEPTXN_DIFRATE = #{feptxnDifrate,jdbcType=DECIMAL},
+        FEPTXN_CBS_DSCPT = #{feptxnCbsDscpt,jdbcType=CHAR},
+        FEPTXN_SELFCD = #{feptxnSelfcd,jdbcType=DECIMAL},
+        FEPTXN_TX_CODE_ATMC = #{feptxnTxCodeAtmc,jdbcType=CHAR},
+        FEPTXN_TX_FEE_DR = #{feptxnTxFeeDr,jdbcType=DECIMAL},
+        FEPTXN_TX_FEE_CR = #{feptxnTxFeeCr,jdbcType=DECIMAL},
+        FEPTXN_TX_FEE_MBNK_DR = #{feptxnTxFeeMbnkDr,jdbcType=DECIMAL},
+        FEPTXN_TX_FEE_MBNK_CR = #{feptxnTxFeeMbnkCr,jdbcType=DECIMAL},
+        FEPTXN_ATM_PROFIT = #{feptxnAtmProfit,jdbcType=DECIMAL},
+        FEPTXN_ACT_PROFIT = #{feptxnActProfit,jdbcType=DECIMAL},
+        FEPTXN_ACT_LOSS = #{feptxnActLoss,jdbcType=DECIMAL},
+        FEPTXN_APID = #{feptxnApid,jdbcType=VARCHAR},
+        FEPTXN_NOTICE_ID = #{feptxnNoticeId,jdbcType=CHAR},
+        FEPTXN_WAY = #{feptxnWay,jdbcType=DECIMAL},
+        FEPTXN_ORDER_NO = #{feptxnOrderNo,jdbcType=VARCHAR},
+        FEPTXN_MERCHANT_ID = #{feptxnMerchantId,jdbcType=VARCHAR},
+        FEPTXN_PAYTYPE = #{feptxnPaytype,jdbcType=CHAR},
+        FEPTXN_PAYNO = #{feptxnPayno,jdbcType=CHAR},
+        FEPTXN_TAX_UNIT = #{feptxnTaxUnit,jdbcType=CHAR},
+        FEPTXN_IDNO = #{feptxnIdno,jdbcType=CHAR},
+        FEPTXN_DUE_DATE = #{feptxnDueDate,jdbcType=CHAR},
+        FEPTXN_RECON_SEQNO = #{feptxnReconSeqno,jdbcType=CHAR},
+        FEPTXN_FISC_RRN = #{feptxnFiscRrn,jdbcType=VARCHAR},
+        FEPTXN_BUSINESS_UNIT = #{feptxnBusinessUnit,jdbcType=CHAR},
+        FEPTXN_NPS_FEE_RCVR = #{feptxnNpsFeeRcvr,jdbcType=DECIMAL},
+        FEPTXN_NPS_FEE_AGENT = #{feptxnNpsFeeAgent,jdbcType=DECIMAL},
+        FEPTXN_NPS_FEE_TROUT = #{feptxnNpsFeeTrout,jdbcType=DECIMAL},
+        FEPTXN_NPS_FEE_TRIN = #{feptxnNpsFeeTrin,jdbcType=DECIMAL},
+        FEPTXN_NPS_FEE_FISC = #{feptxnNpsFeeFisc,jdbcType=DECIMAL},
+        FEPTXN_NPS_FEE_CUSTPAY = #{feptxnNpsFeeCustpay,jdbcType=DECIMAL},
+        FEPTXN_NPS_CLR = #{feptxnNpsClr,jdbcType=DECIMAL},
+        FEPTXN_NPS_MONTHLY_FG = #{feptxnNpsMonthlyFg,jdbcType=SMALLINT},
+        FEPTXN_REMARK = #{feptxnRemark,jdbcType=VARCHAR},
+        FEPTXN_RS_CODE = #{feptxnRsCode,jdbcType=CHAR},
+        FEPTXN_TX_DATETIME_PREAUTH = #{feptxnTxDatetimePreauth,jdbcType=CHAR},
+        FEPTXN_IC_SEQNO_PREAUTH = #{feptxnIcSeqnoPreauth,jdbcType=CHAR},
+        FEPTXN_TX_AMT_PREAUTH = #{feptxnTxAmtPreauth,jdbcType=DECIMAL},
+        FEPTXN_CBS_INT_ACTNO = #{feptxnCbsIntActno,jdbcType=CHAR},
+        FEPTXN_CBS_SUP_ACTNO = #{feptxnCbsSupActno,jdbcType=CHAR},
+        FEPTXN_CBS_FEE_ACTNO = #{feptxnCbsFeeActno,jdbcType=CHAR},
+        FEPTXN_CBS_VALUE_DATE = #{feptxnCbsValueDate,jdbcType=VARCHAR},
+        FEPTXN_CBS_TX_TIME = #{feptxnCbsTxTime,jdbcType=VARCHAR},
+        FEPTXN_TX_CUR_SET = #{feptxnTxCurSet,jdbcType=CHAR},
+        FEPTXN_TX_AMT_SET = #{feptxnTxAmtSet,jdbcType=DECIMAL},
+        FEPTXN_ERR_MSG = #{feptxnErrMsg,jdbcType=VARCHAR},
+        FEPTXN_RWTSEQ = #{feptxnRwtseq,jdbcType=INTEGER},
+        FEPTXN_BOX_CNT = #{feptxnBoxCnt,jdbcType=DECIMAL},
+        FEPTXN_DSPCNT1 = #{feptxnDspcnt1,jdbcType=SMALLINT},
+        FEPTXN_DSPCNT2 = #{feptxnDspcnt2,jdbcType=SMALLINT},
+        FEPTXN_DSPCNT3 = #{feptxnDspcnt3,jdbcType=SMALLINT},
+        FEPTXN_DSPCNT4 = #{feptxnDspcnt4,jdbcType=SMALLINT},
+        FEPTXN_DSPCNT5 = #{feptxnDspcnt5,jdbcType=SMALLINT},
+        FEPTXN_DSPCNT6 = #{feptxnDspcnt6,jdbcType=SMALLINT},
+        FEPTXN_DSPCNT7 = #{feptxnDspcnt7,jdbcType=SMALLINT},
+        FEPTXN_DSPCNT8 = #{feptxnDspcnt8,jdbcType=SMALLINT},
+        FEPTXN_VIR_CBS_TIMEOUT = #{feptxnVirCbsTimeout,jdbcType=SMALLINT},
+        FEPTXN_VIR_ACC_TYPE = #{feptxnVirAccType,jdbcType=DECIMAL},
+        FEPTXN_VIR_CBS_TX_CODE = #{feptxnVirCbsTxCode,jdbcType=VARCHAR},
+        FEPTXN_VIR_CBS_RRN = #{feptxnVirCbsRrn,jdbcType=VARCHAR},
+        FEPTXN_VIR_CBS_RC = #{feptxnVirCbsRc,jdbcType=VARCHAR},
+        FEPTXN_VIR_ERR_MSG = #{feptxnVirErrMsg,jdbcType=VARCHAR},
+        FEPTXN_VIR_BRNO = #{feptxnVirBrno,jdbcType=VARCHAR},
+        FEPTXN_VIR_TRIN_BRNO = #{feptxnVirTrinBrno,jdbcType=VARCHAR},
+        FEPTXN_VIR_CBS_INT_ACTNO = #{feptxnVirCbsIntActno,jdbcType=VARCHAR},
+        FEPTXN_VIR_CBS_SUP_ACTNO = #{feptxnVirCbsSupActno,jdbcType=VARCHAR},
+        FEPTXN_PBTYPE = #{feptxnPbtype,jdbcType=CHAR},
+        FEPTXN_TELEPHONE = #{feptxnTelephone,jdbcType=VARCHAR},
+        FEPTXN_CLIENTIP = #{feptxnClientip,jdbcType=VARCHAR},
+        FEPTXN_CASH_WAMT = #{feptxnCashWamt,jdbcType=DECIMAL},
+        FEPTXN_COIN_WAMT = #{feptxnCoinWamt,jdbcType=DECIMAL},
+        FEPTXN_ACCT_SUP = #{feptxnAcctSup,jdbcType=VARCHAR},
+        FEPTXN_BENEFIT = #{feptxnBenefit,jdbcType=CHAR},
+        FEPTXN_CHREM = #{feptxnChrem,jdbcType=VARCHAR},
+        FEPTXN_PSBREM_F_D = #{feptxnPsbremFD,jdbcType=VARCHAR},
+        FEPTXN_PSBREM_F_C = #{feptxnPsbremFC,jdbcType=VARCHAR},
+        FEPTXN_ACTIVITY_CODE = #{feptxnActivityCode,jdbcType=CHAR},
+        FEPTXN_NONPROM_AMT = #{feptxnNonpromAmt,jdbcType=INTEGER},
+        FEPTXN_FMREM = #{feptxnFmrem,jdbcType=VARCHAR},
+        FEPTXN_NPS_AGB_FEE = #{feptxnNpsAgbFee,jdbcType=DECIMAL},
+        UPDATE_USERID = #{updateUserid,jdbcType=INTEGER},
+        UPDATE_TIME = sysdate,
+        FEPTXN_NOTICE_TYPE = #{feptxnNoticeType,jdbcType=VARCHAR},
+        FEPTXN_TROUT_BKNO7 = #{feptxnTroutBkno7,jdbcType=VARCHAR},
+        FEPTXN_TRIN_BKNO7 = #{feptxnTrinBkno7,jdbcType=VARCHAR},
+        FEPTXN_MSGKIND = #{feptxnMsgkind,jdbcType=CHAR},
+        FEPTXN_MULTICUR = #{feptxnMulticur,jdbcType=CHAR},
+        FEPTXN_MTP = #{feptxnMtp,jdbcType=CHAR},
+        FEPTXN_DEPOSITOR = #{feptxnDepositor,jdbcType=VARCHAR},
+        FEPTXN_COVID19 = #{feptxnCovid19,jdbcType=CHAR},
+        FEPTXN_DR_CUST = #{feptxnDrCust,jdbcType=VARCHAR},
+        FEPTXN_CR_CUST = #{feptxnCrCust,jdbcType=VARCHAR},
+        FEPTXN_SEND_2160 = #{feptxnSend2160,jdbcType=CHAR},
+        FEPTXN_LUCKYNO = #{feptxnLuckyno,jdbcType=VARCHAR},
+        FEPTXN_CBS_PROC = #{feptxnCbsProc,jdbcType=CHAR}
+        where FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+        and FEPTXN_EJFNO = #{feptxnEjfno,jdbcType=INTEGER}
+        and FEPTXN_TXRUST = 'B'
+    </update>
+    <select id="selectTraceEjfnoByPrimaryKey" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List" />
+        from FEPTXN
+        where FEPTXN_TX_DATE = #{feptxnTxDate,jdbcType=CHAR}
+        and FEPTXN_TRACE_EJFNO = #{feptxnEjfno,jdbcType=INTEGER}
+    </select>
+    <!-- 代理整批處理自動補Con給財金 -->
+    <select id="getFeptxnForSendConToFisc" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.FeptxnMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.FeptxnMapper.Base_Column_List"/>
+        FROM FEPTXN
+        WHERE FEPTXN_TX_DATE <![CDATA[ >= ]]> #{sysstatLbsdyFisc,jdbcType=CHAR}
+        AND FEPTXN_BKNO = #{sysstatHbkno,jdbcType=CHAR}
+        AND FEPTXN_REP_RC = '4001'
+        AND (FEPTXN_CON_RC IS NULL OR RTRIM(FEPTXN_CON_RC) = '')
+        AND FEPTXN_FISC_FLAG = 1
+        AND FEPTXN_WAY = 3
+        AND FEPTXN_CBS_PROC = 'N'
+    </select>
+    <select id="getFEPTXN2700Result510" parameterType="map" resultType="map">
+        SELECT * FROM FEPTXN
+        WHERE FEPTXN_TX_DATE <![CDATA[ >= ]]> #{stDate}
+        AND FEPTXN_TX_DATE <![CDATA[ <= ]]> #{endDate}
+        AND FEPTXN_TBSDY_FISC = #{queryDate}
+        AND FEPTXN_BKNO <![CDATA[ <> ]]> #{hbkno}
+        AND FEPTXN_PCODE = '2700'
+        <choose>
+            <when test="brapSelect == '成功'">
+                AND FEPTXN_TXRUST = 'A'
+            </when>
+            <when test="brapSelect == '失敗'">
+                AND FEPTXN_TXRUST NOT IN ('A', 'B')
+            </when>
+            <when test="brapSelect == '未完成'">
+                AND FEPTXN_TXRUST = 'B'
+            </when>
+        </choose>
+        ORDER BY FEPTXN_TX_DATE ASC, FEPTXN_TX_TIME ASC
+    </select>
+    <select id="getFEPTXN2700Result520" parameterType="map" resultType="map">
+        SELECT * FROM FEPTXN
+        WHERE FEPTXN_TX_DATE <![CDATA[ >= ]]> #{stDate}
+        AND FEPTXN_TX_DATE <![CDATA[ <= ]]> #{endDate}
+        AND FEPTXN_TBSDY_FISC = #{queryDate}
+        AND FEPTXN_BKNO = #{hbkno}
+        AND FEPTXN_PCODE = '2700'
+        <choose>
+            <when test="brapSelect == '成功'">
+                AND FEPTXN_TXRUST = 'A'
+            </when>
+            <when test="brapSelect == '失敗'">
+                AND FEPTXN_TXRUST NOT IN ('A', 'B')
+            </when>
+            <when test="brapSelect == '未完成'">
+                AND FEPTXN_TXRUST = 'B'
+            </when>
+        </choose>
+        ORDER BY FEPTXN_TX_DATE ASC, FEPTXN_TX_TIME ASC
+    </select>
+    <select id="getFEPTXN2700Result530" parameterType="map" resultType="map">
+        SELECT * FROM FEPTXN
+        WHERE FEPTXN_TX_DATE <![CDATA[ >= ]]> #{stDate}
+        AND FEPTXN_TX_DATE <![CDATA[ <= ]]> #{endDate}
+        AND FEPTXN_TBSDY_FISC = #{queryDate}
+        AND FEPTXN_PCODE = '2700'
+        AND FEPTXN_TXRUST = 'B'
+        <if test="transSelect == 'transAR'">
+            AND FEPTXN_BKNO <![CDATA[ <> ]]> #{hbkno}
+        </if>
+        <if test="transSelect == 'transAP'">
+            AND FEPTXN_BKNO = #{hbkno}
+        </if>
+        ORDER BY FEPTXN_TX_DATE ASC, FEPTXN_TX_TIME ASC
+    </select>
+    <select id="get2700Tx530Action" parameterType="map" resultType="com.syscom.fep.mybatis.ext.model.FeptxnExt">
+        SELECT * FROM FEPTXN
+        WHERE FEPTXN_TX_DATE = #{txDate}
+        AND FEPTXN_BKNO = #{bkno}
+        AND FEPTXN_STAN = #{stan}
+    </select>
+    <update id="updateFeptxnConExcpCode" parameterType="map">
+        UPDATE FEPTXN
+        SET FEPTXN_CON_EXCP_CODE = #{conExcpCode}
+        WHERE FEPTXN_TX_DATE = #{txDate}
+        AND FEPTXN_BKNO = #{bkno}
+        AND FEPTXN_STAN = #{stan}
+    </update>
+    <update id="updateFeptxnConRc" parameterType="map">
+        UPDATE FEPTXN
+        SET FEPTXN_CON_RC = #{conExcpCode},
+        FEPTXN_TXRUST = #{txRust}
+        WHERE FEPTXN_TX_DATE = #{txDate}
+        AND FEPTXN_BKNO = #{bkno}
+        AND FEPTXN_STAN = #{stan}
+    </update>
+    <resultMap id="BaseResultMap1" type="com.syscom.fep.mybatis.ext.model.FeptxnExt">
+        <id column="FEPTXN_TX_DATE" property="feptxnTxDate"/>
+        <id column="FEPTXN_EJFNO" property="feptxnEjfno"/>
+        <result column="FEPTXN_TXSEQ" property="feptxnTxseq" />
+        <result column="FEPTXN_CON_TXSEQ" property="feptxnConTxseq" />
+        <result column="FEPTXN_VIR_TXSEQ" property="feptxnVirTxseq" />
+        <result column="FEPTXN_CON_VIR_TXSEQ" property="feptxnConVirTxseq" />
+        <result column="FEPTXN_TX_DATE_ATM" property="feptxnTxDateAtm" />
+        <result column="FEPTXN_ATM_SEQNO" property="feptxnAtmSeqno" />
+        <result column="FEPTXN_CON_ATM_SEQNO1" property="feptxnConAtmSeqno1" />
+        <result column="FEPTXN_CON_ATM_SEQNO2" property="feptxnConAtmSeqno2" />
+        <result column="FEPTXN_CBS_TX_CODE" property="feptxnCbsTxCode" />
+        <result column="FEPTXN_CBS_RRN" property="feptxnCbsRrn" />
+        <result column="FEPTXN_EC_CBS_RRN" property="feptxnEcCbsRrn" />
+        <result column="FEPTXN_STAN" property="feptxnStan" />
+        <result column="FEPTXN_ORI_STAN" property="feptxnOriStan" />
+        <result column="FEPTXN_TX_CUR_ACT" property="feptxnTxCurAct"/>
+        <result column="FEPTXN_TX_CUR" property="feptxnTxCur"/>
+        <result column="FEPTXN_BKNO" property="feptxnBkno"/>
+        <result column="FEPTXN_ATMNO" property="feptxnAtmno" />
+        <result column="FEPTXN_TX_TIME" property="feptxnTxTime" />
+        <result column="FEPTXN_CON_TX_TIME" property="feptxnConTxTime" />
+        <result column="FEPTXN_TX_CODE" property="feptxnTxCode"/>
+        <result column="FEPTXN_CON_TX_CODE" property="feptxnConTxCode"/>
+        <result column="FEPTXN_TBSDY_FISC" property="feptxnTbsdyFisc" />
+        <result column="FEPTXN_TBSDY" property="feptxnTbsdy" />
+        <result column="FEPTXN_TBSDY_ACT" property="feptxnTbsdyAct" />
+        <result column="FEPTXN_MAJOR_ACTNO" property="feptxnMajorActno"/>
+        <result column="FEPTXN_CARD_SEQ" property="feptxnCardSeq"/>
+        <result column="FEPTXN_TRIN_BKNO" property="feptxnTrinBkno"/>
+        <result column="FEPTXN_TRIN_ACTNO" property="feptxnTrinActno"/>
+        <result column="FEPTXN_TRIN_ACTNO_ACTUAL" property="feptxnTrinActnoActual"/>
+        <result column="FEPTXN_TRIN_KIND" property="feptxnTrinKind"/>
+        <result column="FEPTXN_TROUT_BKNO" property="feptxnTroutBkno"/>
+        <result column="FEPTXN_TROUT_ACTNO" property="feptxnTroutActno"/>
+        <result column="FEPTXN_TROUT_KIND" property="feptxnTroutKind"/>
+        <result column="FEPTXN_TX_AMT_ACT" property="feptxnTxAmtAct"/>
+        <result column="FEPTXN_TX_AMT" property="feptxnTxAmt"/>
+        <result column="FEPTXN_CBS_RC" property="feptxnCbsRc" />
+        <result column="FEPTXN_ASC_RC" property="feptxnAscRc" />
+        <result column="FEPTXN_EXCP_CODE" property="feptxnExcpCode" />
+        <result column="FEPTXN_CON_EXCP_CODE" property="feptxnConExcpCode" />
+        <result column="FEPTXN_REPLY_CODE" property="feptxnReplyCode" />
+        <result column="FEPTXN_CON_REPLY_CODE" property="feptxnConReplyCode" />
+        <result column="FEPTXN_ACC_TYPE" property="feptxnAccType"/>
+        <result column="FEPTXN_CLR_TYPE" property="feptxnClrType"/>
+        <result column="FEPTXN_NEED_SEND_CBS" property="feptxnNeedSendCbs"/>
+        <result column="FEPTXN_ATMOD" property="feptxnAtmod"/>
+        <result column="FEPTXN_BALA" property="feptxnBala"/>
+        <result column="FEPTXN_BALB" property="feptxnBalb"/>
+        <result column="FEPTXN_CBS_TIMEOUT" property="feptxnCbsTimeout"/>
+        <result column="FEPTXN_ASC_TIMEOUT" property="feptxnAscTimeout"/>
+        <result column="FEPTXN_FISC_FLAG" property="feptxnFiscFlag"/>
+        <result column="FEPTXN_PENDING" property="feptxnPending"/>
+        <result column="FEPTXN_REQ_RC" property="feptxnReqRc"/>
+        <result column="FEPTXN_REP_RC" property="feptxnRepRc"/>
+        <result column="FEPTXN_CON_RC" property="feptxnConRc"/>
+        <result column="FEPTXN_AA_RC" property="feptxnAaRc"/>
+        <result column="FEPTXN_FISC_TIMEOUT" property="feptxnFiscTimeout"/>
+        <result column="FEPTXN_MSGFLOW" property="feptxnMsgflow"/>
+        <result column="FEPTXN_SUBSYS" property="feptxnSubsys"/>
+        <result column="FEPTXN_CHANNEL" property="feptxnChannel" />
+        <result column="FEPTXN_PCODE" property="feptxnPcode"/>
+        <result column="FEPTXN_TRACE_EJFNO" property="feptxnTraceEjfno"/>
+        <result column="FEPTXN_CHANNEL_EJFNO" property="feptxnChannelEjfno" />
+        <result column="FEPTXN_TXRUST" property="feptxnTxrust"/>
+        <result column="FEPTXN_TXNMODE" property="feptxnTxnmode"/>
+        <result column="FEPTXN_FEE_CUR" property="feptxnFeeCur"/>
+        <result column="FEPTXN_FEE_CUSTPAY_ACT" property="feptxnFeeCustpayAct"/>
+        <result column="FEPTXN_FEE_CUSTPAY" property="feptxnFeeCustpay"/>
+        <result column="FEPTXN_DES_BKNO" property="feptxnDesBkno"/>
+        <result column="FEPTXN_TX_DATETIME_FISC" property="feptxnTxDatetimeFisc"/>
+        <result column="FEPTXN_AA_COMPLETE" property="feptxnAaComplete"/>
+        <result column="FEPTXN_TMO_FLAG" property="feptxnTmoFlag"/>
+        <result column="FEPTXN_FISCSNO" property="feptxnFiscsno"/>
+        <result column="FEPTXN_RMSNO" property="feptxnRmsno"/>
+        <result column="FEPTXN_ORGRMSNO" property="feptxnOrgrmsno"/>
+        <result column="FEPTXN_ORGDATE" property="feptxnOrgdate"/>
+        <result column="FEPTXN_SENDER_BANK" property="feptxnSenderBank"/>
+        <result column="FEPTXN_RECEIVER_BANK" property="feptxnReceiverBank"/>
+        <result column="FEPTXN_MSGID" property="feptxnMsgid" />
+        <result column="FEPTXN_REQ_DATETIME" property="feptxnReqDatetime"/>
+        <result column="FEPTXN_CASH_AMT" property="feptxnCashAmt"/>
+        <result column="FEPTXN_COIN_AMT" property="feptxnCoinAmt"/>
+        <result column="FEPTXN_FISC_CUR_MEMO" property="feptxnFiscCurMemo"/>
+        <result column="FEPTXN_BRNO" property="feptxnBrno" />
+        <result column="FEPTXN_DEPT" property="feptxnDept" />
+        <result column="FEPTXN_TRIN_BRNO" property="feptxnTrinBrno" />
+        <result column="FEPTXN_TRIN_DEPT" property="feptxnTrinDept" />
+        <result column="FEPTXN_TX_BRNO" property="feptxnTxBrno" />
+        <result column="FEPTXN_TX_DEPT" property="feptxnTxDept" />
+        <result column="FEPTXN_ZONE_CODE" property="feptxnZoneCode" />
+        <result column="FEPTXN_ATM_BRNO" property="feptxnAtmBrno" />
+        <result column="FEPTXN_ATM_ZONE" property="feptxnAtmZone" />
+        <result column="FEPTXN_ATMNO_VIR" property="feptxnAtmnoVir" />
+        <result column="FEPTXN_ORDER_DATE" property="feptxnOrderDate" />
+        <result column="FEPTXN_ATM_CHK" property="feptxnAtmChk" />
+        <result column="FEPTXN_ATM_TYPE" property="feptxnAtmType" />
+        <result column="FEPTXN_TBSDY_INTL" property="feptxnTbsdyIntl" />
+        <result column="FEPTXN_ICMARK" property="feptxnIcmark"/>
+        <result column="FEPTXN_YYMMDD" property="feptxnYymmdd"/>
+        <result column="FEPTXN_TRK2" property="feptxnTrk2" />
+        <result column="FEPTXN_TRK3" property="feptxnTrk3" />
+        <result column="FEPTXN_IC_SEQNO" property="feptxnIcSeqno"/>
+        <result column="FEPTXN_IC_TAC" property="feptxnIcTac"/>
+        <result column="FEPTXN_PINBLOCK" property="feptxnPinblock"/>
+        <result column="FEPTXN_INCRE" property="feptxnIncre"/>
+        <result column="FEPTXN_AUTHCD" property="feptxnAuthcd"/>
+        <result column="FEPTXN_TX_ACTNO" property="feptxnTxActno"/>
+        <result column="FEPTXN_EXRATE" property="feptxnExrate"/>
+        <result column="FEPTXN_SCASH" property="feptxnScash"/>
+        <result column="FEPTXN_ACRATE" property="feptxnAcrate"/>
+        <result column="FEPTXN_DIFRATE" property="feptxnDifrate"/>
+        <result column="FEPTXN_CBS_DSCPT" property="feptxnCbsDscpt"/>
+        <result column="FEPTXN_SELFCD" property="feptxnSelfcd"/>
+        <result column="FEPTXN_TX_CODE_ATMC" property="feptxnTxCodeAtmc"/>
+        <result column="FEPTXN_TX_FEE_DR" property="feptxnTxFeeDr"/>
+        <result column="FEPTXN_TX_FEE_CR" property="feptxnTxFeeCr"/>
+        <result column="FEPTXN_TX_FEE_MBNK_DR" property="feptxnTxFeeMbnkDr"/>
+        <result column="FEPTXN_TX_FEE_MBNK_CR" property="feptxnTxFeeMbnkCr"/>
+        <result column="FEPTXN_ATM_PROFIT" property="feptxnAtmProfit"/>
+        <result column="FEPTXN_ACT_PROFIT" property="feptxnActProfit"/>
+        <result column="FEPTXN_ACT_LOSS" property="feptxnActLoss"/>
+        <result column="FEPTXN_APID" property="feptxnApid" />
+        <result column="FEPTXN_NOTICE_ID" property="feptxnNoticeId"/>
+        <result column="FEPTXN_WAY" property="feptxnWay"/>
+        <result column="FEPTXN_ORDER_NO" property="feptxnOrderNo" />
+        <result column="FEPTXN_MERCHANT_ID" property="feptxnMerchantId" />
+        <result column="FEPTXN_PAYTYPE" property="feptxnPaytype"/>
+        <result column="FEPTXN_PAYNO" property="feptxnPayno"/>
+        <result column="FEPTXN_TAX_UNIT" property="feptxnTaxUnit"/>
+        <result column="FEPTXN_IDNO" property="feptxnIdno"/>
+        <result column="FEPTXN_DUE_DATE" property="feptxnDueDate"/>
+        <result column="FEPTXN_RECON_SEQNO" property="feptxnReconSeqno"/>
+        <result column="FEPTXN_FISC_RRN" property="feptxnFiscRrn" />
+        <result column="FEPTXN_BUSINESS_UNIT" property="feptxnBusinessUnit"/>
+        <result column="FEPTXN_NPS_FEE_RCVR" property="feptxnNpsFeeRcvr"/>
+        <result column="FEPTXN_NPS_FEE_AGENT" property="feptxnNpsFeeAgent"/>
+        <result column="FEPTXN_NPS_FEE_TROUT" property="feptxnNpsFeeTrout"/>
+        <result column="FEPTXN_NPS_FEE_TRIN" property="feptxnNpsFeeTrin"/>
+        <result column="FEPTXN_NPS_FEE_FISC" property="feptxnNpsFeeFisc"/>
+        <result column="FEPTXN_NPS_FEE_CUSTPAY" property="feptxnNpsFeeCustpay"/>
+        <result column="FEPTXN_NPS_CLR" property="feptxnNpsClr"/>
+        <result column="FEPTXN_NPS_MONTHLY_FG" property="feptxnNpsMonthlyFg"/>
+        <result column="FEPTXN_REMARK" property="feptxnRemark" />
+        <result column="FEPTXN_RS_CODE" property="feptxnRsCode"/>
+        <result column="FEPTXN_TX_DATETIME_PREAUTH" property="feptxnTxDatetimePreauth"/>
+        <result column="FEPTXN_IC_SEQNO_PREAUTH" property="feptxnIcSeqnoPreauth"/>
+        <result column="FEPTXN_TX_AMT_PREAUTH" property="feptxnTxAmtPreauth"/>
+        <result column="FEPTXN_CBS_INT_ACTNO" property="feptxnCbsIntActno"/>
+        <result column="FEPTXN_CBS_SUP_ACTNO" property="feptxnCbsSupActno"/>
+        <result column="FEPTXN_CBS_FEE_ACTNO" property="feptxnCbsFeeActno"/>
+        <result column="FEPTXN_CBS_VALUE_DATE" property="feptxnCbsValueDate" />
+        <result column="FEPTXN_CBS_TX_TIME" property="feptxnCbsTxTime" />
+        <result column="FEPTXN_TX_CUR_SET" property="feptxnTxCurSet"/>
+        <result column="FEPTXN_TX_AMT_SET" property="feptxnTxAmtSet"/>
+        <result column="FEPTXN_ERR_MSG" property="feptxnErrMsg" />
+        <result column="FEPTXN_RWTSEQ" property="feptxnRwtseq"/>
+        <result column="FEPTXN_BOX_CNT" property="feptxnBoxCnt"/>
+        <result column="FEPTXN_DSPCNT1" property="feptxnDspcnt1"/>
+        <result column="FEPTXN_DSPCNT2" property="feptxnDspcnt2"/>
+        <result column="FEPTXN_DSPCNT3" property="feptxnDspcnt3"/>
+        <result column="FEPTXN_DSPCNT4" property="feptxnDspcnt4"/>
+        <result column="FEPTXN_DSPCNT5" property="feptxnDspcnt5"/>
+        <result column="FEPTXN_DSPCNT6" property="feptxnDspcnt6"/>
+        <result column="FEPTXN_DSPCNT7" property="feptxnDspcnt7"/>
+        <result column="FEPTXN_DSPCNT8" property="feptxnDspcnt8"/>
+        <result column="FEPTXN_VIR_CBS_TIMEOUT" property="feptxnVirCbsTimeout"/>
+        <result column="FEPTXN_VIR_ACC_TYPE" property="feptxnVirAccType"/>
+        <result column="FEPTXN_VIR_CBS_TX_CODE" property="feptxnVirCbsTxCode" />
+        <result column="FEPTXN_VIR_CBS_RRN" property="feptxnVirCbsRrn" />
+        <result column="FEPTXN_VIR_CBS_RC" property="feptxnVirCbsRc" />
+        <result column="FEPTXN_VIR_ERR_MSG" property="feptxnVirErrMsg" />
+        <result column="FEPTXN_VIR_BRNO" property="feptxnVirBrno" />
+        <result column="FEPTXN_VIR_TRIN_BRNO" property="feptxnVirTrinBrno" />
+        <result column="FEPTXN_VIR_CBS_INT_ACTNO" property="feptxnVirCbsIntActno" />
+        <result column="FEPTXN_VIR_CBS_SUP_ACTNO" property="feptxnVirCbsSupActno" />
+        <result column="FEPTXN_PBTYPE" property="feptxnPbtype"/>
+        <result column="FEPTXN_TELEPHONE" property="feptxnTelephone" />
+        <result column="FEPTXN_CLIENTIP" property="feptxnClientip" />
+        <result column="FEPTXN_CASH_WAMT" property="feptxnCashWamt"/>
+        <result column="FEPTXN_COIN_WAMT" property="feptxnCoinWamt"/>
+        <result column="FEPTXN_ACCT_SUP" property="feptxnAcctSup" />
+        <result column="FEPTXN_BENEFIT" property="feptxnBenefit"/>
+        <result column="FEPTXN_CHREM" property="feptxnChrem" />
+        <result column="FEPTXN_PSBREM_F_D" property="feptxnPsbremFD" />
+        <result column="FEPTXN_PSBREM_F_C" property="feptxnPsbremFC" />
+        <result column="FEPTXN_ACTIVITY_CODE" property="feptxnActivityCode"/>
+        <result column="FEPTXN_NONPROM_AMT" property="feptxnNonpromAmt"/>
+        <result column="FEPTXN_FMREM" property="feptxnFmrem" />
+        <result column="FEPTXN_NPS_AGB_FEE" property="feptxnNpsAgbFee"/>
+        <result column="UPDATE_USERID" property="updateUserid"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="FEPTXN_NOTICE_TYPE" property="feptxnNoticeType" />
+        <result column="FEPTXN_TROUT_BKNO7" property="feptxnTroutBkno7" />
+        <result column="FEPTXN_TRIN_BKNO7" property="feptxnTrinBkno7" />
+        <result column="FEPTXN_MSGKIND" property="feptxnMsgkind"/>
+        <result column="FEPTXN_MULTICUR" property="feptxnMulticur"/>
+        <result column="FEPTXN_MTP" property="feptxnMtp"/>
+        <result column="FEPTXN_DEPOSITOR" property="feptxnDepositor" />
+        <result column="FEPTXN_COVID19" property="feptxnCovid19"/>
+        <result column="FEPTXN_DR_CUST" property="feptxnDrCust" />
+        <result column="FEPTXN_CR_CUST" property="feptxnCrCust" />
+        <result column="FEPTXN_SEND_2160" property="feptxnSend2160"/>
+        <result column="FEPTXN_LUCKYNO" property="feptxnLuckyno" />
+        <result column="FEPTXN_CBS_PROC" property="feptxnCbsProc"/>
+        <result column="INBKPEND_ORI_BKNO" property="inbkpendOriBkno"/>
+        <result column="INBKPEND_ORI_STAN" property="inbkpendOriStan" />
+        <result column="INBKPEND_ORI_TX_DATE" property="inbkpendOriTxDate" />
+        <result column="INBKPEND_ORI_TBSDY_FISC" property="inbkpendOriTbsdyFisc" />
+    </resultMap>
+</mapper>

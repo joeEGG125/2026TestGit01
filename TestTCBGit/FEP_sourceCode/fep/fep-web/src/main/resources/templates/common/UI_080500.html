@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢全部</button>
+</div>
+<div layout:fragment="panel-grid" th:if="${list.size>0}" class="panel-detail">
+    <table style="width:100%" class="table-padding">
+        <tr>
+            <td>
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>FISC線路切換</b></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive p-0 panel-detail">
+                        <form id="form-channel">
+                            <div class="div-channel-agent" th:each="data,dataState:${list}">
+                                <table border="0" cellspacing="0" class="table-detail">
+                                    <tr>
+                                        <td class="condition-label">
+                                            <label class="col-form-label" th:text="${data.agent.name}"></label>
+                                        </td>
+                                        <td class="condition-input">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" th:id="${'primary'+data.agent.name}" name="primary" th:value="${data.agent.name}"
+                                                       th:disabled="!${data.alive}" th:checked="${data.primaryAlive}">
+                                                <label class="custom-control-label" th:for="${'primary'+data.agent.name}" th:text="${'主要線路'+data.agent.primaryNameSuffix}"></label>
+                                            </div>
+                                        </td>
+                                        <td class="condition-input">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" th:id="${'secondary'+data.agent.name}" name="secondary" th:value="${data.agent.name}"
+                                                       th:disabled="!${data.alive}" th:checked="${data.secondaryAlive}">
+                                                <label class="custom-control-label" th:for="${'secondary'+data.agent.name}" th:text="${'備援線路'+data.agent.secondaryNameSuffix}"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-confirm-channel" th:value="${data.agent.name}" th:disabled="!${data.alive}">確認</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>FISC服務切換</b></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive p-0 panel-detail">
+                        <form class="form-service" th:each="data,dataState:${list}">
+                            <input type="hidden" name="name" th:value="${data.agent.name}">
+                            <table border="0" cellspacing="0" class="table-detail">
+                                <tr>
+                                    <td class="condition-label">
+                                        <label class="col-form-label" th:text="${data.agent.name}"></label>
+                                    </td>
+                                    <td class="condition-input">
+                                        <div class="custom-control custom-radio">
+                                            <input class="custom-control-input" type="radio" th:id="${'start'+data.agent.name}" name="action" value="start" th:checked="${data.alive}">
+                                            <label class="custom-control-label" th:for="${'start'+data.agent.name}">啟動</label>
+                                        </div>
+                                    </td>
+                                    <td class="condition-input">
+                                        <div class="custom-control custom-radio">
+                                            <input class="custom-control-input" type="radio" th:id="${'stop'+data.agent.name}" name="action" value="stop" th:checked="!${data.alive}">
+                                            <label class="custom-control-label" th:for="${'stop'+data.agent.name}">停止</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-confirm-service">確認</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI080500.js}"></script>
+</div>
+</body>
+</html>

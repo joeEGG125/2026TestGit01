@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .tableAlert {
+            border-collapse: collapse;
+            table-layout: fixed;
+            word-break: break-all
+        }
+
+        .tableAlert td {
+            border-top: 0;
+            border-right: 1px dashed #CCCCCC;
+            border-bottom: 1px dashed #CCCCCC;
+            border-left: 0;
+            height: 30px;
+            font-size: 14px;
+            padding-left: 5px
+        }
+
+        .tableAlert tr.lastrow td {
+            border-bottom: 0;
+        }
+
+        .tableAlert tr td.lastCol {
+            border-right: 0;
+        }
+
+        #rMenu {
+            position: fixed;
+            visibility: hidden;
+            top: 0;
+            background-color: #555;
+            text-align: left;
+            padding: 2px;
+        }
+
+        #rMenu ul li {
+            margin: 1px 0;
+            padding: 0 5px;
+            cursor: pointer;
+            list-style: none outside none;
+            background-color: #DFDFDF;
+        }
+
+        .table-zoo {
+            width: 95%;
+        }
+
+        .table-zoo-tt {
+            width: 100%;
+            border: 1px solid #95B8E7;
+        }
+
+        .table-zoo-tt-td {
+            border: 1px solid #95B8E7;
+            background: #E5EFFF;
+        }
+
+        .table-s {
+            padding-left: 10px;
+            font-size: 14px
+        }
+
+        .table-d {
+            height: 610px;
+            overflow-x: auto;
+        }
+
+        .table-zoo-tt-tt {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .table-zoo-tt-tr {
+            padding-left: 10px
+        }
+
+        .table-zoo-tt-la {
+            font-size: 14px
+        }
+
+        .table-zoo-tt-i {
+            margin-bottom: 3px;
+            margin-top: 3px;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="panel-grid">
+    <table class="table-zoo">
+        <tr>
+            <td valign="top" style="width: 50%">
+                <table class="table-zoo-tt">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s">角色/使用者</span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-d">
+                                <table class="table-zoo-tt-tt">
+                                    <tr>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary" id="fullCollection">全部收合</button>
+                                            <button type="button" class="btn btn-sm btn-primary" id="expandAll">全部展開</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="content_wrap">
+                                                <div class="ztreeDemoBackground left">
+                                                    <ul id="treeMain" class="ztree"></ul>
+                                                </div>
+                                            </div>
+                                            <div id="rMenu">
+                                                <ul style="padding:0px;margin: 0px">
+                                                    <li id="m_add" onclick="addRole();">新增角色</li>
+                                                    <li id="m_unCheck" onclick="checkTreeNode();">選取/取消選取使用者</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td valign="top" style="width: 50%">
+                <table class="table-zoo-tt" id="user">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s" id="userID"></span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="height: 600px;">
+                                <form id="userForm">
+                                    <table class="table-zoo-tt-tt">
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-primary " id="userConfirmClick">確認</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="userNo" class="col-form-label table-zoo-tt-la">使用者帳號</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <input class="form-control table-zoo-tt-i" type="text" id="userNo" name="userNo" maxlength="60"/>
+                                                <input class="form-control table-zoo-tt-i" type="text" id="empId" name="empId" hidden/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="userName" class="col-form-label table-zoo-tt-la">使用者名稱</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <input class="form-control table-zoo-tt-i" type="text" id="userName" name="userName" style="width:100%" maxlength="50"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="userEmail" class="col-form-label table-zoo-tt-la">電子郵件</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <input class="form-control table-zoo-tt-i" type="text" id="userEmail" name="userEmail" style="width:100%" maxlength="60"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="userStartDate" class="col-form-label table-zoo-tt-la">有效起日</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <div class="col input-group date" id="#reservationdate" data-target-input="nearest">
+                                                    <input type="text" style="margin-left: 7px;" class="form-control datetimepicker-input" data-target="#userStartDate" id="userStartDate"
+                                                           name="userStartDate"/>
+                                                    <div class="input-group-append" data-target="#userStartDate" data-toggle="datetimepicker">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="userEndDate" class="col-form-label table-zoo-tt-la">有效迄日</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <div class="col input-group date" id="sendDate" data-target-input="nearest">
+                                                    <input type="text" style="margin-left: 7px;" class="form-control datetimepicker-input" data-target="#userEndDate" id="userEndDate"
+                                                           name="userEndDate"/>
+                                                    <div class="input-group-append" data-target="#userEndDate" data-toggle="datetimepicker">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table-zoo-tt" id="role">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s" id="roleID"></span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="height: 600px;">
+                                <form id="roleForm">
+                                    <table class="table-zoo-tt-tt">
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-primary" onclick="deleteClick()" id="roleDeleteClick">刪除</button>
+                                                <button type="button" class="btn btn-sm btn-primary" id="roleConfirmClick">確認</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="roleNo" class="col-form-label table-zoo-tt-la">角色編號</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <input class="form-control table-zoo-tt-i" type="text" id="roleNo" name="roleNo" maxlength="20"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="roleName" class="col-form-label table-zoo-tt-la">角色名稱</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <input class="form-control table-zoo-tt-i" type="text" id="roleName" name="roleName" style="width:100%" maxlength="30"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="roleStartDate" class="col-form-label table-zoo-tt-la">有效起日</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <div class="col input-group date" data-target-input="nearest">
+                                                    <input type="text" style="margin-left: 7px;" class="form-control datetimepicker-input" data-target="#roleStartDate" id="roleStartDate"
+                                                           name="roleStartDate" th:data-defaultEffectDate="${defaultEffectDate}"/>
+                                                    <div class="input-group-append" data-target="#groupStartDate" data-toggle="datetimepicker">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="condition-label table-zoo-tt-tr">
+                                                <label for="roleEndDate" class="col-form-label table-zoo-tt-la">有效迄日</label>
+                                            </td>
+                                            <td class="condition-input">
+                                                <div class="col input-group date" data-target-input="nearest">
+                                                    <input type="text" style="margin-left: 7px;" class="form-control datetimepicker-input" data-target="#roleEndDate" id="roleEndDate"
+                                                           name="roleEndDate" th:data-defaultExpiredDate="${defaultExpiredDate}"/>
+                                                    <div class="input-group-append" data-target="#roleEndDate" data-toggle="datetimepicker">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-dialog">
+    <div th:replace="~{layout/confirm :: cmnConfirm(id=myConfirm,body=~{::section-confirm},size=xl)}">
+        <section-confirm>
+            <div id="UI080040">
+                <table style="width: 900px;height: 530px;border:1px solid #95B8E7; border-collapse:collapse;margin-left: 10%;">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s">使用者清單(目前角色: <span>{{title.name}}</span>)</span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" style="padding-left: 5%">
+                            <div style="width:807px;">
+                                <table style="width:100%; background-color: #F1F1F1" class="tableAlert">
+                                    <tr>
+                                        <td style="width:27px;">
+                                            <input type="checkbox" @click="checkAll" v-model="checked">
+                                        </td>
+                                        <td style="width:150px;" onclick="clickSort(this,'pNo')" class="default">
+                                            <span>帳號</span>
+                                            <img th:src="@{/images/sort/sort-default.png}" alt="">
+                                        </td>
+                                        <td style="width:282px;" onclick="clickSort(this,'name')" class="default">
+                                            <span>使用者姓名</span>
+                                            <img th:src="@{/images/sort/sort-default.png}" alt="">
+                                        </td>
+                                        <td style="width:162px;" onclick="clickSort(this,'startDate')" class="default">
+                                            <span>有效日期起</span>
+                                            <img th:src="@{/images/sort/sort-default.png}" alt="">
+                                        </td>
+                                        <td style="width:162px;" onclick="clickSort(this,'endDate')" class="default">
+                                            <span>有效日期訖</span>
+                                            <img th:src="@{/images/sort/sort-default.png}" alt="">
+                                        </td>
+                                        <td style="width:17px;" class="lastCol"></td>
+                                    </tr>
+                                    <tr class="lastrow">
+                                        <td style="width:27px; "></td>
+                                        <td style="width:150px;">
+                                            <input type="text" style="width:142px;height: 20px" id="pNo" oninput="fuzzyScreen()">
+                                        </td>
+                                        <td style="width:282px;">
+                                            <input type="text" style="width:274px;height: 20px" id="name" oninput="fuzzyScreen()">
+                                        </td>
+                                        <td style="width:162px;">
+                                            <input type="text" style="width:154px;height: 20px" id="startDate" oninput="fuzzyScreen()">
+                                        </td>
+                                        <td style="width:162px;">
+                                            <input type="text" style="width:154px;height: 20px" id="endDate" oninput="fuzzyScreen()">
+                                        </td>
+                                        <td style="width:17px;" class="lastCol"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="width:807px;height: 400px;overflow-y: auto;">
+                                <table style="width:790px;" class="tableAlert">
+                                    <tr v-for="(item, i) in list2" :class="'tr-color-' + i % 2">
+                                        <td style="width:27px;">
+                                            <input type="checkbox" v-model="checkModel" :value="item.id">
+                                        </td>
+                                        <td style="width:150px;">
+                                            {{item.pNo}}
+                                        </td>
+                                        <td style="width:282px;">
+                                            {{item.name}}
+                                        </td>
+                                        <td style="width:162px;">
+                                            {{item.startDate}}
+                                        </td>
+                                        <td style="width:162px;" class="lastCol">
+                                            {{item.endDate}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <script type="text/javascript" th:src="@{/js/common/UI080040.vue.js}"></script>
+        </section-confirm>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI080040.js}"></script>
+</div>
+</body>
+</html>

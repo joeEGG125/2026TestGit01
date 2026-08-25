@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.RmoutExtMapper">
+	<resultMap id="BaseResultMapExt" type="com.syscom.fep.mybatis.ext.model.RmoutExt">
+		<constructor>
+			<idArg column="RMOUT_TXDATE" javaType="java.lang.String" jdbcType="CHAR" />
+			<idArg column="RMOUT_BRNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<idArg column="RMOUT_ORIGINAL" javaType="java.lang.String" jdbcType="CHAR" />
+			<idArg column="RMOUT_FEPNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_FEPSUBNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_BATCHNO" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_BRSNO" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_REMTYPE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_TXAMT" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+			<arg column="RMOUT_POSTAMT" javaType="java.lang.Integer" jdbcType="DECIMAL" />
+			<arg column="RMOUT_RECFEE" javaType="java.lang.Integer" jdbcType="DECIMAL" />
+			<arg column="RMOUT_ACTFEE" javaType="java.lang.Integer" jdbcType="DECIMAL" />
+			<arg column="RMOUT_AMT_TYPE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_SERVAMT_TYPE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_CATEGORY" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_SENDER_BANK" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_RECEIVER_BANK" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_STAN_BKNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_STAN" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_FISCSNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_RMSNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_STAT" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_T24_NO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_OWPRIORITY" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_REGDATE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_REGTIME" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_APDATE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_APTIME" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_CANCELDATE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_CANCELTIME" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_ORDERDATE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_SENDDATE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_SENDTIME" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_ORGRMSNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_ORGDATE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_ORGREG_FEPNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_ORG_STAT" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_BACK_REASON" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_FISC_RTN_CODE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_OUT_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_IN_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_MEMO" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_IN_ORG_ACC_ID_NO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_IN_ACC_ID_NO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_SUPNO1" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_SUPNO2" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_REG_TLRNO" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_FISC_SND_CODE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_CBS_RC" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_PENDING" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_EJNO1" javaType="java.lang.Integer" jdbcType="INTEGER" />
+			<arg column="RMOUT_EJNO2" javaType="java.lang.Integer" jdbcType="INTEGER" />
+			<arg column="RMOUT_EJNO3" javaType="java.lang.Integer" jdbcType="INTEGER" />
+			<arg column="RMOUT_RECBRNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_MACNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_REMCIF" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_REMTEL" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_TAXNO" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_ORGREMTYPE" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_CIF" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_GL_UNIT1" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_GL_UNIT2" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_GL_UNIT1A" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="RMOUT_GL_UNIT2A" javaType="java.lang.String" jdbcType="CHAR" />
+			<arg column="UPDATE_USERID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+			<arg column="UPDATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+			<arg column="RMOUT_REMAGENTID" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_REMAGENTNAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_REMITTERID" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="RMOUT_USE_BAL" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+			<arg column="tabSrc" javaType="java.lang.String" jdbcType="CHAR" />
+		</constructor>
+	</resultMap>
+	<select id="getRMOUTByCheckORGData" parameterType="com.syscom.fep.mybatis.model.Rmout" resultMap="com.syscom.fep.mybatis.mapper.RmoutMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		FROM RMOUT
+		WHERE RMOUT_TXDATE = #{rmoutTxdate,jdbcType=VARCHAR}
+		AND RMOUT_RMSNO = #{rmoutRmsno,jdbcType=CHAR}
+		AND RMOUT_SENDER_BANK = #{rmoutSenderBank,jdbcType=CHAR}
+		AND SUBSTRING(RMOUT_RECEIVER_BANK, 1, 3) = #{rmoutReceiverBank,jdbcType=CHAR}
+		AND RMOUT_STAT = #{rmoutStat,jdbcType=CHAR}
+		AND RMOUT_TXAMT = #{rmoutTxamt,jdbcType=DECIMAL} FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<select id="getSingleRMOUT" parameterType="com.syscom.fep.mybatis.model.Rmout" resultMap="com.syscom.fep.mybatis.mapper.RmoutMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		FROM RMOUT
+		<where>
+			<if test='rmoutTxdate != null and rmoutTxdate != " "'>
+				AND RMOUT_TXDATE = #{rmoutTxdate,jdbcType=VARCHAR}
+			</if>
+			<if test='rmoutBrno != null and rmoutBrno != " "'>
+				AND RMOUT_BRNO = #{rmoutBrno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutFiscsno != null and rmoutFiscsno != ''">
+				AND RMOUT_FISCSNO = #{rmoutFiscsno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutEjno1 != null">
+				AND RMOUT_EJNO1 = #{rmoutEjno1,jdbcType=INTEGER}
+			</if>
+			<if test="rmoutEjno2 != null">
+				AND RMOUT_EJNO2 = #{rmoutEjno2,jdbcType=INTEGER}
+			</if>
+			<if test="rmoutEjno3 != null">
+				AND RMOUT_EJNO3 = #{rmoutEjno3,jdbcType=INTEGER}
+			</if>
+			<if test="rmoutBrsno != null and rmoutBrsno != ''">
+				AND RMOUT_BRSNO = #{rmoutBrsno,jdbcType=VARCHAR}
+			</if>
+			<if test='rmoutFepno != null and rmoutFepno != " "'>
+				AND RMOUT_FEPNO = #{rmoutFepno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutBatchno != null and rmoutBatchno != ''">
+				AND RMOUT_BATCHNO = #{rmoutBatchno,jdbcType=VARCHAR}
+			</if>
+			<if test='rmoutOriginal != null and rmoutOriginal != " "'>
+				AND RMOUT_ORIGINAL = #{rmoutOriginal,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutOrgdate != null and rmoutOrgdate != ''">
+				AND RMOUT_ORGDATE = #{rmoutOrgdate,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutOrgregFepno != null and rmoutOrgregFepno != ''">
+				AND RMOUT_ORGREG_FEPNO = #{rmoutOrgregFepno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutOrgrmsno != null and rmoutOrgrmsno != ''">
+				AND RMOUT_ORGRMSNO = #{rmoutOrgrmsno,jdbcType=VARCHAR},
+			</if>
+			<if test="rmoutTxamt != null">
+				AND RMOUT_TXAMT = #{rmoutTxamt,jdbcType=DECIMAL}
+			</if>
+			<if test="rmoutStat != null and rmoutStat != ''">
+				AND RMOUT_STAT = #{rmoutStat,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutT24No != null and rmoutT24No != ''">
+				AND LTRIM(RTRIM(RMOUT_T24_NO)) = #{rmoutT24No,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutReceiverBank != null and rmoutReceiverBank != ''">
+				<choose>
+					<when test="rmoutReceiverBank.length == 3">
+						AND SUBSTR(RMOUT_RECEIVER_BANK,1,3) = #{rmoutReceiverBank,jdbcType=VARCHAR}
+					</when>
+					<otherwise>
+						AND RMOUT_RECEIVER_BANK = #{rmoutReceiverBank,jdbcType=VARCHAR}
+					</otherwise>
+				</choose>
+			</if>
+		</where>
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<select id="getRMOUTForCheckOutData" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.RmoutMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		FROM RMOUT
+		<where>
+			<if test="rmoutTxdate != null">
+				AND RMOUT_TXDATE = #{rmoutTxdate,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutSenderBank != null">
+				AND SUBSTR(RMOUT_SENDER_BANK,1,3) = #{rmoutSenderBank,jdbcType=CHAR}
+			</if>
+			<if test="rmoutFiscsno != null">
+				AND RMOUT_FISCSNO = #{rmoutFiscsno,jdbcType=CHAR}
+			</if>
+		</where>
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	<select id="getRmoutByDef" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.RmoutMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		FROM RMOUT
+		<where>
+			<if test='rmoutTxdate != null and rmoutTxdate != "" and rmoutTxdate != " "'>
+				AND RMOUT_TXDATE = #{rmoutTxdate,jdbcType=VARCHAR}
+			</if>
+			<if test='rmoutBrno != null and rmoutBrno != "" and rmoutBrno != " "'>
+				AND RMOUT_BRNO = #{rmoutBrno,jdbcType=CHAR}
+			</if>
+			<if test='rmoutFepno != null and rmoutFepno != "" and rmoutFepno != " "'>
+				AND RMOUT_FEPNO = #{rmoutFepno,jdbcType=VARCHAR}
+			</if>
+			<if test='rmoutOriginal != null and rmoutOriginal != "" and rmoutOriginal != " "'>
+				AND RMOUT_ORIGINAL = #{rmoutOriginal,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutBatchno != null and rmoutBatchno != ''">
+				AND RMOUT_BATCHNO = #{rmoutBatchno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutBrsno != null and rmoutBrsno != ''">
+				AND RMOUT_BRSNO = #{rmoutBrsno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutFiscsno != null and rmoutFiscsno != ''">
+				AND RMOUT_FISCSNO = #{rmoutFiscsno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutEjno1 != null and rmoutEjno1 != ''">
+				AND RMOUT_EJNO1 = #{rmoutEjno1,jdbcType=INTEGER}
+			</if>
+			<if test="rmoutEjno2 != null and rmoutEjno2 != ''">
+				AND RMOUT_EJNO2 = #{rmoutEjno2,jdbcType=INTEGER}
+			</if>
+			<if test="rmoutEjno3 != null and rmoutEjno3 != ''">
+				AND RMOUT_EJNO3 = #{rmoutEjno3,jdbcType=INTEGER}
+			</if>
+			<if test="rmoutInAccIdNo != null and rmoutInAccIdNo != ''">
+				AND RMOUT_IN_ACC_ID_NO = #{rmoutInAccIdNo,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutRemtype != null and rmoutRemtype != ''">
+				AND RMOUT_REMTYPE = #{rmoutRemtype,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutFiscsno != null and rmoutFiscsno != ''">
+				AND TO_NUMBER(RMOUT_FISCSNO,'9999999')= TO_NUMBER(RMOUT_FISCSNO,'9999999')
+			</if>
+			<if test="rmoutRmsno != null and rmoutRmsno != ''">
+				AND TO_NUMBER(rmoutRmsno,'9999999')= TO_NUMBER(#{rmoutRmsno,jdbcType=VARCHAR},'9999999')
+			</if>
+			<if test="rmoutStat != null and rmoutStat != ''">
+				AND RMOUT_STAT = #{rmoutStat,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutSenderBank != null and rmoutSenderBank != ''">
+				AND RMOUT_SENDER_BANK = #{rmoutSenderBank,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutReceiverBank != null and rmoutReceiverBank != ''">
+				AND RMOUT_RECEIVER_BANK = #{rmoutReceiverBank,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutStan != null and rmoutStan != ''">
+				AND RMOUT_STAN = #{rmoutStan,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutStanBkno != null and rmoutStanBkno != ''">
+				AND RMOUT_STAN_BKNO = #{rmoutStanBkno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmoutFiscRtnCode != null and rmoutFiscRtnCode != ''">
+				AND RMOUT_FISC_RTN_CODE = #{rmoutFiscRtnCode,jdbcType=VARCHAR}
+			</if>
+			<!--Fly 2019/05/09 For 跨行餘額內控 增加匯出優先順序 -->
+			<if test="rmoutOwpriority != null and rmoutOwpriority != ''">
+				AND RMOUT_OWPRIORITY = #{rmoutOwpriority,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getRMOUTUnionRMOUTEByDef" parameterType="map" resultMap="com.syscom.fep.mybatis.ext.mapper.RmoutExtMapper.BaseResultMapExt">
+		SELECT * FROM (
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		,1 as tabSrc
+		FROM RMOUT
+		<where>
+			<if test="rmout.rmoutTxdate != null and rmout.rmoutTxdate != ''">
+				AND RMOUT_TXDATE = #{rmout.rmoutTxdate,jdbcType=VARCHAR}
+			</if>
+			<if test='rmout.rmoutBrno != null and rmout.rmoutBrno != " "'>
+				AND RMOUT_BRNO = #{rmout.rmoutBrno,jdbcType=VARCHAR}
+			</if>
+			<if test='rmout.rmoutFepno != null and rmout.rmoutFepno != " "'>
+				AND RMOUT_FEPNO = #{rmout.rmoutFepno,jdbcType=VARCHAR}
+			</if>
+			<if test='rmout.rmoutOriginal != null and rmout.rmoutOriginal != " "'>
+				AND RMOUT_ORIGINAL = #{rmout.rmoutOriginal,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutBatchno != null and rmout.rmoutBatchno != ''">
+				AND RMOUT_BATCHNO = #{rmout.rmoutBatchno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutBrsno != null and rmout.rmoutBrsno != ''">
+				AND RMOUT_BRSNO = #{rmout.rmoutBrsno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutFiscsno != null and rmout.rmoutFiscsno != ''">
+				AND RMOUT_FISCSNO = #{rmout.rmoutFiscsno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutEjno1 != null and rmout.rmoutEjno1 != ''">
+				AND (RMOUT_EJNO1 = #{rmout.rmoutEjno1,jdbcType=INTEGER} OR RMOUT_EJNO2 =
+				#{rmout.rmoutEjno1,jdbcType=INTEGER} OR RMOUT_EJNO3 = #{rmout.rmoutEjno1,jdbcType=INTEGER})
+			</if>
+			<if test="rmout.rmoutInAccIdNo != null and rmout.rmoutInAccIdNo != ''">
+				AND RMOUT_IN_ACC_ID_NO = #{rmout.rmoutInAccIdNo,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutRemtype != null and rmout.rmoutRemtype != ''">
+				AND RMOUT_REMTYPE = #{rmout.rmoutRemtype,jdbcType=CHAR}
+			</if>
+			<!-- <if test="rmout.rmoutFiscsno != null and rmout.rmoutFiscsno != ''"> -->
+			<!-- AND TONUMBER(RMOUT_FISCSNO) = #{rmout.rmoutFiscsno,jdbcType=CHAR} -->
+			<!-- </if> -->
+			<if test="rmout.rmoutRmsno != null and rmout.rmoutRmsno != ''">
+				AND RMOUT_RMSNO = #{rmout.rmoutRmsno,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutStat != null and rmout.rmoutStat != ''">
+				AND RMOUT_STAT = #{rmout.rmoutStat,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutReceiverBank != null and rmout.rmoutReceiverBank !=''">
+				<if test="rmout.rmoutReceiverBank.length() == 3">
+					AND SUBSTR(RMOUT_RECEIVER_BANK,1,3)= #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+				<if test="rmout.rmoutReceiverBank.length() == 6">
+					AND SUBSTR(RMOUT_RECEIVER_BANK,1,6)= #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+				<if test="rmout.rmoutReceiverBank.length() == 7">
+					AND RMOUT_RECEIVER_BANK= #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+			</if>
+			<if test="rmout.rmoutSenderBank != null and rmout.rmoutSenderBank !=''">
+				<if test="rmout.rmoutSenderBank.length() == 3">
+					AND SUBSTR(RMOUT_SENDER_BANK,1,3) = #{rmout.rmoutSenderBank,jdbcType=VARCHAR}
+				</if>
+				<if test="rmout.rmoutSenderBank.length() == 6">
+					AND SUBSTR(RMOUT_SENDER_BANK,1,6) = #{rmout.rmoutSenderBank,jdbcType=VARCHAR}
+				</if>
+				<if test="rmout.rmoutSenderBank.length() == 7">
+					AND RMOUT_SENDER_BANK = #{rmout.rmoutSenderBank,jdbcType=VARCHAR}
+				</if>
+			</if>
+			<if test="rmout.rmoutStan != null and rmout.rmoutStan != ''">
+				AND RMOUT_STAN = #{rmout.rmoutStan,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutStanBkno != null and rmout.rmoutStanBkno != ''">
+				AND RMOUT_STAN_BKNO = #{rmout.rmoutStanBkno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutOwpriority != null and rmout.rmoutOwpriority != ''">
+				AND RMOUT_OWPRIORITY = #{rmout.rmoutOwpriority,jdbcType=VARCHAR}
+			</if>
+		</where>
+
+		UNION ALL
+
+		SELECT
+
+		RMOUTE_TXDATE AS RMOUT_TXDATE ,
+		RMOUTE_BRNO AS RMOUT_BRNO ,
+		RMOUTE_ORIGINAL AS RMOUT_ORIGINAL ,
+		RMOUTE_FEPNO AS RMOUT_FEPNO ,
+		RMOUTE_FEPSUBNO AS RMOUT_FEPSUBNO ,
+		RMOUTE_BATCHNO AS RMOUT_BATCHNO ,
+		RMOUTE_BRSNO AS RMOUT_BRSNO ,
+		RMOUTE_REMTYPE AS RMOUT_REMTYPE ,
+		RMOUTE_TXAMT AS RMOUT_TXAMT ,
+		RMOUTE_POSTAMT AS RMOUT_POSTAMT ,
+		RMOUTE_RECFEE AS RMOUT_RECFEE ,
+		RMOUTE_ACTFEE AS RMOUT_ACTFEE ,
+		RMOUTE_AMT_TYPE AS RMOUT_AMT_TYPE ,
+		RMOUTE_SERVAMT_TYPE AS RMOUT_SERVAMT_TYPE ,
+		RMOUTE_CATEGORY AS RMOUT_CATEGORY ,
+		RMOUTE_SENDER_BANK AS RMOUT_SENDER_BANK ,
+		RMOUTE_RECEIVER_BANK AS RMOUT_RECEIVER_BANK,
+		RMOUTE_STAN_BKNO AS RMOUT_STAN_BKNO ,
+		RMOUTE_STAN AS RMOUT_STAN ,
+		RMOUTE_FISCSNO AS RMOUT_FISCSNO ,
+		RMOUTE_RMSNO AS RMOUT_RMSNO ,
+		RMOUTE_STAT AS RMOUT_STAT ,
+		RMOUTE_T24_NO AS RMOUT_T24_NO ,
+		RMOUTE_OWPRIORITY AS RMOUT_OWPRIORITY ,
+		RMOUTE_REGDATE AS RMOUT_REGDATE ,
+		RMOUTE_REGTIME AS RMOUT_REGTIME ,
+		RMOUTE_APDATE AS RMOUT_APDATE ,
+		RMOUTE_APTIME AS RMOUT_APTIME ,
+		RMOUTE_CANCELDATE AS RMOUT_CANCELDATE ,
+		RMOUTE_CANCELTIME AS RMOUT_CANCELTIME ,
+		RMOUTE_ORDERDATE AS RMOUT_ORDERDATE ,
+		RMOUTE_SENDDATE AS RMOUT_SENDDATE ,
+		RMOUTE_SENDTIME AS RMOUT_SENDTIME ,
+		RMOUTE_ORGRMSNO AS RMOUT_ORGRMSNO ,
+		RMOUTE_ORGDATE AS RMOUT_ORGDATE ,
+		RMOUTE_ORGREG_FEPNO AS RMOUT_ORGREG_FEPNO ,
+		RMOUTE_ORG_STAT AS RMOUT_ORG_STAT ,
+		RMOUTE_BACK_REASON AS RMOUT_BACK_REASON ,
+		RMOUTE_FISC_RTN_CODE AS RMOUT_FISC_RTN_CODE,
+		RMOUTE_OUT_NAME AS RMOUT_OUT_NAME ,
+		RMOUTE_IN_NAME AS RMOUT_IN_NAME ,
+		RMOUTE_MEMO AS RMOUT_MEMO ,
+		RMOUTE_IN_ORG_ACC_ID_NO AS RMOUT_IN_ORG_ACC_ID_NO,
+		RMOUTE_IN_ACC_ID_NO AS RMOUT_IN_ACC_ID_NO ,
+		RMOUTE_SUPNO1 AS RMOUT_SUPNO1 ,
+		RMOUTE_SUPNO2 AS RMOUT_SUPNO2 ,
+		RMOUTE_REG_TLRNO AS RMOUT_REG_TLRNO ,
+		RMOUTE_FISC_SND_CODE AS RMOUT_FISC_SND_CODE,
+		RMOUTE_CBS_RC AS RMOUT_CBS_RC ,
+		RMOUTE_PENDING AS RMOUT_PENDING ,
+		RMOUTE_EJNO1 AS RMOUT_EJNO1 ,
+		RMOUTE_EJNO2 AS RMOUT_EJNO2 ,
+		RMOUTE_EJNO3 AS RMOUT_EJNO3 ,
+		RMOUTE_RECBRNO AS RMOUT_RECBRNO ,
+		RMOUTE_MACNO AS RMOUT_MACNO ,
+		RMOUTE_REMCIF AS RMOUT_REMCIF ,
+		RMOUTE_REMTEL AS RMOUT_REMTEL ,
+		RMOUTE_TAXNO AS RMOUT_TAXNO ,
+		RMOUTE_ORGREMTYPE AS RMOUT_ORGREMTYPE ,
+		RMOUTE_CIF AS RMOUT_CIF ,
+		RMOUTE_GL_UNIT1 AS RMOUT_GL_UNIT1 ,
+		RMOUTE_GL_UNIT2 AS RMOUT_GL_UNIT2 ,
+		RMOUTE_GL_UNIT1A AS RMOUT_GL_UNIT1A ,
+		RMOUTE_GL_UNIT2A AS RMOUT_GL_UNIT2A ,
+		UPDATE_USERID AS UPDAT_USERID ,
+		UPDATE_TIME AS UPDAT_TIME ,
+		RMOUTE_REMAGENTID AS RMOUT_REMAGENTID ,
+		RMOUTE_REMAGENTNAME AS RMOUT_REMAGENTNAME ,
+		RMOUTE_REMITTERID AS RMOUT_REMITTERID ,
+		RMOUTE_USE_BAL AS RMOUT_USE_BAL,
+		2 as tabSrc
+
+		<!-- RMOUTE_TXDATE as RMOUT_TXDATE,RMOUTE_BRNO as RMOUT_BRNO ,RMOUTE_ORIGINAL as RMOUT_ORIGINAL,RMOUTE_FEPNO as RMOUT_FEPNO,RMOUTE_FEPSUBNO as RMOUT_FEPSUBNO,RMOUTE_FISC_SND_CODE as RMOUT_FISC_SND_CODE -->
+		<!-- , RMOUTE_REMTYPE AS RMOUT_REMTYPE , RMOUTE_TXAMT AS RMOUT_AMT, RMOUTE_SENDER_BANK AS RMOUT_SENDER_BANK -->
+		<!-- , RMOUTE_RECEIVER_BANK AS RMOUT_RECEIVER_BANK, RMOUTE_STAN_BKNO AS RMOUT_STAN_BKNO, RMOUTE_STAN AS RMOUT_STAN -->
+		<!-- , RMOUTE_FISCSNO AS RMOUT_FISCSNO , RMOUTE_RMSNO AS RMOUT_RMSNO , RMOUTE_STAT AS RMOUT_RMSTAT -->
+		<!-- , RMOUTE_FISC_RTN_CODE AS RMOUT_FISC_RTN_CODE, RMOUTE_IN_ACC_ID_NO AS RMOUT_IN_ACC_ID_NO, RMOUTE_EJNO1 AS RMOUT_EJNO1, RMOUTE_EJNO2 AS RMOUT_EJNO2, RMOUTE_EJNO3 AS RMOUT_EJNO3 -->
+		FROM RMOUTE
+		<where>
+			<if test="rmout.rmoutTxdate != null and rmout.rmoutTxdate != ''">
+				AND RMOUTE_TXDATE = #{rmout.rmoutTxdate,jdbcType=VARCHAR}
+			</if>
+			<if test='rmout.rmoutBrno != null and rmout.rmoutBrno != " "'>
+				AND RMOUTE_BRNO = #{rmout.rmoutBrno,jdbcType=VARCHAR}
+			</if>
+			<if test='rmout.rmoutFepno != null and rmout.rmoutFepno != " "'>
+				AND RMOUTE_FEPNO = #{rmout.rmoutFepno,jdbcType=VARCHAR}
+			</if>
+			<if test='rmout.rmoutOriginal != null and rmout.rmoutOriginal != " "'>
+				AND RMOUTE_ORIGINAL = #{rmout.rmoutOriginal,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutBatchno != null and rmout.rmoutBatchno != ''">
+				AND RMOUTE_BATCHNO = #{rmout.rmoutBatchno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutBrsno != null and rmout.rmoutBrsno != ''">
+				AND RMOUTE_BRSNO = #{rmout.rmoutBrsno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutFiscsno != null and rmout.rmoutFiscsno != ''">
+				AND RMOUTE_FISCSNO = #{rmout.rmoutFiscsno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutEjno1 != null and rmout.rmoutEjno1 != ''">
+				AND (RMOUTE_EJNO1 = #{rmout.moutEjno1,jdbcType=INTEGER} OR RMOUTE_EJNO2 =
+				#{rmout.rmoutEjno1,jdbcType=INTEGER} OR RMOUTE_EJNO3 = #{rmout.rmoutEjno1,jdbcType=INTEGER})
+			</if>
+			<if test="rmout.rmoutInAccIdNo != null and rmout.rmoutInAccIdNo != ''">
+				AND RMOUTE_IN_ACC_ID_NO = #{rmout.rmoutInAccIdNo,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutRemtype != null and rmout.rmoutRemtype != ''">
+				AND RMOUTE_REMTYPE = #{rmout.rmoutRemtype,jdbcType=CHAR}
+			</if>
+			<!-- <if test="rmout.rmoutFiscsno != null and rmout.rmoutFiscsno != ''"> -->
+			<!-- AND TONUMBER(RMOUTE_FISCSNO) = #{rmout.rmoutFiscsno,jdbcType=CHAR} -->
+			<!-- </if> -->
+			<if test="rmout.rmoutRmsno != null and rmout.rmoutRmsno != ''">
+				AND RMOUTE_RMSNO = #{rmout.rmoutRmsno,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutStat != null and rmout.rmoutStat != ''">
+				AND RMOUTE_STAT = #{rmout.rmoutStat,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutReceiverBank != null and rmout.rmoutReceiverBank !=''">
+				<if test="rmout.rmoutReceiverBank.length() == 3">
+					AND SUBSTR(RMOUTE_RECEIVER_BANK,1,3)= #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+				<if test="rmout.rmoutReceiverBank.length() == 6">
+					AND SUBSTR(RMOUTE_RECEIVER_BANK,1,6)= #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+				<if test="rmout.rmoutReceiverBank.length() == 7">
+					AND RMOUTE_RECEIVER_BANK= #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+			</if>
+			<if test="rmout.rmoutSenderBank != null and rmout.rmoutSenderBank !=''">
+				<if test="rmout.rmoutSenderBank.length() == 3">
+					AND SUBSTR(RMOUTE_SENDER_BANK,1,3) = #{rmout.rmoutSenderBank,jdbcType=VARCHAR}
+				</if>
+				<if test="rmout.rmoutSenderBank.length() == 6">
+					AND SUBSTR(RMOUTE_SENDER_BANK,1,6) = #{rmout.rmoutSenderBank,jdbcType=VARCHAR}
+				</if>
+				<if test="rmout.rmoutSenderBank.length() == 7">
+					AND RMOUTE_SENDER_BANK = #{rmout.rmoutSenderBank,jdbcType=VARCHAR}
+				</if>
+			</if>
+			<if test="rmout.rmoutStan != null and rmout.rmoutStan != ''">
+				AND RMOUTE_STAN = #{rmout.rmoutStan,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutStanBkno != null and rmout.rmoutStanBkno != ''">
+				AND RMOUTE_STAN_BKNO = #{rmout.rmoutStanBkno,jdbcType=VARCHAR}
+			</if>
+			<if test="rmout.rmoutOwpriority != null and rmout.rmoutOwpriority != ''">
+				AND RMOUTE_OWPRIORITY = #{rmout.rmoutOwpriority,jdbcType=VARCHAR}
+			</if>
+		</where>
+		) A
+		ORDER BY
+		<choose>
+			<when test="isOrderByFISCSNO">
+				RMOUT_FISCSNO,RMOUT_STAN
+			</when>
+			<otherwise>
+				SUBSTR(RMOUT_RECEIVER_BANK,1,3),RMOUT_RMSNO,RMOUT_STAN
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="queryByPrimaryKeyWithUpdLock" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.RmoutMapper.BaseResultMap">
+
+		<!--
+			WARNING - @mbg.generated
+			This element is automatically generated by MyBatis Generator, do not modify.
+		-->
+		select
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		from RMOUT
+		where RMOUT_TXDATE = #{rmoutTxdate,jdbcType=CHAR}
+		and RMOUT_BRNO = #{rmoutBrno,jdbcType=CHAR}
+		and RMOUT_ORIGINAL = #{rmoutOriginal,jdbcType=CHAR}
+		and RMOUT_FEPNO = #{rmoutFepno,jdbcType=CHAR}
+		FOR UPDATE
+	</select>
+	<select id="getRmoutSummaryCnt" parameterType="map" resultType="java.util.HashMap">
+		select COUNT(*) as CNT, RMOUT_ORIGINAL
+		From RMOUT
+		where RMOUT_TXDATE = #{rmoutTxdate,jdbcType=CHAR}
+		AND RMOUT_FISC_RTN_CODE = #{code,jdbcType=CHAR}
+		GROUP BY RMOUT_ORIGINAL
+	</select>
+	<select id="get1172SummaryCnt" parameterType="map" resultType="java.util.HashMap">
+		Select COUNT(*) as CNT, RMOUT_ORIGINAL
+		From RMIN INNER JOIN RMOUT ON RMOUT.RMOUT_TXDATE = RMIN.RMIN_ORGDATE
+		AND RMOUT.RMOUT_RMSNO = RMIN.RMIN_ORGRMSNO
+		AND "SUBSTR"(RMIN.RMIN_SENDER_BANK, 1, 3) = "SUBSTR"(RMOUT.RMOUT_RECEIVER_BANK, 1, 3)
+		where RMIN.RMIN_TXDATE = #{txdate,jdbcType=CHAR}
+		AND RMIN.RMIN_FISC_SND_CODE = #{sndCode,jdbcType=CHAR}
+		AND RMOUT.RMOUT_STAT = #{stat,jdbcType=CHAR}
+		AND RMIN.RMIN_FISC_RTN_CODE = #{rtnCode,jdbcType=CHAR}
+		GROUP BY RMOUT.RMOUT_ORIGINAL
+	</select>
+	<select id="getAutoBackSummaryCnt" parameterType="map" resultType="java.util.HashMap">
+		select COUNT(*) as CNT, RMOUT_ORIGINAL
+		from RMIN INNER JOIN RMOUT ON RMOUT.RMOUT_TXDATE = RMIN.RMIN_ORGDATE
+		AND RMOUT.RMOUT_RMSNO = RMIN.RMIN_ORGRMSNO AND
+		SUBSTR(RMIN.RMIN_SENDER_BANK, 1, 3) = SUBSTR(RMOUT.RMOUT_RECEIVER_BANK, 1, 3)
+		where RMIN.RMIN_TXDATE = #{txdate,jdbcType=CHAR}
+		AND RMIN.RMIN_FISC_SND_CODE = #{sndCode,jdbcType=CHAR}
+		AND RMOUT.RMOUT_STAT = #{stat,jdbcType=CHAR}
+		AND RMIN.RMIN_FISC_RTN_CODE = #{rtnCode,jdbcType=CHAR}
+		GROUP BY RMOUT.RMOUT_ORIGINAL
+	</select>
+	<select id="getAutoBackBank" parameterType="map" resultType="java.util.HashMap">
+		Select ALLBANK_BKNO from ALLBANK
+		WHERE ALLBANK_RMFORWARD= '1' AND ALLBANK_BRNO = '000'
+	</select>
+	<select id="getTopRMOUTByApdateSenderBank" parameterType="map" resultType="java.util.HashMap">
+		select
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		from RMOUT where
+		RMOUT_SENDDATE = #{sendDate,jdbcType=CHAR}
+		AND SUBSTR(RMOUT_SENDER_BANK,1,3)= #{senderBank,jdbcType=CHAR}
+		ORDER BY RMOUT_SENDTIME DESC,RMOUT_FEPNO DESC,RMOUT_BRNO DESC,
+		RMOUT_ORIGINAL DESC,RMOUT_FISCSNO DESC
+		FETCH FIRST #{topNumber,jdbcType=CHAR} ROWS ONLY
+	</select>
+	<select id="getTopRMOUTByApdateSenderBank1" parameterType="map" resultType="java.util.HashMap">
+		select
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		from RMOUT where
+		RMOUT_SENDDATE = #{sendDate,jdbcType=CHAR}
+		AND SUBSTR(RMOUT_SENDER_BANK,1,3)= #{senderBank,jdbcType=CHAR}
+		ORDER BY RMOUT_SENDTIME DESC,RMOUT_FEPNO DESC,RMOUT_BRNO DESC,
+		RMOUT_ORIGINAL DESC,RMOUT_FISCSNO DESC,RMOUT_SENDTIME DESC,RMOUT_FISCSNO DESC
+		FETCH FIRST #{topNumber,jdbcType=CHAR} ROWS ONLY
+	</select>
+	<update id="updateByPrimaryKeyWithStat">
+		<!--
+			WARNING - @mbg.generated
+			This element is automatically generated by MyBatis Generator, do not modify.
+		-->
+		update RMOUT
+		<set>
+			<if test="rmout.rmoutFepsubno != null">
+				RMOUT_FEPSUBNO = #{rmout.rmoutFepsubno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutBatchno != null">
+				RMOUT_BATCHNO = #{rmout.rmoutBatchno,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutBrsno != null">
+				RMOUT_BRSNO = #{rmout.rmoutBrsno,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutRemtype != null">
+				RMOUT_REMTYPE = #{rmout.rmoutRemtype,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutTxamt != null">
+				RMOUT_TXAMT = #{rmout.rmoutTxamt,jdbcType=DECIMAL},
+			</if>
+			<if test="rmout.rmoutPostamt != null">
+				RMOUT_POSTAMT = #{rmout.rmoutPostamt,jdbcType=DECIMAL},
+			</if>
+			<if test="rmout.rmoutRecfee != null">
+				RMOUT_RECFEE = #{rmout.rmoutRecfee,jdbcType=DECIMAL},
+			</if>
+			<if test="rmout.rmoutActfee != null">
+				RMOUT_ACTFEE = #{rmout.rmoutActfee,jdbcType=DECIMAL},
+			</if>
+			<if test="rmout.rmoutAmtType != null">
+				RMOUT_AMT_TYPE = #{rmout.rmoutAmtType,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutServamtType != null">
+				RMOUT_SERVAMT_TYPE = #{rmout.rmoutServamtType,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutCategory != null">
+				RMOUT_CATEGORY = #{rmout.rmoutCategory,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutSenderBank != null">
+				RMOUT_SENDER_BANK = #{rmout.rmoutSenderBank,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutReceiverBank != null">
+				RMOUT_RECEIVER_BANK = #{rmout.rmoutReceiverBank,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutStanBkno != null">
+				RMOUT_STAN_BKNO = #{rmout.rmoutStanBkno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutStan != null">
+				RMOUT_STAN = #{rmout.rmoutStan,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutFiscsno != null">
+				RMOUT_FISCSNO = #{rmout.rmoutFiscsno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutRmsno != null">
+				RMOUT_RMSNO = #{rmout.rmoutRmsno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutStat != null">
+				RMOUT_STAT = #{rmout.rmoutStat,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutT24No != null">
+				RMOUT_T24_NO = #{rmout.rmoutT24No,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOwpriority != null">
+				RMOUT_OWPRIORITY = #{rmout.rmoutOwpriority,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutRegdate != null">
+				RMOUT_REGDATE = #{rmout.rmoutRegdate,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutRegtime != null">
+				RMOUT_REGTIME = #{rmout.rmoutRegtime,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutApdate != null">
+				RMOUT_APDATE = #{rmout.rmoutApdate,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutAptime != null">
+				RMOUT_APTIME = #{rmout.rmoutAptime,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutCanceldate != null">
+				RMOUT_CANCELDATE = #{rmout.rmoutCanceldate,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutCanceltime != null">
+				RMOUT_CANCELTIME = #{rmout.rmoutCanceltime,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOrderdate != null">
+				RMOUT_ORDERDATE = #{rmout.rmoutOrderdate,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutSenddate != null">
+				RMOUT_SENDDATE = #{rmout.rmoutSenddate,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutSendtime != null">
+				RMOUT_SENDTIME = #{rmout.rmoutSendtime,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOrgrmsno != null">
+				RMOUT_ORGRMSNO = #{rmout.rmoutOrgrmsno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOrgdate != null">
+				RMOUT_ORGDATE = #{rmout.rmoutOrgdate,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOrgregFepno != null">
+				RMOUT_ORGREG_FEPNO = #{rmout.rmoutOrgregFepno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOrgStat != null">
+				RMOUT_ORG_STAT = #{rmout.rmoutOrgStat,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutBackReason != null">
+				RMOUT_BACK_REASON = #{rmout.rmoutBackReason,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutFiscRtnCode != null">
+				RMOUT_FISC_RTN_CODE = #{rmout.rmoutFiscRtnCode,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOutName != null">
+				RMOUT_OUT_NAME = #{rmout.rmoutOutName,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutInName != null">
+				RMOUT_IN_NAME = #{rmout.rmoutInName,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutMemo != null">
+				RMOUT_MEMO = #{rmout.rmoutMemo,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutInOrgAccIdNo != null">
+				RMOUT_IN_ORG_ACC_ID_NO = #{rmout.rmoutInOrgAccIdNo,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutInAccIdNo != null">
+				RMOUT_IN_ACC_ID_NO = #{rmout.rmoutInAccIdNo,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutSupno1 != null">
+				RMOUT_SUPNO1 = #{rmout.rmoutSupno1,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutSupno2 != null">
+				RMOUT_SUPNO2 = #{rmout.rmoutSupno2,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutRegTlrno != null">
+				RMOUT_REG_TLRNO = #{rmout.rmoutRegTlrno,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutFiscSndCode != null">
+				RMOUT_FISC_SND_CODE = #{rmout.rmoutFiscSndCode,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutCbsRc != null">
+				RMOUT_CBS_RC = #{rmout.rmoutCbsRc,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutPending != null">
+				RMOUT_PENDING = #{rmout.rmoutPending,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutEjno1 != null">
+				RMOUT_EJNO1 = #{rmout.rmoutEjno1,jdbcType=INTEGER},
+			</if>
+			<if test="rmout.rmoutEjno2 != null">
+				RMOUT_EJNO2 = #{rmout.rmoutEjno2,jdbcType=INTEGER},
+			</if>
+			<if test="rmout.rmoutEjno3 != null">
+				RMOUT_EJNO3 = #{rmout.rmoutEjno3,jdbcType=INTEGER},
+			</if>
+			<if test="rmout.rmoutRecbrno != null">
+				RMOUT_RECBRNO = #{rmout.rmoutRecbrno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutMacno != null">
+				RMOUT_MACNO = #{rmout.rmoutMacno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutRemcif != null">
+				RMOUT_REMCIF = #{rmout.rmoutRemcif,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutRemtel != null">
+				RMOUT_REMTEL = #{rmout.rmoutRemtel,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutTaxno != null">
+				RMOUT_TAXNO = #{rmout.rmoutTaxno,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutOrgremtype != null">
+				RMOUT_ORGREMTYPE = #{rmout.rmoutOrgremtype,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutCif != null">
+				RMOUT_CIF = #{rmout.rmoutCif,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutGlUnit1 != null">
+				RMOUT_GL_UNIT1 = #{rmout.rmoutGlUnit1,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutGlUnit2 != null">
+				RMOUT_GL_UNIT2 = #{rmout.rmoutGlUnit2,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutGlUnit1a != null">
+				RMOUT_GL_UNIT1A = #{rmout.rmoutGlUnit1a,jdbcType=CHAR},
+			</if>
+			<if test="rmout.rmoutGlUnit2a != null">
+				RMOUT_GL_UNIT2A = #{rmout.rmoutGlUnit2a,jdbcType=CHAR},
+			</if>
+			<if test="rmout.updateUserid != null">
+				UPDATE_USERID = #{rmout.updateUserid,jdbcType=INTEGER},
+			</if>
+			<if test="rmout.updateTime != null">
+				UPDATE_TIME = #{rmout.updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="rmout.rmoutRemagentid != null">
+				RMOUT_REMAGENTID = #{rmout.rmoutRemagentid,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutRemagentname != null">
+				RMOUT_REMAGENTNAME = #{rmout.rmoutRemagentname,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutRemitterid != null">
+				RMOUT_REMITTERID = #{rmout.rmoutRemitterid,jdbcType=VARCHAR},
+			</if>
+			<if test="rmout.rmoutUseBal != null">
+				RMOUT_USE_BAL = #{rmout.rmoutUseBal,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where RMOUT_TXDATE = #{rmout.rmoutTxdate,jdbcType=CHAR}
+		and RMOUT_BRNO = #{rmout.rmoutBrno,jdbcType=CHAR}
+		and RMOUT_ORIGINAL = #{rmout.rmoutOriginal,jdbcType=CHAR}
+		and RMOUT_FEPNO = #{rmout.rmoutFepno,jdbcType=CHAR}
+		AND RMOUT_STAT IN
+		<foreach collection="stats" item="stat" index="index" open="(" close=")" separator=",">
+			#{stat}
+		</foreach>
+	</update>
+	<update id="updateRMOUTByFISCNO" parameterType="com.syscom.fep.mybatis.model.Rmout">
+		<!--
+			WARNING - @mbg.generated
+			This element is automatically generated by MyBatis Generator, do not modify.
+		-->
+		update RMOUT
+		SET
+		RMOUT_STAT = #{rmoutStat,jdbcType=CHAR},
+		RMOUT_FISC_RTN_CODE = #{rmoutFiscRtnCode,jdbcType=CHAR}
+		WHERE RMOUT_FISCSNO = #{rmoutFiscsno,jdbcType=CHAR}
+		AND RMOUT_TXDATE = #{rmoutTxdate,jdbcType=CHAR}
+		AND RMOUT_STAT = '05'
+	</update>
+
+	<select id="getRMOUTbyTXAMT" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.RmoutMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		FROM RMOUT
+		WHERE RMOUT_TXDATE = #{txDate,jdbcType=VARCHAR}
+		AND RMOUT_TXAMT &gt;= #{txAmt,jdbcType=DECIMAL}
+	</select>
+
+	<select id="getRMOUTbyReceiverBANK" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.RmoutMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.RmoutMapper.Base_Column_List" />
+		FROM RMOUT
+		WHERE RMOUT_TXDATE = #{txDate,jdbcType=VARCHAR}
+		<if test="receiverBANK != null and receiverBANK.length() == 3">
+			AND SUBSTR(RMOUT_RECEIVER_BANK,1,3) = #{receiverBANK,jdbcType=CHAR}
+		</if>
+		<if test="receiverBANK != null and receiverBANK.length() == 7">
+			AND RMOUT_RECEIVER_BANK = #{receiverBANK,jdbcType=CHAR}
+		</if>
+	</select>
+	<update id="updateRMOUTByDef">
+		<!--
+			WARNING - @mbg.generated
+			This element is automatically generated by MyBatis Generator, do not modify.
+		-->
+		update RMOUT
+		SET RMOUT_OWPRIORITY = #{owpriority,jdbcType=CHAR}
+		<where>
+			<if test='rmout.rmoutTxdate != null and rmout.rmoutTxdate != " "'>
+				AND RMOUT_TXDATE = #{rmout.rmoutTxdate,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutReceiverBank != null">
+				<if test="rmout.rmoutReceiverBank.length() == 3">
+					AND SUBSTR(RMOUT_RECEIVER_BANK,1,3) = #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+				<if test="rmout.rmoutReceiverBank.length() == 6">
+					AND SUBSTR(RMOUT_RECEIVER_BANK,1,6) = #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+				<if test="rmout.rmoutReceiverBank.length() == 7">
+					AND RMOUT_RECEIVER_BANK = #{rmout.rmoutReceiverBank,jdbcType=CHAR}
+				</if>
+			</if>
+			<if test="rmout.rmoutInAccIdNo != null">
+				AND RMOUT_IN_ACC_ID_NO = #{rmout.rmoutInAccIdNo,jdbcType=CHAR}
+			</if>
+			<if test="rmout.rmoutTxamt != null">
+				AND RMOUT_TXAMT = #{rmout.rmoutTxamt,jdbcType=DECIMAL}
+			</if>
+			<if test="rmout.rmoutOwpriority != null">
+				AND RMOUT_OWPRIORITY = #{rmout.rmoutOwpriority,jdbcType=CHAR}
+			</if>
+		</where>
+	</update>
+
+	<!-- 2021/12/03 wj Add -->
+	<select id="getRMOUTForUI028230" parameterType="map" resultType="java.util.HashMap">
+		SELECT *
+		FROM RMOUT
+		WHERE RMOUT_ORIGINAL IN ('2','4', '7')
+		<if test='txDate != null and txDate !=" "'>
+			AND RMOUT_TXDATE = #{txDate,jdbcType=VARCHAR}
+		</if>
+	</select>
+</mapper>

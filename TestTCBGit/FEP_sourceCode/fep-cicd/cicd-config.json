@@ -1,0 +1,70 @@
+{
+  // 建置來源目錄的基礎路徑
+  // 本地開發時使用絕對路徑，TFS Pipeline 使用 $(Build.SourcesDirectory)
+  "BuildSourceDir": "$(Build.SourcesDirectory)",
+  // 建置環境Config 
+  "ConfigHome": "$(Home.Config)",
+  // 建置環境shell 
+  "ShellHome": "$(Home.Shell)",
+  // cicd 相關腳本、Config
+  "CICDHome": "fep-cicd",
+  // ServerList for process_shell_config.ps1
+  "ServerList_shell_config": [
+    "FEPAP1P",
+    "FEPAP2P",
+    "FEPGW1P",
+    "FEPGW2P",
+    "FEPFISCGW1P",
+    "FEPFISCGW2P"
+  ],
+  // ServerList for process_cmdline_simple.ps1
+  "ServerList_cmdline": [
+    "FEPGW1P",
+    "FEPGW2P",
+    "FEPFISCGW1P",
+    "FEPFISCGW2P"
+  ],
+   // 目標路徑列表 - 要處理 CRLF 轉 LF 的資料夾
+  "TargetPaths": [
+    "$(Build.SourcesDirectory)\\OUTPUT"
+  ],
+  
+  // 要處理的檔案副檔名
+  // 可新增其他需要轉換的副檔名，例如: ".bash", ".ksh", ".properties"
+  "FileExtensions": [
+    ".sh"
+  ],
+  
+  // 檔案被鎖定時的最大重試次數
+  "MaxRetries": 5,
+  
+  // 重試之間的延遲時間（毫秒）
+  "RetryDelayMs": 1000,
+
+  // MFT 安裝目錄
+  "MFTDir": "$(Path.MFT)",
+
+  // MFT 上版包目標路徑
+  "MFTTargetDir": "$(Path.MFTTarget)",
+  
+  // FTP 伺服器 IP 位址
+  "FtpIPAddress": "$(Ftp.IPAddress)",
+  
+  // FTP 使用者名稱
+  "FtpUserName": "$(Ftp.UserName)",
+  
+  // FTP 密碼
+  "FtpPassword": "$(Ftp.Password)",
+  
+  // ServerList for Upload_to_MFT.ps1要上傳的伺服器列表
+  "ServerList_upload_to_MFT": [
+    "FEPAP1P",
+    "FEPAP2P",
+    "FEPGW1P",
+    "FEPGW2P",
+    "FEPFISCGW1P",
+    "FEPFISCGW2P",
+    "FEPHISDB"
+  ]
+  
+}

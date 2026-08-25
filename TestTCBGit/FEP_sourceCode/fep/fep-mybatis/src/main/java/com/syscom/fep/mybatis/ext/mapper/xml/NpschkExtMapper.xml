@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.NpschkExtMapper">
+    <select id="queryAllData" parameterType="map" resultType="com.syscom.fep.mybatis.model.Npschk">
+        SELECT * FROM NPSCHK
+        <if test="@com.syscom.fep.common.util.DbHelper@isSqlInOrderByValid(orderBy)">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    <insert id="NPSCHKtoNPSNUIT" parameterType="map">
+        INSERT INTO NPSUNIT
+        select b.*
+        from (select max(NPSCHK_EFFECTDATE) NPSCHK_EFFECTDATE
+                   , NPSCHK_NO
+                   , NPSCHK_PAYTYPE
+                   , NPSCHK_FEENO
+              from NPSCHK
+              where NPSCHK_EFFECTDATE <![CDATA[<=]]> #{effDate,jdbcType=VARCHAR}
+              group by NPSCHK_NO, NPSCHK_PAYTYPE, NPSCHK_FEENO) a
+                 JOIN NPSCHK b on
+                    a.NPSCHK_EFFECTDATE = b.NPSCHK_EFFECTDATE and
+                    a.NPSCHK_NO = b.NPSCHK_NO and
+                    a.NPSCHK_PAYTYPE = b.NPSCHK_PAYTYPE and
+                    a.NPSCHK_FEENO = b.NPSCHK_FEENO
+    </insert>
+    <select id="queryByEffDateCompare" parameterType="map" resultType="map">
+        SELECT *
+        FROM NPSCHK
+        WHERE NPSCHK_EFFECTDATE
+            ${operators.operator} #{effDate,jdbcType=VARCHAR}
+    </select>
+    <!--    Bruce 2022/07/21 add-->
+    <select id="selectByEffectDate" parameterType="java.lang.String" resultType="com.syscom.fep.mybatis.model.Npschk">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.NpschkMapper.Base_Column_List"/>
+        FROM NPSCHK
+        WHERE NPSCHK_EFFECTDATE = #{dffectDate,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060610/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" style="width:150px">
+                    <label for="transactDate" class="col-form-label">交易日期:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" data-target-input="nearest">
+                        <input type="text" id="transactDate" class="form-control datetimepicker-input" data-target="#transactDate"
+                               th:field="*{transactDate}"/>
+                        <div class="input-group-append" data-target="#transactDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td style="width:50px"></td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label"><span style="color: red;">*</span>交易時間起訖:</label>
+                </td>
+                <td class="condition-input" colspan="2">
+                    <div class="row">
+                        <div class="col input-group date" data-target-input="nearest" onchange="changeTime()">
+                            <input type="text" class="form-control datetimepicker-input" id="feptxnTxTimeBegin" data-target="#feptxnTxTimeBegin" th:field="*{feptxnTxTimeBeginTxt}"/>
+                            <div class="input-group-append" data-target="#feptxnTxTimeBegin" data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="far fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="label-text-symbol">~</label>
+                        <div class="col input-group date" data-target-input="nearest" onchange="changeTime()">
+                            <input type="text" class="form-control datetimepicker-input" id="feptxnTxTimeEnd" data-target="#feptxnTxTimeEnd" th:field="*{feptxnTxTimeEndTxt}"/>
+                            <div class="input-group-append" data-target="#feptxnTxTimeEnd" data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="far fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td style="vertical-align: top;">
+                    指定交易時間下載log，會搜尋檔案最後儲存時間，若log有缺少，請擴大交易時間範圍再次搜尋。(起訖時間不能超過一小時)
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">ATM代號:</label>
+                </td>
+                <td class="condition-input">
+                    <input style="width:200px" type="text" class="form-control" th:maxlength="8" th:field="*{txtAtmNo}"/>
+                </td>
+                <td></td>
+                <td class="condition-label">
+                    <label class="col-form-label">ATM序號:</label>
+                </td>
+                <td class="condition-input">
+                    <input style="width:200px" type="text" class="form-control" th:maxlength="8" th:field="*{atmSeqTxt}"/>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">訊息ID:</label>
+                </td>
+                <td class="condition-input">
+                    <input style="width:200px" type="text" class="form-control" th:maxlength="15" th:field="*{txtMessageId}"/>
+                </td>
+                <td></td>
+                <td class="condition-label">
+                    <label class="col-form-label">轉出帳號:</label>
+                </td>
+                <td class="condition-input">
+                    <input style="width:200px" type="text" class="form-control" th:maxlength="16" th:field="*{txtTroutActNo}"/>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">EJ序號:</label>
+                </td>
+                <td class="condition-input">
+                    <input style="width:200px" type="text" class="form-control" th:field="*{ejNoUc}"/>
+                </td>
+                <td></td>
+                <td class="condition-label">
+                    <label class="col-form-label">通道:</label>
+                </td>
+                <td class="condition-input">
+                    <select style="width:200px" class="form-control" th:field="*{channelUc}">
+                        <option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"
+                                th:selected="${option.value == channelUc}"/>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">訊息流程:</label>
+                </td>
+                <td class="condition-input">
+                    <select style="width:200px" class="form-control" th:field="*{msgFlowUc2}">
+                        <option value="" selected="selected">所有</option>
+                        <option value="Request" th:selected="${msgFlowUc2 == 'Request'}">Request</option>
+                        <option value="Response" th:selected="${msgFlowUc2 == 'Response'}">Response</option>
+                    </select>
+                </td>
+                <td></td>
+                <td class="condition-label">
+                    <label class="col-form-label">財金 STAN:</label>
+                </td>
+                <td class="condition-input">
+                    <div class="row">
+                        <div class="col-3">
+                            <input class="form-control" type="text" th:maxlength="3" th:field="*{txtBkNo}"/>
+                        </div>
+                        <label class="label-text-symbol">-</label>
+                        <div class="col-4">
+                            <input class="form-control" type="text" th:maxlength="7" th:field="*{stanTxt}"/>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label"><label class="col-form-label">查詢主機:</label></td>
+                <td class="condition-input">
+                    <select style="width:200px" class="form-control" th:field="*{hostname}">
+                        <option th:each="server : ${selectServer}" th:text="${server.text}" th:value="${server.value}"
+                                th:selected="${server.value == hostname}"/>
+                    </select>
+                </td>
+                <td></td>
+                <td class="condition-label">
+                    <label class="col-form-label">選擇下載的通道:</label>
+                </td>
+                <td class="condition-input">
+                    <select style="width:200px" class="form-control" th:field="*{channelDownload}">
+                        <option th:each="option : ${channelDownloadOptions}" th:text="${option.text}" th:value="${option.value}" th:selected="${option.value == channelDownload}"/>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="condition-label"><label class="col-form-label">下載主機:</label></td>
+                <td class="condition-input">
+                    <select style="width:200px" class="form-control" th:field="*{server}">
+                        <option th:each="server : ${selectServerDownload}" th:text="${server.text}" th:value="${server.value}"/>
+                    </select>
+                </td>
+                <td></td>
+                <td class="condition-label">
+                    <label class="col-form-label">選擇下載的Log:</label>
+                </td>
+                <td class="condition-input">
+                    <select style="width:200px" class="form-control" th:field="*{logType}">
+                        <option th:each="logType : ${selectLogType}" th:text="${logType.text}" th:value="${logType.value}"/>
+                    </select>
+                </td>
+                <td style="width: 50px;">
+                    <label class="col-form-label">gz檔:</label>
+                </td>
+                <td class="condition-input">
+                    <select style="width: 350px;" class="form-control" th:field="*{selectGZLog}">
+                        <option value="">全部</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+    <button style="width:100px" type="button" class="btn btn-primary" id="btnDownload">下載Log</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>記錄時間</b></th>
+                <th><b>EJ</b></th>
+                <th><b>主機名稱</b></th>
+                <th><b>ATMNO</b></th>
+                <th><b>ATM序號</b></th>
+                <th><b>訊息ID</b></th>
+                <!--	<th><b>轉出帳號</b></th> -->
+                <th><b>通道</b></th>
+                <th><b>作業流程</b></th>
+                <th><b>財金STAN</b></th>
+                <!--	<th><b>記錄時間</b></th> -->
+                <th><b>備註</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+            <tr th:each="data, dataStat : ${pageData.list}">
+                <!--記錄時間-->
+                <td align="center" th:text="${#dates.format(data.logdate,'HH:mm:ss.SSS')}"/>
+                <td align="center">
+                    <!--EJ-->
+                    <a class="ej" href="#" th:text="${data.ej}" th:value="${
+                    			         '{' 											
+                    			            + '&quot;ej&quot;:&quot;'+data.ej + '&quot;' + ','
+                    			            + '&quot;logno&quot;:&quot;'+data.logno + '&quot;' + ','
+                    			            + '&quot;logdate&quot;:&quot;'+data.logdate + '&quot;' + ','
+                    			            + '&quot;threadid&quot;:&quot;'+data.threadid + '&quot;' + ','
+                    			            + '&quot;channel&quot;:&quot;'+data.channel + '&quot;' + ','
+                    			            + '&quot;messageid&quot;:&quot;'+data.messageid + '&quot;' + ','
+                    			            + '&quot;messageflow&quot;:&quot;'+data.messageflow + '&quot;' + ','
+                    			            + '&quot;programflow&quot;:&quot;'+data.programflow + '&quot;' + ','
+                    			            + '&quot;programname&quot;:&quot;'+data.programname + '&quot;' + ','
+                    			            + '&quot;stan&quot;:&quot;'+data.stan + '&quot;' + ','
+                    			            + '&quot;atmseq&quot;:&quot;'+data.atmseq + '&quot;' + ','
+                    			            + '&quot;atmno&quot;:&quot;'+data.atmno + '&quot;' + ','
+                    			            + '&quot;trinbank&quot;:&quot;'+data.trinbank + '&quot;' + ','
+                    			            + '&quot;trinactno&quot;:&quot;'+data.trinactno + '&quot;' + ','
+                    			            + '&quot;troutbank&quot;:&quot;'+data.troutbank + '&quot;' + ','
+                    			            + '&quot;troutactno&quot;:&quot;'+data.troutactno + '&quot;' + ','
+                    			            + '&quot;txdate&quot;:&quot;'+data.txdate + '&quot;' + ','
+                    			            + '&quot;bkno&quot;:&quot;'+data.bkno + '&quot;' + ','
+                    			            + '&quot;steps&quot;:&quot;'+data.steps + '&quot;' + ','
+                    			            + '&quot;txmessage&quot;:&quot;'+data.txmessage + '&quot;' + ','
+                    			            + '&quot;remark&quot;:&quot;'+data.remark + '&quot;' + ','
+                    			            + '&quot;txrquid&quot;:&quot;'+data.txrquid + '&quot;' + ','
+                    			            + '&quot;hostname&quot;:&quot;'+data.hostname + '&quot;'
+										+ '}'
+										}">
+                    </a>
+                </td>
+                <!--主機名稱-->
+                <td align="center" th:text="${data.hostname}"/>
+                <!--ATMNO-->
+                <td align="center" th:text="${data.atmno}"/>
+                <!--ATM序號-->
+                <td align="center" th:text="${data.atmseq}"/>
+                <!--訊息ID-->
+                <td align="center" th:text="${data.messageid}"/>
+                <!--轉出帳號-->
+                <!--	<td align="center" th:text="${data.troutactno}" /> -->
+                <!--通道-->
+                <td align="center" th:text="${data.channel}"/>
+                <!--作業流程-->
+                <td align="center" th:text="${data.programflow}"/>
+                <!--	<td align="center" th:text="${data.messageflow}" /> -->
+                <!--財金STAN-->
+                <td align="center" th:text="${data.stan}"/>
+                <!--記錄時間-->
+                <!--	<td align="center" th:text="${#dates.format(data.logdate,'HH:mm:ss.SSS')}" /> -->
+                <!--備註-->
+                <td th:text="${data.remark}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/atmmon/UI060610.js}"></script>
+</div>
+</body>
+
+</html>

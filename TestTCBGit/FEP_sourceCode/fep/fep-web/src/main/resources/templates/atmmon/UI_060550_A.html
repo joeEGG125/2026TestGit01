@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+    <div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b>交易日期/時間</b></th>
+						<th><b>交易代號</b></th>
+						<th><b>卡片帳號</b></th>
+						<th><b>交易金額</b></th>
+						<th><b>中心交易序號</b></th>
+						<th><b>ATM代號/ATM序號</b></th>
+						<th><b>EJ序號</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+					<tr th:each="data, dataStat : ${pageData.list}">
+						<td align="center">
+							<!--交易日期/時間-->
+							<a class="feptxnTbsdyFisc" href="#" th:text="${data.feptxnTbsdyFisc}" th:value="${										
+                    			         '{' 											
+                    			            + '&quot;feptxnTxDate&quot;:&quot;'+ data.feptxnTxDate + '&quot;' + ','
+                    			            + '&quot;feptxnEjfno&quot;:&quot;'+ data.feptxnEjfno + '&quot;' + ','
+                    			            + '&quot;feptxnTraceEjfno&quot;:&quot;'+ data.feptxnTraceEjfno + '&quot;' + ','
+                    			            + '&quot;feptxnAtmno&quot;:&quot;'+ data.feptxnAtmno + '&quot;' + ','
+                    			            + '&quot;feptxnAtmSeqno&quot;:&quot;'+ data.feptxnAtmSeqno + '&quot;' + ','
+                    			            + '&quot;feptxnConAtmSeqno2&quot;:&quot;'+ data.feptxnConAtmSeqno2 + '&quot;' + ','
+                    			            + '&quot;feptxnTxseq&quot;:&quot;'+ data.feptxnTxseq + '&quot;' + ','
+                    			            + '&quot;feptxnConTxseq&quot;:&quot;'+ data.feptxnConTxseq + '&quot;' + ','
+                    			            + '&quot;feptxnTxCode&quot;:&quot;'+ data.feptxnTxCode + '&quot;' + ','
+                    			            + '&quot;feptxnConTxCode&quot;:&quot;'+ data.feptxnConTxCode + '&quot;' + ','
+                    			            + '&quot;feptxnTbsdyFisc&quot;:&quot;'+ data.feptxnTbsdyFisc + '&quot;' + ','
+                    			            + '&quot;feptxnStan&quot;:&quot;'+ data.feptxnStan + '&quot;' + ','
+                    			            + '&quot;feptxnTbsdy&quot;:&quot;'+ data.feptxnTbsdy + '&quot;' + ','
+                    			            + '&quot;feptxnTxTime&quot;:&quot;'+ data.feptxnTxTime + '&quot;' + ','
+                    			            + '&quot;feptxnAtmod&quot;:&quot;'+ data.feptxnAtmod + '&quot;' + ','
+                    			            + '&quot;feptxnCbsRrn&quot;:&quot;'+ data.feptxnCbsRrn + '&quot;' + ','
+                    			            + '&quot;feptxnAtmnoVir&quot;:&quot;'+ data.feptxnAtmnoVir + '&quot;' + ','
+                    			            + '&quot;feptxnVirTxseq&quot;:&quot;'+ data.feptxnVirTxseq + '&quot;' + ','
+                    			            + '&quot;feptxnConVirTxseq&quot;:&quot;'+ data.feptxnConVirTxseq + '&quot;' + ','
+                    			            + '&quot;feptxnMajorActno&quot;:&quot;'+ data.feptxnMajorActno + '&quot;' + ','
+                    			            + '&quot;feptxnCardSeq&quot;:&quot;'+ data.feptxnCardSeq + '&quot;' + ','
+                    			            + '&quot;feptxnTroutActno&quot;:&quot;'+ data.feptxnTroutActno + '&quot;' + ','
+                    			            + '&quot;feptxnTroutBkno&quot;:&quot;'+ data.feptxnTroutBkno + '&quot;' + ','
+                    			            + '&quot;feptxnTroutKind&quot;:&quot;'+ data.feptxnTroutKind + '&quot;' + ','
+                    			            + '&quot;feptxnTrinActno&quot;:&quot;'+ data.feptxnTrinActno + '&quot;' + ','
+                    			            + '&quot;feptxnTbsdyFisc&quot;:&quot;'+ data.feptxnTrinBkno + '&quot;' + ','
+                    			            + '&quot;feptxnTrinKind&quot;:&quot;'+ data.feptxnTrinKind + '&quot;' + ','
+                    			            + '&quot;feptxnTrinActnoActual&quot;:&quot;'+ data.feptxnTrinActnoActual + '&quot;' + ','
+                    			            + '&quot;feptxnTxCur&quot;:&quot;'+ data.feptxnTxCur + '&quot;' + ','
+                    			            + '&quot;feptxnTxAmt&quot;:&quot;'+ data.feptxnTxAmt + '&quot;' + ','
+                    			            + '&quot;feptxnTxCurAct&quot;:&quot;'+ data.feptxnTxCurAct + '&quot;' + ','
+                    			            + '&quot;feptxnTxAmt&quot;:&quot;'+ data.feptxnTxAmt + '&quot;' + ','
+                    			            + '&quot;feptxnFeeCur&quot;:&quot;'+ data.feptxnFeeCur + '&quot;' + ','
+                    			            + '&quot;feptxnFeeCustpay&quot;:&quot;'+ data.feptxnFeeCustpay + '&quot;' + ','
+                    			            + '&quot;feptxnFeeCustpayAct&quot;:&quot;'+ data.feptxnFeeCustpayAct + '&quot;' + ','
+                    			            + '&quot;feptxnTxFeeDr&quot;:&quot;'+ data.feptxnTxFeeDr + '&quot;' + ','
+                    			            + '&quot;feptxnTxFeeCr&quot;:&quot;'+ data.feptxnTxFeeCr + '&quot;' + ','
+                    			            + '&quot;feptxnTxFeeMbnkDr&quot;:&quot;'+ data.feptxnTxFeeMbnkDr + '&quot;' + ','
+                    			            + '&quot;feptxnTxFeeMbnkCr&quot;:&quot;'+ data.feptxnTxFeeMbnkCr + '&quot;' + ','
+                    			            + '&quot;feptxnBala&quot;:&quot;'+ data.feptxnBala + '&quot;' + ','
+                    			            + '&quot;feptxnBalb&quot;:&quot;'+ data.feptxnBalb + '&quot;' + ','
+                    			            + '&quot;feptxnCbsDscpt&quot;:&quot;'+ data.feptxnCbsDscpt + '&quot;' + ','
+                    			            + '&quot;feptxnTxCodeAtmc&quot;:&quot;'+ data.feptxnTxCodeAtmc + '&quot;' + ','
+                    			            + '&quot;feptxnZoneCode&quot;:&quot;'+ data.feptxnZoneCode + '&quot;' + ','
+                    			            + '&quot;feptxnAtmZone&quot;:&quot;'+ data.feptxnAtmZone + '&quot;' + ','
+                    			            + '&quot;feptxnAtmBrno&quot;:&quot;'+ data.feptxnAtmBrno + '&quot;'
+										+ '}'
+										}">
+							</a>
+						</td>
+						<!--交易代號-->
+						<td align="center" th:text="${data.feptxnTxCode}" />
+						<!--卡片帳號-->					
+						<td align="center" th:text="${data.feptxnMajorActno}" />
+						<!--交易金額-->
+						<td align="center" th:text="${data.feptxnTxAmt}" />
+						<!--中心交易序號-->
+						<td align="center" th:text="${data.feptxnTxseq}" />
+						<!--ATM代號/ATM序號-->
+						<td align="center" th:text="${data.feptxnAtmSeqno}" />
+						<!--EJ序號-->
+						<td align="center" th:text="${data.feptxnEjfno}" />					
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI060550_A.js}"></script>
+	</div>
+</body>
+
+</html>

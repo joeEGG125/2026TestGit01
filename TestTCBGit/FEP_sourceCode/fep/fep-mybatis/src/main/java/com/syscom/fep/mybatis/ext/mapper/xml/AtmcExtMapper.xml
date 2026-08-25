@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.AtmcExtMapper">
+    <!-- 2021-04-29 ZhaoKai add -->
+    <select id="getAtmcByConditions" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.AtmcMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.AtmcMapper.Base_Column_List"/>
+        FROM ATMC
+        <where>
+            <if test="atmcTbsdy != null">
+                AND ATMC_TBSDY = #{atmcTbsdy,jdbcType=CHAR}
+            </if>
+            <if test="atmcTbsdyFisc != null">
+                AND ATMC_TBSDY_FISC = #{atmcTbsdyFisc,jdbcType=CHAR}
+            </if>
+            <if test="atmcBrnoSt != null">
+                AND ATMC_BRNO_ST = #{atmcBrnoSt,jdbcType=CHAR}
+            </if>
+            <if test="atmcAtmno != null">
+                AND ATMC_ATMNO = #{atmcAtmno,jdbcType=CHAR}
+            </if>
+            <if test="atmcCur != null">
+                AND ATMC_CUR = #{atmcCur,jdbcType=CHAR}
+            </if>
+            <if test="atmcTxCode != null">
+                AND ATMC_TX_CODE = #{atmcTxCode,jdbcType=CHAR}
+            </if>
+            <if test="atmcDscpt != null">
+                AND ATMC_DSCPT = #{atmcDscpt,jdbcType=CHAR}
+            </if>
+            <if test="atmcSelfcd != null">
+                AND ATMC_SELFCD = #{atmcSelfcd,jdbcType=DECIMAL}
+            </if>
+        </where>
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <select id="getATMCbyDef" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.AtmcMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.AtmcMapper.Base_Column_List"/>
+        FROM ATMC
+        <where>
+            <if test="args.sysstatTbsdyFiscData != null">
+                AND ATMC_TBSDY_FISC = #{args.sysstatTbsdyFiscData,jdbcType=CHAR}
+            </if>
+            <if test="args.zoneZoneTbsdyData != null">
+                AND ATMC_TBSDY = #{args.zoneZoneTbsdyData,jdbcType=CHAR}
+            </if>
+            <if test="args.atmNo != '' ">
+                AND ATMC_ATMNO = #{args.atmNo,jdbcType=CHAR}
+            </if>
+            <if test="args.cur != '' ">
+                AND ATMC_CUR = #{args.cur,jdbcType=CHAR}
+            </if>
+            <if test="args.txCode != '' ">
+                AND ATMC_TX_CODE = #{args.txCode,jdbcType=CHAR}
+            </if>
+        </where>
+    </select>
+    <!-- 2022/05/20 Han Add -->
+    <select id="GetATMCByAtmnoFiscTbsdySumDRAMT" parameterType="map" resultType="map">
+        SELECT ATMC_TBSDY_FISC,
+               ATMC_ATMNO,
+               ATMC_CUR,
+               SUM(ATMC_DR_CNT) AS ATMC_DR_CNT,
+               SUM(ATMC_DR_AMT) AS ATMC_DR_AMT
+        FROM TAMC
+        WHERE ATMC_TBSDY_FISC = #{atmstatLbsdy,jdbcType=VARCHAR}
+           OR ATMC_TBSDY_FISC = #{atmstatTbsdy,jdbcType=VARCHAR}
+            AND ATMC_ATMNO = #{feptxnAtmno,jdbcType=VARCHAR}
+            AND ATMC_TX_CODE in ('FWD', 'FAW')
+        GROUP BY ATMC_TBSDY_FISC, ATMC_ATMNO, ATMC_CUR
+    </select>
+</mapper>

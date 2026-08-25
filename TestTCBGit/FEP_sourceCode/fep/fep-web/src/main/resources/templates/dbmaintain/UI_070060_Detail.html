@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{home}">
+
+<head>
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden"></div>
+<div layout:fragment="panel-button">
+    <button th:disabled="${form.webType == 'SSTQ'}" style="width:100px" type="button" class="btn btn-primary" id="btnSaveBtn">變更儲存</button>
+    <button th:disabled="${form.webType == 'SSTQ'}" style="width:100px" type="button" class="btn btn-primary" id="btnDiscard">放棄變更</button>
+    <button type="button" style="width:100px" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" class="panel-detail">
+    <form id="form-validator" th:object="${form}" th:action="@{/dbmaintain/UI_070060/saveClick}" method="post">
+        <input type="hidden" name="actionType" th:value="*{actionType}">
+        <table border="0" cellspacing="0" class="table-detail">
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">來源通道<font color="red">*</font>:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <select th:disabled="*{actionType eq 'E'}" class="form-control" th:field="*{msgfileChannel}">
+                        <option th:if="${option.value != ''}" th:each="option : ${options}" th:text="${option.value + '-' + option.text}" th:value="${option.value}"
+                                th:selected="${option.value == msgfileChannel}"/>
+                    </select>
+                </td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">訊息代碼<font color="red">*</font>:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" class="form-control" type="text" disabled="true" th:field="*{msgfileErrorcode}" th:maxlength="10"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">子系統*:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <select th:disabled="*{actionType eq 'E'}" id="msgfileSubsys" class="form-control" th:field="*{msgfileSubsys}">
+                        <option th:if="${option.value != ''}" th:each="option : ${options2}" th:text="${option.value + '-' + option.text}" th:value="${option.value}"
+                                th:selected="${option.value == msgfileSubsys}"/>
+                    </select>
+                </td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">訊息嚴重性*:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <select id="msgfileSeverity" class="form-control" th:field="*{msgfileSeverity}">
+                        <option value="Info" th:selected="${msgfileSeverity == 'Info'}">Info</option>
+                        <option value="Warning" th:selected="${msgfileSeverity == 'Warning'}">Warning</option>
+                        <option value="Error" th:selected="${msgfileSeverity == 'Error'}">Error</option>
+                        <option value="Fatal" th:selected="${msgfileSeverity == 'Fatal'}">Fatal</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">是否送事件監控:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input id="msgfileSendEmsB" class="col-form-checkbox" type="checkbox" th:field="*{msgfileSendEmsB}"/>
+                    <label for="msgfileSendEmsB">是</label>
+                </td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">留置卡片FLAG:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input id="msgfileRetainB" th:disabled="*{actionType eq 'E'}" class="col-form-checkbox" type="checkbox" th:field="*{msgfileRetainB}"/>
+                    <label for="msgfileRetainB">是</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">是否需要授權:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" id="msgfileAuthB" class="col-form-checkbox" type="checkbox" th:field="*{msgfileAuthB}"/>
+                    <label for="msgfileAuthB">是</label>
+                </td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">是否要提示:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" id="msgfileWarningB" class="col-form-checkbox" type="checkbox" th:field="*{msgfileWarningB}"/>
+                    <label for="msgfileWarningB">是</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">輸出訊息代碼:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" class="form-control" type="text" th:field="*{msgfileExternal}" th:maxlength="10"/>
+                </td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">財金訊息代碼:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" class="form-control" type="text" th:field="*{msgfileFisc}" th:maxlength="4"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">ATM訊息代碼:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" class="form-control" type="text" th:field="*{msgfileAtm}" th:maxlength="4"/>
+                </td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">CBS訊息代碼:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input class="form-control" th:disabled="*{actionType eq 'E'}" type="text" th:field="*{msgfileUatmp}" th:maxlength="4"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">CBS主機訊息代碼:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" class="form-control" type="text" th:field="*{msgfileT24}" th:maxlength="10"/>
+                </td>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">信用卡訊息代號:</label>
+                </td>
+                <td class="condition-input" style="width:200px">
+                    <input th:disabled="*{actionType eq 'E'}" class="form-control" type="text" th:field="*{msgfileCredit}" th:maxlength="4"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">訊息簡述:</label>
+                </td>
+                <td colspan="3" class="condition-input" style="width:200px">
+                    <input style="width:600px" class="form-control" type="text" th:field="*{msgfileShortmsg}" th:maxlength="30"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">訊息內容:</label>
+                </td>
+                <td colspan="2" class="condition-input" style="width:200px">
+                    <textarea style="width:600px;height:40px;" class="form-control" type="text" th:field="*{msgfileMsgdscpt}" th:maxlength="120"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">訊息處理說明:</label>
+                </td>
+                <td colspan="3" class="condition-input" style="width:200px">
+                    <textarea style="width:600px;height:40px;" class="form-control" type="text" th:field="*{msgfileAction}" th:maxlength="256"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">是否通知:</label>
+                </td>
+                <td colspan="3" class="condition-input" style="width:200px">
+                    <input id="msgfileNotifyB" class="col-form-checkbox" type="checkbox" th:field="*{msgfileNotifyB}"/>
+                    <label for="msgfileNotifyB">是</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">負責人Mail通知:</label>
+                </td>
+                <td colspan="3" class="condition-input" style="width:200px">
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{notify.fepNotifyMail_APD}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_APD.getDescription()}]]</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{notify.fepNotifyMail_SYS}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_SYS.getDescription()}]]</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px"></td>
+                <td colspan="3" class="condition-input" style="width:200px">
+                    <input class="col-form-checkbox fepNotifyMail_Customize" type="checkbox" th:field="*{notify.fepNotifyMail_Customize}" onclick="checkItem('fepNotifyMail_Customize')"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+                    <textarea class="form-control msgfileResponsible" rows="2" maxlength="1000" th:field="*{notify.msgfileResponsible}"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px">
+                    <label class="col-form-label">簡訊通知:</label>
+                </td>
+                <td colspan="3" class="condition-input" style="width:200px">
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{notify.fepNotifyPhone_APD}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_APD.getDescription()}]]</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{notify.fepNotifyPhone_SYS}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_SYS.getDescription()}]]</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" style="width:200px"></td>
+                <td colspan="3" class="condition-input" style="width:200px">
+                    <input class="col-form-checkbox fepNotifyPhone_Customize" type="checkbox" th:field="*{notify.fepNotifyPhone_Customize}" onclick="checkItem('fepNotifyPhone_Customize')"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+                    <textarea class="form-control msgfileNotifyphone" rows="2" maxlength="1000" th:field="*{notify.msgfileNotifyphone}"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/dbmaintain/UI070060_Detail.js}"></script>
+</div>
+</body>
+</html>

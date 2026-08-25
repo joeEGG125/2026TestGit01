@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.CbactExtMapper">
+	<!-- 2021-04-28 WJ add -->
+	<select id="queryCbactForMask" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.CbactMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CbactMapper.Base_Column_List" />
+		FROM CBACT
+		WHERE CBACT_BKNO = #{cbactBkno,jdbcType=CHAR}
+		AND CBACT_ACTNO = SUBSTR(#{cbactActno,jdbcType=VARCHAR}, 1, CBACT_ACTNO_LEN)
+		AND CBACT_TYPE = 'MASK'
+	</select>
+</mapper>

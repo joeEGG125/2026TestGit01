@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_013106/confirmClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" for="APIDCob">
+                    <label class="col-form-label">輸入AP-ID</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{aPIDCob}">
+                        <option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"/>
+                    </select>
+                </td>
+                <td class="condition-label" for="type">
+                    <input class="col-form-radio" type="radio"
+                           th:value="${T(com.syscom.fep.web.form.inbk.UI_013106_Form.RadioOption).EXCHECKINRBN}"
+                           th:field="*{radioOption}" fep:checked="*{radioOption}">
+                    <label for="radioORI" class="col-form-label">EX-CHECK IN</label>
+                    <input class="col-form-radio" type="radio"
+                           th:value="${T(com.syscom.fep.web.form.inbk.UI_013106_Form.RadioOption).EXCHECKOUTRBN}"
+                           th:field="*{radioOption}" fep:checked="*{radioOption}">
+                    <label for="radioAGENCY" class="col-form-label">EX-CHECK OUT</label>
+                </td>
+              <!--  <td class="condition-label" for="CURDdl">
+                    <label class="col-form-label">幣別</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" id="CURDdl" disabled="disabled" style="width: 100px">
+                    </select>
+                </td>-->
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnConfirm">確認</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid">
+    <div class="card-body table-responsive p-0">
+        <div class="card card-outline card-primary">
+            <div class="card-body" style="display: block;">
+                <table border="1" style="border-collapse: separate;border-spacing: 1px" cellspacing="0"
+                       class="table-condition" width="100%">
+                    <thead>
+                    <tr align="center" width="800px">
+                        <td><b></b></td>
+                        <td align="left"><b>財金</b></td>
+                        <td align="left"><b>本行</b></td>
+                    </tr>
+                    </thead>
+                <!--    <tr>
+                        <td>系統狀態</td>
+                        <td th:if="${soctLbl != null}" th:text="${soctLbl}"></td>
+                        <td th:if="${mboctLbl != null}" th:text="${mboctLbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>1000通匯各類子系統</td>
+                        <td th:if="${acot1000Lbl != null}" th:text="${acot1000Lbl}"></td>
+                        <td th:if="${mbact1000Lbl != null}" th:text="${mbact1000Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>1100 匯款類子系統</td>
+                        <td th:if="${aoct1100Lbl != null}" th:text="${aoct1100Lbl}"></td>
+                        <td th:if="${mbact1100Lbl != null}" th:text="${mbact1100Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>1200 代收款項類子系統</td>
+                        <td th:if="${aoct1200Lbl != null}" th:text="${aoct1200Lbl}"></td>
+                        <td th:if="${mbact1200Lbl != null}" th:text="${mbact1200Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>1300 代繳代發類子系統</td>
+                        <td th:if="${aoct1300Lbl != null}" th:text="${aoct1300Lbl}"></td>
+                        <td th:if="${mbact1300Lbl != null}" th:text="${mbact1300Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>1400 一般通信類子系統</td>
+                        <td th:if="${aoct1400Lbl != null}" th:text="${aoct1400Lbl}"></td>
+                        <td th:if="${mbact1400Lbl != null}" th:text="${mbact1400Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>1600 外幣通匯各類子系統</td>
+                        <td th:if="${fcrmstatAoctrm != null}" th:text="${fcrmstatAoctrm}"></td>
+                        <td th:if="${fcrmstatMbactrm != null}" th:text="${fcrmstatMbactrm}"></td>
+                    </tr>-->
+                    <tr>
+                        <td>2000 CD/ATM 共用系統提款作業</td>
+                        <td th:if="${aoct2000Lbl != null}" th:text="${aoct2000Lbl}"></td>
+                        <td th:if="${mbact2000Lbl != null}" th:text="${mbact2000Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2200 CD/ATM 共用系統轉帳作業</td>
+                        <td th:if="${aoct2200Lbl != null}" th:text="${aoct2200Lbl}"></td>
+                        <td th:if="${mbact2200Lbl != null}" th:text="${mbact2200Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2500 晶片卡共用系統</td>
+                        <td th:if="${aoct2500Lbl != null}" th:text="${aoct2500Lbl}"></td>
+                        <td th:if="${mbact2500Lbl != null}" th:text="${mbact2500Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2510 晶片卡提款作業</td>
+                        <td th:if="${aoct2510Lbl != null}" th:text="${aoct2510Lbl}"></td>
+                        <td th:if="${mbact2510Lbl != null}" th:text="${mbact2510Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2520 晶片卡轉帳作業</td>
+                        <td th:if="${aoct2520Lbl != null}" th:text="${aoct2520Lbl}"></td>
+                        <td th:if="${mbact2520Lbl != null}" th:text="${mbact2520Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2530 晶片卡繳款作業</td>
+                        <td th:if="${aoct2530Lbl != null}" th:text="${aoct2530Lbl}"></td>
+                        <td th:if="${mbact2530Lbl != null}" th:text="${mbact2530Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2540 晶片卡消費扣款作業</td>
+                        <td th:if="${aoct2540Lbl != null}" th:text="${aoct2540Lbl}"></td>
+                        <td th:if="${mbact2540Lbl != null}" th:text="${mbact2540Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2550 晶片卡預先授權作業</td>
+                        <td th:if="${aoct2550Lbl != null}" th:text="${aoct2550Lbl}"></td>
+                        <td th:if="${mbact2550Lbl != null}" th:text="${mbact2550Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2560 晶片卡全國繳費作業</td>
+                        <td th:if="${aoct2560Lbl != null}" th:text="${aoct2560Lbl}"></td>
+                        <td th:if="${mbact2560Lbl != null}" th:text="${mbact2560Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2570 晶片卡跨國提款作業</td>
+                        <td th:if="${aoct2570Lbl != null}" th:text="${aoct2570Lbl}"></td>
+                        <td th:if="${mbact2570Lbl != null}" th:text="${mbact2570Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>2700 資金調撥作業</td>
+                        <td th:if="${aoct2700Lbl != null}" th:text="${aoct2700Lbl}"></td>
+                        <td th:if="${mbact2700Lbl != null}" th:text="${mbact2700Lbl}"></td>
+                    </tr>
+                    <tr th:if="false">
+                        <td>7100 轉帳退款類交易</td>
+                        <td th:if="${aoct7100Lbl != null}" th:text="${aoct7100Lbl}"></td>
+                        <td th:if="${mbact7100Lbl != null}" th:text="${mbact7100Lbl}"></td>
+                    </tr>
+                    <tr>
+                        <td>7300 FXML跨行付款交易</td>
+                        <td th:if="${aoct7300Lbl != null}" th:text="${aoct7300Lbl}"></td>
+                        <td th:if="${mbact7300Lbl != null}" th:text="${mbact7300Lbl}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/inbk/UI013106.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}"
+			th:action="@{/rm/UI_028250/executeClick}" method="post">
+			<div class="card card-primary card-outline">
+				<div class="card-header">
+					<h5 class="card-title">調整選項</h5>
+				</div>
+				<table border="0" cellspacing="0" class="table-condition">
+					<tr>
+						<td class="condition-label"><label for="programID"
+							class="col-form-label">程式代號</label></td>
+						<td class="condition-input"><select class="form-control"
+							th:field="*{programID}">
+								<option value="UI_028060" selected="selected">UI_028060</option>
+						</select></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnExecute">執行</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+	<div class="card card-primary card-outline">
+		<div class="card-header">
+			<h5 class="card-title">調整內容</h5>
+		</div>
+		<div class="card-body">
+			<table>
+				<tr>
+					<td align="left" style="width:200px"><b>現存執行狀態</b></td>
+					<td align="right"><input class="col-form-radio" type="radio"
+						 th:checked="${form.PRGSTAT_FLAG eq '0'}"
+					   name="PRGSTAT_FLAG"  value="0" > 
+						<label for="PRGSTAT_FLAG_0"
+						class="col-form-label">0: 未執行</label> <br> <input
+						th:checked="${form.PRGSTAT_FLAG eq '1'}"
+						name="PRGSTAT_FLAG"
+						class="col-form-radio" type="radio"  value="1">
+						<label for="PRGSTAT_FLAG_1" class="col-form-label">1: 執行中</label>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</div>
+	
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/rm/UI028250.js}"></script>
+	</div>
+</body>
+</html>

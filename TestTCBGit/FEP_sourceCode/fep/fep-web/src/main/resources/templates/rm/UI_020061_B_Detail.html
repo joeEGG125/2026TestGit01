@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnChange">變更儲存</button>
+		<button type="button" class="btn btn-primary" id="btnDisChange">放棄變更</button>
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+
+		<form id="form-validator" th:object="${form}" th:action="@{/rm/UI_020061_B/btnChange}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label col-3">
+						<label class="col-form-label">
+							財金銀行代碼_銀行別<span style="color: red">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankBkno}" onchange="brnoChange()" readonly="readonly" maxlength="3" />
+						</label>
+					</td>
+					<td class="condition-label col-3">
+						<label class="col-form-label">
+							財金銀行代碼_分支機構<span style="color: red">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankBrno}" onchange="brnoChange()" readonly="readonly" maxlength="3" />
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">
+							分行別檢查碼<span style="color: green">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" style="background-color: white" type="text" th:field="*{allbankBrnoChkcode}" readonly="readonly" maxlength="1" />
+						</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">
+							總行代號<span style="color: green">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<select class="form-control" th:field="*{allbankFiscUnit}">
+								<option value="0">0-一般行庫</option>
+								<option value="1">1-共用中心</option>
+							</select>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">
+							中心總行代號<span style="color: green">*</span>
+						</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankUnitBank}" maxlength="3" />
+						</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">銀行簡稱</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankAliasname}" maxlength="10" />
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">銀行全名</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankFullname}" maxlength="50" />
+						</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">銀行英文名稱</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankEngname}" maxlength="70" />
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">銀行地址</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankAddrress}" maxlength="70" />
+						</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">郵遞區號1</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankZipcode1}" maxlength="3" />
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">郵遞區號2</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankZipcode2}" maxlength="2" />
+						</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">電話</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<input class="form-control" type="text" th:field="*{allbankTelno}" maxlength="15" />
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">參加財金匯款通匯旗標</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<select class="form-control" th:field="*{allbankRmflag}">
+								<option value="0">0-未參加</option>
+								<option value="1">1-參加</option>
+							</select>
+						</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">匯款匯出FORWARD旗標</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<select class="form-control" th:field="*{allbankRmforward}">
+								<option value="0">0-正常</option>
+								<option value="1">1-禁止</option>
+								<option value="2">2-颱風天暫停</option>
+							</select>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label" for="allbankSetCloseTime">今日財金關帳時間</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="allbankSetCloseTime" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#allbankSetCloseTime" style="width: 120px;" th:field="*{allbankSetCloseTime}" />
+							<div class="input-group-append" data-target="#allbankSetCloseTime" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="far fa-clock"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">參加財金證券匯款旗標</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<select class="form-control" th:field="*{allbankSetCloseFlag}">
+								<option value="0">0-未參加</option>
+								<option value="1">1-參加</option>
+							</select>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">銀行種類</label>
+					</td>
+					<td class="condition-input">
+						<label>
+							<select class="form-control" th:field="*{allbankType}" onchange="brnoChange()">
+								<option value="0">0-自行</option>
+								<option value="1">1-一般他行</option>
+								<option value="2">2-合作社</option>
+							</select>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input readonly="readonly" style="display: none" class="form-control" type="text" th:field="*{btnType}" />
+						</label>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/rm/UI020061_B_Detail.js}"></script>
+	</div>
+</body>
+</html>

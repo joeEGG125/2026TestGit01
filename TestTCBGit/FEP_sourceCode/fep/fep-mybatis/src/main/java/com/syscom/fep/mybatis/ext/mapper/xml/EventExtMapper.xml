@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.EventExtMapper">
+	<!--Ben Add 2022-08-04 -->
+	<select id="CheckEVENTForAlarmDelete" resultMap="com.syscom.fep.mybatis.mapper.EventMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.EventMapper.Base_Column_List" />
+		FROM EVENT
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(alarmNo)">
+			WHERE EVENT_ALARM_NO = #{alarmNo}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+	<form id="form-validator" th:object="${form}" th:action="@{/dbmaintain/UI_070020/inquiryMain}" method="post">
+		<table border="0" cellspacing="0" class="table-condition">
+			<tr>
+
+				<td class="condition-label">
+					<label for="activeCalendar" class="col-form-label">地區</label>
+				</td>
+				<td class="condition-input">
+					<select th:field="*{lblBSDAYS_ZONE_CODE}" class="form-control">
+						<option value="TWN" selected="selected">台灣</option>
+					</select>
+				</td>
+				<td class="condition-label">
+					<label for="year" class="col-form-label">年</label>
+				</td>
+				<td class="condition-input">
+					<div class="input-group date" id="year" data-target-input="nearest">
+						<input type="text" class="form-control datetimepicker-input" th:field="*{txtBSDAYS_YEAR}" data-target="#txtBSDAYS_YEAR" />
+						<div class="input-group-append" data-target="#txtBSDAYS_YEAR" data-toggle="datetimepicker">
+							<div class="input-group-text">
+								<i class="fa fa-calendar"></i>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">財金本營業日: </label>
+					<label class="col-form-label" th:text="*{sysstatTbsdyFisc}"></label>
+					<label class="col-form-label">財金下營業日: </label>
+					<label class="col-form-label" th:text="*{sysstatNbsdyFisc}"></label>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+	<button type="button" class="btn btn-primary" id="btnInsert">新增</button>
+	<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-grid">
+	<div class="card-body table-responsive">
+		<div th:replace="~{layout/calendar :: calendar}"></div>
+	</div>
+</div>
+<div layout:fragment="panel-script">
+	<script type="text/javascript" th:src="@{/js/dbmaintain/UI070020.js}"></script>
+	<script th:inline="javascript">
+			// 初始化或者查詢後, 從form中取出當前的年份, 以及需要高亮顯示被選中的日期
+			var form = /*[[${form}]]*/'';
+			if (form.txtBSDAYS_YEAR) {
+				setCalendarYear(form.txtBSDAYS_YEAR);
+			}
+			if (form.activeCalendar) {
+				setCalendarDateActive(form.activeCalendar);
+			}
+			if (form.cleanCalendar) {
+				clearCalendarDateActive(form.cleanCalendar);
+			}
+		</script>
+</div>
+</body>
+</html>

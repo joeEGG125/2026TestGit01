@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnUpdate" th:if="${not #maps.isEmpty(detailMap)}">更新對照檔</button>
+		<button type="button" class="btn btn-primary" id="btnPrev">上一筆</button>
+		<button type="button" class="btn btn-primary" id="btnNext">下一筆</button>
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<form id="form-validator" th:action="@{/atmmon/UI_060620_B/updateDetail}" method="post">
+			<table border="0" cellspacing="0" class="table-detail">
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">日期:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblDate')}]]</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">錯誤代碼:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblErrCode')}]]</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">自動通知:</label>
+					</td>
+					<td class="condition-input">
+						<input class="col-form-checkbox" type="checkbox" id="chbNotify" th:checked="${detailMap.get('chbNotify') eq '1'}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">時間:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblTime')}]]</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">輸出代碼:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblExternalCode')}]]</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">訊息等級:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblSeverity')}]]</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">主機名稱:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblHost')}]]</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">輸出子代碼:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblExSubCode')}]]</label>
+					</td>
+				</tr>
+				<tr style="display: none">
+					<td class="condition-label">
+						<label class="col-form-label">系統:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblSys')}]]</label>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">通道:</label>
+					</td>
+					<td class="condition-input">
+						<label class="col-form-label">[[${detailMap.get('lblSubSys')}]]</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">訊息</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<textarea class="form-control" rows="2" id="description" th:text="${detailMap.get('description')}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">說明</label>
+					</td>
+					<td class="condition-input" colspan="4" width="600px">
+						<textarea class="form-control" rows="2" id="remark" th:text="${detailMap.get('remark')}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">負責人</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<textarea class="form-control" rows="2" id="responsible" th:text="${detailMap.get('responsible')}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">Mail通知</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<input class="col-form-checkbox" type="checkbox" id="fepNotifyMail_APD" th:checked="${msgkbNotify.fepNotifyMail_APD}"/>
+						<label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_APD.getDescription()}]]</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input class="col-form-checkbox" type="checkbox" id="fepNotifyMail_SYS" th:checked="${msgkbNotify.fepNotifyMail_SYS}"/>
+						<label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_SYS.getDescription()}]]</label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="condition-input" colspan="4">
+						<input class="col-form-checkbox fepNotifyMail_Customize" type="checkbox" th:checked="${msgkbNotify.fepNotifyMail_Customize}" onclick="checkItem('fepNotifyMail_Customize')"/>
+						<label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+						<textarea class="form-control msgkbNotifymail" rows="2" maxlength="1000" th:text="${msgkbNotify.msgkbNotifymail}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">簡訊通知</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<input class="col-form-checkbox" type="checkbox" id="fepNotifyPhone_APD" th:checked="${msgkbNotify.fepNotifyPhone_APD}"/>
+						<label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_APD.getDescription()}]]</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input class="col-form-checkbox" type="checkbox" id="fepNotifyPhone_SYS" th:checked="${msgkbNotify.fepNotifyPhone_SYS}"/>
+						<label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_SYS.getDescription()}]]</label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="condition-input" colspan="4">
+						<input class="col-form-checkbox fepNotifyPhone_Customize" type="checkbox" th:checked="${msgkbNotify.fepNotifyPhone_Customize}" onclick="checkItem('fepNotifyPhone_Customize')"/>
+						<label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+						<textarea class="form-control msgkbNotifyphone" rows="2" maxlength="1000" th:text="${msgkbNotify.msgkbNotifyphone}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">處理方式</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<textarea class="form-control" rows="2" id="action" th:text="${detailMap.get('action')}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">訊息比對</label>
+					</td>
+					<td class="condition-input" colspan="4">
+						<textarea class="form-control" rows="2" id="msgPattern" th:text="${detailMap.get('msgPattern')}"></textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI_060620_B.js}"></script>
+	</div>
+</body>
+</html>

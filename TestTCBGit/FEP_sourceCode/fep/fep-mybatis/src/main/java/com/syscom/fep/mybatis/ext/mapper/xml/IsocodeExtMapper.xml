@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.IsocodeExtMapper">
+	<!--ZhaoKai add 20210512 -->
+	<select id="queryByAlpha3" parameterType="map" resultType="com.syscom.fep.mybatis.model.Isocode">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.IsocodeMapper.Base_Column_List" />
+		FROM ISOCODE
+		WHERE ISOCODE_ALPHA3 = #{isocodeAlpha3,jdbcType=CHAR}
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+</mapper>

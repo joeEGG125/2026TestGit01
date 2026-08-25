@@ -1,0 +1,54 @@
+# ============================================================
+# Batch Task 檔案清單 - FEP_BatchTask_list.txt
+# 用途: 定義需要部署的 Batch Task  檔案
+# ============================================================
+# 
+# 說明:
+# 1. 每行一個檔案路徑（相對於伺服器資料夾）
+# 2. # 開頭的行為註解
+# 3. 空行會被自動跳過
+# 4. 支援子目錄路徑，例如: fep-batch-task-ArchivingLogFile.jar
+# ============================================================
+
+#fep-batch-task-AMLDaily.jar
+#fep-batch-task-ArchivingLogFile.jar
+#fep-batch-task-ArchivingTable.jar
+#fep-batch-task-ArchivingTableFEPTXN.jar
+#fep-batch-task-BTBatchDaily.jar
+#fep-batch-task-BTBatchDaily2.jar
+#fep-batch-task-BTENCLIBDaily.jar
+#fep-batch-task-CallpufaAPI.jar
+#fep-batch-task-CBSTimeoutRerun.jar
+##fep-batch-task-ChangeKeyForCbs.jar
+#fep-batch-task-CleanDESLog.jar
+#fep-batch-task-CleanFEPLog.jar
+#fep-batch-task-CreateFEPTXNPartition.jar
+#fep-batch-task-EffectNPSUNIT.jar
+#fep-batch-task-FISCRecovery.jar
+#fep-batch-task-GetATMDeviceList.jar
+#fep-batch-task-ImportBSDY.jar
+#fep-batch-task-ImportGrayList.jar
+#fep-batch-task-ImportMERCHANT.jar
+#fep-batch-task-ImportNPSUNIT.jar
+#fep-batch-task-ImportQRMERCHANT.jar
+#fep-batch-task-ImportUPBIN.jar
+#fep-batch-task-InsertEventMessageLog.jar
+#fep-batch-task-InsertTableFEPTXN.jar
+#fep-batch-task-NPSBatchInOnlineOut.jar
+#fep-batch-task-Pending2130.jar
+#fep-batch-task-Pending2280.jar
+#fep-batch-task-Pending2290.jar
+#fep-batch-task-PostFEPTXN.jar
+#fep-batch-task-PostFIDO.jar
+#fep-batch-task-PostUCD.jar
+#fep-batch-task-ProcBRAP.jar
+#fep-batch-task-RemoteExecuteBatchTask.jar
+#fep-batch-task-SampleBatch.jar
+#fep-batch-task-ScheduleSetThread.jar
+#fep-batch-task-SelectTableDESLOG.jar
+#fep-batch-task-SelectUCD.jar
+#fep-batch-task-Sending2160.jar
+#fep-batch-task-UCDIDSTATUS.jar
+#fep-batch-task-UCDRUpdate.jar
+#fep-batch-task-UpdateMsgctl.jar
+#fep-batch-task-UpdateSysstat.jar

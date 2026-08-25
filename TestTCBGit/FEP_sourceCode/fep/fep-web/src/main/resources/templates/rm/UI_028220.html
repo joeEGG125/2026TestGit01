@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table
+				class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b></b></th>
+						<th><b>批號</b></th>
+						<th><b>總筆數</b></th>
+						<th><b>金額</b></th>
+						<th><b>成功筆數</b></th>
+						<th><b>成功金額</b></th>
+						<th><b>失敗筆數</b></th>
+						<th><b>失敗金額</b></th>
+						<th><b>是否回饋</b></th>
+						<th><b>T24回應代碼</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data : ${pageData.list}">
+						<td align="center">
+							<button type="button" class="btn btn-primary btn-inquiry"
+								th:value="${
+										'{' + '&quot;rmbtchmtrTimes&quot;:&quot;'+data.get('RMBTCHMTR_TIMES')  + '&quot;' + ','
+											+ '&quot;rmbtchmtrRemDate&quot;:&quot;'+data.get('RMBTCHMTR_REMDATE') + '&quot;' + ','
+											+ '&quot;rmbtchmtrSdn&quot;:&quot;'+data.get('RMBTCHMTR_SDN') + '&quot;' + ','
+											+ '&quot;rmbtchmtrCnt&quot;:&quot;'+data.get('RMBTCHMTR_CNT') + '&quot;' + ','
+											+ '&quot;rmbtchmtrAmt&quot;:&quot;'+data.get('RMBTCHMTR_AMT') + '&quot;'
+										+ '}'
+										}">執行</button>
+						</td>
+						<td align="right" th:text="${data.get('RMBTCHMTR_TIMES')}" />
+						<td align="right" th:text="${data.get('RMBTCHMTR_CNT')}" />
+						<td align="right" th:text="${data.get('RMBTCHMTR_AMT')}" />
+						<td align="right" th:text="${data.get('RMBTCHMTR_SUCESS_CNT')}" />
+						<td align="right" th:text="${data.get('RMBTCHMTR_SUCESS_AMT')}" />
+						<td align="right" th:text="${data.get('RMBTCHMTR_FAIL_CNT')}" />
+						<td align="right" th:text="${data.get('RMBTCHMTR_FAIL_AMT')}" />
+						<td align="center" th:text="${data.get('FLAG')}" />
+						<td align="left" th:text="${data.get('RMBTCHMTR_CBS_RC')}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+			<script type="text/javascript" th:src="@{/js/rm/UI028220.js}"></script>
+		</div>
+</body>
+</html>

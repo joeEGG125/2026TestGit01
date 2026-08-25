@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.InbkparmExtMapper">
+	<!-- 2021-04-19 ZhaoKai add -->
+	<!-- 2021-07-20 Richard modified -->
+	<select id="queryByPK" parameterType="com.syscom.fep.mybatis.model.Inbkparm" resultMap="com.syscom.fep.mybatis.mapper.InbkparmMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.InbkparmMapper.Base_Column_List" />
+		FROM INBKPARM
+		WHERE INBKPARM_APID = #{inbkparmApid,jdbcType=CHAR}
+		AND NVL(RTRIM(INBKPARM_PCODE), ' ') = NVL(RTRIM(#{inbkparmPcode,jdbcType=CHAR}), ' ')
+		AND INBKPARM_ACQ_FLAG = #{inbkparmAcqFlag,jdbcType=CHAR}
+		AND INBKPARM_EFFECT_DATE &lt;= #{inbkparmEffectDate,jdbcType=CHAR}
+		AND INBKPARM_CUR = #{inbkparmCur,jdbcType=CHAR}
+		ORDER BY INBKPARM_EFFECT_DATE DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	 <select id="selectByPrimaryKey" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.InbkparmMapper.BaseResultMap">
+    select 
+    <include refid="com.syscom.fep.mybatis.mapper.InbkparmMapper.Base_Column_List" />
+    from INBKPARM
+    where INBKPARM_APID = #{inbkparmApid,jdbcType=CHAR}
+      and INBKPARM_PCODE = #{inbkparmPcode,jdbcType=CHAR}
+      and INBKPARM_ACQ_FLAG = #{inbkparmAcqFlag,jdbcType=CHAR}
+      and INBKPARM_EFFECT_DATE = #{inbkparmEffectDate,jdbcType=CHAR}
+      and INBKPARM_CUR = #{inbkparmCur,jdbcType=CHAR}
+      and INBKPARM_RANGE_FROM = #{inbkparmRangeFrom,jdbcType=DECIMAL}
+  </select>
+	<select id="queryInbkparmAll" parameterType="com.syscom.fep.mybatis.model.Inbkparm" resultMap="com.syscom.fep.mybatis.mapper.InbkparmMapper.BaseResultMap">
+    select 
+    <include refid="com.syscom.fep.mybatis.mapper.InbkparmMapper.Base_Column_List" />
+    from INBKPARM
+    ORDER BY INBKPARM_APID
+    </select>
+  
+	<select id="getINBKPARMByPK" parameterType="com.syscom.fep.mybatis.model.Inbkparm" resultMap="com.syscom.fep.mybatis.mapper.InbkparmMapper.BaseResultMap">
+	select
+    <include refid="com.syscom.fep.mybatis.mapper.InbkparmMapper.Base_Column_List" />
+    from INBKPARM
+    <where>
+      <if test='inbkparmApid != ""'>
+      and INBKPARM_APID = #{inbkparmApid,jdbcType=CHAR}
+      </if>
+      <if test='inbkparmAcqFlag != "N" '>
+      and INBKPARM_ACQ_FLAG = #{inbkparmAcqFlag,jdbcType=CHAR}
+      </if>
+      <if test='inbkparmEffectDate != " "'>
+      and INBKPARM_EFFECT_DATE = #{inbkparmEffectDate,jdbcType=CHAR}
+      </if>
+      <if test='inbkparmCur != "0"'>
+      and INBKPARM_CUR = #{inbkparmCur,jdbcType=CHAR}
+      </if>
+      <if test="inbkparmRangeFrom != null">
+      and INBKPARM_RANGE_FROM = #{inbkparmRangeFrom,jdbcType=DECIMAL}
+      </if>
+     </where>
+  </select>
+  <update id="updateByPrimaryKey" parameterType="com.syscom.fep.mybatis.model.Inbkparm">   
+    update INBKPARM
+    set INBKPARM_RANGE_TO = #{inbkparmRangeTo,jdbcType=DECIMAL},
+      INBKPARM_FEE_TYPE = #{inbkparmFeeType,jdbcType=DECIMAL},
+      INBKPARM_FEE_MBR_DR = #{inbkparmFeeMbrDr,jdbcType=DECIMAL},
+      INBKPARM_FEE_MBR_CR = #{inbkparmFeeMbrCr,jdbcType=DECIMAL},
+      INBKPARM_FEE_ASS_DR = #{inbkparmFeeAssDr,jdbcType=DECIMAL},
+      INBKPARM_FEE_ASS_CR = #{inbkparmFeeAssCr,jdbcType=DECIMAL},
+      INBKPARM_FEE_CUSTPAY = #{inbkparmFeeCustpay,jdbcType=DECIMAL},
+      INBKPARM_PRNCRDB = #{inbkparmPrncrdb,jdbcType=CHAR},
+      INBKPARM_FEE_MIN = #{inbkparmFeeMin,jdbcType=DECIMAL}
+    where INBKPARM_APID = #{inbkparmApid,jdbcType=CHAR}
+      and INBKPARM_PCODE = #{inbkparmPcode,jdbcType=CHAR}
+      and INBKPARM_ACQ_FLAG = #{inbkparmAcqFlag,jdbcType=CHAR}
+      and INBKPARM_EFFECT_DATE = #{inbkparmEffectDate,jdbcType=CHAR}
+      and INBKPARM_CUR = #{inbkparmCur,jdbcType=CHAR}
+      and INBKPARM_RANGE_FROM = #{inbkparmRangeFrom,jdbcType=DECIMAL}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="com.syscom.fep.mybatis.model.Inbkparm">
+    delete from INBKPARM
+    where INBKPARM_APID = #{inbkparmApid,jdbcType=CHAR}
+      and INBKPARM_PCODE = #{inbkparmPcode,jdbcType=CHAR}
+      and INBKPARM_ACQ_FLAG = #{inbkparmAcqFlag,jdbcType=CHAR}
+      and INBKPARM_EFFECT_DATE = #{inbkparmEffectDate,jdbcType=CHAR}
+      and INBKPARM_CUR = #{inbkparmCur,jdbcType=CHAR}
+      and INBKPARM_RANGE_FROM = #{inbkparmRangeFrom,jdbcType=DECIMAL}
+  </delete>
+</mapper>

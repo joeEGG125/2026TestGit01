@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+	<form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_015202/queryLoanTransaction}" method="post">
+		<table border="0" cellspacing="0" class="table-condition">
+			<tr>
+				<td class="condition-label">
+					<label for="lblBankNo" class="col-form-label">銀行代號</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{lblBankNo}" readonly>
+				</td>
+				<td class="condition-label">
+					<label for="clearDate" class="col-form-label">清算日期</label>
+				</td>
+				<td class="condition-input">
+					<div class="input-group date" id="clearDate" data-target-input="nearest">
+						<input type="text" class="form-control datetimepicker-input" data-target="#clearDate" th:field="*{clearDate}" />
+						<div class="input-group-append" data-target="#beginDate" data-toggle="datetimepicker">
+							<div class="input-group-text">
+								<i class="fa fa-calendar"></i>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td class="condition-label">
+					<label for="lblTxTime" class="col-form-label">查詢時間</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{lblTxTime}" disabled>
+				</td>
+				<td class="condition-label">
+					<label for="lblBknoStan" class="col-form-label">查詢序號</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{lblBknoStan}" disabled>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label for="apId5" class="col-form-label">跨行業務代號</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{apId5}">
+				</td>
+				<td class="condition-label" colspan="5">
+					<label for="lblBknoStan" class="col-form-label">代繳代發轉帳類別/消費扣款共用平台清算業務代號</label>
+				</td>
+				<td class="condition-input">
+					<input class="form-control" type="text" th:field="*{payType}">
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+	<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+		<table border="0" cellspacing="0" class="table-condition">
+			<tr>
+				<td>
+					<table class="table table-bordered text-nowrap">
+						<thead>
+						<tr align="center">
+							<th><b>跨行預留基金</b></th>
+							<th><b>跨行業務基金可用餘額</b></th>
+						</tr>
+						</thead>
+						<tr>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlPreFund,1,'COMMA',2,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlUseBal,1,'COMMA',2,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table class="table table-bordered text-nowrap">
+						<thead>
+						<tr align="center">
+							<th></th>
+							<th><b>借方筆數</b></th>
+							<th><b>借方金額</b></th>
+							<th><b>貸方筆數</b></th>
+							<th><b>貸方金額</b></th>
+						</tr>
+						</thead>
+						<tr>
+							<td align="left">業務小計</td>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlTotDbcnt,1,'COMMA',0,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlTotDbamt,1,'COMMA',2,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlTotCrcnt,1,'COMMA',0,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlTotCramt,1,'COMMA',2,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+						</tr>
+						<tr>
+							<td align="left">手續費小計</td>
+							<td align="right">0</td>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlFeeDbamt,1,'COMMA',2,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+							<td align="right">0</td>
+							<td align="right">
+								<span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.clrdtlFeeCramt,1,'COMMA',2,'POINT')}"></span>
+								<span th:if="${detailEntity==null}">0</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td width="1000px">
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>通匯交易</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td colspan="6">10011:通匯交易合計(不含基金撥轉)</td>
+											</tr>
+											<tr>
+												<td colspan="6">10000或11011: 通匯匯款類合計</td>
+											</tr>
+											<tr>
+												<td>11111:入戶電匯</td>
+												<td>11211:國庫匯款</td>
+												<td>11311:同業匯款</td>
+												<td>11711:退還匯款</td>
+												<td>11811:証券匯款</td>
+												<td>11911:票券匯款</td>
+											</tr>
+											<tr>
+												<td>12011:超商代收稅款</td>
+												<td colspan="2">12111:金融臨櫃代收稅款</td>
+												<td>13011:代繳代發</td>
+												<td colspan="2">14011:TSCC業務</td>
+											</tr>
+											<tr>
+												<td colspan="6">53111:基金撥轉</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>全國性繳費(稅)交易(X:1:本營業日, 3:未完成交易之沖正處理, 4:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>2260X:全國繳費合計</td>
+												<td>2261X:轉入</td>
+												<td>2262X:轉出</td>
+												<td>2263X:自行</td>
+												<td>2264X:跨轉</td>
+											</tr>
+											<tr>
+												<td>2560X:晶片全國繳費合計</td>
+												<td>2561X:轉入</td>
+												<td>2562X:轉出</td>
+												<td>2563X:自行</td>
+												<td>2564X:跨轉</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>國際金融卡交易(X:1:本營業日, 2:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>2421X:會員VISA預借現金</td>
+												<td>2431X:會員MAST預借現金</td>
+												<td>2441X:會員JCB預借現金</td>
+											</tr>
+											<tr>
+												<td>2422X:跨國VISA /DEBIT</td>
+												<td>2432X:跨國MAST DEBIT</td>
+												<td>2482X:跨國銀聯 DEBIT</td>
+											</tr>
+											<tr>
+												<td>2423X:國內VISA預借現金</td>
+												<td>2433X:國內MAST預借現金</td>
+												<td>2443X:國內JCB預借現金</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>晶片卡交易( X:1:本營業日,2:人工沖正, 3:未完成交易之沖正處理, 4:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td colspan="6">2510X:晶片提款</td>
+											</tr>
+											<tr>
+												<td>2520X:晶片轉帳合計</td>
+												<td>2521X:轉入</td>
+												<td>2522X:轉出</td>
+												<td>2523X:自行</td>
+												<td>2524X:跨轉</td>
+												<td>2525:消費扣款(固定)</td>
+											</tr>
+											<tr>
+												<td>2530X:晶片繳款合計</td>
+												<td>2531X:跨繳</td>
+												<td colspan="4">2532X:自繳</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>晶片金融卡跨國交易( X:1:本營業日, 4:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>2571X:晶片跨國提款</td>
+												<td>2572X:晶片跨國提款沖正</td>
+												<td>2573X:晶片跨國提款人工沖正</td>
+											</tr>
+											<tr>
+												<td>2545X:晶片跨國消費扣款</td>
+												<td>2546X:晶片跨國消費扣款沖正</td>
+												<td>2549X:晶片跨國消費扣款人工沖正</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>消費扣款交易(X:1:本營業日, 3:未完成交易之沖正處理, 4:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>2540X:消費扣款合計</td>
+												<td>2541X: 消費扣款(變動)</td>
+												<td>2542X:沖正</td>
+												<td>2543X:退貨</td>
+											</tr>
+											<tr>
+												<td colspan="4">2552X:授權完成</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>跨境電子支付交易(X:1:本營業日, 4:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>2555X:跨境電子支付(Outbound)交易</td>
+												<td>2556X:跨境電子支付(Outbound)退款交易</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>約定及核驗服務交易(X:1:本營業日, 4:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>2566X:約定及核驗服務交易</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>全國繳稅交易(X:1:本營業日, 3:未完成交易之沖正處理, 4:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>2567X:自繳</td>
+												<td>2568X:跨繳</td>
+												<td>2569X:ID+ACC跨繳</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>銷售點服務</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>61211:國內VISA轉帳卡</td>
+												<td>61311: 國內MAST轉帳卡</td>
+												<td>62811: 銀聯卡國內交易</td>
+												<td>62711:消費扣款收單</td>
+											</tr>
+											<tr>
+												<td>61221:國外VISA轉帳卡</td>
+												<td>61321: 國外MAST轉帳卡</td>
+												<td colspan="2">62821: 銀聯卡國外交易</td>
+											</tr>
+											<tr>
+												<td>62211:VISA卡信用(On Us)</td>
+												<td colspan="3">62221: VISA卡信用(Not On Us)</td>
+											</tr>
+											<tr>
+												<td>62311:MAST卡信用(On Us)</td>
+												<td colspan="3">62321: VISA卡信用(Not On Us)</td>
+											</tr>
+											<tr>
+												<td>62241:VISA卡繳稅</td>
+												<td>62341: MAST卡繳稅</td>
+												<td colspan="2">62441: JCB卡繳稅</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>FEDI(X:1:本營業日, 2:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td>7111X:FEDI付款交易</td>
+												<td>7171X: FEDI退款交易</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="card card-outline card-primary">
+									<div class="card-header">
+										<h3 class="card-title"><b>金融XML(X:1:本營業日, 2:次營業日)</b></h3>
+
+										<div class="card-tools">
+											<button type="button" class="btn btn-tool" data-card-widget="collapse">
+												<i class="fas fa-minus"></i>
+											</button>
+										</div>
+										<!-- /.card-tools -->
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body" style="display: block;">
+										<table  border="0" cellspacing="0" class="table-condition" width="100%">
+											<tr>
+												<td colspan="2">7301X: 轉帳類交易</td>
+											</tr>
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+</div>
+<div layout:fragment="panel-script">
+	<script type="text/javascript" th:src="@{/js/inbk/UI015202.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.GraylistExtMapper">
+  <select id="getGraylistByAct" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.GraylistMapper.BaseResultMap">
+    SELECT
+    <include refid="com.syscom.fep.mybatis.mapper.GraylistMapper.Base_Column_List"/>
+    FROM GRAYLIST
+    WHERE ALLBANK_BKNO = #{bankNo,jdbcType=VARCHAR}
+    AND ACCOUNT_NO LIKE #{actNo,jdbcType=VARCHAR}
+    <if test='TxnDate != null and TxnDate != ""'>
+      AND WATCH_START_DATE &lt;= #{TxnDate,jdbcType=CHAR}
+      AND WATCH_END_DATE &gt;= #{TxnDate,jdbcType=CHAR}
+    </if>
+  </select>
+  <select id="checkGraylist" resultType="boolean">
+    SELECT COUNT(1) > 0
+    FROM GRAYLIST
+  </select>
+  <update id="updateGraylist">
+    update GRAYLIST
+    set PRE_PROCESS_NOTE = '*'
+  </update>
+  <delete id="deleteByPreProcessNote">
+    delete
+    from GRAYLIST
+    where PRE_PROCESS_NOTE = '*'
+  </delete>
+  <insert id="insert" parameterType="com.syscom.fep.mybatis.model.Graylist">
+    insert into GRAYLIST (ALLBANK_BKNO, ACCOUNT_NO, WATCH_START_DATE,
+    WATCH_END_DATE, PHONE1, PHONE2,
+    IMPORT_TIMESTAMP, SOURCE_SYSTEM, NOTES,
+    UPDATE_TIME, PRE_PROCESS_NOTE)
+    values (#{allbankBkno,jdbcType=VARCHAR}, #{accountNo,jdbcType=VARCHAR}, #{watchStartDate,jdbcType=CHAR},
+    #{watchEndDate,jdbcType=CHAR}, #{phone1,jdbcType=VARCHAR}, #{phone2,jdbcType=VARCHAR},
+    #{importTimestamp,jdbcType=TIMESTAMP}, #{sourceSystem,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR},
+    #{updateTime,jdbcType=TIMESTAMP}, #{preProcessNote,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.syscom.fep.mybatis.model.Graylist">
+    update GRAYLIST
+    <set>
+      <if test="watchStartDate != null">
+        WATCH_START_DATE = #{watchStartDate,jdbcType=CHAR},
+      </if>
+      <if test="watchEndDate != null">
+        WATCH_END_DATE = #{watchEndDate,jdbcType=CHAR},
+      </if>
+      <if test="phone1 != null">
+        PHONE1 = #{phone1,jdbcType=VARCHAR},
+      </if>
+      <if test="phone2 != null">
+        PHONE2 = #{phone2,jdbcType=VARCHAR},
+      </if>
+      <if test="importTimestamp != null">
+        IMPORT_TIMESTAMP = #{importTimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceSystem != null">
+        SOURCE_SYSTEM = #{sourceSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="notes != null">
+        NOTES = #{notes,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preProcessNote != null">
+        PRE_PROCESS_NOTE = #{preProcessNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ALLBANK_BKNO = #{allbankBkno,jdbcType=VARCHAR}
+    and ACCOUNT_NO = #{accountNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

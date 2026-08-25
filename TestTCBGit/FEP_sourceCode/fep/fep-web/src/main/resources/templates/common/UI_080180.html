@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnChangeLineStatus" th:if="${showBtnChangeLineStatus}">變更狀態</button>
+</div>
+<div layout:fragment="panel-grid" th:if="${list.size>0}">
+    <div class="card-body table-responsive p-0">
+        <form id="form-validator" th:action="@{/common/UI_080180/doChangeLineStatus}" method="post">
+            <table style="width:100%">
+                <tr th:each="row,rowState:${list}">
+                    <td>
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>[[${row.lineType.description}]]</b></h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0">
+                                <table style="width:100%">
+                                    <tr>
+                                        <td th:each="status, statusStat : ${row.status}" style="vertical-align: top">
+                                            <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="margin-bottom: 0px;">
+                                                <thead>
+                                                <tr>
+                                                    <th width="20%"><b>主機名稱</b></th>
+                                                    <th width="20%"><b>線路類型</b></th>
+                                                    <th width="20%"><b>腳位</b></th>
+                                                    <th width="20%"><b>腳位狀態</b></th>
+                                                    <th width="20%"><b>啟用狀態</b></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr-modes th:each="gatewayMode, gatewayModeStat : ${status.modes}">
+                                                    <tr-lines th:each="line, lineStat : ${gatewayMode.lines}">
+                                                        <tr>
+                                                            <td align="center" th:text="${status.hostName}" th:if="!${status.show}"
+                                                                th:rowspan="${T(com.syscom.fep.web.controller.common.UI_080180Controller).getRowSpan(status)}"/>
+                                                            <td align="center" th:text="${gatewayMode.modeName}" th:if="${lineStat.index==0}" th:rowspan="${gatewayMode.lines!=null?gatewayMode.lines.size:1}"/>
+                                                            <td align="center">[[${line.sClientId}]]<br/>[[${line.rClientId}]]</td>
+                                                            <td align="center" th:if="${line.enable && line.connected}">連線</td>
+                                                            <td align="center" th:if="${line.enable && !line.connected}" style="color: red">斷線</td>
+                                                            <td align="center" th:unless="${line.enable}"/>
+                                                            <td align="center">
+                                                                <input class="col-form-radio" type="radio"
+                                                                       th:name="${T(com.syscom.fep.web.controller.common.UI_080180Controller).hashCode(status.hostName,gatewayMode.modeName,row.lineType,line.sClientId)}"
+                                                                       th:checked="${line.enable}" value="true">&nbsp;&nbsp;啟用</input>
+                                                                &nbsp;&nbsp;
+                                                                <input class="col-form-radio" type="radio"
+                                                                       th:name="${T(com.syscom.fep.web.controller.common.UI_080180Controller).hashCode(status.hostName,gatewayMode.modeName,row.lineType,line.sClientId)}"
+                                                                       th:checked="!${line.enable}" value="false">&nbsp;&nbsp;停用</input>
+                                                            </td>
+                                                        </tr>
+                                                    </tr-lines>
+                                                </tr-modes>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI080180.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_019400/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label for="ddlZoneBrap" class="col-form-label">地區</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" id="ddlZoneBrap" th:field="*{ddlZoneBrap}">
+                        <option value="TWN">台灣</option>
+                        <option value="HKG">香港</option>
+                        <option value="MAC">澳門</option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label for="lblStDate" class="col-form-label">清算日期</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" id="lblStDate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#lblStDate"
+                               th:field="*{lblStDate}"/>
+                        <div class="input-group-append" data-target="#lblStDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="pcode" class="col-form-label">PCODE</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{pcode}" maxlength="4"/>
+                </td>
+                <td class="condition-label">
+                    <label for="apId" class="col-form-label">APID</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{apId}" maxlength="5"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="brapBrno" class="col-form-label">分行代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{brapBrno}" maxlength="3"/>
+                </td>
+                <td class="condition-label">
+                    <label for="brapDeptCode" class="col-form-label">績效行</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{brapDeptCode}" maxlength="6"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="brapTxType" class="col-form-label">交易類別</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" id="brapTxType" th:field="*{brapTxType}">
+                        <option value=""></option>
+                        <option value="A">A:代理</option>
+                        <option value="I">I:轉入</option>
+                        <option value="O">O:轉出</option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label for="brapCur" class="col-form-label">幣別</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{brapCur}" maxlength="3"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap"
+               th:if="${pageData != null}">
+            <thead>
+            <tr>
+                <th><b>流水號</b></th>
+                <th><b>清算日期</b></th>
+                <th><b>PCODE</b></th>
+                <th><b>APID</b></th>
+                <th><b>分行代號</b></th>
+                <th><b>績效行</b></th>
+                <th><b>交易類別</b></th>
+                <th><b>記帳類別</b></th>
+                <th><b>手續費月結註記</b></th>
+                <th><b>地區</b></th>
+                <th><b>幣別</b></th>
+                <th><b>應收筆數</b></th>
+                <th><b>應收金額</b></th>
+                <th><b>應付筆數</b></th>
+                <th><b>應付金額</b></th>
+                <th><b>客戶手續費筆數</b></th>
+                <th><b>客戶手續費金額</b></th>
+                <th><b>應收同業筆數</b></th>
+                <th><b>應收同業金額</b></th>
+                <th><b>應付同業筆數</b></th>
+                <th><b>應付同業金額</b></th>
+                <th><b>應收財金筆數</b></th>
+                <th><b>應收財金金額</b></th>
+                <th><b>應付財金筆數</b></th>
+                <th><b>應付財金金額</b></th>
+                <th><b>手續費收入筆數</b></th>
+                <th><b>手續費收入金額</b></th>
+                <th><b>手續費支出筆數</b></th>
+                <th><b>手續費支出金額</b></th>
+                <th><b>繳費種類</b></th>
+                <th><b>人工調整應收交易筆數</b></th>
+                <th><b>人工調整應收交易金額</b></th>
+                <th><b>人工調整應付交易筆數</b></th>
+                <th><b>人工調整應付交易金額</b></th>
+                <th><b>人工調整客戶手續費筆數</b></th>
+                <th><b>人工調整客戶手續費金額</b></th>
+                <th><b>人工調整應付財金手續費筆數</b></th>
+                <th><b>人工調整應付財金手續費金額</b></th>
+                <th><b>人工調整手續費收入筆數</b></th>
+                <th><b>人工調整手續費收入金額</b></th>
+                <th><b>人工調整手續費支出筆數</b></th>
+                <th><b>人工調整手續費支出金額</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td align="center" th:text="${data.BRAP_SEQNO}"/>
+                <td align="center" th:text="${data.BRAP_ST_DATE}"/>
+                <td align="center" th:text="${data.BRAP_PCODE}"/>
+                <td align="center" th:text="${data.BRAP_APID}"/>
+                <td align="center" th:text="${data.BRAP_BRNO}"/>
+                <td align="center" th:text="${data.BRAP_DEPT_CODE}"/>
+                <td align="center" th:text="${data.BRAP_TX_TYPE}"/>
+                <td align="center" th:text="${data.BRAP_ACC_TYPE}"/>
+                <td align="center" th:text="${data.BRAP_MONTHLY_FLAG}"/>
+                <td align="center" th:text="${data.BRAP_ZONE_CODE}"/>
+                <td align="center" th:text="${data.BRAP_CUR}"/>
+                <td align="center" th:text="${data.BRAP_TX_CNT_DR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_TX_AMT_DR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_TX_CNT_CR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_TX_AMT_CR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_CNT_CUSTPAY}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_FEE_CUSTPAY,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_MBANK_CNT_DR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MBANK_FEE_DR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_MBANK_CNT_CR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MBANK_FEE_CR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_FISC_CNT_DR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_FISC_FEE_DR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_FISC_CNT_CR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_FISC_FEE_CR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_PROFIT_CNT}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_PROFIT_AMT,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_LOSS_CNT}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_LOSS_AMT,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_PBTYPE}"/>
+                <td align="center" th:text="${data.BRAP_MOD_TX_CNT_DR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MOD_TX_AMT_DR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_MOD_TX_CNT_CR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MOD_TX_AMT_CR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_MOD_CNT_CUSTPAY}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MOD_FEE_CUSTPAY,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_MOD_FISC_CNT_CR}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MOD_FISC_FEE_CR,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_MOD_PROFIT_CNT}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MOD_PROFIT_AMT,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.BRAP_MOD_LOSS_CNT}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.BRAP_MOD_LOSS_AMT,1,'COMMA',2,'POINT')}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/inbk/UI019400.js}"></script>
+</div>
+</body>
+</html>

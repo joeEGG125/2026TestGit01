@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028022/queryClick}" method="post">
+            <div class="card card-primary card-outline" >
+                <div class="card-header">
+                    <h5 class="card-title">查詢條件</h5>
+                </div>
+                <div class="card-body">
+                    <div class="condition-label row">
+                            <label for="orgFiscno" class="col-form-label col-2">原電文序號</label>
+                            <input class="form-control col-2" type="text" th:field="*{orgFiscno}" maxlength="7"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="orgPcode" class="col-form-label col-2">原交易類別</label>
+                            <select class="form-control col-2" th:field="*{orgPcode}">
+                                <option value="1111" selected="selected">1111:跨行電匯</option>
+                                <option value="1121">1121:公庫匯款</option>
+                                <option value="1131">1131:同業匯款</option>
+                                <option value="1171">1171:退還匯款</option>
+                                <option value="1181">1181:證券匯款</option>
+                                <option value="1191">1191:票券匯款</option>
+                                <option value="1411">1411:一般通訊</option>
+                            </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h5 class="card-title">財金回應訊息</h5>
+                </div>
+                <div class="card-body">
+                    <div class="condition-label row">
+                            <label for="oOrgTxamt" class="col-form-label col-2">原交易金額</label>
+                            <input class="form-control col-2" type="text" th:field="*{oOrgTxamt}"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="oOrgFiscno" class="col-form-label col-2">原電文序號</label>
+                            <input class="form-control col-2" type="text" th:field="*{oOrgFiscno}"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="oOrgRmsno" class="col-form-label col-2">原通匯序號</label>
+                            <input class="form-control col-2" type="text" th:field="*{oOrgRmsno}"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="oOrgReceiverBank" class="col-form-label col-2">原解款行代號</label>
+                            <input class="form-control col-2" type="text" th:field="*{oOrgReceiverBank}"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="oMsg" class="col-form-label col-2">狀況代號及說明</label>
+                            <input class="form-control col-2" type="text" th:field="*{oMsg}"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="oOrgPcode" class="col-form-label col-2">原交易類別</label>
+                            <input class="form-control col-2" type="text" th:field="*{oOrgPcode}"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="oOrgStan" class="col-form-label col-2">原交易序號</label>
+                            <input class="form-control col-2" type="text" th:field="*{oOrgStan}"/>
+                    </div>
+                    <div class="condition-label row">
+                            <label for="oOrgTxDatetime" class="col-form-label col-2">解款行接受交易日期時間</label>
+                            <input class="form-control col-2" type="text" th:field="*{oOrgTxDatetime}"/>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid">
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028022.js}"></script>
+</div>
+</body>
+</html>

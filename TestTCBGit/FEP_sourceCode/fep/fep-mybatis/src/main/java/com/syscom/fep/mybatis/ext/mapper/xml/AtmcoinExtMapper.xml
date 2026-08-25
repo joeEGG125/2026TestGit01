@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.AtmcoinExtMapper">
+    <!-- 2021-04-29 ZhaoKai add -->
+    <select id="getAtmCoinForInventoryCash" parameterType="map" resultType="java.lang.Long">
+        SELECT SUM(ATMCOIN_UNIT * (ATMCOIN_REFILL + ATMCOIN_DEPOSIT - ATMCOIN_PRESENT + ATMCOIN_REJECT)) AS COIN_AMT
+        FROM ATMCOIN
+        WHERE ATMCOIN_ATMNO = #{atmcoinatmno,jdbcType=CHAR}
+          AND ATMCOIN_RWT_SEQNO = #{atmcoinrwtseqno,jdbcType=INTEGER}
+          AND ATMCOIN_SETTLE = 0
+          AND ATMCOIN_CUR = 'TWD'
+        GROUP BY ATMCOIN_ATMNO, ATMCOIN_RWT_SEQNO
+    </select>
+    <!-- 2021-04-30 ZhaoKai add -->
+    <update id="updateByCandidateKeyAccumulation" parameterType="com.syscom.fep.mybatis.model.Atmcoin">
+        UPDATE ATMCOIN
+        <set>
+            <if test="atmcoinTxDate != null">
+                ATMCOIN_TX_DATE = #{atmcoinTxDate,jdbcType=CHAR},
+            </if>
+            <if test="atmcoinAtmno != null">
+                ATMCOIN_ATMNO = #{atmcoinAtmno,jdbcType=CHAR},
+            </if>
+            <if test="atmcoinRwtSeqno != null">
+                ATMCOIN_RWT_SEQNO = #{atmcoinRwtSeqno,jdbcType=INTEGER},
+            </if>
+            <if test="atmcoinSettle != null">
+                ATMCOIN_SETTLE = #{atmcoinSettle,jdbcType=DECIMAL},
+            </if>
+            <if test="atmcoinBoxno != null">
+                ATMCOIN_BOXNO = #{atmcoinBoxno,jdbcType=DECIMAL},
+            </if>
+            <if test="atmcoinCur != null">
+                ATMCOIN_CUR = #{atmcoinCur,jdbcType=CHAR},
+            </if>
+            <if test="atmcoinUnit != null">
+                ATMCOIN_UNIT = #{atmcoinUnit,jdbcType=INTEGER},
+            </if>
+            <if test="atmcoinRefill != null">
+                ATMCOIN_REFILL = #{atmcoinRefill,jdbcType=INTEGER},
+            </if>
+            <if test="atmcoinDeposit != null">
+                ATMCOIN_DEPOSIT = #{atmcoinDeposit,jdbcType=INTEGER},
+            </if>
+            <if test="atmcoinPresent != null">
+                ATMCOIN_PRESENT = #{atmcoinPresent,jdbcType=INTEGER},
+            </if>
+            <if test="atmcoinReject != null">
+                ATMCOIN_REJECT = #{atmcoinReject,jdbcType=INTEGER},
+            </if>
+            <if test="atmcoinUnknown != null">
+                ATMCOIN_UNKNOWN = #{atmcoinUnknown,jdbcType=INTEGER},
+            </if>
+            <if test="updateUserid != null">
+                UPDATE_USERID = #{updateUserid,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE ATMCOIN_TX_DATE = #{atmcoinTxDate,jdbcType=CHAR}
+        AND ATMCOIN_ATMNO = #{atmcoinAtmno,jdbcType=CHAR}
+        AND ATMCOIN_RWT_SEQNO = #{atmcoinRwtSeqno,jdbcType=INTEGER}
+        AND ATMCOIN_SETTLE = #{atmcoinSettle,jdbcType=DECIMAL}
+        AND ATMCOIN_BOXNO = #{atmcoinBoxno,jdbcType=DECIMAL}
+        AND ATMCOIN_CUR = #{atmcoinCur,jdbcType=CHAR}
+        AND ATMCOIN_UNIT = #{atmcoinUnit,jdbcType=INTEGER}
+    </update>
+    <!-- 2022-05-23 Han add -->
+    <select id="GetATMCoinByAtmnoRwtseqnoSettleforTTC"
+            parameterType="map" resultType="map">
+        SELECT SUM(ATMCOIN_REFILL) AS
+                   refillSum,
+               ATMCOIN_BOXNO,
+               ATMCOIN_CUR,
+               ATMCOIN_UNIT
+        FROM ATMCOIN
+                 JOIN ATMSTAT ON ATMSTAT_ATMNO = ATMCOIN_ATMNO AND ATMSTAT_CRWT_SEQNO =
+                                                                   ATMCOIN_RWT_SEQNO
+        WHERE ATMCOIN_ATMNO = #{feptxnAtmno,jdbcType=VARCHAR}
+          AND ATMCOIN_SETTLE = 0
+        GROUP BY ATMCOIN_BOXNO, ATMCOIN_CUR, ATMCOIN_UNIT
+    </select>
+    <!-- 2022-05-24 Han add -->
+    <select id="GetATMCoinByAtmnoRwtseqnoSettle2"
+            parameterType="map" resultType="map">
+        SELECT SUM(ATMCOIN_REFILL)  AS refillSum,
+               SUM(ATMCOIN_DEPOSIT) AS depositSum,
+               SUM(ATMCOIN_PRESENT) AS
+                                       presentSum,
+               SUM(ATMCOIN_REJECT)  AS rejectSum,
+               SUM(ATMCOIN_UNKNOWN) AS
+                                       unknowSum,
+               ATMCOIN_BOXNO,
+               ATMCOIN_CUR,
+               ATMCOIN_UNIT
+        FROM ATMCOIN
+        WHERE ATMCOIN_RWT_SEQNO = #{ATMCOIN_RWT_SEQNO,jdbcType=VARCHAR}
+          AND ATMCOIN_SETTLE = #{ATMCOIN_SETTLE,jdbcType=DECIMAL}
+        GROUP BY ATMCOIN_BOXNO, ATMCOIN_CUR, ATMCOIN_UNIT
+    </select>
+    <!-- 2022-05-24 Han add -->
+    <select id="GetATMCoinByAtmnoRwtseqnoSettle3"
+            parameterType="map" resultType="map">
+        SELECT SUM(ATMCOIN_REFILL)  AS refillSum,
+               SUM(ATMCOIN_DEPOSIT) AS depositSum,
+               SUM(ATMCOIN_PRESENT) AS
+                                       presentSum,
+               SUM(ATMCOIN_REJECT)  AS rejectSum,
+               SUM(ATMCOIN_UNKNOWN) AS
+                                       unknowSum,
+               ATMCOIN_BOXNO,
+               ATMCOIN_CUR,
+               ATMCOIN_UNIT
+        FROM ATMCOIN
+        WHERE ATMCOIN_ATMNO = #{ATMCOIN_ATMNO,jdbcType=VARCHAR}
+          AND ATMCOIN_RWT_SEQNO = #{ATMCOIN_RWT_SEQNO,jdbcType=VARCHAR}
+          AND ATMCOIN_SETTLE = #{ATMCOIN_SETTLE,jdbcType=DECIMAL}
+        GROUP BY ATMCOIN_BOXNO, ATMCOIN_CUR, ATMCOIN_UNIT
+    </select>
+</mapper>

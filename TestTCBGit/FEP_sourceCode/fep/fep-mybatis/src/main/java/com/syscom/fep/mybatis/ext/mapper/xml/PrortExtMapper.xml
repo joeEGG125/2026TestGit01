@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.PrortExtMapper">
+	<!-- 2022-06-13 Bruce add -->
+	<select id="getPrortByGroupIdLike" parameterType="java.lang.String" resultType="java.util.Map">
+	   SELECT PROGRAM_NAME,
+	          PROGRAM_ID 
+	     FROM PRORT
+	    INNER JOIN PROGRAM ON PRORT_PROG_ID = PROGRAM_ID
+	    WHERE PRORT_GROUP_ID LIKE CONCAT('%', CONCAT(#{fepgroupGroupId,jdbcType=NVARCHAR}, '%'))
+	    ORDER by PRORT_PROG_ID 
+	</select>
+</mapper>

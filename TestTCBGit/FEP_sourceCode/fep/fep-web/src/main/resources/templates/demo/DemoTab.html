@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button" class="panel-hidden"></div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+		<div class="card card-primary card-outline card-tabs">
+			<div class="card-header p-0 pt-1 border-bottom-0">
+				<ul class="nav nav-tabs" role="tablist">
+					<li fep:nav-item="tabId1" nav-item-selected="true" nav-item-caption="基本資料"></li>
+					<li fep:nav-item="tabId2" nav-item-selected="false" nav-item-caption="財金系統狀態"></li>
+					<li fep:nav-item="tabId3" nav-item-selected="false" nav-item-caption="本行系統狀態"></li>
+				</ul>
+			</div>
+			<div class="card-body p-0">
+				<div class="tab-content">
+					<div fep:tab-pane="tabId1" tab-pane-selected="true" tab-pane-class="panel-detail">基本資料</div>
+					<div fep:tab-pane="tabId2" tab-pane-selected="false" tab-pane-class="panel-detail">財金系統狀態</div>
+					<div fep:tab-pane="tabId3" tab-pane-selected="false" tab-pane-class="panel-detail">本行系統狀態</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="panel-script"></div>
+</body>
+</html>

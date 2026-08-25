@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.RmouteExtMapper">
+
+    <select id="getDataTableByPrimaryKey" parameterType="map"
+            resultMap="com.syscom.fep.mybatis.mapper.RmouteMapper.BaseResultMap">
+        SELECT  <include refid="com.syscom.fep.mybatis.mapper.RmouteMapper.Base_Column_List" />
+        FROM RMOUTE
+        <where>
+            <if test="rmouteTxdate != null and rmouteTxdate != ''">
+                AND RMOUTE_TXDATE = #{rmouteTxdate,jdbcType=VARCHAR}
+            </if>
+            <if test='rmouteBrno != null and rmouteBrno != " "'>
+                AND RMOUTE_BRNO = #{rmouteBrno,jdbcType=VARCHAR}
+            </if>
+            <if test='rmouteFepno != null and rmouteFepno != " "'>
+                AND RMOUTE_FEPNO = #{rmouteFepno,jdbcType=VARCHAR}
+            </if>
+            <if test='rmouteOriginal != null and rmouteOriginal != " "'>
+                AND RMOUTE_ORIGINAL = #{rmouteOriginal,jdbcType=VARCHAR}
+            </if>
+            <if test="rmouteFepsubno != null and rmouteFepsubno != ''">
+                AND RMOUTE_FEPSUBNO = #{rmouteFepsubno,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

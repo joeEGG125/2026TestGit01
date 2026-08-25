@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028260/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label for="dtTxDate" class="col-form-label">匯入日期</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" id="dtTxDate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#dtTxDate" th:field="*{dtTxDate}" />
+                        <div class="input-group-append" data-target="#dtTxDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="condition-label" for="tbFepNo">
+                    <label class="col-form-label">匯入登錄序號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{tbFepNo}">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="tbTxAmt">
+                    <label class="col-form-label">匯款金額</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{tbTxAmt}">
+                </td>
+                <td class="condition-label">
+                    <label for="dtOrgDate" class="col-form-label">匯入日期</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" id="dtOrgDate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#dtOrgDate" th:field="*{dtOrgDate}" />
+                        <div class="input-group-append" data-target="#dtOrgDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="tbBrno">
+                    <label class="col-form-label">原登錄分行</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text"  th:field="*{tbBrno}">
+                </td>
+                <td class="condition-label" for="ddlOriginal">
+                    <label class="col-form-label">原交易來源</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{ddlOriginal}">
+                        <option value="" selected="selected"></option>
+                        <option value="0-臨櫃">0-臨櫃</option>
+                        <option value="1-FCS">1-FCS</option>
+                        <option value="2-FEDI">2-FEDI</option>
+                        <option value="3-FISC">3-FISC</option>
+                        <option value="4-MMAB2B">4-MMAB2B</option>
+                        <option value="5-緊急匯款">5-緊急匯款</option>
+                        <option value="6-匯入款退匯">6-匯入款退匯</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="tbOrgFepNo">
+                    <label class="col-form-label">原登錄序號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text"  th:field="*{tbOrgFepNo}">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-grid">
+</div>
+<div layout:fragment="panel-summary">
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028260.js}"></script>
+</div>
+</body>
+</html>

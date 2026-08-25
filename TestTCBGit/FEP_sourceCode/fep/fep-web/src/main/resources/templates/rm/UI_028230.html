@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table
+				class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b></b></th>
+						<th><b>FEP登錄序號</b></th>
+						<th><b>FEDI序號</b></th>
+						<th><b>匯款時間</b></th>
+						<th><b>匯款狀態</b></th>
+						<th><b>財金回覆結果</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data : ${pageData.list}">
+						<td align="center">
+							<button type="button" class="btn btn-primary btn-inquiry"
+								th:value="${
+										'{' + '&quot;rmoutTxDate&quot;:&quot;'+data.get('RMOUT_TXDATE')  + '&quot;' + ','
+											+ '&quot;rmoutBrno&quot;:&quot;'+data.get('RMOUT_BRNO') + '&quot;' + ','
+											+ '&quot;rmoutOriginal&quot;:&quot;'+data.get('RMOUT_ORIGINAL') + '&quot;' + ','
+											+ '&quot;rmoutFepno&quot;:&quot;'+data.get('RMOUT_FEPNO') + '&quot;' + ','
+											+ '&quot;rmoutFiscRtnCode&quot;:&quot;'+data.get('RMOUT_FISC_RTN_CODE') + '&quot;' + ','
+											+ '&quot;rmoutStat&quot;:&quot;'+data.get('RMOUT_STAT') + '&quot;'
+										+ '}'
+										}">執行</button>
+						</td>
+						<td align="left" th:text="${data.get('RMOUT_FEPNO_UI')}" />
+						<td align="left" th:text="${data.get('RMOUT_BRSNO')}" />
+						<td align="left" th:text="${data.get('RMOUT_SENDTIME')}" />
+						<td align="left" th:text="${data.get('RMOUT_STAT_UI')}" />
+						<td align="left" th:text="${data.get('RMOUT_FISC_RTNCODE_UI')}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+			<script type="text/javascript" th:src="@{/js/rm/UI028230.js}"></script>
+		</div>
+</body>
+</html>

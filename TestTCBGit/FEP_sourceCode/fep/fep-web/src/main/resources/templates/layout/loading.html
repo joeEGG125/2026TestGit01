@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Loading</title>
+</head>
+<body>
+	<div th:fragment="loading" class="overlay-wrapper panel-loading">
+		<div class="overlay">
+			<div class="panel-loading-overlay">
+				<!-- 
+					<i class="fas fa-3x fa-sync-alt fa-spin"></i>
+					<div class="text-bold pt-2 panel-loading-message"></div>
+				-->
+				<div class="l-loading-logo">
+					<img th:src="@{/images/logo-simple-wt.svg}">
+				</div>
+				<div class="l-loading-animate">
+					<div class="c-loadingAnmiate"></div>
+				</div>
+			</div>
+		</div>
+		<script th:inline="javascript">
+			/**
+			 * 顯示隱藏Loading
+			 *
+			 * @param show
+			 * @param message
+			 */
+			function showLoading(show, message) {
+				var selector = $(".panel-loading");
+				var messageBar = $(".panel-loading-message");
+				if (show) {
+					selector.show();
+					if (messageBar) {
+						if (stringIsBlank(message)) {
+							messageBar.html('處理中...');
+						} else {
+							messageBar.html(message);
+						}
+					}
+				} else {
+					selector.hide();
+					messageBar.html('');
+				}
+			}
+		</script>
+	</div>
+</body>
+</html>

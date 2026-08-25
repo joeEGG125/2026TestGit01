@@ -1,0 +1,5 @@
+package com.syscom.fep.gateway.netty.sample.server;
+
+import com.syscom.fep.gateway.netty.NettyTransmissionChannelProcessRequestServerManager;
+
+public class SampleGatewayServerProcessRequestManager extends NettyTransmissionChannelProcessRequestServerManager<SampleGatewayServerConfiguration, SampleGatewayServerProcessRequest> {}

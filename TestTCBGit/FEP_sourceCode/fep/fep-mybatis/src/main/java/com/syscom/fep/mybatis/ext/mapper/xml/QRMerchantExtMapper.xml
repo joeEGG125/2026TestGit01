@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+        namespace="com.syscom.fep.mybatis.ext.mapper.QRMerchantExtMapper">
+
+    <update id="deleteQRMERCHANT">
+        DELETE FROM QRMERCHANT
+    </update>
+    <insert id="batchInsertQRMERCHANT" parameterType="java.util.List">
+        INSERT INTO QRMERCHANT (
+        QRMERCHANT_BANK,
+        QRMERCHANT_ID,
+        QRMERCHANT_NAME,
+        QRMERCHANT_ABBNM,
+        QRMERCHANT_MCC,
+        UPDATE_USERID,
+        UPDATE_TIME
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.qrMerchantBank},
+            #{item.qrMerchantId},
+            #{item.qrMerchantName},
+            #{item.qrMerchantAbbnm},
+            #{item.qrMerchantMcc},
+            #{item.updateUserid},
+            #{item.updateTime}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

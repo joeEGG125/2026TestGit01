@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.UserDefineExtMapper">
+    <resultMap id="GetPbmrByIdNoResultMap" type="java.util.HashMap">
+        <result column="AccountID" property="accountId"/>
+    </resultMap>
+    <resultMap id="QueryIbtIdResultMap" type="java.util.HashMap">
+        <result column="ACCTNO" property="acctNo"/>
+    </resultMap>
+    <resultMap id="GetBoxByIdNoResultMap" type="java.util.HashMap">
+        <result column="HAVEBOXCNT" property="haveBoxCnt"/>
+    </resultMap>
+    <resultMap id="QueryAllMembersResultMap" type="java.util.HashMap">
+        <result column="FEPUSER_LOGONID" property="fepuserLogonid"/>
+        <result column="FEPUSER_NAME" property="fepuserName"/>
+    </resultMap>
+    <resultMap id="QueryAllAuditDataResultMap" type="java.util.HashMap">
+        <result column="AUDITNO" property="auditNo"/>
+        <result column="AUDITTIME" property="auditTime"/>
+        <result column="AUDITUSER" property="auditUserName"/>
+        <result column="AUDITPROGRAMID" property="auditProgramId"/>
+        <result column="AUDITPROGRAMNAME" property="auditProgramName"/>
+        <result column="AUDITPAGE" property="auditPage"/>
+        <result column="AUDITDATA" property="auditData"/>
+        <result column="SHOWAUDIT" property="showAudit"/>
+        <result column="AUDITUSERADDRESS" property="auditUserAddress"/>
+        <result column="SQLSORTEXPRESSION" property="SQLSORTEXPRESSION"/>
+    </resultMap>
+    <!-- 2022-11-23 Richard marked EJ的獲取方式改為從Sequence中取, 所以這個方法mark掉 -->
+    <!-- <select id="getEj" statementType="CALLABLE" resultType="java.util.Map">
+      {
+        call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETEJ(
+          #{ID, mode=OUT, jdbcType=INTEGER},
+          #{INTERVAL, mode=OUT, jdbcType=INTEGER}
+        )
+      }
+    </select> -->
+    <!-- 2022-11-22 Richard marked Stan的獲取方式改為從Sequence中取, 所以這個方法mark掉 -->
+    <!-- <select id="getStan" statementType="CALLABLE" resultType="java.util.Map">
+      {
+        call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETSTAN(
+          #{ID, mode=OUT, jdbcType=INTEGER},
+          #{INTERVAL, mode=OUT, jdbcType=INTEGER}
+        )
+      }
+    </select> -->
+    <select id="getPbmrByIdNo" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETPBMRBYIDNO(
+                #{IDNO, mode=IN, jdbcType=VARCHAR},
+                #{STARTDAY, mode=IN, jdbcType=VARCHAR},
+                #{RESULT, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=GetPbmrByIdNoResultMap}
+                 )
+            }
+    </select>
+    <select id="queryIbtId" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.QUERYIBTID(
+                #{IDNO, mode=IN, jdbcType=VARCHAR},
+                #{STARTDAY, mode=IN, jdbcType=VARCHAR},
+                #{RESULT, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=QueryIbtIdResultMap}
+                 )
+            }
+    </select>
+    <select id="getBoxByIdNo" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETBOXBYIDNO(
+                #{IDNO, mode=IN, jdbcType=VARCHAR},
+                #{STARTDAY, mode=IN, jdbcType=VARCHAR},
+                #{RESULT, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=GetBoxByIdNoResultMap}
+                 )
+            }
+    </select>
+    <select id="getAtmTxSeq" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETATMTXSEQ(
+                #{ATMNO, mode=IN, jdbcType=VARCHAR},
+                #{NEXTID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <select id="decrementRMFISCOUT4NO" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.DecreRMFISCOUT4NO(
+                #{RECEIVERBANKATMNO, mode=IN, jdbcType=VARCHAR},
+                #{SENDERBANK, mode=IN, jdbcType=VARCHAR},
+                #{PREID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <select id="getRMNO" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETRMNO(
+                #{brno, mode=IN, jdbcType=VARCHAR},
+                #{category, mode=IN, jdbcType=VARCHAR},
+                #{NEXTID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <!-- zk zdd -->
+    <select id="getRMFISCOUT1NO" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETRMFISCOUT1NO(
+                #{RECEIVERBANK, mode=IN, jdbcType=VARCHAR},
+                #{SENDERBANK, mode=IN, jdbcType=VARCHAR},
+                #{ISREP, mode=IN, jdbcType=VARCHAR},
+                #{NEXTID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <!-- zk zdd -->
+    <select id="getRMOUTSNONO" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETRMOUTSNONO(
+                #{RECEIVERBANK, mode=IN, jdbcType=VARCHAR},
+                #{SENDERBANK, mode=IN, jdbcType=VARCHAR},
+                #{ISREP, mode=IN, jdbcType=VARCHAR},
+                #{NEXTID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <!-- zk zdd -->
+    <select id="getRMFISCOUT4NO" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETRMFISCOUT4NO(
+                #{RECEIVERBANK, mode=IN, jdbcType=VARCHAR},
+                #{SENDERBANK, mode=IN, jdbcType=VARCHAR},
+                #{NEXTID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <!-- zk zdd -->
+    <select id="getFCRMNO" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETFCRMNO(
+                #{BRNO, mode=IN, jdbcType=VARCHAR},
+                #{CATEGORY, mode=IN, jdbcType=VARCHAR},
+                #{NEXTID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <!-- zk zdd -->
+    <select id="getFCRMOUTSNO" statementType="CALLABLE" parameterType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.GETFCRMOUTSNO(
+                #{RECEIVERBANK, mode=IN, jdbcType=VARCHAR},
+                #{SENDERBANK, mode=IN, jdbcType=VARCHAR},
+                #{NEXTID, mode=OUT, jdbcType=INTEGER}
+                 )
+            }
+    </select>
+    <select id="queryAllMembers" statementType="CALLABLE" parameterType="java.util.Map" resultMap="QueryAllMembersResultMap">
+        SELECT
+        FEPUSER_LOGONID, FEPUSER_BRNO, FEPUSER_BRNO_ST, FEPUSER_TLRNO, FEPUSER_NAME, FEPUSER_JOB, FEPUSER_GROUP, FEPUSER_LU_DATE, FEPUSER_LU_TIME, FEPUSER_STATUS, FEPUSER_BOSS
+        FROM FEPUSER
+        where 1=1
+        <if test="BOSSID != ''">
+            and FEPUSER_LOGONID = #{BOSSID,jdbcType=CHAR}
+        </if>
+        UNION ALL
+        select FEPUSER_LOGONID, FEPUSER_BRNO, FEPUSER_BRNO_ST, FEPUSER_TLRNO, FEPUSER_NAME, FEPUSER_JOB, FEPUSER_GROUP, FEPUSER_LU_DATE, FEPUSER_LU_TIME, FEPUSER_STATUS, FEPUSER_BOSS
+        from FEPUSER u
+        where 1=1
+        <if test="BOSSID != ''">
+            and u.FEPUSER_LOGONID <![CDATA[ <> ]]> #{BOSSID,jdbcType=CHAR}
+            and u.FEPUSER_BOSS = #{BOSSID,jdbcType=CHAR}
+        </if>
+    </select>
+    <select id="queryAllAuditData" statementType="CALLABLE" parameterType="java.util.Map" resultType="java.util.Map">
+        {
+            call ${@com.syscom.fep.mybatis.configuration.DataSourceConfiguration@getPropCurrentSchema()}.QUERYALLAUDITDATABYBOSSID(
+                #{BOSSID, mode=IN, jdbcType=VARCHAR},
+                #{USERID, mode=IN, jdbcType=VARCHAR},
+                #{PROGRAMID, mode=IN, jdbcType=VARCHAR},
+                #{PROGRAMNAME, mode=IN, jdbcType=VARCHAR},
+                #{AUDITTIMESTR, mode=IN, jdbcType=VARCHAR},
+                #{AUDITTIMEEND, mode=IN, jdbcType=VARCHAR},
+                #{SHOWAUDIT, mode=IN, jdbcType=VARCHAR}
+                 )
+            }
+    </select>
+    <select id="queryWebAudit" parameterType="map" resultMap="QueryAllAuditDataResultMap">
+        SELECT * FROM (
+        SELECT
+        AuditNo,AuditTime,AuditUser,AuditPage,AuditProgramName,AuditBrowser,AuditUserAddress,AuditRequestHost,AuditData,ShowAudit,SQLCOMMANDTEXT,
+        'UI_' || ProgramId AS AuditProgramId, AuditUser || '-' || FEPUSER_NAME AS AuditUserName
+        FROM WebAudit w
+        LEFT JOIN FEPUSER F ON F.FEPUSER_LOGONID = w.AuditUser
+        ) TmpWebAudit
+        <where>
+            AuditProgramId != ''
+            <if test="USERID != ''">
+                AND AuditUser = #{USERID,jdbcType=CHAR}
+            </if>
+            <if test="PROGRAMID != ''">
+                AND AuditProgramId LIKE CONCAT('%', CONCAT(#{PROGRAMID}, '%'))
+            </if>
+            <if test="PROGRAMNAME != ''">
+                AND AuditProgramName = #{PROGRAMNAME,jdbcType=CHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isBlank(AUDITTIMEEND)">
+                AND AuditTime <![CDATA[ >= ]]> to_date(#{AUDITTIMESTR,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMEEND)">
+                AND AuditTime <![CDATA[ <= ]]> to_date(#{AUDITTIMEEND,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMEEND)">
+                AND AuditTime BETWEEN to_date(#{AUDITTIMESTR,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi') AND to_date(#{AUDITTIMEEND,jdbcType=VARCHAR}, 'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(SHOWAUDIT)">
+                AND SHOWAUDIT = #{SHOWAUDIT,jdbcType=CHAR}
+            </if>
+        </where>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(SQLSORTEXPRESSION)">
+            ORDER BY ${SQLSORTEXPRESSION}
+        </if>
+    </select>
+    <select id="queryDirectReports" parameterType="map" resultMap="QueryAllAuditDataResultMap">
+        SELECT AuditNo,AuditTime,AuditUser,AuditPage,AuditProgramName,AuditBrowser,AuditUserAddress,AuditRequestHost,AuditData,ShowAudit,SQLCOMMANDTEXT,
+        'UI_' || ProgramId AS AuditProgramId,AuditUser || '-' || FEPUSER_NAME AS AuditUserName
+        FROM FEPUSER dr
+        INNER JOIN WebAudit w ON dr.FEPUSER_LOGONID = w.AuditUser
+        <where>
+            w.AuditProgramId != ''
+            <if test="USERID != ''">
+                AND w.AuditUser = #{USERID,jdbcType=CHAR}
+            </if>
+            <if test="PROGRAMID != ''">
+                AND w.AuditProgramId LIKE CONCAT('%', CONCAT(#{PROGRAMID}, '%'))
+            </if>
+            <if test="PROGRAMNAME != ''">
+                AND w.AuditProgramName = #{PROGRAMNAME,jdbcType=CHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isBlank(AUDITTIMEEND)">
+                AND w.AuditTime <![CDATA[ >= ]]> to_date(#{AUDITTIMESTR,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMEEND)">
+                AND w.AuditTime <![CDATA[ <= ]]> to_date(#{AUDITTIMEEND,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMEEND)">
+                AND w.AuditTime BETWEEN to_date(#{AUDITTIMESTR,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi') AND to_date(#{AUDITTIMEEND,jdbcType=VARCHAR}, 'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(SHOWAUDIT)">
+                AND w.SHOWAUDIT = #{SHOWAUDIT,jdbcType=CHAR}
+            </if>
+        </where>
+        UNION ALL
+        SELECT AuditNo,AuditTime,AuditUser,AuditPage,AuditProgramName,AuditBrowser,AuditUserAddress,AuditRequestHost,AuditData,ShowAudit,SQLCOMMANDTEXT,
+        'UI_' || ProgramId AS AuditProgramId, AuditUser || '-' || FEPUSER_NAME AS AuditUserName FROM FEPUSER tm
+        INNER JOIN WebAudit e ON tm.FEPUSER_LOGONID = e.AuditUser
+        <where>
+            e.AuditProgramId != ''
+            <if test="USERID != ''">
+                AND e.AuditUser = #{USERID,jdbcType=CHAR}
+            </if>
+            <if test="PROGRAMID != ''">
+                AND e.AuditProgramId LIKE CONCAT('%', CONCAT(#{PROGRAMID}, '%'))
+            </if>
+            <if test="PROGRAMNAME != ''">
+                AND e.AuditProgramName = #{PROGRAMNAME,jdbcType=CHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isBlank(AUDITTIMEEND)">
+                AND e.AuditTime <![CDATA[ >= ]]> to_date(#{AUDITTIMESTR,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMEEND)">
+                AND e.AuditTime <![CDATA[ <= ]]> to_date(#{AUDITTIMEEND,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMESTR) and @org.apache.commons.lang3.StringUtils@isNotBlank(AUDITTIMEEND)">
+                AND e.AuditTime BETWEEN to_date(#{AUDITTIMESTR,jdbcType=VARCHAR},'yyyy-mm-dd,hh24:mi') AND to_date(#{AUDITTIMEEND,jdbcType=VARCHAR}, 'yyyy-mm-dd,hh24:mi')
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(SHOWAUDIT)">
+                AND e.SHOWAUDIT = #{SHOWAUDIT,jdbcType=CHAR}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(SQLSORTEXPRESSION)">
+                ORDER BY ${SQLSORTEXPRESSION}
+            </if>
+        </where>
+    </select>
+</mapper>

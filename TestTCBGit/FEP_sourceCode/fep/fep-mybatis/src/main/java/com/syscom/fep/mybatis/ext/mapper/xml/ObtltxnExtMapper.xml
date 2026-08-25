@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.ObtltxnExtMapper">
+	<!-- 2021-04-20 ZhaoKai add -->
+	<select id="getQrptxnByIcSeqno" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.ObtltxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.ObtltxnMapper.Base_Column_List" />
+		FROM OBTLTXN
+		WHERE OBTLTXN_TX_DATE_FISC = #{obtltxnTxDateFisc,jdbcType=CHAR}
+		AND OBTLTXN_ATM_TYPE = #{obtltxnAtmType,jdbcType=CHAR}
+		AND OBTLTXN_TROUT_ACTNO = #{obtltxnTroutActno,jdbcType=CHAR}
+		AND OBTLTXN_IC_SEQNO = #{obtltxnIcSeqno,jdbcType=CHAR}
+		AND OBTLTXN_ORDER_NO = #{obtltxnOrderNo,jdbcType=CHAR}
+		AND OBTLTXN_TXRUST IN ('A','B','D','T')
+	</select>
+	<!-- 2021-08-23 ZhaoKai add -->
+	<select id="queryOBTLXNByStan" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.ObtltxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.ObtltxnMapper.Base_Column_List" />
+		FROM OBTLTXN
+		WHERE OBTLTXN_TBSDY_FISC = #{obtltxnTbsdyFisc,jdbcType=VARCHAR}
+		AND OBTLTXN_BKNO = #{obtltxnBkno,jdbcType=CHAR}
+		AND OBTLTXN_STAN = #{obtltxnStan,jdbcType=VARCHAR}
+	</select>
+	<!-- 2021-10-11 Richard add -->
+	<update id="updateByStan" parameterType="com.syscom.fep.mybatis.model.Obtltxn">
+		UPDATE OBTLTXN
+		SET OBTLTXN_TOT_RET_AMT = OBTLTXN_TOT_RET_AMT + #{obtltxnTotRetAmt,jdbcType=DECIMAL}
+		WHERE OBTLTXN_TBSDY_FISC = #{obtltxnTbsdyFisc,jdbcType=VARCHAR}
+		AND OBTLTXN_BKNO = #{obtltxnBkno,jdbcType=CHAR}
+		AND OBTLTXN_STAN = #{obtltxnStan,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 2022-05-31 Han add -->
+	<select id="getObtlTxn" parameterType="map" resultType="com.syscom.fep.mybatis.model.Obtltxn">
+		
+		SELECT * FROM OBTLTXN 
+		WHERE 1=1
+		<if test="txtTroutBkno != null and txtTroutBkno != ''">
+            AND OBTLTXN_TROUT_BKNO = #{txtTroutBkno,jdbcType=VARCHAR}
+        </if>
+        <if test="txtTroutActno != null and txtTroutActno != ''">
+            AND OBTLTXN_TROUT_ACTNO = #{txtTroutActno,jdbcType=VARCHAR}
+        </if>
+        <if test="txtTxAMT != null and txtTxAMT != ''">
+            AND OBTLTXN_TOT_TWD_AMT = #{txtTxAMT,jdbcType=VARCHAR}
+        </if>
+        <if test="txtOrderNO != null and txtOrderNO != ''">
+            AND (OBTLTXN_ORDER_NO = #{txtOrderNO,jdbcType=VARCHAR} OR OBTLTXN_ORI_ORDER_NO = #{txtOrderNO,jdbcType=VARCHAR}) 
+        </if>
+        <if test="txtMerchantId != null and txtMerchantId != ''">
+            AND OBTLTXN_MERCHANT_ID = #{txtMerchantId,jdbcType=VARCHAR}
+        </if>
+        <if test="txTransactDate != null and txTransactDate != ''">
+            AND OBTLTXN_TX_DATE &gt;= #{txTransactDate,jdbcType=VARCHAR}
+        </if>
+        <if test="txTransactDateE != null and txTransactDateE != ''">
+            AND OBTLTXN_TX_DATE &lt;= #{txTransactDateE,jdbcType=VARCHAR}
+        </if>
+        <if test="txtBkno != null and txtBkno != ''">
+            AND OBTLTXN_BKNO = #{txtBkno,jdbcType=VARCHAR}
+        </if>
+        <if test="txtStan != null and txtStan != ''">
+            AND OBTLTXN_STAN = #{txtStan,jdbcType=VARCHAR}
+        </if>
+	</select>
+	
+	<!-- 2022-06-02 Han add -->
+	<select id="getOBTLTXNbyPK" parameterType="map" resultType="com.syscom.fep.mybatis.model.Obtltxn">
+		SELECT * FROM OBTLTXN 
+		WHERE OBTLTXN_TX_DATE = #{obtltxnTxDate,jdbcType=VARCHAR}
+		AND OBTLTXN_EJFNO = #{obtltxnEjfno,jdbcType=INTEGER}
+	</select>
+</mapper>

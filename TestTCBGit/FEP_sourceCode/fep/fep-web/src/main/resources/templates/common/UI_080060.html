@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div  layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnComit">確認</button>
+    <button type="button" class="btn btn-primary" id="btnExit">離開</button>
+</div>
+<div layout:fragment="panel-grid" class="panel-detail">
+    <form id="form-validator" th:object="${form}" >
+        <table border="0" cellspacing="0" class="table-detail">
+            <tr>
+                <td class="condition-label" for="logonId">
+                    <label class="col-form-label">使用者</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="logonId" name="logonId" th:field="*{logonId}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="oldSscod">
+                    <label class="col-form-label">原密碼</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="password" id="oldSscod" name="oldSscod" th:field="*{oldSscod}" maxlength="16">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="newSscod">
+                    <label class="col-form-label">新密碼</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="password" id="newSscod" name="newSscod" th:field="*{newSscod}" maxlength="16">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" for="confimSscod">
+                    <label class="col-form-label">新密碼確認</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="password" id="confimSscod" name="confimSscod" th:field="*{confimSscod}" maxlength="16">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI080060.js}"></script>
+</div>
+</body>
+</html>

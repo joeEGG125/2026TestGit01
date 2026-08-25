@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>FEP_OPC | UI060550</title>
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+
+p, span {
+	font-size: 12px;
+	display: inline-block;
+}
+
+input {
+	font-size: 12px;
+	background-color: #E7E7E7;
+}
+
+#forms {
+	display: inline-block;
+}
+
+.dbtable {
+	float: left;
+}
+
+#querylog, #selected, #last, #lasts {
+	width: 50px;
+	font-size: 12px;
+}
+
+.containerR {
+	font-size: 12px;
+	margin-left: 120px;
+	margin-top: 15px;
+}
+
+.allspan tr td span {
+	width: 130px;
+}
+
+#selecte, #clear {
+	float: left;
+	margin-right: 50px;
+	margin-top: 20px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	color: #fff;
+	font-weight: 400;
+	border-radius: 20px;
+	background-color: rgb(29, 109, 174);
+}
+
+#example2 {
+	line-height: 16px;
+}
+
+.content1 {
+	display: none;
+	margin-top: 20px;
+}
+
+.content1 table tr td span {
+	width: 150px;
+	display: inline-block;
+}
+
+.Logcontent, .Logquery {
+	display: none;
+}
+
+.Datetime {
+	font-family: "Microsoft YaHei";
+}
+
+th {
+	background-color: rgb(166, 217, 247);
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.table tr th {
+	width: 100px;
+	text-align: center;
+}
+
+.table tr td span {
+	font-size: 12px;
+}
+
+.card {
+	margin-top: 10px;
+}
+
+.card-body {
+	display: none;
+	padding: 0;
+}
+
+.sear {
+	text-align: center;
+}
+
+.sear .query a {
+	text-decoration: underline;
+	color: blue;
+}
+
+.row {
+	margin-top: 20px;
+}
+
+.logquer tr td {
+	padding-left: 20px;
+}
+
+.logquer tr td span {
+	width: 100px;
+	display: inline-block;
+}
+
+.messagetxt tr td span {
+	width: 70px;
+	display: inline-block;
+}
+
+#page, #pages {
+	margin: 0 auto;
+	padding-top: 5px;
+	display: table;
+}
+
+.page {
+	text-align: center;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.pagingUl {
+	float: right;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	height: 30px;
+}
+
+.pagingUl li {
+	float: left;
+	width: 30px;
+	height: 30px;
+	background: #fff;
+	text-align: center;
+	margin-right: 5px;
+	border-radius: 5px
+}
+
+.pagingUl li a {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 28px;
+	color: #666;
+	font-size: 12px;
+	border-radius: 5px
+}
+
+.prv, .next, .first, .last {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	cursor: pointer;
+	background: #fff;
+	padding: 0 5px;
+	border-radius: 5px;
+}
+
+.prv {
+	margin-right: 10px;
+}
+
+.prv:hover, .next:hover, .first:hover, .last:hover, .pagingUl li a:hover,
+	.activP {
+	background-color: #deeffa !important;
+	color: #0098e1 !important;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div>
+			<!-- Content Wrapper. 包含頁面內容 -->
+			<div class="content-wrapper">
+				<section class="content">
+					<div class="container-fluid">
+						<div id="UI080080">
+							<div>
+								<hr color="#E21F23" size="3px">
+								<div style="width: 100%; background-color: #E21F23; text-align: center;">
+									<span style="color: #FFFFFF"><b>保全使用者資料維護</b></span>
+								</div>
+								<div style="margin-top: 4px">
+									<span style="margin: 1%">保全公司</span> <select name="" id="2" style="width: 8.5%; height: 22px">
+										<option value="">全部</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+								</div>
+								<div style="margin-top: 8px">
+									<button style="margin-left: 1%; width: 76.16px;">查詢</button>
+									&nbsp;
+									<button style="width: 76.16px;">新增</button>
+									&nbsp;
+									<button style="width: 76.16px;">刪除</button>
+									&nbsp;
+									<button style="width: 76.16px;">清除</button>
+								</div>
+							</div>
+							<div style="width: 98%; height: 28px; background-color: #FFFFEB; margin-left: 1%;"></div>
+							<div>
+								<table class="table-list" v-if="list1.length >0">
+									<tr style="background-color: #FDF0F0; text-align: center;">
+										<td style="width: 2%"><b>刪</b></td>
+										<td style="width: 7%"><b>保全公司</b></td>
+										<td style="width: 21%"><b>保全員賬號</b></td>
+										<td style="width: 9%"><b>保全員名稱</b></td>
+										<td style="width: 12%"><b>權限群組</b></td>
+										<td style="width: 11%"><b>上次登錄日期</b></td>
+										<td style="width: 11%"><b>上次登錄時間</b></td>
+										<td style="width: 12%"><b>上次修改人員</b></td>
+										<td style="width: 15%"><b>上次修改日期</b></td>
+									</tr>
+									<tr style="height: 32px;" class="seoverTr clickTr" v-for="(user, i) in list1">
+										<td style="text-align: center;"><input type="checkbox"></td>
+										<td><a href="">{{user.id}}</a></td>
+										<td>{{user.name}}</td>
+										<td>{{user.qunzu}}</td>
+										<td>{{user.fhdh}}</td>
+										<td>{{user.shangcidengluriqi}}</td>
+										<td>{{user.shangcidenglushijian}}</td>
+										<td>{{user.shangcixiugairen}}</td>
+										<td>{{user.shangcixiugai}}</td>
+									</tr>
+									<tr style="height: 32px;" class="seoverTr clickTr" v-for="(user, i) in list1cover">
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr style="height: 38px;">
+										<td colspan="9" style="background-color: #FDF0F0; text-align: center;">aaaa</td>
+									</tr>
+								</table>
+								<div v-else style="width: 98%; text-align: center" class="table-list">
+									<div style="width: 100%; text-align: center; border-bottom: 2px #000 solid;">
+										<b>已無可選取的程式</b>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="/js/common/UI080080.js"></script>
+	</div>
+</body>
+</html>

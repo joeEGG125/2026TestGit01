@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.ZoneExtMapper">
+	<select id="selectAll" resultMap="com.syscom.fep.mybatis.mapper.ZoneMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.ZoneMapper.Base_Column_List" />
+		FROM ZONE
+	</select>
+	
+	<select id="getDataByZone" resultMap="com.syscom.fep.mybatis.mapper.ZoneMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.ZoneMapper.Base_Column_List" />
+		FROM ZONE 
+		<where>
+			ZONE_CODE = #{zoneCode,jdbcType=VARCHAR}
+		</where>
+	</select>
+	<select id="getDataByZonee"
+		resultMap="com.syscom.fep.mybatis.mapper.ZoneMapper.BaseResultMap">
+		SELECT
+		<include
+			refid="com.syscom.fep.mybatis.mapper.ZoneMapper.Base_Column_List" />
+		FROM ZONE
+		<where>
+			<if test="zoneCode != null">
+				and ZONE_CODE = #{zoneCode,jdbcType=CHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getDataTableByPrimaryKey"
+		resultMap="com.syscom.fep.mybatis.mapper.ZoneMapper.BaseResultMap">
+		SELECT
+		<include
+			refid="com.syscom.fep.mybatis.mapper.ZoneMapper.Base_Column_List" />
+		FROM ZONE
+		<where>
+			<if test='zoneCode != ""'>
+				and ZONE_CODE = #{zoneCode,jdbcType=CHAR}
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden"></div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnUpdate">更新</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" class="panel-detail">
+    <form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060621/updateDetail}" method="post">
+        <input type="hidden" th:field="*{msgkbNo}"/>
+        <table border="0" cellspacing="0" class="table-detail">
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">錯誤代碼:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" disabled="true" th:field="*{errorcode}" th:maxlength="50"/>
+                </td>
+                <td style="width:200px"></td>
+                <td style="width:200px"></td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">輸出代碼:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" disabled="true" th:field="*{externalcode}" th:maxlength="50"/>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">訊息子碼:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" disabled="true" th:field="*{exsubcode}" th:maxlength="20"/>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">訊息等級:</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" disabled="true" th:field="*{severity}" th:maxlength="5"/>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">是否通知:</label>
+                </td>
+                <td class="condition-input" colspan="3">
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{notify}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">Mail通知</label>
+                </td>
+                <td class="condition-input" colspan="3">
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{msgkbNotify.fepNotifyMail_APD}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_APD.getDescription()}]]</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{msgkbNotify.fepNotifyMail_SYS}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_SYS.getDescription()}]]</label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="condition-input" colspan="3">
+                    <input class="col-form-checkbox fepNotifyMail_Customize" type="checkbox" th:field="*{msgkbNotify.fepNotifyMail_Customize}" onclick="checkItem('fepNotifyMail_Customize')"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+                    <textarea class="form-control msgkbNotifymail" rows="2" maxlength="1000" th:field="*{msgkbNotify.msgkbNotifymail}"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">簡訊通知</label>
+                </td>
+                <td class="condition-input" colspan="3">
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{msgkbNotify.fepNotifyPhone_APD}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_APD.getDescription()}]]</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="col-form-checkbox" type="checkbox" th:field="*{msgkbNotify.fepNotifyPhone_SYS}"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_SYS.getDescription()}]]</label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="condition-input" colspan="3">
+                    <input class="col-form-checkbox fepNotifyPhone_Customize" type="checkbox" th:field="*{msgkbNotify.fepNotifyPhone_Customize}" onclick="checkItem('fepNotifyPhone_Customize')"/>
+                    <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+                    <textarea class="form-control msgkbNotifyphone" rows="2" maxlength="1000" th:field="*{msgkbNotify.msgkbNotifyphone}"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">負責人</label>
+                </td>
+                <td class="condition-input" colspan="3">
+                    <textarea class="form-control" rows="2" th:field="*{responsible}" th:maxlength="10"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">處理方式</label>
+                </td>
+                <td class="condition-input" colspan="3">
+                    <textarea class="form-control" rows="2" th:field="*{action}" th:maxlength="200"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">訊息關鍵字</label>
+                </td>
+                <td class="condition-input" colspan="3">
+                    <textarea class="form-control" rows="2" th:field="*{msgpattern}" th:maxlength="200"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/atmmon/UI060621_Detail.js}"></script>
+</div>
+</body>
+</html>

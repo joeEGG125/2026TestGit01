@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.his.ext.mapper.HisInbk2160ExtMapper">
+    <select id="selectOne" parameterType="map" resultMap="com.syscom.fep.mybatis.his.mapper.Inbk2160Mapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.his.mapper.Inbk2160Mapper.Base_Column_List" />
+        from INBK2160
+        where INBK2160_BKNO = #{inbk2160Bkno,jdbcType=CHAR}
+        and INBK2160_TX_DATE = #{inbk2160TxDate,jdbcType=CHAR}
+        and INBK2160_EJFNO = #{inbk2160Ejfno,jdbcType=INTEGER}
+    </select>
+
+    <select id="getTodayFinishTradeData" parameterType="map" resultType="map">
+        SELECT *
+        FROM INBK2160
+        where INBK2160_BKNO = #{inbk2160Bkno,jdbcType=CHAR}
+        and INBK2160_SUBSYS = #{inbk2160Subsys,jdbcType=TINYINT}
+        and INBK2160_PRC_RESULT = #{inbk2160PrcResult,jdbcType=CHAR}
+    </select>
+    
+    <select id="getINBK2160ByFeptxn" parameterType="map" resultMap="com.syscom.fep.mybatis.his.mapper.Inbk2160Mapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.his.mapper.Inbk2160Mapper.Base_Column_List" />
+        from INBK2160
+        where INBK2160_ORI_TX_DATE = #{inbk2160OriTxDate,jdbcType=CHAR}
+        and INBK2160_ORI_STAN = #{inbk2160OriStan,jdbcType=VARCHAR}
+    </select>
+    
+</mapper>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden">
+
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" th:value="${
+    '{' + '&quot;rminTxdate&quot;:&quot;'+detailEntity.rminTxdate + '&quot;' + ','
+											+ '&quot;rminSenderBank&quot;:&quot;'+detailEntity.rminSenderBank + '&quot;' + ','
+											+ '&quot;rminReceiverBank&quot;:&quot;'+detailEntity.rminReceiverBank + '&quot;' + ','
+											+ '&quot;rminStanBkno&quot;:&quot;'+detailEntity.rminStanBkno + '&quot;' + ','
+											+ '&quot;rminFepno&quot;:&quot;'+detailEntity.rminFepno + '&quot;' + ','
+											+ '&quot;rminBrno&quot;:&quot;'+detailEntity.rminBrno + '&quot;' + ','
+											+ '&quot;rminStat&quot;:&quot;'+detailEntity.rminStat + '&quot;' + ','
+											+ '&quot;rminTmpStat&quot;:&quot;'+detailEntity.rminTmpStat + '&quot;' + ','
+											+ '&quot;rminBackReason&quot;:&quot;'+detailEntity.rminBackReason + '&quot;' + ','
+											+ '&quot;rminPending&quot;:&quot;'+detailEntity.rminPending + '&quot;' + ','
+											+ '&quot;rminAmlstat&quot;:&quot;'+detailEntity.rminAmlstat + '&quot;' + ','
+											+ '&quot;rminAmlbypass&quot;:&quot;'+detailEntity.rminAmlbypass + '&quot;' + ','
+											+ '&quot;rminEjno1&quot;:&quot;'+detailEntity.rminEjno1 + '&quot;' + ','
+											+ '&quot;rminEjno2&quot;:&quot;'+detailEntity.rminEjno2 + '&quot;' + ','
+											+ '&quot;rminEjno3&quot;:&quot;'+detailEntity.rminEjno3 + '&quot;' + ','
+											+ '&quot;rminEjnoAml&quot;:&quot;'+detailEntity.rminEjnoAml + '&quot;' + ','
+											+ '&quot;rminStan&quot;:&quot;'+detailEntity.rminStan + '&quot;'
+										+ '}'
+										}" id="btnQuery1">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" class="panel-detail" th:object="${detailEntity}">
+    <table border="0" cellspacing="0" class="table-detail">
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯入日期</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminTxdate}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label col-5">
+                <label class="col-form-label">匯入序號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminFepno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯款種類</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminFiscSndCode}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">匯入狀態</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminStat}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯入時間</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminSendtime}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">匯款行</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminSenderBank}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯款人代號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">匯款人</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminOutName}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯入金額</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminTxamt}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">解款行</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailMap!=null}" th:text="*{rminReceiverBank}"></label>
+                <label class="form-control" th:if="${detailMap==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">解款人</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminInName}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">解款人帳號一</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminInAccIdNo}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">解款人帳號二</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminActno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">附言</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminMemo}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">交易序號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminCbsNo}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">STAN</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminStan}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">週邊交易序號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminBrsno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">財金電文序號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminFiscsno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">行庫通匯序號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminRmsno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">財金回應代碼</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminFiscRtnCode}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">櫃員</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminRegTlrno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">主管</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminSupno1}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">前置處理櫃員</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminRegTlrno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">EJNO(人工解款)</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminEjno3}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">解款日期</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminRecdate}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">解款時間</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminRectime}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">原匯出日</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminOrgdate}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">原登錄序號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminOrgregNo}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">原匯款種類</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">原匯出時間</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">原匯款帳務別</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">原匯款金額</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">原手續費帳務別</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminOrgregNo}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">原應收手續費</label>
+            </td>
+            <td class="condition-input">
+                                <label class="form-control label-text-left" th:if="${detailEntity!=null}"></label>
+                                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">原實收手續費</label>
+            </td>
+            <td class="condition-input">
+                                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminOrgregNo}"></label>
+                                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">CBS PENDING</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminPending}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">EJNO(自動入帳)</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminEjno2}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">EJNO(財金匯入)</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminEjno1}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">EJNO(解款更正)</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminEjno4}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">暫存解款狀態</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminTmpStat}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">人工解款失敗原因</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminTmpRc}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">原交易來源</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminTmpStat}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">入帳實體帳號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminActInactno}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">退匯理由</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminBackReason}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">AML狀態</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminAmlstat}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">RMIN_AMLBypass</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminAmlbypass}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">EJNO(AML)</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{rminEjnoAml}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028110_Detail.js}"></script>
+</div>
+</body>
+</html>

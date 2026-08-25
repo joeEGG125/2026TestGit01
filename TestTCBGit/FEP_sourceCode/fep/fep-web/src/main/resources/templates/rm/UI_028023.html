@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028023/queryClick}" method="post">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h5 class="card-title">查詢條件</h5>
+            </div>
+            <div class="card-body">
+                <div class="condition-label row">
+                    <label for="orgPcodeDdl" class="col-form-label col-1">原交易類別</label>
+                    <select class="form-control col-2" th:field="*{orgPcodeDdl}">
+                        <option value="1112" selected="selected">1112:跨行電匯</option>
+                        <option value="1122">1122:公庫匯款</option>
+                        <option value="1132">1132:同業匯款</option>
+                        <option value="1172">1172:退還匯款</option>
+                        <option value="1812">1812:證券匯款</option>
+                        <option value="1192">1192:票券匯款</option>
+                        <option value="1412">1412:一般通訊</option>
+                        <option value="1100">1100:所有匯款類</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h5 class="card-title">財金回應訊息</h5>
+            </div>
+            <div class="card-body">
+                <div class="condition-label row">
+                    <label for="oOrgPcode" class="col-form-label col-1">原交易類別</label>
+                    <input class="form-control col-2" type="text" th:field="*{oOrgPcode}"/>
+                    <label for="rmPendingCnt" class="col-form-label col-1">待解筆數</label>
+                    <input class="form-control col-2" type="text" th:field="*{rmPendingCnt}"/>
+                    <label for="rmPendingAmt" class="col-form-label col-1">待解金額</label>
+                    <input class="form-control col-2" type="text" th:field="*{rmPendingAmt}"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary">
+</div>
+<div layout:fragment="panel-grid">
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028023.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028200/ctrlQueryClick}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label for="datetime" class="col-form-label">交易日期</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="datetime" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetime" th:field="*{datetime}" />
+							<div class="input-group-append" data-target="#datetime" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">查詢項目</label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" th:field="*{queryTypeDdl}">
+							<option value="1" th:if="*{queryOnly}">1-尚未上傳FEP</option>
+							<option value="2">2-已上傳FEP</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-grid" class="panel-hidden"></div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/rm/UI028200.js}"></script>
+	</div>
+</body>
+</html>

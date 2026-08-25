@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">變更儲存</button>
+    <button type="button" class="btn btn-primary" id="btnDiscard">放棄變更</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060070/updateDetail}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">系統簡稱<span style="color: red">*</span></label>
+                </td>
+                <td class="condition-input col-5" readonly="true">
+                    <select th:field="*{sysconfSubsysno}" th:value="*{sysconfSubsysno}">
+                        <option th:text="*{sysconfSubsysnoC}" th:value="*{sysconfSubsysno}" selected></option>
+                    </select>
+                    <input type="hidden" th:field="*{sysconfSubsysnoC}" th:value="*{sysconfSubsysnoC}" style="visibility: hidden">
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">變數名稱<span style="color: red">*</span></label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" style="color: red" readonly="true" type="text" th:field="*{sysconfName}" maxlength="30"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">變數型態</label>
+                </td>
+                <td class="condition-input col-5">
+                    <select th:field="*{sysconfDatatype}">
+                        <option value=""></option>
+                        <option th:text="char" th:value="char" th:selected="${sysconfDatatype == 'char'}"></option>
+                        <option th:text="varchar" th:value="varchar" th:selected="${sysconfDatatype == 'varchar'}"></option>
+                        <option th:text="int" th:value="int" th:selected="${sysconfDatatype == 'int'}"></option>
+                        <option th:text="smallint" th:value="smallint" th:selected="${sysconfDatatype == 'smallint'}"></option>
+                        <option th:text="bitint" th:value="bitint" th:selected="${sysconfDatatype == 'bitint'}"></option>
+                        <option th:text="decimal" th:value="decimal" th:selected="${sysconfDatatype == 'decimal'}"></option>
+                        <option th:text="bit" th:value="bit" th:selected="${sysconfDatatype == 'bit'}"></option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">設定類別</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{sysconfType}" th:value="*{sysconfType}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">變數值</label>
+                </td>
+                <td class="condition-input col-5">
+                    <input class="form-control" type="text" th:field="*{sysconfValue}" th:value="*{sysconfValue}"/>
+                </td>
+                <td class="condition-label">
+                    <label class="col-form-label">唯讀*</label>
+                </td>
+                <td class="condition-input">
+                    <input th:type="radio" id="radio1" th:name="sysconfReadonly" th:value="0" th:checked="*{sysconfReadonly} == 0">否
+                    <input th:type="radio" id="radio2" th:name="sysconfReadonly" th:value="1" th:checked="*{sysconfReadonly} == 1">是
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label class="col-form-label">說明</label>
+                </td>
+                <td class="condition-input col-5" colspan="3">
+                    <textarea rows="2" cols="50" th:field="*{sysconfRemark}" th:value="*{sysconfRemark}" width="100%"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/atmmon/UI060070_Detail.js}"></script>
+</div>
+</body>
+</html>

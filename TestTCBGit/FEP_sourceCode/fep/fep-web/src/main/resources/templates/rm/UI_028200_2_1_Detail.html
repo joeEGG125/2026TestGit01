@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" class="panel-hidden">
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+</div>
+<div layout:fragment="panel-summary"></div>
+<div layout:fragment="panel-grid" class="panel-detail">
+    <table border="0" cellspacing="0" class="table-detail" th:object="${detailEntity}">
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯款行</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_SENDER_BANK!=null}" th:text="*{RMBTCH_SENDER_BANK}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_SENDER_BANK==null}"></label>
+            </td>
+            <td class="condition-label col-5">
+                <label class="col-form-label">匯款日期</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_REMDATE!=null}" th:text="*{RMBTCH_REMDATE}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_REMDATE==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">批號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_TIMES!=null}" th:text="*{RMBTCH_TIMES}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_TIMES==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">FEP登錄序號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_FEPNO!=null}" th:text="*{RMBTCH_FEPNO}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_FEPNO==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯入行庫代號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left"  th:if="${detailEntity.RMBTCH_RECBANK!=null}" th:text="*{RMBTCH_RECBANK}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_RECBANK==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">匯款種類</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.REMTYPE!=null}" th:text="*{REMTYPE}"></label>
+                <label class="form-control" th:if="${detailEntity.REMTYPE==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯款帳務別</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_REMTXTP!=null}" th:text="*{RMBTCH_REMTXTP}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_REMTXTP==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">匯款金額</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_REMAMT!=null}" th:text="${#numbers.formatDecimal(detailEntity.RMBTCH_REMAMT,1,'COMMA',2,'POINT')}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_REMAMT==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">手續費</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_FEE!=null}" th:text="${#numbers.formatDecimal(detailEntity.RMBTCH_FEE,1,'COMMA',2,'POINT')}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_FEE==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">手續費帳務別</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_HCTXTP!=null}" th:text="*{RMBTCH_HCTXTP}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_HCTXTP==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">應付金資手續費</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_INBKHC!=null}" th:text="${#numbers.formatDecimal(detailEntity.RMBTCH_INBKHC,1,'COMMA',2,'POINT')}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_INBKHC==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">收款人帳號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_ACTNO!=null}" th:text="*{RMBTCH_ACTNO}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_ACTNO==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">收款人戶名</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_NAME_RCV!=null}" th:text="*{RMBTCH_NAME_RCV}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_NAME_RCV==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">匯出人戶名</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_NAME_SEND!=null}" th:text="*{RMBTCH_NAME_SEND}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_NAME_SEND==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">匯款人帳號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_OUT_ACTNO!=null}" th:text="*{RMBTCH_OUT_ACTNO}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_OUT_ACTNO==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">登錄日期</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_REGDATE!=null}" th:text="*{RMBTCH_REGDATE}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_REGDATE==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">登錄分行</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_KINBRNO!=null}" th:text="*{RMBTCH_KINBRNO}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_KINBRNO==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">附言欄</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_REMARK!=null}" th:text="*{RMBTCH_REMARK}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_REMARK==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">交易結果</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_FEP_RC!=null}" th:text="*{RMBTCH_FEP_RC}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_FEP_RC==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">錯誤訊息</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_ERRMSG!=null}" th:text="*{RMBTCH_ERRMSG}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_ERRMSG==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">主管ID1</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_SUPNO1!=null}" th:text="*{RMBTCH_SUPNO1}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_SUPNO1==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">主管ID2</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity.RMBTCH_SUPNO2!=null}" th:text="*{RMBTCH_SUPNO2}"></label>
+                <label class="form-control" th:if="${detailEntity.RMBTCH_SUPNO2==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">櫃員ID</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{RMBTCH_TLRNO}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+            <td class="condition-label">
+                <label class="col-form-label">匯出回饋標記</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{RMBTCH_FLAG}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label">
+                <label class="col-form-label">處理記號</label>
+            </td>
+            <td class="condition-input">
+                <label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{RMBTCH_DATA_FLAG}"></label>
+                <label class="form-control" th:if="${detailEntity==null}"></label>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028200_2_1_Detail.js}"></script>
+</div>
+</body>
+</html>

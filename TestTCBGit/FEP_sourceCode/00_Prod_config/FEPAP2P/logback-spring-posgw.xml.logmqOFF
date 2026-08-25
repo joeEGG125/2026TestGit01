@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 second" debug="false">
+	<!--引入application配置信息 -->
+	<springProperty scope="context" name="spring.fep.application.name" source="management.metrics.tags.application" defaultValue="fep" />
+	<springProperty scope="context" name="spring.fep.log.path" source="spring.fep.log.path" defaultValue="logs"/>
+	<springProperty scope="context" name="spring.fep.log.service.rule.enable" source="spring.fep.log.service.rule.enable" defaultValue="false"/>
+	<springProperty scope="context" name="spring.fep.log.jdbc.sqltiming.level" source="spring.fep.log.jdbc.sqltiming.level" defaultValue="DEBUG"/>
+	<springProperty scope="context" name="spring.fep.log.mybatis.level" source="spring.fep.log.mybatis.level" defaultValue="DEBUG"/>
+	<springProperty scope="context" name="spring.fep.log.jdbc.level" source="spring.fep.log.jdbc.level" defaultValue="DEBUG"/>
+	<property name="LOG_PATH" value="${spring.fep.log.path}" />
+	<property name="LOG_BACKUP_DIR" value="${LOG_PATH}/%d{yyyy-MM-dd}/${spring.fep.application.name}" />
+	<property name="LOG_FILENAME_PATTERN" value="%d{yyyy-MM-dd}-%i.log" />
+	<property name="LOG_MAX_FILESIZE" value="10240000" />
+	<property name="LOG_MAX_HISTORY" value="20000" />
+	<property name="LOG_TOTAL_SIZE_CAP" value="200GB" />
+	<property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%-5level][%logger]%msg%n" />
+	<property name="FEPMESSAGE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%-20logger]|%-3X{Step}|%-8X{ATMNo}|%-8X{ATMSeq}|%-10X{MessageID}|%-31t|%-8X{Ej}|%-32X{TxRquid}|%-10X{Channel}|%-25X{MessageFlow}|%-15X{ProgramFlow}|%-70X{ProgramName}|%-8X{Stan}|%-6X{TrinBank}|%-16X{TrinActno}|%-6X{TroutBank}|%-16X{TroutActno}|%-10X{TxDate}|%-3X{Bkno}|%X{TxMessage}|%msg%n" />
+	<property name="MQ_EMS_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%level][%logger]|%X{Step}|%X{ATMNo}|%X{ATMSeq}|%X{MessageID}|%t|%X{Ej}|%X{TxRquid}|%X{Channel}|%X{MessageFlow}|%X{ProgramFlow}|%X{ProgramName}|%X{Stan}|%X{TrinBank}|%X{TrinActno}|%X{TroutBank}|%X{TroutActno}|%X{TxDate}|%X{Bkno}|%X{TxMessage}|%{hostname}|%{hostip}|%msg%n" />
+	<property name="EMS_LOG_PATTERN" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;%n
+&lt;Event Level=&quot;%X{level}&quot; Date=&quot;%d{yyyy/MM/dd}&quot; Time=&quot;%d{HH:mm:ss}&quot; TxRquid=&quot;%X{TxRquid}&quot; HostName=&quot;%X{hostname}&quot; HostIP=&quot;%X{hostip}&quot; Application=&quot;%X{app}&quot; Line=&quot;%X{linenumber}&quot;&gt;%n
+\t&lt;Message&gt;%n
+\t\t&lt;SysInfo Sys=&quot;%X{Sys}&quot; SubSys=&quot;%X{SubSys}&quot;/&gt;%n
+\t\t&lt;Error Code=&quot;%X{errcode}&quot; Description=&quot;%X{errdescription}&quot;/&gt;%n
+\t\t&lt;ATMNo&gt;%X{ATMNo}&lt;/ATMNo&gt;%n
+\t\t&lt;APMessage&gt;%m&lt;/APMessage&gt;%n
+\t&lt;/Message&gt;%n
+&lt;/Event&gt;%n" />
+	<property name="ENCMESSAGE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%-31t][%-20logger]|%-8X{Ej}|%-32X{TxRquid}|%-15X{ProgramFlow}|%-60X{ProgramName}|%X{FuncNo}|%X{KeyId}|%X{Input1}|%X{Input2}|%X{Output1}|%X{Output2}|%X{RC}|%X{SuipCommand}|%X{CallObj}|%msg%n" />
+	<property name="MQ_ENC_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%level][%t][%logger]|%X{Ej}|%X{TxRquid}|%X{ProgramFlow}|%X{ProgramName}|%X{FuncNo}|%X{KeyId}|%X{Input1}|%X{Input2}|%X{Output1}|%X{Output2}|%X{RC}|%X{SuipCommand}|%X{CallObj}|%{hostname}|%{hostip}|%msg%n" />
+	<property name="FEPWEBMESSAGE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%-20logger]|%X{userId}|%X{loginId}|%X{remoteIp}|%X{menuName}|%X{menuView}|%X{menuUrl}|%msg%n" />
+	<property name="BATCHJOB_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}\t%msg%n" />
+	<property name="GATEWAY_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%-20logger]|%X{remoteIp}|%X{remotePort}|%X{remoteHostName}|%X{localIp}|%X{localPort}|%X{localHostName}|%X{channelId}|%X{socketType}|%msg%n" />
+	<property name="SERVICE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%-5level][%logger]|%X{svrStartToRunTime}|%msg%n" />
+	<property name="FISC_GW_TX_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-9X{clientID}%-9X{direction}%-5X{msgType}%-5X{pcode}%-8X{stan}%-4X{trinBank}%-4X{troutBank}%-13X{txDate}%-5X{rc}%msg%n" />
+	<property name="FISC_GW_RSM_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-3X{returnCode}%-3X{reasonCode}%msg%n" />
+	<property name="FISC_GW_DISCONNECT_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-9X{clientID}%X{ip}:%X{port} disconnected!%msg%n" />
+	<turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
+		<MDCKey>logEnable</MDCKey>
+		<Value>false</Value>
+		<onMatch>DENY</onMatch>
+	</turboFilter>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="com.syscom.fep.frmcommon.log.encoder.MultiLayoutPatternEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+			<rule>
+				<logger>FEPMessageLogger</logger>
+				<pattern>${FEPMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>EMSLogger</logger>
+				<pattern>${EMS_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>ENCMessageLogger</logger>
+				<pattern>${ENCMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>FEPWebMessageLogger</logger>
+				<pattern>${FEPWEBMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>GatewayLogger</logger>
+				<pattern>${GATEWAY_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>BatchLogAppender</logger>
+				<pattern>${BATCHJOB_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>ServiceLogger</logger>
+				<pattern>${SERVICE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<enable>${spring.fep.log.service.rule.enable}</enable>
+				<logger>GeneralLogger;TraceLogger;WsClientLogger;RestfulClientLogger;SchedulerLogger;RepositoryLogger;JmsLogger</logger>
+				<pattern>${SERVICE_LOG_PATTERN}</pattern>
+			</rule>
+		</encoder>
+	</appender>
+	<appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- <file>${LOG_PATH}/fep-all.log</file> -->
+		<encoder class="com.syscom.fep.frmcommon.log.encoder.MultiLayoutPatternEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+			<rule>
+				<logger>FEPMessageLogger</logger>
+				<pattern>${FEPMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>EMSLogger</logger>
+				<pattern>${EMS_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>ENCMessageLogger</logger>
+				<pattern>${ENCMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>FEPWebMessageLogger</logger>
+				<pattern>${FEPWEBMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>GatewayLogger</logger>
+				<pattern>${GATEWAY_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>BatchLogAppender</logger>
+				<pattern>${BATCHJOB_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>ServiceLogger</logger>
+				<pattern>${SERVICE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<enable>${spring.fep.log.service.rule.enable}</enable>
+				<logger>GeneralLogger;TraceLogger;WsClientLogger;RestfulClientLogger;SchedulerLogger;RepositoryLogger;JmsLogger</logger>
+				<pattern>${SERVICE_LOG_PATTERN}</pattern>
+			</rule>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-all-${LOG_FILENAME_PATTERN}</fileNamePattern>
+			<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+			<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+			<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+	<appender name="ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- <file>${LOG_PATH}/fep-error.log</file> -->
+		<encoder class="com.syscom.fep.frmcommon.log.encoder.MultiLayoutPatternEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+			<rule>
+				<logger>FEPMessageLogger</logger>
+				<pattern>${FEPMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>EMSLogger</logger>
+				<pattern>${EMS_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>ENCMessageLogger</logger>
+				<pattern>${ENCMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>FEPWebMessageLogger</logger>
+				<pattern>${FEPWEBMESSAGE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>GatewayLogger</logger>
+				<pattern>${GATEWAY_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>BatchLogAppender</logger>
+				<pattern>${BATCHJOB_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<logger>ServiceLogger</logger>
+				<pattern>${SERVICE_LOG_PATTERN}</pattern>
+			</rule>
+			<rule>
+				<enable>${spring.fep.log.service.rule.enable}</enable>
+				<logger>GeneralLogger;TraceLogger;WsClientLogger;RestfulClientLogger;SchedulerLogger;RepositoryLogger;JmsLogger</logger>
+				<pattern>${SERVICE_LOG_PATTERN}</pattern>
+			</rule>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-error-${LOG_FILENAME_PATTERN}</fileNamePattern>
+			<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+			<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+			<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	<appender name="FEPMessageLogAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>profile</key>
+			<defaultValue>fep</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FEPMessageLogAppender-${profile}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<!-- <file>${LOG_PATH}/${profile}.log</file> -->
+				<encoder class="com.syscom.fep.frmcommon.log.encoder.MultiLayoutPatternEncoder">
+					<pattern>${FEPMESSAGE_LOG_PATTERN}</pattern>
+					<charset>UTF-8</charset>
+					<rule>
+						<logger>EMSLogger</logger>
+						<pattern>${EMS_LOG_PATTERN}</pattern>
+					</rule>
+				</encoder>
+				<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+					<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-${profile}-${LOG_FILENAME_PATTERN}</fileNamePattern>
+					<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+					<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+					<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+				</rollingPolicy>
+			</appender>
+		</sift>
+	</appender>
+	<appender name="EMSLogAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>profile</key>
+			<defaultValue>fep</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="EMSLogAppender-${profile}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<!-- <file>${LOG_PATH}/${profile}-ems.log</file> -->
+				<encoder>
+					<pattern>${EMS_LOG_PATTERN}</pattern>
+					<charset>UTF-8</charset>
+				</encoder>
+				<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+					<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-${profile}-ems-${LOG_FILENAME_PATTERN}</fileNamePattern>
+					<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+					<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+					<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+				</rollingPolicy>
+				<filter class="com.syscom.fep.frmcommon.log.filter.MdcMatcherFilter">
+					<keyword>POS Client\(.*\)Disconnected</keyword>
+				</filter>
+			</appender>
+		</sift>
+	</appender>
+	<appender name="ENCMessageLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- <file>${LOG_PATH}/fep-suipClient.log</file> -->
+		<encoder>
+			<pattern>${ENCMESSAGE_LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-suipClient-${LOG_FILENAME_PATTERN}</fileNamePattern>
+			<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+			<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+			<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+	<appender name="EMSQueueLogglyAppender" class="com.syscom.fep.jms.instance.ems.EmsQueueLogglyAppender">
+		<pattern>${MQ_EMS_LOG_PATTERN}</pattern>
+		<layout class="com.syscom.fep.frmcommon.log.layout.ParameterJsonLayout">
+			<jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+				<prettyPrint>false</prettyPrint>
+			</jsonFormatter>
+			<parameter>
+				<name>messageType</name>
+				<type>java.lang.String</type>
+				<layout>log</layout>
+			</parameter>
+			<parameter>
+				<name>messageTarget</name>
+				<type>java.lang.String</type>
+				<layout>fep</layout>
+			</parameter>
+		</layout>
+	</appender>
+	<appender name="EMSAlertQueueLogglyAppender" class="com.syscom.fep.jms.instance.ems.EmsQueueLogglyAppender">
+		<pattern>${EMS_LOG_PATTERN}</pattern>
+		<layout class="com.syscom.fep.frmcommon.log.layout.ParameterJsonLayout">
+			<jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+				<prettyPrint>false</prettyPrint>
+			</jsonFormatter>
+			<parameter>
+				<name>messageType</name>
+				<type>java.lang.String</type>
+				<layout>alert</layout>
+			</parameter>
+		</layout>
+		<filter class="com.syscom.fep.frmcommon.log.filter.MdcMatcherFilter">
+			<keyword>POS Client\(.*\)Disconnected</keyword>
+		</filter>		
+	</appender>
+	<appender name="ENCQueueLogglyAppender" class="com.syscom.fep.jms.instance.ems.EmsQueueLogglyAppender">
+		<pattern>${MQ_ENC_LOG_PATTERN}</pattern>
+		<layout class="com.syscom.fep.frmcommon.log.layout.ParameterJsonLayout">
+			<jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+				<prettyPrint>false</prettyPrint>
+			</jsonFormatter>
+			<parameter>
+				<name>messageType</name>
+				<type>java.lang.String</type>
+				<layout>log</layout>
+			</parameter>
+			<parameter>
+				<name>messageTarget</name>
+				<type>java.lang.String</type>
+				<layout>des</layout>
+			</parameter>
+		</layout>
+	</appender>
+	<appender name="BatchLogAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>batchjob</key>
+			<defaultValue>batchjob</defaultValue>
+			<key>batchjob-filename</key>
+			<defaultValue>batchjob</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="BatchLogAppender-${batchjob}" class="ch.qos.logback.core.FileAppender">
+				<file>${batchjob-filename}</file>
+				<append>true</append>
+				<encoder>
+					<pattern>${BATCHJOB_LOG_PATTERN}</pattern>
+					<charset>UTF-8</charset>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+	<appender name="GatewayLoggerAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>gateway</key>
+			<defaultValue>fep</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="GatewayLoggerAppender-${gateway}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<!-- <file>${LOG_PATH}/${gateway}.log</file> -->
+				<encoder>
+					<pattern>${GATEWAY_LOG_PATTERN}</pattern>
+					<charset>UTF-8</charset>
+				</encoder>
+				<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+					<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-${gateway}-transmission-${LOG_FILENAME_PATTERN}</fileNamePattern>
+					<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+					<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+					<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+				</rollingPolicy>
+			</appender>
+		</sift>
+	</appender>
+	<appender name="SyscomFepApplicationBootAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- <file>${LOG_PATH}/fep-boot.log</file> -->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-boot-${LOG_FILENAME_PATTERN}</fileNamePattern>
+			<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+			<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+			<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+	<appender name="FISCGatewayLoggerAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>logKind</key>
+			<defaultValue>unknown</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FISCGatewayLoggerAppender-${logKind}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<!-- <file>${LOG_PATH}/${profile}.log</file> -->
+				<encoder class="com.syscom.fep.frmcommon.log.encoder.MultiLayoutPatternEncoder">
+					<pattern>${LOG_PATTERN}</pattern>
+					<charset>UTF-8</charset>
+					<rule>
+						<logger>FISCGatewayTxLogger</logger>
+						<pattern>${FISC_GW_TX_LOG_PATTERN}</pattern>
+					</rule>
+					<rule>
+						<logger>FISCGatewayRSMLogger</logger>
+						<pattern>${FISC_GW_RSM_LOG_PATTERN}</pattern>
+					</rule>
+					<rule>
+						<logger>FISCGatewayDisconnectLogger</logger>
+						<pattern>${FISC_GW_DISCONNECT_LOG_PATTERN}</pattern>
+					</rule>
+				</encoder>
+				<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+					<fileNamePattern>${LOG_BACKUP_DIR}/${spring.fep.application.name}-FISCGW-${logKind}-${LOG_FILENAME_PATTERN}</fileNamePattern>
+					<maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+					<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+					<totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+				</rollingPolicy>
+			</appender>
+		</sift>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE_ALL" />
+		<appender-ref ref="ERROR_LOG" />
+	</root>
+	<logger name="org.springframework" additivity="false">
+		<level value="WARN" />
+	</logger>
+	<logger name="org.apache" additivity="false">
+		<level value="WARN" />
+	</logger>
+	<logger name="org.mybatis" additivity="false">
+		<level value="WARN" />
+	</logger>
+	<logger name="org.quartz" additivity="false">
+		<level value="WARN" />
+	</logger>
+	<logger name="com.ulisesbocchio" additivity="false">
+		<level value="WARN" />
+	</logger>
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="OFF" />
+	</logger>
+	<logger name="jdbc.audit" additivity="false">
+		<level value="OFF" />
+	</logger>
+	<logger name="jdbc.resultset" additivity="false">
+		<level value="OFF" />
+	</logger>
+	<logger name="jdbc.connection" additivity="false">
+		<level value="OFF" />
+	</logger>
+	<logger name="jdbc.sqltiming" additivity="true">
+		<level value="${spring.fep.log.jdbc.sqltiming.level}" />
+	</logger>
+	<logger name="com.syscom.fep" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="com.syscom.fep.mybatis" additivity="true">
+		<level value="${spring.fep.log.mybatis.level}" />
+	</logger>
+	<logger name="com.syscom.safeaa" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="FEPMessageLogger" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="FEPMessageLogAppender" />
+	<!--	<appender-ref ref="EMSQueueLogglyAppender" /> -->
+	</logger>
+	<logger name="EMSLogger" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="FEPMessageLogAppender" />
+		<appender-ref ref="EMSLogAppender" />
+		<appender-ref ref="EMSAlertQueueLogglyAppender" />
+	</logger>
+	<logger name="ENCMessageLogger" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="ENCMessageLogAppender" />
+		<appender-ref ref="ENCQueueLogglyAppender" />
+	</logger>
+	<logger name="BatchLogger" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="BatchLogAppender" />
+	</logger>
+	<logger name="GatewayLogger" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="GatewayLoggerAppender" />
+	</logger>
+	<logger name="FEPWebMessageLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="GeneralLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="TraceLogger" additivity="true">
+		<level value="TRACE" />
+	</logger>
+	<logger name="WsClientLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="RestfulClientLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="ServiceLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="SchedulerLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="RepositoryLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="JmsLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="UnitTestLogger" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="AdditionalLogger" additivity="true">
+		<level value="OFF" />
+	</logger>
+	<logger name="JdbcLogger" additivity="true">
+		<level value="${spring.fep.log.jdbc.level}" />
+	</logger>
+	<logger name="com.syscom.fep.server.SyscomFepServerApplication" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="SyscomFepApplicationBootAppender" />
+	</logger>
+	<logger name="com.syscom.fep.service.SyscomFepServiceApplication" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="SyscomFepApplicationBootAppender" />
+	</logger>
+	<logger name="com.syscom.fep.gateway.SyscomFepGatewayApplication" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="SyscomFepApplicationBootAppender" />
+	</logger>
+	<logger name="com.syscom.fep.web.SyscomFepWebApplication" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="SyscomFepApplicationBootAppender" />
+	</logger>
+	<logger name="com.syscom.fep.batch.SyscomFepBatchApplication" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="SyscomFepApplicationBootAppender" />
+	</logger>
+	<logger name="com.syscom.fep.batch.cmdline.SyscomFepBatchCmdLineApplication" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="SyscomFepApplicationBootAppender" />
+	</logger>
+	<logger name="com.syscom.fep.FepNotifyApplication" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="SyscomFepApplicationBootAppender" />
+	</logger>
+	<logger name="FISCGatewayTxLogger" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="FISCGatewayLoggerAppender" />
+	</logger>
+	<logger name="FISCGatewayRSMLogger" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="FISCGatewayLoggerAppender" />
+	</logger>
+	<logger name="FISCGatewayDisconnectLogger" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="FISCGatewayLoggerAppender" />
+	</logger>
+</configuration>

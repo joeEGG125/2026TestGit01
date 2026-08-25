@@ -1,0 +1,25 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+	<id>${assembly-config}${assembly-func}</id>
+	<formats>
+		<format>${assembly-format-tar-gz}</format>
+	</formats>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>${assembly-fep-app}</baseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>../${project-name-config}/src/main/resources/</directory>
+			<outputDirectory>${assembly-config}</outputDirectory>
+			<includes>
+				<include>application-${project.description}${assembly-func}.properties</include>
+				<include>application-integration.properties</include>
+				<include>application-mybatis.properties</include>
+				<include>logback-spring.xml</include>
+				<include>mybatis-config.xml</include>
+				<include>ESAPI.properties</include>
+				<include>validation.properties</include>
+			</includes>
+			<fileMode>${assembly-file-mode}</fileMode>
+			<filtered>true</filtered>
+		</fileSet>
+	</fileSets>
+</assembly>

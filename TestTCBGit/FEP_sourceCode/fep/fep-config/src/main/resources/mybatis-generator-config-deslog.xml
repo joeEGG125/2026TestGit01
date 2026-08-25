@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="application-mybatis.properties"/>
+    <context id="deslog" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.ToStringEqualsHashCodeModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.AddDefaultValueToFieldModelPlugin">
+            <property name="defaultValueForStringFieldCannotBeNullInDb" value="StringUtils.SPACE"/>
+        </plugin>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.AddExtendsToBaseModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.ChangeConstructorModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.AddFieldsToXmlMethodToModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.AddAnnotationToMapperPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.ChangeDeleteByPrimaryKeyMethodMapperPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.RenameDeslog1ToDeslogMapperPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.deslog.generator.RemoveSchemaPluginAdapter"/>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="false"/>
+            <property name="addRemarkComments" value="false"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="${spring.datasource.deslogdb.driver-class-name}"
+                        connectionURL="${spring.datasource.deslogdb.jdbc-url}"
+                        userId="${spring.datasource.deslogdb.username}"
+                        password="P@ssw0rd">
+        </jdbcConnection>
+        <javaTypeResolver type="com.syscom.fep.mybatis.deslog.generator.MyJavaTypeResolverDefaultImpl">
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="com.syscom.fep.mybatis.deslog.model" targetProject="src\main\java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="constructorBased" value="true"/>
+            <property name="trimStrings" value="false"/>
+            <property name="immutable" value="false"/>
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="com.syscom.fep.mybatis.deslog.mapper.xml" targetProject="src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.syscom.fep.mybatis.deslog.mapper" targetProject="src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+        <table schema="DBO" tableName="DESLOG1" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table schema="DBO" tableName="LOADKEYLOG" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+    </context>
+</generatorConfiguration>

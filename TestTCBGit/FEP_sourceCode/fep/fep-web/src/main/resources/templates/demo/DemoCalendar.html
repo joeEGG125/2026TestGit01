@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/demo/DemoCalendar/inquiryMain}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label for="year" class="col-form-label">年</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="year" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#chooseYear" th:field="*{chooseYear}" />
+							<div class="input-group-append" data-target="#chooseYear" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+					<td class="condition-label">
+						<label for="activeCalendar" class="col-form-label">年</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="active" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#activeCalendar" id="activeCalendar" name="activeCalendar" />
+							<div class="input-group-append" data-target="#activeCalendar" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button type="button" class="btn btn-primary" id="btnChangeCalendar">JS切換日曆年份</button>
+		<button type="button" class="btn btn-primary" id="btnActiveCalendar">高亮選中日期</button>
+		<button type="button" class="btn btn-primary" id="btnClearActiveCalendar">清除高亮日期</button>
+		<button type="button" class="btn btn-primary" id="btnClearAllActiveCalendar">清除所有高亮日期(除了週末)</button>
+	</div>
+	<div layout:fragment="panel-grid">
+		<div class="card-body table-responsive">
+			<div th:replace="~{layout/calendar :: calendar}"></div>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/demo/DemoCalendar.js}"></script>
+		<script th:inline="javascript">
+			// 初始化或者查詢後, 從form中取出當前的年份, 以及需要高亮顯示被選中的日期
+			var form = /*[[${form}]]*/'';
+			if (form.chooseYear) {
+				setCalendarYear(form.chooseYear);
+			}
+			if (form.activeCalendar) {
+				setCalendarDateActive(form.activeCalendar);
+			}
+		</script>
+	</div>
+</body>
+</html>

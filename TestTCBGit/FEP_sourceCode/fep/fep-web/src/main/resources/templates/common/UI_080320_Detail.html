@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" style="width:100px" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<form id="form-validator" th:object="${form}">
+			<table border="0" cellspacing="0" class="table-detail">
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">員工編號:</label>
+					</td>
+					<td class="condition-input" style="width:300px">
+						<input disabled="true" class="form-control" type="text" th:field="*{fepuserLogonid}" />			
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">員工姓名:</label>	
+					</td>
+					<td class="condition-input" style="width:300px">					
+						<input disabled="true" class="form-control" type="text" th:field="*{fepuserName}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">權限群組:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<select disabled="true" class="form-control" th:field="*{fepUserGroup}">
+							<option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}" 
+							        th:selected="${option.value == fepUserGroup}"/>
+						</select>					
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">分行代號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<select disabled="true" class="form-control" th:field="*{fepuserBrno}">
+							<option th:each="option : ${gridData}" th:text="${option.text}" th:value="${option.value}" 
+							        th:selected="${option.value == fepuserBrno}"/>
+						</select>					
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">使用狀態:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<select disabled="true"  class="form-control" th:field="*{fepuserStatus}">
+							<option value="" selected="selected"></option>
+							<option value="0" th:selected="${fepuserStatus == '0'}">未啟用</option>
+							<option value="1" th:selected="${fepuserStatus == '1'}">啟用</option>
+							<option value="2" th:selected="${fepuserStatus == '2'}">註銷</option>
+							<option value="3" th:selected="${fepuserStatus == '3'}">密碼過期</option>
+							<option value="4" th:selected="${fepuserStatus == '4'}">密碼錯3次</option>
+							<option value="5" th:selected="${fepuserStatus == '5'}">暫停使用</option>
+						</select>			
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">查核層級:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+					    <input disabled="true" class="form-control" type="text"  th:field="*{fepuserLevel}" />			
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">直屬查核人員:</label>
+					</td>
+					<td class="condition-input" style="width:200px">				
+						<select disabled="true"  class="form-control" th:field="*{fepuserBossTxt}">
+							<option value="" th:text="*{fepuserBossTxt}"></option>
+						</select>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">上次修改人員:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input disabled="true" class="form-control" type="text"  th:field="*{updateUseridTxt}" />		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">上次修改日期:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input disabled="true" class="form-control" type="text"  th:field="*{userUpdateTimeTxt}" />			
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

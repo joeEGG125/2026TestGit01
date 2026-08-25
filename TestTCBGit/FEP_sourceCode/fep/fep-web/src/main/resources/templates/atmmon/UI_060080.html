@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+	    <form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060080/queryClick}" method="post">
+	        <table border="0" cellspacing="0" class="table-condition">
+	            <tr>
+	                <td class="condition-label" >
+	                    <label class="col-form-label">警示代碼</label>
+	                </td>
+	                <td class="condition-input">
+	                    <input class="form-control" type="text" th:field="*{alarm_no}" maxlength="4">
+	                </td>
+	                <td><td><td></td>
+	            </tr>
+	        </table>
+	    </form>
+	</div>
+	<div align="left" layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnInsert">新增</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnDelete">刪除</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b>刪除</b></th>
+						<th><b>警示代碼</b></th>
+						<th><b>警示說明</b></th>
+						<th><b>警示訊息</b></th>
+						<th><b>警示圖示URL</b></th>
+						<th><b>是否送EMS</b></th>
+						<th><b>是否記錄Log</b></th>
+						<th><b>自動停止服務</b></th>
+						<th><b>顯示警示</b></th>
+						<th><b>Email警示</b></th>
+						<th><b>通知次數</b></th>
+						<th><b>備註</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data : ${pageData.list}">
+						<td fep:table-td-check="demo" table-td-check-value=
+							"${'{' + '
+							&quot;alarm_no&quot;:&quot;'+ data.alarmNo + '&quot; 
+							'+ '}'}">
+						</td>
+						<td>
+							<a class="btn-inquiry" href="#" th:text="${data.alarmNo}" th:value="${data.alarmNo}"> </a>
+						</td>
+						<td align="left" th:text="${data.alarmName}" />
+						<td align="left" th:text="${data.alarmNameS}" />
+						<td align="left" th:text="${data.alarmIcon}" />
+						<td align="left" th:text="${data.alarmSendems}==0?'否':'是'" />
+						<td align="left" th:text="${data.alarmLog}==0?'否':'是'" />
+						<td align="left" th:text="${data.alarmAutostop}==0?'否':'是'" />
+						<td align="left" th:text="${data.alarmConsole}==0?'否':'是'" />
+						<td align="left" th:text="${data.alarmNotifyEmail}" />
+						<td align="left" th:text="${data.alarmNotifyTimes}" />
+						<td align="left" th:text="${data.alarmRemark}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI060080.js}"></script>
+	</div>
+</body>
+</html>

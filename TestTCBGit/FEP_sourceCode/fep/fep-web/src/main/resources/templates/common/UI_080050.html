@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        .table-zoo {
+            width: 95%;
+        }
+
+        .table-zoo-tt {
+            width: 100%;
+            border: 1px solid #95B8E7;
+        }
+
+        .table-zoo-tt-td {
+            border: 1px solid #95B8E7;
+            background: #E5EFFF;
+        }
+
+        .table-s {
+            padding-left: 10px;
+            font-size: 14px
+        }
+
+        .table-d {
+            height: 610px;
+            overflow-x: auto;
+        }
+
+        .table-zoo-tt-tt {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .table-zoo-tt-tr {
+            padding-left: 10px
+        }
+
+        .table-zoo-tt-la {
+            font-size: 14px
+        }
+
+        .table-zoo-tt-i {
+            margin-bottom: 3px;
+            margin-top: 3px;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="panel-grid">
+    <table class="table-zoo">
+        <tr>
+            <td valign="top" style="width: 50%">
+                <table class="table-zoo-tt">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s">角色</span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-d">
+                                <table class="table-zoo-tt-tt">
+                                    <tr>
+                                        <td>
+                                            <div class="content_wrap">
+                                                <div class="ztreeDemoBackground left">
+                                                    <ul id="treeMain" class="ztree"></ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td valign="top" style="width: 50%">
+                <table class="table-zoo-tt" id="groupAndResource">
+                    <tr>
+                        <td class="table-zoo-tt-td">
+                            <b><span class="table-s">群組/功能</span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="table-d">
+                                <table class="table-zoo-tt-tt">
+                                    <tr>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary" id="updateOrder">更新設定</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="content_wrap">
+                                                <div class="ztreeDemoBackground left">
+                                                    <ul id="treeVice" class="ztree"></ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/common/UI080050.js}"></script>
+</div>
+</body>
+</html>

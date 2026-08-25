@@ -1,0 +1,178 @@
+server.port=8301
+
+spring.fep.application.name=fep-gateway
+
+management.endpoints.prometheus.enabled=true
+management.endpoints.web.exposure.include=*
+management.metrics.tags.application=${spring.fep.application.name}-fisc
+management.endpoint.health.show-details=always
+
+#FISCGatewayManager
+spring.register.bean[0]=com.syscom.fep.gateway.netty.fisc.FISCGatewayManager
+#KeepAlive
+#spring.register.bean[1]=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveServerConfiguration
+#spring.register.bean[2]=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveClientConfiguration
+#spring.register.bean[3]=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveRestfulClient
+
+#restful controller for FISC Gateway
+spring.register.controller[0]=com.syscom.fep.gateway.netty.fisc.ctrl.FISCGatewayClientRestfulCtrl
+#restful controller for Receive and Ack KeepAlive
+#spring.register.controller[1]=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveRestfulServer
+
+#======================================== For Common ========================================
+spring.fep.gateway.transmission.fisc.responseQueueExpiration=60000
+#spring.fep.gateway.transmission.fisc.httpOperate=http://172.29.14.2:8301/recv/fisc/operate
+#======================================== For Common ========================================
+
+#======================================== TO FEPT FISC Service(socket) ========================================
+spring.fep.gateway.transmission.fisc.tofepap[0].hostName=fepap1P
+spring.fep.gateway.transmission.fisc.tofepap[0].host=10.0.54.33
+spring.fep.gateway.transmission.fisc.tofepap[0].port=8733
+spring.fep.gateway.transmission.fisc.tofepap[1].hostName=fepap1P
+spring.fep.gateway.transmission.fisc.tofepap[1].host=10.0.54.33
+spring.fep.gateway.transmission.fisc.tofepap[1].port=8733
+spring.fep.gateway.transmission.fisc.tofepapMode=DYNAMIC
+spring.fep.gateway.transmission.fisc.tofepapRetryInterval=3
+spring.fep.gateway.transmission.fisc.tofepapRetryCount=10
+spring.fep.gateway.transmission.fisc.tofepapResetToFepApModeTimer=300
+#======================================== TO FEP FISC Service ========================================
+
+#======================================== Primary ========================================
+#FISC Gateway Sender -1
+spring.fep.gateway.transmission.fisc.primary.sender[0].host=10.0.31.212
+spring.fep.gateway.transmission.fisc.primary.sender[0].port=5003
+spring.fep.gateway.transmission.fisc.primary.sender[0].reestablishConnectionInterval=1000
+spring.fep.gateway.transmission.fisc.primary.sender[0].encoding=ebcdic
+spring.fep.gateway.transmission.fisc.primary.sender[0].clientId=B006A02I
+spring.fep.gateway.transmission.fisc.primary.sender[0].checkCode=10072004
+spring.fep.gateway.transmission.fisc.primary.sender[0].tcpKeepIdle=120
+spring.fep.gateway.transmission.fisc.primary.sender[0].tcpKeepInterval=10
+
+#FISC Gateway Receiver-1
+spring.fep.gateway.transmission.fisc.primary.receiver[0].host=10.0.31.212
+spring.fep.gateway.transmission.fisc.primary.receiver[0].port=5004
+spring.fep.gateway.transmission.fisc.primary.receiver[0].reestablishConnectionInterval=1000
+spring.fep.gateway.transmission.fisc.primary.receiver[0].disConnectInterval=121000
+spring.fep.gateway.transmission.fisc.primary.receiver[0].encoding=ebcdic
+spring.fep.gateway.transmission.fisc.primary.receiver[0].clientId=B006A02O
+spring.fep.gateway.transmission.fisc.primary.receiver[0].checkCode=10072004
+spring.fep.gateway.transmission.fisc.primary.receiver[0].tcpKeepIdle=120
+spring.fep.gateway.transmission.fisc.primary.receiver[0].tcpKeepInterval=10
+spring.fep.gateway.transmission.fisc.primary.receiver[0].bisThreadNum=100
+spring.fep.gateway.transmission.fisc.primary.receiver[0].asyncExecutorThreadNum=100
+spring.fep.gateway.transmission.fisc.primary.receiver[0].eventLoopThreads=100
+
+#FISC Gateway Server-1
+spring.fep.gateway.transmission.fisc.primary.fepap[0].host=${spring.fep.hostip}
+spring.fep.gateway.transmission.fisc.primary.fepap[0].port=8732
+
+
+#FISC Gateway Sender-2
+spring.fep.gateway.transmission.fisc.primary.sender[1].host=10.0.31.212
+spring.fep.gateway.transmission.fisc.primary.sender[1].port=5005
+spring.fep.gateway.transmission.fisc.primary.sender[1].reestablishConnectionInterval=1000
+spring.fep.gateway.transmission.fisc.primary.sender[1].encoding=ebcdic
+spring.fep.gateway.transmission.fisc.primary.sender[1].clientId=B006A03I
+spring.fep.gateway.transmission.fisc.primary.sender[1].checkCode=10072004
+spring.fep.gateway.transmission.fisc.primary.sender[1].tcpKeepIdle=120
+spring.fep.gateway.transmission.fisc.primary.sender[1].tcpKeepInterval=10
+
+#FISC Gateway Receiver-2
+spring.fep.gateway.transmission.fisc.primary.receiver[1].host=10.0.31.212
+spring.fep.gateway.transmission.fisc.primary.receiver[1].port=5006
+spring.fep.gateway.transmission.fisc.primary.receiver[1].reestablishConnectionInterval=1000
+spring.fep.gateway.transmission.fisc.primary.receiver[1].disConnectInterval=121000
+spring.fep.gateway.transmission.fisc.primary.receiver[1].encoding=ebcdic
+spring.fep.gateway.transmission.fisc.primary.receiver[1].clientId=B006A03O
+spring.fep.gateway.transmission.fisc.primary.receiver[1].checkCode=10072004
+spring.fep.gateway.transmission.fisc.primary.receiver[1].tcpKeepIdle=120
+spring.fep.gateway.transmission.fisc.primary.receiver[1].tcpKeepInterval=10
+spring.fep.gateway.transmission.fisc.primary.receiver[1].bisThreadNum=100
+spring.fep.gateway.transmission.fisc.primary.receiver[1].asyncExecutorThreadNum=100
+spring.fep.gateway.transmission.fisc.primary.receiver[1].eventLoopThreads=100
+
+#FISC Gateway Server-2
+spring.fep.gateway.transmission.fisc.primary.fepap[1].host=${spring.fep.hostip}
+spring.fep.gateway.transmission.fisc.primary.fepap[1].port=8734
+
+
+#FISC Gateway Sender-3
+spring.fep.gateway.transmission.fisc.primary.sender[2].host=10.0.31.212
+spring.fep.gateway.transmission.fisc.primary.sender[2].port=5007
+spring.fep.gateway.transmission.fisc.primary.sender[2].reestablishConnectionInterval=1000
+spring.fep.gateway.transmission.fisc.primary.sender[2].encoding=ebcdic
+spring.fep.gateway.transmission.fisc.primary.sender[2].clientId=B006A04I
+spring.fep.gateway.transmission.fisc.primary.sender[2].checkCode=10072004
+spring.fep.gateway.transmission.fisc.primary.sender[2].tcpKeepIdle=120
+spring.fep.gateway.transmission.fisc.primary.sender[2].tcpKeepInterval=10
+
+#FISC Gateway Receiver-3
+spring.fep.gateway.transmission.fisc.primary.receiver[2].host=10.0.31.212
+spring.fep.gateway.transmission.fisc.primary.receiver[2].port=5008
+spring.fep.gateway.transmission.fisc.primary.receiver[2].reestablishConnectionInterval=1000
+spring.fep.gateway.transmission.fisc.primary.receiver[2].disConnectInterval=121000
+spring.fep.gateway.transmission.fisc.primary.receiver[2].encoding=ebcdic
+spring.fep.gateway.transmission.fisc.primary.receiver[2].clientId=B006A04O
+spring.fep.gateway.transmission.fisc.primary.receiver[2].checkCode=10072004
+spring.fep.gateway.transmission.fisc.primary.receiver[2].tcpKeepIdle=120
+spring.fep.gateway.transmission.fisc.primary.receiver[2].tcpKeepInterval=10
+spring.fep.gateway.transmission.fisc.primary.receiver[2].bisThreadNum=100
+spring.fep.gateway.transmission.fisc.primary.receiver[2].asyncExecutorThreadNum=100
+spring.fep.gateway.transmission.fisc.primary.receiver[2].eventLoopThreads=100
+
+#FISC Gateway Server-3
+spring.fep.gateway.transmission.fisc.primary.fepap[2].host=${spring.fep.hostip}
+spring.fep.gateway.transmission.fisc.primary.fepap[2].port=8736
+
+#======================================== Primary ========================================
+
+
+#register FISC Gateway KeepAlive Server
+#spring.fep.gateway.register[0].gtwClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveServer
+#spring.fep.gateway.register[0].hdrClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveServerChannelInboundHandlerAdapter
+#spring.fep.gateway.register[0].mgrClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveServerProcessRequestManager
+#spring.fep.gateway.register[0].cnfClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveServerConfiguration
+#spring.fep.gateway.register[0].ipfClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveServerRuleIpFilter
+
+#register FISC Gateway KeepAlive Client
+#spring.fep.gateway.register[1].gtwClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveClient
+#spring.fep.gateway.register[1].hdrClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveClientChannelInboundHandlerAdapter
+#spring.fep.gateway.register[1].cnfClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveClientConfiguration
+#spring.fep.gateway.register[1].prcClassName=com.syscom.fep.gateway.netty.fisc.keepalive.FISCGatewayKeepAliveClientProcessRequest
+
+#FISC Gateway KeepAlive Server
+#spring.fep.gateway.transmission.fisc.keepalive.server.host=${spring.fep.hostip}
+#spring.fep.gateway.transmission.fisc.keepalive.server.port=8701
+#spring.fep.gateway.transmission.fisc.keepalive.server.logging=true
+
+#FISC Gateway KeepAlive Client
+#spring.fep.gateway.transmission.fisc.keepalive.client.host=172.29.14.2
+#spring.fep.gateway.transmission.fisc.keepalive.client.port=8701
+#spring.fep.gateway.transmission.fisc.keepalive.client.start=60
+#spring.fep.gateway.transmission.fisc.keepalive.client.interval=5
+#spring.fep.gateway.transmission.fisc.keepalive.client.retryCount=3
+#spring.fep.gateway.transmission.fisc.keepalive.client.retryInterval=5
+#spring.fep.gateway.transmission.fisc.keepalive.client.httpKeepAlive=http://172.29.14.2:8301/recv/keepalive
+#spring.fep.gateway.transmission.fisc.keepalive.client.logging=true
+
+#register Scheduler Job
+spring.fep.scheduler.job.register[0].className=com.syscom.fep.scheduler.job.impl.AppMonitorJob
+spring.fep.scheduler.job.register[0].configClassName=com.syscom.fep.scheduler.job.impl.AppMonitorJobConfig
+spring.fep.scheduler.job.register[1].className=com.syscom.fep.gateway.job.fisc.FISCGatewayClientAppMonitorJob
+spring.fep.scheduler.job.register[1].configClassName=com.syscom.fep.gateway.job.fisc.FISCGatewayClientAppMonitorJobConfig
+
+#AppMonitorJob
+spring.fep.scheduler.job.app-monitor.cronExpression=0 0/1 * * * ?
+spring.fep.scheduler.job.app-monitor.serviceName=${management.metrics.tags.application}
+spring.fep.scheduler.job.app-monitor.serviceHostIp=${spring.fep.hostip}
+spring.fep.scheduler.job.app-monitor.serviceHostName=${spring.fep.hostname}
+spring.fep.scheduler.job.app-monitor.serviceUrl=http://${spring.fep.hostip}:${server.port}
+spring.fep.scheduler.job.app-monitor.monitorPrimaryUrl=http://10.0.54.35:8730/api/mon/SendMessage
+spring.fep.scheduler.job.app-monitor.monitorSecondaryUrl=http://10.0.54.35:8730/api/mon/SendMessage
+spring.fep.scheduler.job.app-monitor.recordHttpLog=true
+
+#FISC Gateway Job
+spring.fep.gateway.job.fisc.app-monitor.cronExpression=0 0/1 * * * ?
+spring.fep.gateway.job.fisc.app-monitor.monitorUrl=http://10.0.54.35:8730/recv/net/client
+spring.fep.gateway.job.fisc.app-monitor.recordHttpLog=true
+

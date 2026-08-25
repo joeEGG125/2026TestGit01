@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.BusiExtMapper">
+	<select id="selectById" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BusiMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.BusiMapper.Base_Column_List" />
+		FROM BUSI
+		WHERE BUSI_IDNO = #{busiIdno,jdbcType=VARCHAR}
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+</mapper>

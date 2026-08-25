@@ -1,0 +1,9 @@
+package com.syscom.fep.frmcommon.netty;
+
+public enum NettyEventExecutorDataErrorCode {
+    INVALID_INPUT,
+    SET_EVENT_EXECUTOR_THREADS_FAILED,
+    SET_EVENT_EXECUTOR_THREADS_OVER_MAX_THREADS_RATIO,
+    CANNOT_REDUCE_EVENT_EXECUTOR_THREADS,
+    HANDLER_NOT_EXIST
+}

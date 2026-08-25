@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.OdrcExtMapper">
+	<!-- 2021-07-20 Richard add -->
+	<select id="getOdrcByDay" parameterType="com.syscom.fep.mybatis.model.Odrc" resultType="java.util.Map">
+		SELECT
+		NVL(SUM(ODRC_TX_AMT), 0) AS TOT_AMT
+		FROM ODRC
+		WHERE ODRC_TX_DATE = #{odrcTxDate,jdbcType=CHAR}
+		AND ODRC_BKNO = #{odrcBkno,jdbcType=CHAR}
+		AND ODRC_ACTNO = #{odrcActno,jdbcType=CHAR}
+		AND ODRC_CURCD = #{odrcCurcd,jdbcType=CHAR}
+	</select>
+</mapper>

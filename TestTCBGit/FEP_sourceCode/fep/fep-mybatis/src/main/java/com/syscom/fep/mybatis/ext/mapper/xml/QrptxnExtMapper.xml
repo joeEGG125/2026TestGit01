@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.QrptxnExtMapper">
+  <!--  2021-04-23 ZhaoKai add-->
+  <select id="getQrptxnByIcSeqno" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.QrptxnMapper.BaseResultMap">
+    SELECT
+    <include refid="com.syscom.fep.mybatis.mapper.QrptxnMapper.Base_Column_List" />
+    FROM QRPTXN
+    WHERE QRPTXN_TX_DATE_FISC = #{qrptxnTxDateFisc,jdbcType=CHAR}
+    AND QRPTXN_IC_SEQNO = #{qrptxnIcSeqno,jdbcType=CHAR}
+    AND QRPTXN_TXRUST IN ('A','B')
+  </select>
+</mapper>

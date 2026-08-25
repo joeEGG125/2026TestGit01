@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.HkbrapExtMapper">
+
+    <select id="getHKBRAPBySTDateForUI" resultType="java.util.HashMap">
+        SELECT HKBRAP_SEQNO AS BRAP_SEQNO,
+               HKBRAP_ST_DATE AS BRAP_ST_DATE,
+               HKBRAP_APID AS BRAP_APID,
+               HKBRAP_BRNO AS BRAP_BRNO,
+               HKBRAP_TX_TYPE AS BRAP_TX_TYPE,
+               HKBRAP_ACC_TYPE AS BRAP_ACC_TYPE,
+               HKBRAP_MONTHLY_FLAG AS BRAP_MONTHLY_FLAG,
+               HKBRAP_PCODE AS BRAP_PCODE, HKBRAP_ZONE_CODE AS BRAP_ZONE_CODE, HKBRAP_CUR AS BRAP_CUR,
+               HKBRAP_TX_CNT_DR AS BRAP_TX_CNT_DR,HKBRAP_TX_AMT_DR AS BRAP_TX_AMT_DR,
+               HKBRAP_TX_CNT_CR AS BRAP_TX_CNT_CR,HKBRAP_TX_AMT_CR AS BRAP_TX_AMT_CR,
+               HKBRAP_CNT_CUSTPAY AS BRAP_CNT_CUSTPAY,HKBRAP_FEE_CUSTPAY AS BRAP_FEE_CUSTPAY,
+               HKBRAP_MBANK_CNT_DR AS BRAP_MBANK_CNT_DR,HKBRAP_MBANK_FEE_DR AS BRAP_MBANK_FEE_DR,
+               HKBRAP_MBANK_CNT_CR AS BRAP_MBANK_CNT_CR,HKBRAP_MBANK_FEE_CR AS BRAP_MBANK_FEE_CR,
+               HKBRAP_FISC_CNT_DR AS BRAP_FISC_CNT_DR,HKBRAP_FISC_FEE_DR AS BRAP_FISC_FEE_DR,
+               HKBRAP_FISC_CNT_CR AS BRAP_FISC_CNT_CR,HKBRAP_FISC_FEE_CR AS BRAP_FISC_FEE_CR,
+               HKBRAP_PROFIT_CNT AS BRAP_PROFIT_CNT,HKBRAP_PROFIT_AMT AS BRAP_PROFIT_AMT,
+               HKBRAP_LOSS_CNT AS BRAP_LOSS_CNT,HKBRAP_LOSS_AMT AS BRAP_LOSS_AMT,
+               HKBRAP_DEPT_CODE AS BRAP_DEPT_CODE, '    ' AS BRAP_PBTYPE,
+               HKBRAP_MOD_TX_CNT_DR AS BRAP_MOD_TX_CNT_DR,HKBRAP_MOD_TX_AMT_DR AS BRAP_MOD_TX_AMT_DR,
+               HKBRAP_MOD_CNT_CUSTPAY AS BRAP_MOD_CNT_CUSTPAY,HKBRAP_MOD_FEE_CUSTPAY AS BRAP_MOD_FEE_CUSTPAY,
+               HKBRAP_MOD_PROFIT_CNT AS BRAP_MOD_PROFIT_CNT,HKBRAP_MOD_PROFIT_AMT AS BRAP_MOD_PROFIT_AMT,
+               HKBRAP_MOD_TX_CNT_CR AS BRAP_MOD_TX_CNT_CR,HKBRAP_MOD_TX_AMT_CR AS BRAP_MOD_TX_AMT_CR,
+               HKBRAP_MOD_FISC_CNT_CR AS BRAP_MOD_FISC_CNT_CR,HKBRAP_MOD_FISC_FEE_CR AS BRAP_MOD_FISC_FEE_CR,
+               HKBRAP_MOD_LOSS_CNT AS BRAP_MOD_LOSS_CNT,HKBRAP_MOD_LOSS_AMT AS BRAP_MOD_LOSS_AMT
+        FROM HKBRAP
+        <where>
+            <if test="stDate != null and stDate != ''">
+                AND HKBRAP_ST_DATE = #{stDate,jdbcType=VARCHAR}
+            </if>
+            <if test="pcode != null and pcode != ''">
+                AND HKBRAP_PCODE = #{pcode,jdbcType=VARCHAR}
+            </if>
+            <if test="apId != null and apId != ''">
+                AND HKBRAP_APID = #{apId,jdbcType=VARCHAR}
+            </if>
+            <!--          原程式沒這段 但查詢的這個條件不是相同的,如客戶有需求 解開這段-->
+            <!--            <if test="txType != null and txType != ''">-->
+            <!--                AND BRAP_TX_TYPE = #{txType,jdbcType=CHAR}-->
+            <!--            </if>-->
+            <if test="brno != null and brno != ''">
+                AND HKBRAP_BRNO = #{brno,jdbcType=VARCHAR}
+            </if>
+            <if test="deptCode != null and deptCode != ''">
+                AND HKBRAP_DEPT_CODE = #{deptCode,jdbcType=VARCHAR}
+            </if>
+            <if test="brapCur != null and brapCur != ''">
+                AND HKBRAP_CUR = #{brapCur,jdbcType=VARCHAR}
+            </if>            
+        </where>
+    </select>
+</mapper>

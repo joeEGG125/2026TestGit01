@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<table border="0" cellspacing="0" class="table-detail">
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">ATM代號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.atmno}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">ATM序號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.atmseq}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">訊息ID</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.messageid}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">EJ序號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.ej}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">通道</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.channel}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">訊息流程</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.messageflow}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">程式流程</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.programflow}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">程式名稱</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control" th:if="${detailEntity!=null}" th:text="${detailEntity.programname}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">財金Stan</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',detailEntity.bkno,detailEntity.stan)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">記錄代碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.logno}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">轉入銀行代碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.trinbank}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">轉入帳號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${T(com.syscom.fep.web.base.FEPWebBase).formatCardActNo(detailEntity.trinactno)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">轉出銀行代碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${detailEntity.troutbank}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">轉出帳號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${T(com.syscom.fep.web.base.FEPWebBase).formatCardActNo(detailEntity.troutactno)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">交易日期</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${T(com.syscom.fep.web.base.FEPWebBase).formatYMD(detailEntity.txdate)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">記錄日期/時間</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="${T(com.syscom.fep.web.base.FEPWebBase).dateTimeToSDateTime(detailEntity.logdate)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr th:with="isTxMessageHex=${detailEntity!=null?T(com.syscom.fep.frmcommon.util.StringUtil).isHex(detailEntity.txmessage):false}">
+				<td class="condition-label">
+					<label class="col-form-label">訊息內容</label>
+				</td>
+				<td class="condition-input" th:colspan="${isTxMessageHex?2:3}" th:if="${detailEntity!=null}">
+					<textarea class="form-control" rows="10" readonly="readonly" 
+						style="min-width: 744px"
+						th:if="${!isTxMessageHex}" 
+						th:text="${detailEntity.txmessage}"></textarea>
+					<textarea class="form-control font-hex" rows="10" readonly="readonly" 
+						style="min-width: 450px"
+						th:if="${isTxMessageHex}"
+						th:text="${T(com.syscom.fep.web.base.FEPWebBase).txMessageNLine(detailEntity.txmessage)}"></textarea>
+				</td>
+				<td class="condition-input" colspan="1" th:if="${detailEntity!=null && isTxMessageHex}">
+					<textarea class="form-control font-hex" rows="10" readonly="readonly"
+						style="min-width: 280px"
+						th:text="${T(com.syscom.fep.web.base.FEPWebBase).txMessageNLine(T(com.syscom.fep.web.base.FEPWebBase).getAsciiStringFromEbcdic(detailEntity.txmessage))}"></textarea>
+				</td>
+				<td class="condition-input" colspan="3">
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">備註</label>
+				</td>
+				<td class="condition-input" colspan="3">
+					<textarea class="form-control" rows="10" readonly="readonly" th:if="${detailEntity!=null}" th:text="${detailEntity.remark}"></textarea>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div layout:fragment="panel-script"></div>
+</body>
+</html>

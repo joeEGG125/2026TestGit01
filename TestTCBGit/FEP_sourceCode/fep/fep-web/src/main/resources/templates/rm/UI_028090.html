@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028090/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <div class="card-header">
+                <h5 class="card-title">查詢條件</h5>
+            </div>
+            <tr>
+                <td class="condition-label">
+                    <label for="kind" class="col-form-label">類別</label>
+                </td>
+                <td class="condition-input">
+                    <select class="form-control" th:field="*{kind}">
+                        <option value="0" selected="selected">全部</option>
+                        <option value="1">一般匯款</option>
+                        <option value="4">一般通訊</option>
+                    </select>
+                </td>
+                <td class="condition-label">
+                    <label for="tradingDate" class="col-form-label">交易日</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" id="tradingDate" data-target="#tradingDate" th:field="*{tradingDate}" />
+                        <div class="input-group-append" data-target="#tradingDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label">
+                    <label for="senderBank" class="col-form-label">匯款行</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{senderBank}" maxlength="3">
+                </td>
+                <td class="condition-label">
+                    <label for="ejfno" class="col-form-label">EJFNO</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{ejfno}" maxlength="8">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear1">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-header">
+        <h5 class="card-title">查詢結果</h5>
+    </div>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>匯款行</b></th>
+                <th><b>解款行</b></th>
+                <th><b>STAN</b></th>
+                <th><b>種類</b></th>
+                <th><b>帳號</b></th>
+                <th><b>通匯序號</b></th>
+                <th><b>金額</b></th>
+                <th><b>電文序號</b></th>
+                <th><b>狀態</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+                <tr th:each="data : ${pageData.list}">
+                    <td align="center" th:text="${data.get('O_SENDER_BANK')}" />
+                    <td align="center" th:text="${data.get('RECEIVER_BANK')}" />
+                    <td align="center" th:text="${data.get('STAN')}" />
+                    <td align="center" th:text="${data.get('REMTYPE')}" />
+                    <td align="center" th:text="${data.get('ACTNO')}" />
+                    <td align="center" th:text="${data.get('RMSNO')}" />
+                    <td align="center" th:text="${data.get('AMT')}" />
+                    <td align="center" th:text="${data.get('FISCSNO')}" />
+                    <td align="center" th:text="${data.get('STAT')}" />
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028090.js}"></script>
+</div>
+</body>
+</html>

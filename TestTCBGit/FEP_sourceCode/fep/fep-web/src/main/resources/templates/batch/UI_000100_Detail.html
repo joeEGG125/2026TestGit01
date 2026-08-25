@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .batchStartDateTime {
+            width: 360px;
+            position: absolute;
+        }
+
+        /** 根據每日/每週/每月動態設定批次開始於日期時間元件所在的DIV的高度 **/
+        .batchStartDateTimeDate {
+            top: 35%;
+        }
+
+        .batchStartDateTimeWeek {
+            top: 45%;
+        }
+
+        .batchStartDateTimeMonth {
+            top: 16.3%;
+        }
+
+        .jobsSeq {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnUpdate">變更儲存</button>
+    <button type="button" class="btn btn-primary" id="btnWaiver">放棄變更</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+    <button type="button" class="btn btn-primary" id="btnRestBatchStatus" th:if="${resetBatchResult}">重設批次狀態</button>
+    <button type="button" class="btn btn-primary" id="btnQuartz" th:if="${btnQuartzEnable}">重建排程</button>
+</div>
+<div layout:fragment="panel-grid">
+    <form id="batchForm" method="post">
+        <div id="UI000100">
+            <!-- 批次設定 -->
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"><b>批次設定</b></h3>
+                </div>
+                <div class="card-body table-responsive p-0 panel-detail">
+                    <table class="table-detail">
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">批次名稱*</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="text" class="form-control" v-model="batch.batchName" id="batchName" name="batchName">
+                            </td>
+                            <td class="condition-label">
+                                <label class="col-form-label">是否啓用</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="checkbox" v-model="items.enable" onclick="checkItem('batchEnable')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">批次説明</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="text" class="form-control" v-model="batch.batchDescription" maxlength="512">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">執行主機</label>
+                            </td>
+                            <td class="condition-input">
+                                <select v-model="batch.batchExecuteHostName" class="form-control" onchange="batchExecuteHostNameOnChange(this.value)">
+                                    <option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"/>
+                                </select>
+                            </td>
+                            <td class="condition-label">
+                                <label class="col-form-label">不允許重覆執行</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="checkbox" class="batchDenyconcurrentexec" v-model="items.denyconcurrentexec" onclick="checkItem('batchDenyconcurrentexec')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">地區別</label>
+                            </td>
+                            <td class="condition-input">
+                                <select v-model="batch.batchZone" class="form-control">
+                                    <option th:each="zone : ${zones}" th:text="${zone.text}" th:value="${zone.value}"/>
+                                </select>
+                            </td>
+                            <td class="condition-label">
+                                <label class="col-form-label">子系統別</label>
+                            </td>
+                            <td class="condition-input">
+                                <select v-model="batch.batchSubsys" class="form-control">
+                                    <option value="0">請選擇</option>
+                                    <option v-for="(sub, i) in subsys" :value="sub.subsysSubsysno">{{sub.subsysNameS + '-' + sub.subsysName}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-input" colspan="4">
+                                <label class="col-form-label">是否排程</label>
+                                <input type="checkbox" v-model="items.schedule" onclick="checkItem('batchSchedule')"/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label class="col-form-label">每天只能做一次</label>
+                                <input type="checkbox" v-model="items.singletime" onclick="checkItem('batchSingletime')"/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label class="col-form-label">檢查營業日</label>
+                                <input type="checkbox" v-model="items.checkbusinessdate" onclick="checkItem('batchCheckbusinessdate')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">可啓動群組</label>
+                            </td>
+                            <td class="condition-input" th:class="3">
+                                <img th:src="@{/images/check.png}" alt="" @click="groupCheckAll('true')">
+                                <img th:src="@{/images/cancelcheck.png}" alt="" @click="groupCheckAll('false')">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label"></td>
+                            <td class="condition-input" colspan="3">
+                                <div style="border: 1px solid #ced4da;height: 150px;overflow-y:auto;padding-left: 5px;">
+                                    <span v-for="(group, i) in groupList">
+                                        <input type="checkbox" v-model="groupChk" :value="group.value">
+                                        <label class="col-form-label">{{group.name}}</label>
+                                        <br>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">通知方式</label>
+                            </td>
+                            <td class="condition-input" colspan="3">
+                                <input type="radio" name="rbtnNotifyType" value="0" v-model="batch.batchNotifytype">
+                                <label class="col-form-label">不通知</label>
+                                &nbsp;
+                                <input type="radio" name="rbtnNotifyType" value="1" v-model="batch.batchNotifytype">
+                                <label class="col-form-label">成功時通知</label>
+                                &nbsp;
+                                <input type="radio" name="rbtnNotifyType" value="2" v-model="batch.batchNotifytype">
+                                <label class="col-form-label">失敗時通知</label>
+                                &nbsp;
+                                <input type="radio" name="rbtnNotifyType" value="3" v-model="batch.batchNotifytype">
+                                <label class="col-form-label">成功失敗都通知</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">Mail通知</label>
+                            </td>
+                            <td class="condition-input" colspan="3">
+                                <input type="checkbox" v-model="notify.fepNotifyMail_APD" onclick="checkItem('fepNotifyMail_APD')"/>
+                                <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_APD.getDescription()}]]</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" v-model="notify.fepNotifyMail_SYS" onclick="checkItem('fepNotifyMail_SYS')"/>
+                                <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_SYS.getDescription()}]]</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="condition-input" colspan="3">
+                                <input type="checkbox" v-model="notify.fepNotifyMail_Customize" onclick="checkItem('fepNotifyMail_Customize')"/>
+                                <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyMail_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+                                <textarea class="form-control batchNotifymail" rows="2" maxlength="1000" v-model="notify.batchNotifymail"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">簡訊通知</label>
+                            </td>
+                            <td class="condition-input" colspan="3">
+                                <input type="checkbox" v-model="notify.fepNotifyPhone_APD" onclick="checkItem('fepNotifyPhone_APD')"/>
+                                <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_APD.getDescription()}]]</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" v-model="notify.fepNotifyPhone_SYS" onclick="checkItem('fepNotifyPhone_SYS')"/>
+                                <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_SYS.getDescription()}]]</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="condition-input" colspan="3">
+                                <input type="checkbox" v-model="notify.fepNotifyPhone_Customize" onclick="checkItem('fepNotifyPhone_Customize')"/>
+                                <label class="col-form-label">[[${T(com.syscom.fep.vo.enums.FEPNotify).FEPNotifyPhone_Customize.getDescription()}]](多筆資料輸入，請以分號間隔)</label>
+                                <textarea class="form-control batchNotifyphone" rows="2" maxlength="1000" v-model="notify.batchNotifyphone"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label">處理方式</label>
+                            </td>
+                            <td class="condition-input" colspan="3">
+                                <textarea class="form-control" rows="2" maxlength="100" v-model="batch.batchAction"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- 批次排程設定 -->
+            <div class="card card-outline card-primary batchSchedule">
+                <div class="card-header">
+                    <h3 class="card-title col-form-label"><b>批次排程設定</b></h3>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="batchScheduleType" value="D" v-model="batch.batchScheduleType">
+                    <label class="col-form-label">每日</label>
+                    &nbsp;&nbsp;
+                    <input type="radio" name="batchScheduleType" value="W" v-model="batch.batchScheduleType">
+                    <label class="col-form-label">每周</label>
+                    &nbsp;&nbsp;
+                    <input type="radio" name="batchScheduleType" value="M" v-model="batch.batchScheduleType">
+                    <label class="col-form-label">每月</label>
+                </div>
+                <div class="card-body table-responsive p-0 panel-detail">
+                    <table class="table-detail">
+                        <tr>
+                            <td class="condition-label">
+                                <label class="col-form-label" ref="batchStartDateTimeLbl">批次開始於</label>
+                            </td>
+                            <td class="condition-input" colspan="3">
+                                <div class="row"
+                                     :class="['batchStartDateTime',{'batchStartDateTimeDate':batch.batchScheduleType=== 'D','batchStartDateTimeWeek':batch.batchScheduleType=== 'W','batchStartDateTimeMonth':batch.batchScheduleType=== 'M'}]">
+                                    <div class="col input-group date" id="batchDates" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#batchDate" id="batchDate" name="batchDate"/>
+                                        <div class="input-group-append" data-target="#batchDate" data-toggle="datetimepicker">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col input-group date" id="batchTimes" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#batchTime" id="batchTime" name="batchTime"/>
+                                        <div class="input-group-append" data-target="#batchTime" data-toggle="datetimepicker">
+                                            <div class="input-group-text">
+                                                <i class="far fa-clock"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'D' && detail == 'update'">
+                            <td class="condition-label">
+                                <input type="radio" name="batchDailyRepetitionType" value="D" onclick="batchDailyRepetitionTypeOnClick(this.value)" v-model="batch.batchDailyRepetitionType">
+                                <label class="col-form-label">重複每隔</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="text" class="form-control batchScheduleDayinterval" :disabled="batch.batchDailyRepetitionType!=='D'" v-model="batch.batchScheduleDayinterval">
+                            </td>
+                            <td class="condition-input">
+                                <label class="col-form-label">天</label>
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'D' && detail == 'update'">
+                            <td class="condition-label">
+                                <input type="radio" name="batchDailyRepetitionType" value="T" onclick="batchDailyRepetitionTypeOnClick(this.value)" v-model="batch.batchDailyRepetitionType">
+                                <label class="col-form-label">重複每隔</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="text" class="form-control batchScheduleRepetitioninterval" :disabled="batch.batchDailyRepetitionType!=='T'" v-model="batch.batchScheduleRepetitioninterval">
+                            </td>
+                            <td class="condition-input">
+                                <label class="col-form-label">分鐘(0代表不重複),持續</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="text" class="form-control batchScheduleRepetitioninduration" :disabled="batch.batchDailyRepetitionType!=='T'" v-model="batch.batchScheduleRepetitioninduration">
+                            </td>
+                            <td class="condition-input">
+                                <label class="col-form-label">小時(0代表不限制)</label>
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'W' && detail == 'update'">
+                            <td class="condition-label">
+                                <label class="col-form-label">每隔</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="text" class="form-control" v-model="batch.batchScheduleWeekinterval">
+                            </td>
+                            <td class="condition-input">
+                                <label class="col-form-label">個星期的</label>
+                                &nbsp;
+                                <input type="checkbox" v-model="mwChk" value="1">
+                                <label class="col-form-label">星期天</label>
+                                &nbsp;
+                                <input type="checkbox" v-model="mwChk" value="2">
+                                <label class="col-form-label">星期一</label>
+                                &nbsp;
+                                <input type="checkbox" v-model="mwChk" value="4">
+                                <label class="col-form-label">星期二</label>
+                                &nbsp;
+                                <input type="checkbox" v-model="mwChk" value="8">
+                                <label class="col-form-label">星期三</label>
+                                &nbsp;
+                                <input type="checkbox" v-model="mwChk" value="16">
+                                <label class="col-form-label">星期四</label>
+                                &nbsp;
+                                <input type="checkbox" v-model="mwChk" value="32">
+                                <label class="col-form-label">星期五</label>
+                                &nbsp;
+                                <input type="checkbox" v-model="mwChk" value="64">
+                                <label class="col-form-label">星期六</label>
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'M' && detail == 'update'">
+                            <td class="condition-label" style="vertical-align: top;">
+                                <label class="col-form-label">月份:</label>
+                            </td>
+                            <td class="condition-input">
+                                <span v-for="(m, i) in mList">
+                                    <input type="checkbox" v-model="mChk" :value="m.value">
+                                    <label class="col-form-label">{{m.name}}</label>
+                                    &nbsp;
+                                </span>
+                                <br>
+                                <button type="button" class="btn btn-primary btn-xs" @click="mCheckAll('true')">全選</button>
+                                <button type="button" class="btn btn-primary btn-xs" @click="mCheckAll('false')">取消全選</button>
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'M' && detail == 'update'">
+                            <td colspan="2" style="padding: 0;">
+                                <hr style="margin-top: 5px; margin-bottom: 5px;">
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'M' && detail == 'update'">
+                            <td class="condition-label" style="vertical-align: top;">
+                                <input id="m" name="m" type="radio" value="m" onclick="check(this.id)" v-model="radioType">
+                                <label class="col-form-label">日期:</label>
+                            </td>
+                            <td class="condition-input">
+                                <span v-for="(md, i) in mdList" v-if="i<20">
+                                    <input type="checkbox" v-model="mdChk" :value="md.value" :disabled="radioType == 'mw'" class="day">
+                                    <label class="col-form-label">{{md.name}}</label>
+                                    &nbsp;
+                                </span>
+                                <br>
+                                <span v-for="(md, i) in mdList" v-if="i>=20">
+                                    <input type="checkbox" v-model="mdChk" :value="md.value" :disabled="radioType == 'mw'" class="day">
+                                    <label class="col-form-label">{{md.name}}</label>
+                                    &nbsp;
+                                </span>
+                                <br>
+                                <button type="button" @click="mdCheckAll('true')" :disabled="radioType == 'mw'" class="day btn btn-primary btn-xs">全選</button>
+                                <button type="button" @click="mdCheckAll('false')" :disabled="radioType == 'mw'" class="day btn btn-primary btn-xs">取消全選</button>
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'M' && detail == 'update'">
+                            <td colspan="2" style="padding: 0;">
+                                <hr style="margin-top: 5px; margin-bottom: 5px;">
+                            </td>
+                        </tr>
+                        <tr v-if="batch.batchSchedule == 1 && batch.batchScheduleType == 'M' && detail == 'update'">
+                            <td class="condition-label" style="vertical-align: top;">
+                                <input id="mw" name="m" type="radio" value="mw" onclick="check(this.id)" v-model="radioType">
+                                <label class="col-form-label">於:</label>
+                            </td>
+                            <td class="condition-input">
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="wmChk" value="1">
+                                <label class="col-form-label">第一周</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="wmChk" value="2">
+                                <label class="col-form-label">第二周</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="wmChk" value="4">
+                                <label class="col-form-label">第三周</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="wmChk" value="8">
+                                <label class="col-form-label">第四周</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="wmChk" value="16">
+                                <label class="col-form-label">最後一周</label>
+                                <br>
+                                <label class="col-form-label">的</label>
+                                <br>
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="mwChk" value="1">
+                                <label class="col-form-label">星期天</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="mwChk" value="2">
+                                <label class="col-form-label">星期一</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="mwChk" value="4">
+                                <label class="col-form-label">星期二</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="mwChk" value="8">
+                                <label class="col-form-label">星期三</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="mwChk" value="16">
+                                <label class="col-form-label">星期四</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="mwChk" value="32">
+                                <label class="col-form-label">星期五</label>
+                                &nbsp;
+                                <input type="checkbox" :disabled="radioType == 'm'" class="week" v-model="mwChk" value="64">
+                                <label class="col-form-label">星期六</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="condition-label"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- 批次程式清單 -->
+            <div class="card card-outline card-primary changeTask">
+                <div class="card-header">
+                    <h3 class="card-title col-form-label"><b>批次程式清單</b></h3>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" id="changeTaskOrder" v-if="tasks.length > 1" @click="changeTaskOrder()">變更Task順序</button>
+                </div>
+                <div class="card-body table-responsive p-0 panel-grid">
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+                            <thead>
+                            <tr>
+                                <th align="center" width="5%"><b>明細</b></th>
+                                <th align="center" width="5%"><b>刪除</b></th>
+                                <th align="center"><b>執行程式</b></th>
+                                <th align="center" width="5%"><b>Task順序</b></th>
+                                <th align="center"><b>工作説明</b></th>
+                                <th align="center"><b>失敗後處理</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(ta, i) in tasks" :class="{off:currentIndex === i}">
+                                <td align="center">
+                                    <span v-if="currentIndex !== i">
+                                        <button type="button" class="btn btn-primary" @click="taskDetails(i)">明細</button>
+                                    </span>
+                                    <span v-else>
+                                        <button type="button" class="btn btn-primary" @click="taskStore(i)">儲存</button>
+                                        <button type="button" class="btn btn-primary" @click="taskCancel(i)">取消</button>
+                                    </span>
+                                </td>
+                                <td align="center">
+                                    <span v-if="currentIndex !== i && tasks.length > 1">
+                                        <button type="button" class="btn btn-primary" @click="taskDel(i)">刪除</button>
+                                    </span>
+                                    <span v-else>
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ta.TASK_NAME}}
+                                    <!--
+                                    <span v-if="currentIndex !== i">
+                                        {{ta.TASK_NAME}}
+                                    </span>
+                                    <span v-else>
+                                        <select class="form-control" v-model="ta.JOBTASK_TASKID">
+                                            <option v-for="(task, i) in taskList" :value="task.taskId">{{task.taskName}}</option>
+                                        </select>
+                                    </span>
+                                    -->
+                                </td>
+                                <td align="right">
+                                    <span v-if="currentIndex !== i && tasks.length > 1">
+                                        <input type="text" v-model="ta.JOBS_SEQ" class="form-control jobsSeq" :id="ta.JOBS_JOBID">
+                                    </span>
+                                    <span v-else>
+                                        {{ta.JOBS_SEQ}}
+                                    </span>
+                                </td>
+                                <td>{{ta.JOBS_DESCRIPTION}}</td>
+                                <td>
+                                    <span v-if="currentIndex !== i && jobsContinueOnFail.ordinal == ta.JOBS_CONTINUEONFAIL" v-for="(jobsContinueOnFail, jobsContinueOnFailIndex) in jobsContinueOnFails">
+                                        {{jobsContinueOnFail.description}}
+                                    </span>
+                                    <span v-if="currentIndex == i">
+                                        <select class="form-control" v-model="ta.JOBS_CONTINUEONFAIL">
+                                            <option th:each="option : ${T(com.syscom.fep.mybatis.vo.JobsContinueOnFail).values()}" th:text="${option.description}" th:value="${option.ordinal}"/>
+                                        </select>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <button class="btn btn-primary" type="button" @click="taskInsert()">新增</button>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <select class="form-control" v-model="insertTaskId" id="insertTaskId">
+                                        <option v-for="(task, i) in taskList" :value="task.taskId">{{task.taskName}}</option>
+                                    </select>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <select class="form-control" v-model="insertJobsContinueOnFail" id="insertJobsContinueOnFail">
+                                        <option th:each="option : ${T(com.syscom.fep.mybatis.vo.JobsContinueOnFail).values()}" th:text="${option.description}" th:value="${option.ordinal}"/>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/batch/UI000100.vue.js}"></script>
+</div>
+</body>
+</html>

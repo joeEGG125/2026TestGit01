@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnPrevPage">返回</button>
+		<button type="button" class="btn btn-primary" id="btnSave" th:if="${options eq 'modify' or options eq 'insert' }">確認</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+		<form id="form-validator-detail" th:object="${form}" th:action="@{/common/UI_080010/saveDetail}" method="post">
+			<table class="table-condition">
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">帳號</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:if="${options eq 'insert' or options eq 'modify'}" th:field="*{logonid}" maxlength="20"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">姓名</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:if="${options eq 'insert' or options eq 'modify'}" th:field="*{username}" maxlength="6"/>
+					</td>
+				</tr>
+<!--				<tr>-->
+<!--					<td class="condition-label">-->
+<!--						<label class="col-form-label">分行別</label>-->
+<!--					</td>-->
+<!--					<td class="condition-input">-->
+<!--						<select id="fepUserBrno" th:field="*{fepUserBrno}" class="form-control">-->
+<!--							<option th:each="bron : ${bronList}" th:text="${bron.text}" th:value="${bron.value}"/>-->
+<!--						</select>-->
+<!--					</td>-->
+<!--				</tr>-->
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">櫃員編號</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:if="${options eq 'insert' or options eq 'modify'}" th:field="*{fepUserTlrno}" maxlength="6"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">員工編號</label>
+					</td>
+					<td class="condition-input">
+						<input class="form-control" type="text" th:if="${options eq 'insert' or options eq 'modify'}" th:field="*{employeeid}" maxlength="20"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">身分別</label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" th:field="*{fepUserJob}">
+							<option value="1">單位主管</option>
+							<option value="2">一級主管</option>
+							<option value="3">二級主管</option>
+							<option value="4">資深櫃員</option>
+							<option value="5">一級櫃員</option>
+							<option value="6">作業助理</option>
+							<option value="7">業務(查詢)人員</option>
+							<option value="8">稽核人員</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">電子郵件</label>
+					</td>
+					<td class="condition-input" colspan="3">
+						<input class="form-control" type="text" th:if="${options eq 'insert' or options eq 'modify'}" th:field="*{emailaddress}" maxlength="60"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">生效日期</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="effectdate" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#effectdate" th:field="*{effectdate}" />
+							<div class="input-group-append" data-target="#effectdate" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">失效日期</label>
+					</td>
+					<td class="condition-input">
+						<div class="input-group date" id="expireddate" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#expireddate" th:field="*{expireddate}" />
+							<div class="input-group-append" data-target="#expireddate" data-toggle="datetimepicker">
+								<div class="input-group-text">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/common/UI080010_Add.js}"></script>
+	</div>
+</body>
+</html>

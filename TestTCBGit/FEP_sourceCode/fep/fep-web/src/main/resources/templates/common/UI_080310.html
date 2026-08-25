@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>	
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" th:action="@{/common/UI_080310/bindGrid}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">使用者群組代碼:</label>
+					</td>
+					<td class="condition-input" style="width:200px">
+						<input id="fepgroupGroupId" style="width:150px" type="text" class="form-control" th:field="*{fepgroupGroupId}" th:maxlength="5"/>
+					</td>
+				</tr>
+			</table>
+        </form>			
+	</div>
+	<div layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+        	<div class="card-body table-responsive p-0">	
+        		<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+					<thead>
+						<tr>
+							<th><b>使用者群組代碼</b></th>
+							<th><b>群組名稱</b></th>
+						</tr>   
+					</thead>   
+                    <tbody th:if="${pageData.list != null}" th:object="${pageData.list}"> 
+                    	<tr th:each="data, dataStat : ${pageData.list}">
+                    		<td align="center">
+                    			<!--使用者群組代碼-->
+                  				<a class="fepgroupGroupId" href="#" th:text="${data.fepgroupGroupId}" th:value="${										
+                    			         '{' 											
+                    			            + '&quot;fepgroupGroupId&quot;:&quot;'+ data.fepgroupGroupId + '&quot;,'
+                    			            + '&quot;fepgroupName&quot;:&quot;'+ data.fepgroupName + '&quot;'
+
+										+ '}'
+										}">
+								</a>                      		
+                    		</td>
+                    		<td align="center" th:text="${data.fepgroupName}" /><!--群組名稱-->
+                    	</tr>
+                    </tbody>		
+        		</table>   
+        	</div>	
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/common/UI080310.js}"></script>
+	</div>
+</body>
+
+</html>

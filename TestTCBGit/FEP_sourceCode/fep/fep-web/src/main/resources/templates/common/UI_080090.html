@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>FEP_OPC | UI060550</title>
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+
+p, span {
+	font-size: 12px;
+	display: inline-block;
+}
+
+input {
+	font-size: 12px;
+	background-color: #E7E7E7;
+}
+
+#forms {
+	display: inline-block;
+}
+
+.dbtable {
+	float: left;
+}
+
+#querylog, #selected, #last, #lasts {
+	width: 50px;
+	font-size: 12px;
+}
+
+.containerR {
+	font-size: 12px;
+	margin-left: 120px;
+	margin-top: 15px;
+}
+
+.allspan tr td span {
+	width: 130px;
+}
+
+#selecte, #clear {
+	float: left;
+	margin-right: 50px;
+	margin-top: 20px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	color: #fff;
+	font-weight: 400;
+	border-radius: 20px;
+	background-color: rgb(29, 109, 174);
+}
+
+#example2 {
+	line-height: 16px;
+}
+
+.content1 {
+	display: none;
+	margin-top: 20px;
+}
+
+.content1 table tr td span {
+	width: 150px;
+	display: inline-block;
+}
+
+.Logcontent, .Logquery {
+	display: none;
+}
+
+.Datetime {
+	font-family: "Microsoft YaHei";
+}
+
+th {
+	background-color: rgb(166, 217, 247);
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.table tr th {
+	width: 100px;
+	text-align: center;
+}
+
+.table tr td span {
+	font-size: 12px;
+}
+
+.card {
+	margin-top: 10px;
+}
+
+.card-body {
+	display: none;
+	padding: 0;
+}
+
+.sear {
+	text-align: center;
+}
+
+.sear .query a {
+	text-decoration: underline;
+	color: blue;
+}
+
+.row {
+	margin-top: 20px;
+}
+
+.logquer tr td {
+	padding-left: 20px;
+}
+
+.logquer tr td span {
+	width: 100px;
+	display: inline-block;
+}
+
+.messagetxt tr td span {
+	width: 70px;
+	display: inline-block;
+}
+
+#page, #pages {
+	margin: 0 auto;
+	padding-top: 5px;
+	display: table;
+}
+
+.page {
+	text-align: center;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.pagingUl {
+	float: right;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	height: 30px;
+}
+
+.pagingUl li {
+	float: left;
+	width: 30px;
+	height: 30px;
+	background: #fff;
+	text-align: center;
+	margin-right: 5px;
+	border-radius: 5px
+}
+
+.pagingUl li a {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 28px;
+	color: #666;
+	font-size: 12px;
+	border-radius: 5px
+}
+
+.prv, .next, .first, .last {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	cursor: pointer;
+	background: #fff;
+	padding: 0 5px;
+	border-radius: 5px;
+}
+
+.prv {
+	margin-right: 10px;
+}
+
+.prv:hover, .next:hover, .first:hover, .last:hover, .pagingUl li a:hover,
+	.activP {
+	background-color: #deeffa !important;
+	color: #0098e1 !important;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div>
+			<!-- Content Wrapper. 包含頁面內容 -->
+			<div class="content-wrapper">
+				<section class="content">
+					<div class="container-fluid"></div>
+				</section>
+			</div>
+		</div>
+		<!-- add script here -->
+	</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028070/queryClick}" method="post">
+        <div class="card card-primary card-outline" >
+            <div class="card-header">
+                <h5 class="card-title">查詢條件</h5>
+            </div>
+            <div class="card-body">
+                <div class="condition-label row">
+                    <label for="bknoRfv" class="col-form-label">銀行代號 ( 0-<全查> ):</label>
+                    <input class="form-control col-2" type="text" th:field="*{bknoRfv}" maxlength="3"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <div class="card-header">
+            <h5 class="card-title">調整內容</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+                <thead>
+                <tr>
+                    <th><b>銀行別</b></th>
+                    <th><b>名稱</b></th>
+                    <th><b>新舊碼並存</b></th>
+                    <th><b>本行換KEY中</b></th>
+                    <th><b>本行換KEY次數</b></th>
+                    <th><b>他行換KEY次數</b></th>
+                </tr>
+                </thead>
+                <tbody th:if="${pageData.list != null}">
+                <tr th:each="data : ${pageData.list}">
+                    <td align="center" th:text="${data.RMOUTSNO_RECEIVER_BANK}" />
+                    <td align="center" th:text="${data.BKNAME}" />
+                    <td align="center" th:text="${data.RMOUTSNO_CDKEY_FLAG}" />
+                    <td align="center" th:text="${data.RMOUTSNO_CHGK}" />
+                    <td align="center" th:text="${data.RMOUTSNO_CHGK_TIMES}" />
+                    <td align="center" th:text="${data.CHGK_TIMES2}" />
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028070.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" method="post">
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage1">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" th:if="${detailEntity != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b></b></th>
+                <th><b>檔案名稱</b></th>
+                <th><b>檔案建立日期時間</b></th>
+                <th><b>處理結果</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${detailEntity != null}">
+            <tr th:each="data : ${detailEntity}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btnDetail" href="#"
+                            th:value="${
+										'{' + '&quot;index&quot;:&quot;'+data.index +'&quot;' + ','
+										    + '&quot;fileName&quot;:&quot;'+data.FILENAME + '&quot;' + ','
+											+ '&quot;fileDateTime&quot;:&quot;'+data.FILEDATETIME + '&quot;'
+											+ '}'
+										}"
+                    >執行</button>
+                </td>
+                <td align="center" th:text="${data.FILENAME}" />
+                <td align="center" th:text="${#dates.format(data.FILEDATETIME,'yyyy/MM/dd hh:mm:ss')}" />
+                <td align="center" th:text="${data.RESULT}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028200_1.js}"></script>
+</div>
+</body>
+</html>

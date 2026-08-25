@@ -1,0 +1,526 @@
+input:disabled, select:disabled, button:disabled, label:disabled, textarea.disabled, fieldset :disabled {
+    cursor: not-allowed;
+}
+
+.panel-container-fluid {
+    padding: 10px;
+}
+
+.panel-container-fluid .card {
+    margin-bottom: 5px;
+}
+
+.panel-condition,
+.panel-detail,
+.panel-summary,
+.panel-grid,
+.panel-button,
+.panel-layout {
+    padding: 6px 6px;
+}
+
+.panel-condition .condition-label,
+.panel-summary .condition-label,
+.panel-detail .condition-label,
+.panel-layout .condition-label {
+    padding: 5px 5px 0px 5px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.panel-condition .condition-input,
+.panel-summary .condition-input,
+.panel-detail .condition-input,
+.panel-layout .condition-input {
+    padding: 5px 5px 0px 5px;
+}
+
+.panel-condition .condition-label span,
+.panel-detail .condition-label span,
+.panel-layout .condition-label span {
+    font-weight: 700;
+}
+
+.panel-condition .condition-input label,
+.panel-detail .condition-input label,
+.panel-layout .condition-input label {
+    margin-bottom: 0px;
+    white-space: nowrap;
+}
+
+.panel-condition .condition-input .label-text-left,
+.panel-detail .condition-input .label-text-left,
+.panel-layout .condition-input .label-text-left {
+    text-align: left !important;
+}
+
+.panel-condition .condition-input .label-text-symbol,
+.panel-detail .condition-input .label-text-symbol,
+.panel-layout .condition-input .label-text-symbol {
+    text-align: center !important;
+    margin-top: 5px;
+}
+
+.panel-condition .condition-input textarea[readonly],
+.panel-detail .condition-input textarea[readonly],
+.panel-layout .condition-input textarea[readonly] {
+    background-color: #fff;
+    cursor: default;
+    font-weight: 700;
+}
+
+.panel-condition .tr-gap,
+.panel-detail .tr-gap,
+.panel-layout .tr-gap {
+    height: 15px
+}
+
+.panel-condition .td-gap,
+.panel-detail .td-gap,
+.panel-layout .td-gap {
+    width: 75px
+}
+
+.panel-detail {
+    background: #b9d3fb;
+    overflow: auto;
+}
+
+.panel-error-500 .pre-content,
+.panel-detail .pre-content,
+.panel-alert .pre-content,
+.panel-confirm .pre-content {
+    padding: 0px;
+    margin-bottom: 0px;
+    font-weight: 700;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1.0rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.panel-layout .condition-input label {
+    min-width: 180px;
+}
+
+.panel-pagination {
+    padding: 5px;
+}
+
+.panel-pagination .panel-pagination-container {
+    border-top: 1px solid #e9ecef;
+    border-bottom-right-radius: calc(.3rem - 1px);
+    border-bottom-left-radius: calc(.3rem - 1px);
+    padding: 5px;
+}
+
+.panel-pagination .page-item .selected {
+    font-weight: bold;
+    color: white;
+    background: #007bff;
+}
+
+.panel-pagination .modal-footer {
+    padding: 5px;
+}
+
+.panel-pagination .panel-pagination-summary {
+    color: #007bff;
+    font-size: .875rem;
+    line-height: 1.5;
+    float: left;
+    padding-top: 6px;
+}
+
+.panel-grid .table > thead > tr > th,
+.panel-grid .table > tbody > tr > th,
+.panel-grid .table > tfoot > tr > th,
+.panel-info .table > thead > tr > th,
+.panel-info .table > tbody > tr > th,
+.panel-info .table > tfoot > tr > th {
+    padding: 10px;
+    vertical-align: middle;
+    border-top: none;
+}
+
+.panel-grid .table > thead > tr > td,
+.panel-grid .table > tbody > tr > td,
+.panel-grid .table > tfoot > tr > td,
+.panel-info .table > thead > tr > td,
+.panel-info .table > tbody > tr > td,
+.panel-info .table > tfoot > tr > td {
+    padding: 5px;
+    vertical-align: middle;
+    border-top: none;
+}
+
+.panel-grid .card-body.p-0 .table > thead > tr > th,
+.panel-grid .card-body.p-0 .table > tbody > tr > th,
+.panel-grid .card-body.p-0 .table > tfoot > tr > th,
+.panel-info .card-body.p-0 .table > thead > tr > th,
+.panel-info .card-body.p-0 .table > tbody > tr > th,
+.panel-info .card-body.p-0 .table > tfoot > tr > th {
+    padding: 5px;
+}
+
+.panel-grid .card-body.p-0 .table > thead > tr > td,
+.panel-grid .card-body.p-0 .table > tbody > tr > td,
+.panel-grid .card-body.p-0 .table > tfoot > tr > td,
+.panel-info .card-body.p-0 .table > thead > tr > td,
+.panel-info .card-body.p-0 .table > tbody > tr > td,
+.panel-info .card-body.p-0 .table > tfoot > tr > td {
+    padding: 5px;
+}
+
+.panel-grid .table tbody > tr > th:first-of-type,
+.panel-grid .table tfoot > tr > th:first-of-type,
+.panel-grid .table thead > tr > th:first-of-type,
+.panel-info .table tbody > tr > th:first-of-type,
+.panel-info .table tfoot > tr > th:first-of-type,
+.panel-info .table thead > tr > th:first-of-type {
+    padding: 10px;
+}
+
+.panel-grid .table tbody > tr > td:first-of-type,
+.panel-grid .table tfoot > tr > td:first-of-type,
+.panel-grid .table thead > tr > td:first-of-type,
+.panel-info .table tbody > tr > td:first-of-type,
+.panel-info .table tfoot > tr > td:first-of-type,
+.panel-info .table thead > tr > td:first-of-type {
+    padding: 5px;
+}
+
+.panel-grid .table > thead > tr > td button,
+.panel-grid .table > tbody > tr > td button,
+.panel-grid .table > tfoot > tr > td button,
+.panel-info .table > thead > tr > td button,
+.panel-info .table > tbody > tr > td button,
+.panel-info .table > tfoot > tr > td button {
+    padding: 5px 10px;
+}
+
+.panel-grid .table > thead > tr > td button > i,
+.panel-grid .table > tbody > tr > td button > i,
+.panel-grid .table > tfoot > tr > td button > i,
+.panel-info .table > thead > tr > td button > i,
+.panel-info .table > tbody > tr > td button > i,
+.panel-info .table > tfoot > tr > td button > i {
+    padding: 0px 5px;
+}
+
+.panel-grid .table > thead > tr > td > a,
+.panel-grid .table > tbody > tr > td > a,
+.panel-grid .table > tfoot > tr > td > a,
+.panel-info .table > thead > tr > td > a,
+.panel-info .table > tbody > tr > td > a,
+.panel-info .table > tfoot > tr > td > a {
+    color: #0000c2;
+    text-decoration: underline;
+}
+
+.panel-grid .table > thead > tr > th > i,
+.panel-info .table > thead > tr > th > i {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.panel-grid .table .td-line-wrap,
+.panel-info .table .td-line-wrap {
+    white-space: normal;
+}
+
+.panel-grid .table-striped > thead > tr > th,
+.panel-info .table-striped > thead > tr > th {
+    color: #FFF;
+    text-align: center;
+    background: #007bff;
+    background: -webkit-linear-gradient(bottom, #007bff 30%, #469eff 60%, #a4cfff 100%);
+    background: -moz-linear-gradient(bottom, #007bff 30%, #469eff 60%, #a4cfff 100%);
+    background: -ms-linear-gradient(bottom, #007bff 30%, #469eff 60%, #a4cfff 100%);
+    background: -o-linear-gradient(bottom, #007bff 30%, #469eff 60%, #a4cfff 100%);
+    background: linear-gradient(to bottom, #007bff 30%, #469eff 60%, #a4cfff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#007bff', endColorstr='#a4cfff', GradientType=0);
+}
+
+.panel-grid .table-striped > tbody > tr,
+.panel-info .table-striped > tbody > tr {
+    background: #79b9ff;
+    background: -webkit-linear-gradient(top, #79b9ff 0%, #79b9ff 50%, #b0d6ff 100%);
+    background: -moz-linear-gradient(top, #79b9ff 0%, #79b9ff 50%, #b0d6ff 100%);
+    background: -ms-linear-gradient(top, #79b9ff 0%, #79b9ff 50%, #b0d6ff 100%);
+    background: -o-linear-gradient(top, #79b9ff 0%, #79b9ff 50%, #b0d6ff 100%);
+    background: linear-gradient(to bottom, #79b9ff 0%, #79b9ff 50%, #b0d6ff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79b9ff', endColorstr='#b0d6ff', GradientType=0);
+}
+
+.panel-grid .table-striped > tbody > tr:nth-of-type(odd),
+.panel-info .table-striped > tbody > tr:nth-of-type(odd) {
+    background: rgb(240, 240, 240);
+    background: -webkit-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+    background: -moz-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+    background: -ms-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+    background: -o-linear-gradient(top, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+    background: linear-gradient(to bottom, rgb(250, 250, 250) 0%, rgb(250, 250, 250) 50%, rgb(240, 240, 240) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#F0F0F0', GradientType=0);
+}
+
+.panel-grid .table-hover > tbody > tr:hover,
+.panel-info .table-hover > tbody > tr:hover {
+    color: #ffffff;
+    background: #0000ff;
+    background: -webkit-linear-gradient(top, #0000ff 0%, #0000ff 50%, #0000ff 100%);
+    background: -moz-linear-gradient(top, #0000ff 0%, #0000ff 50%, #0000ff 100%);
+    background: -ms-linear-gradient(top, #0000ff 0%, #0000ff 50%, #0000ff 100%);
+    background: -o-linear-gradient(top, #0000ff 0%, #0000ff 50%, #0000ff 100%);
+    background: linear-gradient(to bottom, #0000ff 0%, #0000ff 50%, #0000ff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0000ff', endColorstr='#0000ff', GradientType=0);
+}
+
+.panel-grid .table-hover > tbody > tr:hover a,
+.panel-info .table-hover > tbody > tr:hover a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.panel-grid .table-bordered,
+.panel-info .table-bordered {
+    border-color: rgb(200, 200, 200);
+}
+
+.panel-grid .table-bordered > thead > tr > th,
+.panel-grid .table-bordered > tbody > tr > th,
+.panel-grid .table-bordered > tfoot > tr > th,
+.panel-grid .table-bordered > thead > tr > td,
+.panel-grid .table-bordered > tbody > tr > td,
+.panel-grid .table-bordered > tfoot > tr > td,
+.panel-info .table-bordered > thead > tr > th,
+.panel-info .table-bordered > tbody > tr > th,
+.panel-info .table-bordered > tfoot > tr > th,
+.panel-info .table-bordered > thead > tr > td,
+.panel-info .table-bordered > tbody > tr > td,
+.panel-info .table-bordered > tfoot > tr > td {
+    border-color: rgb(200, 200, 200);
+}
+
+.panel-script {
+    display: none;
+}
+
+.panel-messagebar {
+    margin-bottom: 0px !important;
+    padding: 5px;
+    box-shadow: none;
+}
+
+.panel-messagebar .fas {
+    margin-right: 10px;
+}
+
+.panel-loading {
+    display: none;
+    z-index: 2147483647;
+}
+
+.panel-loading .overlay {
+    z-index: inherit;
+}
+
+.panel-loading-overlay {
+    position: fixed;
+    top: 50%;
+}
+
+.panel-hidden {
+    display: none;
+}
+
+.panel-popover-error {
+    border-color: #dc3545;
+}
+
+.panel-popover-error .arrow:before {
+    border-right-color: #dc3545;
+}
+
+.panel-popover-error .popover-body {
+    color: #dc3545;
+}
+
+.font-hex {
+    font-family: "Source Code Pro", "HexEd.it Symbols", "Courier New", Consolas, Menlo, "PT Mono", "Liberation Mono", monospace;
+    font-size: larger;
+}
+
+.popover-close {
+    font-weight: 900;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.nav-item-program {
+    margin-left: 25px;
+}
+
+.card-condition {
+    margin-bottom: 0px !important;
+    border-bottom-right-radius: 0rem;
+    border-bottom-left-radius: 0rem;
+}
+
+.card-content {
+    border-top-right-radius: 0rem;
+    border-top-left-radius: 0rem;
+}
+
+.card-body-condition {
+    padding: 0px;
+}
+
+.table-padding tbody > tr > td,
+.table-padding thead > tr > td,
+.table-padding tfoot > tr > td {
+    padding: 5px;
+}
+
+.table-width tbody > tr > td {
+    width: 50%;
+}
+
+.panel-scrolltop .back-to-top {
+    bottom: 2.2rem;
+}
+
+.panel-search .txt-search {
+    width: 90px;
+}
+
+.panel-calendar .bootstrap-datetimepicker-widget .calendar-active {
+    background: #007bff;
+    color: white;
+}
+
+.panel-button button {
+    margin-top: 2px;
+}
+
+.panel-condition .ztree *,
+.panel-detail .ztree *,
+.panel-grid .ztree * {
+    font-size: 15px;
+}
+
+.panel-condition .ztree li,
+.panel-detail .ztree li,
+.panel-grid .ztree li {
+    padding: 0px;
+}
+
+.panel-condition .ztree li span.button.switch,
+.panel-detail .ztree li span.button.switch,
+.panel-grid .ztree li span.button.switch {
+    width: 18px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.panel-condition .ztree li span.button.chk,
+.panel-detail .ztree li span.button.chk,
+.panel-grid .ztree li span.button.chk {
+    margin-bottom: 5px;
+}
+
+.panel-condition .ztree li span.button.root_open,
+.panel-detail .ztree li span.button.root_open,
+.panel-grid .ztree li span.button.root_open {
+    background: url('../images/tree/tree_icons.png') no-repeat -18px 0px
+}
+
+.panel-condition .ztree li span.button.root_close,
+.panel-detail .ztree li span.button.root_close,
+.panel-grid .ztree li span.button.root_close {
+    background: url('../images/tree/tree_icons.png') no-repeat 0px 1px
+}
+
+.panel-condition .ztree li span.button.roots_open,
+.panel-detail .ztree li span.button.roots_open,
+.panel-grid .ztree li span.button.roots_open {
+    background: url('../images/tree/tree_icons.png') no-repeat -18px 0px
+}
+
+.panel-condition .ztree li span.button.roots_close,
+.panel-detail .ztree li span.button.roots_close,
+.panel-grid .ztree li span.button.roots_close {
+    background: url('../images/tree/tree_icons.png') no-repeat 0px 1px
+}
+
+.panel-condition .ztree li span.button.center_open,
+.panel-detail .ztree li span.button.center_open,
+.panel-grid .ztree li span.button.center_open {
+    background: url('../images/tree/tree_icons.png') no-repeat -18px 0px
+}
+
+.panel-condition .ztree li span.button.center_close,
+.panel-detail .ztree li span.button.center_close,
+.panel-grid .ztree li span.button.center_close {
+    background: url('../images/tree/tree_icons.png') no-repeat 0px 1px
+}
+
+.panel-condition .ztree li span.button.bottom_open,
+.panel-detail .ztree li span.button.bottom_open,
+.panel-grid .ztree li span.button.bottom_open {
+    background: url('../images/tree/tree_icons.png') no-repeat -18px 0px
+}
+
+.panel-condition .ztree li span.button.bottom_close,
+.panel-detail .ztree li span.button.bottom_close,
+.panel-grid .ztree li span.button.bottom_close {
+    background: url('../images/tree/tree_icons.png') no-repeat 0px 1px
+}
+
+.panel-condition .ztree li span.button.noline_open,
+.panel-detail .ztree li span.button.noline_open,
+.panel-grid .ztree li span.button.noline_open {
+    background: url('../images/tree/tree_icons.png') no-repeat -18px 0px
+}
+
+.panel-condition .ztree li span.button.noline_close,
+.panel-detail .ztree li span.button.noline_close,
+.panel-grid .ztree li span.button.noline_close {
+    background: url('../images/tree/tree_icons.png') no-repeat 0px 1px
+}
+
+.panel-condition .ztree li span.button.ico_open,
+.panel-detail .ztree li span.button.ico_open,
+.panel-grid .ztree li span.button.ico_open {
+    margin-bottom: 4px;
+    margin-right: 5px;
+}
+
+.panel-condition .ztree li span.button.ico_close,
+.panel-detail .ztree li span.button.ico_close,
+.panel-grid .ztree li span.button.ico_close {
+    margin-bottom: 4px;
+    margin-right: 5px;
+}
+
+.panel-condition .ztree li span.button.ico_docu,
+.panel-detail .ztree li span.button.ico_docu,
+.panel-grid .ztree li span.button.ico_docu {
+    margin-bottom: 4px;
+    margin-right: 5px;
+}
+
+.panel-condition .ztree li span.button.edit,
+.panel-detail .ztree li span.button.edit,
+.panel-grid .ztree li span.button.edit {
+    margin-bottom: 4px;
+    margin-right: 5px;
+}
+
+.panel-condition .ztree li span.button.remove,
+.panel-detail .ztree li span.button.remove,
+.panel-grid .ztree li span.button.remove {
+    margin-bottom: 4px;
+    margin-right: 5px;
+}

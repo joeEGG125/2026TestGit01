@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028280/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label for="txDate" class="col-form-label">匯款日期</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" id="txDate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input txDate" data-target="#txDate" th:field="*{txDate}" />
+                        <div class="input-group-append" data-target="#txDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+<!--    <button type="button" class="btn btn-primary" id="btnConfirm">執行</button>-->
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <input th:if="${pageData.list != null}" id="queryData" style="display: none" value="1"  ></input>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>選取</b></th>
+                <th><b>匯款日期</b></th>
+                <th><b>匯款行</b></th>
+                <th><b>解款行</b></th>
+                <th><b>中心總行</b></th>
+                <th><b>STAN</b></th>
+                <th><b>種類</b></th>
+                <th><b>帳號</b></th>
+                <th><b>通匯序號</b></th>
+                <th><b>FEP登錄序號</b></th>
+                <th><b>金額</b></th>
+                <th><b>電文序號</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td fep:table-td-check="dataList"
+                    table-td-check-value="${'{' + '&quot;rmInTxDate&quot;:&quot;'+data.RMIN_TXDATE + '&quot;' + ','
+                                                    + '&quot;rmInBrno&quot;:&quot;'+data.RMIN_BRNO + '&quot;' + ','
+											        + '&quot;rmInFepNo&quot;:&quot;'+data.RMIN_FEPNO + '&quot;'
+											        + '}'}"></td>
+                <td align="center" th:text="${data.RMIN_TXDATE}" />
+                <td align="center" th:text="${data.RMIN_SENDER_BANK}"/>
+                <td align="center" th:text="${data.RMIN_RECEIVER_BANK}"/>
+                <td align="center" th:text="${data.ALLBANK_UNIT_BANK}"/>
+                <td align="center" th:text="${data.RMIN_STAN}"/>
+                <td align="center" th:text="${T(com.syscom.fep.web.controller.rm.UI_028281Controller).getSNDCode(data.RMIN_FISC_SND_CODE)}"/>
+                <td align="center" th:text="${data.RMIN_IN_ACC_ID_NO}"/>
+                <td align="center" th:text="${data.RMIN_RMSNO}"/>
+                <td align="center" th:text="${data.RMIN_FEPNO}"/>
+                <td align="center" th:text="${#numbers.formatDecimal(data.RMIN_TXAMT,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.RMIN_FISCSNO}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028280.js}"></script>
+</div>
+</body>
+</html>

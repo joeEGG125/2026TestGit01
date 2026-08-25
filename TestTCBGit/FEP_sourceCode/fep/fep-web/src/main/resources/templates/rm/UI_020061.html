@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+		<form id="form-validator" th:object="${form}" method="post">
+			<table border="0" cellspacing="0" class="table-condition">
+				<tr>
+					<td class="condition-label" for="excuteTypeDdl">
+						<label class="col-form-label" for="excuteTypeDdl">執行類別</label>
+					</td>
+					<td class="condition-input">
+						<select class="form-control" id="excuteTypeDdl">
+							<option value="1">1-往來行庫轉檔</option>
+							<option value="2" selected="selected">2-往來行庫維護</option>
+							<option value="3">3-往來行庫暫停服務明細查詢</option>
+							<option value="4">4-參加證券匯款明細查詢</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" th:value="${form}" id="btnExecute">執行</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-hidden"></div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/rm/UI020061.js}"></script>
+	</div>
+</body>
+</html>

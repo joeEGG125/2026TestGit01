@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" method="post">
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    <button type="button" class="btn btn-primary" id="btnPrevPage1">上一頁</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b></b></th>
+                <th><b>批號</b></th>
+                <th><b>更新時間</b></th>
+                <th><b>總筆數</b></th>
+                <th><b>金額</b></th>
+                <th><b>成功筆數</b></th>
+                <th><b>成功金額</b></th>
+                <th><b>失敗筆數</b></th>
+                <th><b>失敗金額</b></th>
+                <th><b>是否回饋</b></th>
+                <th><b>T24回應代碼</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btnDetail" href="#"
+                            th:value="${
+										'{' + '&quot;rmbtchmtrSdn&quot;:&quot'+data.RMBTCHMTR_SDN + '&quot;' + ','
+											+ '&quot;rmbtchmtrRemDate&quot;:&quot;'+data.RMBTCHMTR_REMDATE + '&quot;' + ','
+											+ '&quot;rmbtchmtrTimes&quot;:&quot;'+data.RMBTCHMTR_TIMES + '&quot;'
+											+ '}'
+										}"
+                    >查詢</button>
+                </td>
+                <td align="center" th:text="${data.RMBTCHMTR_TIMES}" />
+                <td align="center" th:text="${#dates.format(data.UPDATE_TIME,'yyyy/MM/dd hh:mm:ss').substring(11,19)}" />
+                <td align="center" th:text="${data.RMBTCHMTR_CNT}" />
+                <td align="right" th:text="${#numbers.formatDecimal(data.RMBTCHMTR_AMT,1,'COMMA',2,'POINT')}" />
+                <td align="center" th:text="${data.RMBTCHMTR_SUCESS_CNT}" />
+                <td align="right" th:text="${#numbers.formatDecimal(data.RMBTCHMTR_SUCESS_AMT,1,'COMMA',2,'POINT')}" />
+                <td align="center" th:text="${data.RMBTCHMTR_FAIL_CNT}" />
+                <td align="center" th:text="${data.RMBTCHMTR_FAIL_AMT}" />
+                <td align="center" th:text="${data.FLAG}" />
+                <td align="center" th:text="${data.RMBTCHMTR_CBS_RC}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028200_2.js}"></script>
+</div>
+</body>
+</html>

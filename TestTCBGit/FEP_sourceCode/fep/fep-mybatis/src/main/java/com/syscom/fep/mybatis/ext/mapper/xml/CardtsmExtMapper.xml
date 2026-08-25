@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.CardtsmExtMapper">
+	<!-- 2021-04-19 ZhaoKai add -->
+	<select id="getSingleCard" parameterType="map" resultType="com.syscom.fep.mybatis.model.Cardtsm">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.CardtsmMapper.Base_Column_List" />
+		FROM CARDTSM
+		WHERE CARD_CARDNO = #{cardCardno,jdbcType=CHAR}
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+</mapper>

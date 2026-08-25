@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.ReportdepExtMapper">
+<!--全部分行-->
+    <select id="queryBankAll" resultMap="com.syscom.fep.mybatis.mapper.ReportdepMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.ReportdepMapper.Base_Column_List"/>
+        from REPORTDEP
+        ORDER BY REPORTDEP_DEPNO
+    </select>
+
+    <select id="getBankByDepName" resultMap="com.syscom.fep.mybatis.mapper.ReportdepMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.ReportdepMapper.Base_Column_List"/>
+        from REPORTDEP
+        WHERE LOWER(REPORTDEP_DEPNAME) LIKE LOWER(CONCAT('%', CONCAT(#{reportdepDepname }, '%')))
+        ORDER BY REPORTDEP_DEPNAME
+        <choose>
+            <when test="direction.toUpperCase() == 'ASC'">
+                ASC
+            </when>
+            <when test="direction.toUpperCase() == 'DESC'">
+                DESC
+            </when>
+        </choose>
+    </select>
+
+    <!--  使用當前時間戳  -->
+    <update id="updateByDepNo" parameterType="com.syscom.fep.mybatis.model.Reportdep">
+
+        update REPORTDEP
+        set REPORTDEP_DEPNAME = #{reportdepDepname,jdbcType=VARCHAR},
+        REPORTDEP_TYPE = #{reportdepType,jdbcType=CHAR},
+        UPDATE_USERID = #{updateUserid,jdbcType=INTEGER},
+        UPDATE_TIME = CURRENT_TIMESTAMP
+        where REPORTDEP_DEPNO = #{reportdepDepno,jdbcType=CHAR}
+    </update>
+	<select id="getBankData" resultMap="com.syscom.fep.mybatis.mapper.ReportdepMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.ReportdepMapper.Base_Column_List"/>
+        from REPORTDEP
+        <where>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(reportdepDepno)">
+        	AND REPORTDEP_DEPNO LIKE CONCAT('%', CONCAT(#{reportdepDepno}, '%'))
+        </if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(reportdepDepname)">
+        	AND REPORTDEP_DEPNAME LIKE CONCAT('%', CONCAT(#{reportdepDepname}, '%'))
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(reportdepType)">
+        	AND REPORTDEP_TYPE = #{reportdepType,jdbcType=CHAR}
+        </if>
+        </where>
+        ORDER BY REPORTDEP_DEPNO ASC
+    </select>
+</mapper>

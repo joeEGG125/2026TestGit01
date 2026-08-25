@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.HistoryExtMapper">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="historySeq" parameterType="com.syscom.fep.mybatis.model.History">
+		insert into HISTORY (HISTORY_INSTANCEID, HISTORY_BATCHID,
+		HISTORY_JOBID, HISTORY_TASKID, HISTORY_STEPID,
+		HISTORY_MESSAGE, HISTORY_STATUS, HISTORY_STARTTIME,
+		HISTORY_TASKBEGINTIME, HISTORY_TASKENDTIME,
+		HISTORY_DURATION, HISTORY_LOGFILE, HISTORY_RUNHOST,
+		HISTORY_LOGFILECONTENT)
+		values (#{historyInstanceid,jdbcType=VARCHAR}, #{historyBatchid,jdbcType=INTEGER},
+		#{historyJobid,jdbcType=INTEGER}, #{historyTaskid,jdbcType=INTEGER}, #{historyStepid,jdbcType=INTEGER},
+		#{historyMessage,jdbcType=VARCHAR}, #{historyStatus,jdbcType=CHAR}, #{historyStarttime,jdbcType=TIMESTAMP},
+		#{historyTaskbegintime,jdbcType=TIMESTAMP}, #{historyTaskendtime,jdbcType=TIMESTAMP},
+		#{historyDuration,jdbcType=INTEGER}, #{historyLogfile,jdbcType=VARCHAR}, #{historyRunhost,jdbcType=VARCHAR},
+		#{historyLogfilecontent,jdbcType=CLOB})
+	</insert>
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="historySeq" parameterType="com.syscom.fep.mybatis.model.History">
+		insert into HISTORY
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="historyInstanceid != null">
+				HISTORY_INSTANCEID,
+			</if>
+			<if test="historyBatchid != null">
+				HISTORY_BATCHID,
+			</if>
+			<if test="historyJobid != null">
+				HISTORY_JOBID,
+			</if>
+			<if test="historyTaskid != null">
+				HISTORY_TASKID,
+			</if>
+			<if test="historyStepid != null">
+				HISTORY_STEPID,
+			</if>
+			<if test="historyMessage != null">
+				HISTORY_MESSAGE,
+			</if>
+			<if test="historyStatus != null">
+				HISTORY_STATUS,
+			</if>
+			<if test="historyStarttime != null">
+				HISTORY_STARTTIME,
+			</if>
+			<if test="historyTaskbegintime != null">
+				HISTORY_TASKBEGINTIME,
+			</if>
+			<if test="historyTaskendtime != null">
+				HISTORY_TASKENDTIME,
+			</if>
+			<if test="historyDuration != null">
+				HISTORY_DURATION,
+			</if>
+			<if test="historyLogfile != null">
+				HISTORY_LOGFILE,
+			</if>
+			<if test="historyRunhost != null">
+				HISTORY_RUNHOST,
+			</if>
+			<if test="historyLogfilecontent != null">
+				HISTORY_LOGFILECONTENT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="historyInstanceid != null">
+				#{historyInstanceid,jdbcType=VARCHAR},
+			</if>
+			<if test="historyBatchid != null">
+				#{historyBatchid,jdbcType=INTEGER},
+			</if>
+			<if test="historyJobid != null">
+				#{historyJobid,jdbcType=INTEGER},
+			</if>
+			<if test="historyTaskid != null">
+				#{historyTaskid,jdbcType=INTEGER},
+			</if>
+			<if test="historyStepid != null">
+				#{historyStepid,jdbcType=INTEGER},
+			</if>
+			<if test="historyMessage != null">
+				#{historyMessage,jdbcType=VARCHAR},
+			</if>
+			<if test="historyStatus != null">
+				#{historyStatus,jdbcType=CHAR},
+			</if>
+			<if test="historyStarttime != null">
+				#{historyStarttime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="historyTaskbegintime != null">
+				#{historyTaskbegintime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="historyTaskendtime != null">
+				#{historyTaskendtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="historyDuration != null">
+				#{historyDuration,jdbcType=INTEGER},
+			</if>
+			<if test="historyLogfile != null">
+				#{historyLogfile,jdbcType=VARCHAR},
+			</if>
+			<if test="historyRunhost != null">
+				#{historyRunhost,jdbcType=VARCHAR},
+			</if>
+			<if test="historyLogfilecontent != null">
+				#{historyLogfilecontent,jdbcType=CLOB},
+			</if>
+		</trim>
+	</insert>
+	<select id="getHistoryById" resultType="java.util.HashMap">
+		SELECT BATCH_EXECUTE_HOST_NAME,BATCH_BATCHID,BATCH_NAME,BATCH_DESCRIPTION,BATCH_CURRENTID,BATCH_RESULT,JOBS_NAME,JOBS_JOBID,JOBS_SEQ,TASK_COMMAND,
+		HISTORY_STATUS,HISTORY_MESSAGE,HISTORY_TASKBEGINTIME,HISTORY_TASKENDTIME,HISTORY_DURATION,HISTORY_LOGFILE,HISTORY_RUNHOST
+		FROM BATCH
+		INNER JOIN JOBS ON BATCH_BATCHID = JOBS_BATCHID
+		INNER JOIN JOBTASK ON JOBS_JOBID = JOBTASK_JOBID
+		INNER JOIN TASK ON JOBTASK_TASKID = TASK_ID
+		LEFT JOIN HISTORY ON BATCH_CURRENTID = HISTORY_INSTANCEID AND BATCH_BATCHID = HISTORY_BATCHID AND
+		JOBS_JOBID = HISTORY_JOBID
+		WHERE BATCH_BATCHID=#{batchId,jdbcType=INTEGER} AND BATCH_CURRENTID = #{instanceId,jdbcType=CHAR}
+		ORDER BY JOBS_SEQ,HISTORY_TASKBEGINTIME
+	</select>
+	<select id="getLogByLogFile" parameterType="map" resultType="map">
+		SELECT HISTORY_LOGFILECONTENT
+		FROM HISTORY
+		WHERE HISTORY_LOGFILE = #{historyLogfile,jdbcType=VARCHAR}
+		ORDER BY HISTORY_SEQ DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	<select id="getHistoryQuery" resultType="java.util.HashMap">
+		SELECT HISTORY.*,BATCH_NAME,JOBS_NAME,JOBS_SEQ,TASK_COMMAND,BATCH_SUBSYS FROM HISTORY
+		LEFT JOIN BATCH ON HISTORY_BATCHID = BATCH_BATCHID
+		LEFT JOIN JOBS ON HISTORY_JOBID = JOBS_JOBID
+		LEFT JOIN TASK ON HISTORY_TASKID = TASK_ID
+		<where>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(batchName)">
+				AND BATCH_NAME = #{batchName}
+			</if>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(batchStartDate)">
+				AND HISTORY_STARTTIME BETWEEN to_date(CONCAT(#{batchStartDate}, '00:00:00'),'yyyy-mm-dd hh24:mi:ss') AND  to_date(CONCAT(#{batchStartDate}, '23:59:59'),'yyyy-mm-dd hh24:mi:ss')
+			</if>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(batchShortName)">
+				AND BATCH_NAME LIKE CONCAT('%', CONCAT(#{batchShortName}, '%'))
+			</if>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(subsys)">
+				AND BATCH_SUBSYS = #{subsys}
+			</if>
+		</where>
+		ORDER BY BATCH_NAME, HISTORY_STARTTIME
+	</select>
+</mapper>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition">
+	    <form id="form-validator" th:object="${form}" th:action="@{/dbmaintain/UI_070070/queryClick}" method="post">
+	        <table border="0" cellspacing="0" class="table-condition">
+	            <tr>
+	                <td class="condition-label" >
+	                    <label class="col-form-label">交易類別</label>
+	                </td>
+					<td class="condition-input">
+						<select style="width:150px" class="form-control" th:field="*{uiTxType1}">
+							<option th:each="option : ${options}" th:text="${option.text}" th:value="${option.value}"
+								th:selected="${option.value == uiTxType1}" />
+						</select>
+					</td>
+	                 <td class="condition-label" >
+	                    <label class="col-form-label">業務分類</label>
+	                </td>
+					<td class="condition-input">
+						<select th:if="*{uiTxType1 == null || uiTxType1 eq ''}" style="width:200px" class="form-control" th:field="*{uiTxType2}">
+							<option th:each="option : ${options2}" th:text="${option.text}" th:value="${option.value}"
+								th:selected="${option.value == uiTxType2}" />
+						</select>
+						<select th:if="*{uiTxType1 != null && uiTxType1 ne ''}" style="width:200px" class="form-control" th:field="*{uiTxType2}">
+							<option value="" th:selected="${'' == uiTxType2}">全部</option>
+							<option th:each="option : ${options2}" th:if="${form.uiTxType1 != null && form.uiTxType1 != '' && #lists.contains(maps.get(form.uiTxType1), option.value)}" th:text="${option.text}" th:value="${option.value}"
+								th:selected="${option.value == uiTxType2}" />
+						</select>
+					</td>
+	                <td class="condition-label" >
+	                    <label class="col-form-label">交易處理模式</label>
+	                </td>
+					<td class="condition-input">
+						<select style="width:150px" class="form-control" th:field="*{uiProcType}">
+							<option th:each="option : ${options3}" th:text="${option.text}" th:value="${option.value}"
+								th:selected="${option.value == uiProcType}" />
+						</select>
+					</td>
+	                 <td class="condition-label" >
+	                    <label class="col-form-label">交易訊息</label>
+	                </td>
+					<td class="condition-input">
+						<input class="form-control" type="text" style="width: 185px;" th:field="*{msgctlMsgid}" maxlength="20" />
+					</td>
+	            </tr>
+	        </table>
+	    </form>
+	</div>
+	<div align="left" layout:fragment="panel-button">
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+		<button style="width:100px" type="button" class="btn btn-primary" id="btnClear">清除</button>
+		<button style="width:100px" type="button" class="btn btn-primary btnUpdate" id="btnIMS">切換IMS</button>
+		<button style="width:100px" type="button" class="btn btn-primary btnUpdate" id="btnFEP">切換FEP</button>
+	</div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0 col-6">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" style="width:100%;">
+				<thead>
+					<tr>
+						<th><b><input id="allCheckBox" type="checkbox" onClick="checkAll(this)"/></b></th>
+						<th><b>交易訊息</b></th>
+						<th><b>交易名稱</b></th>
+						<th><b>交易處理方式</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}" th:object="${pageData.list}">
+					<tr th:each="data, dataStat : ${pageData.list}">
+						<td style="text-align:center ">
+							<input type="checkbox" th:name='msgctlDataCheck' th:value="${data.MSGCTL_MSGID}" onClick="changeCheckAll(this)"/>
+						</td>
+						<td align="left" th:text="${data.MSGCTL_MSGID}" th:id="${data.MSGCTL_MSGID}"/>
+						<td align="left" th:text="${data.MSGCTL_MSG_NAME}" />
+						<td align="left" th:text="${data.MSGCTL_CBS_PROC_NAME}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/dbmaintain/UI070070.js}"></script>
+		<script th:inline="javascript">
+			var maps = /*[[${maps}]]*/'';
+			var options2 = /*[[${options2}]]*/'';
+		</script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.AtmcashExtMapper">
+    <!-- 2021/04/29 ZhaoKai Add -->
+    <select id="getAtmCashByAtmNo" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.AtmcashMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.AtmcashMapper.Base_Column_List"/>
+        FROM ATMCASH
+        WHERE ATMCASH_ATMNO = #{atmcashAtmno,jdbcType=CHAR}
+            ORDER BY ATMCASH_BOXNO
+    </select>
+    <!-- 2021/05/20 wj Add -->
+    <update id="updateBusinessDay" parameterType="map">
+        UPDATE ATMCASH
+        SET ATMCASH_RWT_CUR_LBSDY = ATMCASH_RWT_CUR_TBSDY,
+            ATMCASH_RWT_CNT_LBSDY = ATMCASH_RWT_CNT_TBSDY,
+            ATMCASH_RWT_AMT_LBSDY = ATMCASH_RWT_AMT_TBSDY,
+            ATMCASH_CWD_CNT_LBSDY = ATMCASH_CWD_CNT_TBSDY,
+            ATMCASH_CWD_AMT_LBSDY = ATMCASH_CWD_AMT_TBSDY,
+            ATMCASH_BK_CNT_LBSDY  = ATMCASH_BK_CNT_TBSDY,
+            ATMCASH_BK_AMT_LBSDY  = ATMCASH_BK_AMT_TBSDY,
+            ATMCASH_LEFT_LBSDY    = ATMCASH_REFILL - ATMCASH_PRESENT,
+            ATMCASH_CWD_CNT_TBSDY = 0,
+            ATMCASH_CWD_AMT_TBSDY = 0,
+            ATMCASH_RWT_CNT_TBSDY = 0,
+            ATMCASH_RWT_AMT_TBSDY = 0,
+            ATMCASH_BK_CNT_TBSDY  = 0,
+            ATMCASH_BK_AMT_TBSDY  = 0
+        WHERE ATMCASH_ATMNO = #{atmcashAtmno,jdbcType=CHAR}
+    </update>
+    <!-- 2021/05/25 wj Add -->
+    <select id="getAtmCashByCurAtmNoForIWD" parameterType="map" resultType="java.util.HashMap">
+        SELECT SUM(ATMCASH_UNIT * ATMCASH_REFILL) AS RWT_AMT, SUM(ATMCASH_UNIT * ATMCASH_PRESENT) AS IWD_AMT
+        FROM ATMCASH
+        WHERE ATMCASH_ATMNO = #{atmcashAtmno,jdbcType=CHAR}
+          AND ATMCASH_CUR = #{atmcashCur,jdbcType=CHAR}
+        GROUP BY ATMCASH_ATMNO, ATMCASH_CUR
+    </select>
+    <!-- 2022/05/19 Han Add -->
+    <select id="GetATMCashByATMNO" parameterType="map"
+            resultType="map">
+        SELECT * FROM ATMCASH WHERE ATMCASH_ATMNO =
+        #{feptxnAtmno,jdbcType=CHAR}
+        <if test="@com.syscom.fep.common.util.DbHelper@isSqlInOrderByValid(orderBy)">
+            ORDER BY ATMCASH_BOXNO
+        </if>
+    </select>
+    <!-- 2022/05/20 Han Add -->
+    <select id="GetATMCashByATMNOGroupBy" parameterType="map" resultType="map">
+        SELECT ATMCASH_ATMNO,
+               ATMCASH_RWT_CUR_LBSDY,
+               ATMCASH_RWT_CUR_TBSDY,
+               SUM(ATMCASH_CWD_CNT_LBSDY) AS ATMCASH_CWD_CNT_LBSDY,
+               SUM(ATMCASH_CWD_AMT_LBSDY) AS ATMCASH_CWD_AMT_LBSDY,
+               SUM(ATMCASH_CWD_CNT_TBSDY) AS ATMCASH_CWD_CNT_TBSDY,
+               SUM(ATMCASH_CWD_AMT_TBSDY) AS ATMCASH_CWD_AMT_TBSDY
+        FROM ATMCASH
+        WHERE ATMCASH_ATMNO = #{feptxnAtmno,jdbcType=VARCHAR}
+          AND ATMCASH_CUR != ''
+        GROUP BY ATMCASH_ATMNO, ATMCASH_RWT_CUR_LBSDY, ATMCASH_RWT_CUR_TBSDY
+    </select>
+</mapper>

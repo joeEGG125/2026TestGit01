@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+    <button type="button" class="btn btn-primary" id="btnDownload" th:if="${flag}">匯出</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>身分證號</b></th>
+                <th><b>健保卡號</b></th>
+                <th><b>身分驗證交易日期</b></th>
+                <th><b>身分驗證交易序號</b></th>
+                <th><b>身分驗證交易時間日期</b></th>
+                <th><b>身分驗證交易財金營業日</b></th>
+                <th><b>身分驗證帳務日</b></th>
+                <th><b>身分驗證API狀態</b></th>
+                <th><b>發卡行</b></th>
+                <th><b>金融卡帳號</b></th>
+                <th><b>設機行代號</b></th>
+                <th><b>ATM代號</b></th>
+                <th><b>提款交易日期</b></th>
+                <th><b>提款交易序號</b></th>
+                <th><b>提款交易時間</b></th>
+                <th><b>提款交易財金營業日</b></th>
+                <th><b>提款交易帳務日</b></th>
+                <th><b>提領狀態</b></th>
+                <th><b>Call全民普發平台提領註記交易序號</b></th>
+                <th><b>全民普發平台提領註記回覆序號</b></th>
+                <th><b>全民普發平台提領註記回覆時間</b></th>
+                <th><b>全民普發平台提領註記回覆代碼</b></th>
+                <th><b>Call全民普發平台解除提領交易序號</b></th>
+                <th><b>全民普發平台解除提領回覆序號</b></th>
+                <th><b>全民普發平台解除提領回覆時間</b></th>
+                <th><b>全民普發平台解除提領回覆代碼</b></th>
+                <th><b>解除管道</b></th>
+                <th><b>最後交易狀態</b></th>
+                <th><b>歷史交易</b></th>
+                <th><b>更新時間</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data, dataStat : ${pageData.list}">
+                <td th:text="${data['UCDID_IDNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_HEALTHID']} ?: ''"></td>
+                <td th:text="${data['UCDID_2566_TXDATE']} ?: ''"></td>
+                <td th:text="${data['UCDID_2566_STAN']} ?: ''"></td>
+                <td th:text="${data['UCDID_2566_TXTIME']} ?: ''"></td>
+                <td th:text="${data['UCDID_2566_TBSDY_FISC']} ?: ''"></td>
+                <td th:text="${data['UCDID_2566_TBSDY']} ?: ''"></td>
+                <td th:text="${data['UCDID_2566_APISTATUS']} ?: ''"></td>
+                <td th:text="${data['UCDID_TROUT_BKNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_TROUT_ACTNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_BKNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_ATMNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_2510_TXDATE']} ?: ''"></td>
+                <td th:text="${data['UCDID_2510_STAN']} ?: ''"></td>
+                <td th:text="${data['UCDID_2510_TXTIME']} ?: ''"></td>
+                <td th:text="${data['UCDID_2510_TBSDY_FISC']} ?: ''"></td>
+                <td th:text="${data['UCDID_2510_TBSDY']} ?: ''"></td>
+                <td th:text="${data['UCDID_2510_STATUS']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCD_APISEQNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCD_TXNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCD_RESPTIME']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCD_RC']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCDR_APISEQNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCDR_TXNO']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCDR_RESPTIME']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCDR_RC']} ?: ''"></td>
+                <td th:text="${data['UCDID_UCDR_CHANNEL']} ?: ''"></td>
+                <td th:text="${data['UCDID_LASTSTATUS']} ?: ''"></td>
+                <td th:text="${data['UCDID_HISTORY']} ?: ''"></td>
+                <td th:text="${data['UPDATE_TIME']} ?: ''"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

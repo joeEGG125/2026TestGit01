@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_020060/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" for="allbankBkno">
+                    <label class="col-form-label">財金銀行代碼_銀行別</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="allbankBkno" th:field="*{allbankBkno}" maxlength="3">
+                </td>
+                <td class="condition-label" for="allbankBrno">
+                    <label class="col-form-label">財金銀行代碼_分支機構</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" id="allbankBrno" th:field="*{allbankBrno}" maxlength="3">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear1">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>明細</b></th>
+                <th><b>財金銀行代碼_銀行別</b></th>
+                <th><b>財金銀行代碼_分支機構</b></th>
+                <th><b>分行別檢查碼</b></th>
+                <th><b>銀行種類</b></th>
+                <th><b>總行代號</b></th>
+                <th><b>計算機中心總行代號</b></th>
+                <th><b>銀行簡稱</b></th>
+                <th><b>銀行全名</b></th>
+                <th><b>銀行之英文名稱</b></th>
+                <th><b>銀行之地址</b></th>
+                <th><b>郵遞區號1</b></th>
+                <th><b>郵遞區號2</b></th>
+                <th><b>電話</b></th>
+                <th><b>參加財金匯款通匯旗標</b></th>
+                <th><b>匯款匯出FORWARD旗標</b></th>
+                <th><b>今日財金關帳時間</b></th>
+                <th><b>參加財金證券匯款旗標</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button type="button" class="btn btn-primary btnDetail" href="#"
+                            th:value="${
+										'{' + '&quot;allbankBkno&quot;:&quot;'+data.allbankBkno + '&quot;' + ','
+											+ '&quot;allbankBrno&quot;:&quot;'+data.allbankBrno + '&quot;' + ','
+											+ '&quot;allbankBrnoChkcode&quot;:&quot;'+data.allbankBrnoChkcode + '&quot;'  + ','
+											+ '&quot;allbankType&quot;:&quot;'+data.allbankType + '&quot;' + ','
+											+ '&quot;allbankFiscUnit&quot;:&quot;'+data.allbankFiscUnit + '&quot;' + ','
+											+ '&quot;allbankUnitBank&quot;:&quot;'+data.allbankUnitBank + '&quot;' + ','
+											+ '&quot;allbankAliasname&quot;:&quot;'+data.allbankAliasname + '&quot;' + ','
+											+ '&quot;allbankFullname&quot;:&quot;'+data.allbankFullname + '&quot;' + ','
+											+ '&quot;allbankEngname&quot;:&quot;'+data.allbankEngname + '&quot;' + ','
+											+ '&quot;allbankAddrress&quot;:&quot;'+data.allbankAddrress + '&quot;' + ','
+											+ '&quot;allbankZipcode1&quot;:&quot;'+data.allbankZipcode1 + '&quot;' + ','
+											+ '&quot;allbankZipcode2&quot;:&quot;'+data.allbankZipcode2 + '&quot;' + ','
+											+ '&quot;allbankTelno&quot;:&quot;'+data.allbankTelno + '&quot;' + ','
+											+ '&quot;allbankRmflag&quot;:&quot;'+data.allbankRmflag + '&quot;' + ','
+											+ '&quot;allbankRmforward&quot;:&quot;'+data.allbankRmforward + '&quot;' + ','
+											+ '&quot;allbankSetCloseTime&quot;:&quot;'+data.allbankSetCloseTime + '&quot;' + ','
+											+ '&quot;allbankSetCloseFlag&quot;:&quot;'+data.allbankSetCloseFlag + '&quot;'
+											+ '}'
+										}"
+                    >明細</button>
+                </td>
+                <td align="center" th:text="${data.allbankBkno}" />
+                <td align="center" th:text="${data.allbankBrno}" />
+                <td align="center" th:text="${data.allbankBrnoChkcode}" />
+                <td align="center" th:text="${data.allbankType}==0?'0-自行':(${data.allbankType}==1?'1-一般他行':'2-合作社')" />
+                <td align="center" th:text="${data.allbankFiscUnit}==0?'0-一般行庫':'1-共用中心'" />
+                <td align="center" th:text="${data.allbankUnitBank}" />
+                <td align="center" th:text="${data.allbankAliasname}" />
+                <td align="center" th:text="${data.allbankFullname}" />
+                <td align="center" th:text="${data.allbankEngname}" />
+                <td align="center" th:text="${data.allbankAddrress}" />
+                <td align="center" th:text="${data.allbankZipcode1}" />
+                <td align="center" th:text="${data.allbankZipcode2}" />
+                <td align="center" th:text="${data.allbankTelno}" />
+                <td align="center" th:text="${data.allbankRmflag}==0?'0-未參加':'1-參加'"/>
+                <td align="center" th:text="${data.allbankRmforward}==0?'0-正常':(${data.allbankRmforward}==1?'1-禁止':'2-颱風天暫停')" />
+                <td align="center" th:text="${data.allbankSetCloseTime}" />
+                <td align="center" th:text="${data.allbankSetCloseFlag}==0?'0-未參加':'1-參加'" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI020060.js}"></script>
+</div>
+</body>
+</html>

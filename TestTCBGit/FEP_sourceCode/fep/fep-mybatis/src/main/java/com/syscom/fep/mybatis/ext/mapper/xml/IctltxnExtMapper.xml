@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.IctltxnExtMapper">
+	<!-- 2021-04-21 ZhaoKai add -->
+	<select id="queryByOriData" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.IctltxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.IctltxnMapper.Base_Column_List" />
+		FROM ICTLTXN
+		WHERE ICTLTXN_TX_DATE = #{ictltxnTxDate,jdbcType=CHAR}
+		AND ICTLTXN_STAN = #{ictltxnStan,jdbcType=CHAR}
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<select id="getIctltxn" parameterType="com.syscom.fep.mybatis.model.Ictltxn" resultMap="com.syscom.fep.mybatis.mapper.IctltxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.IctltxnMapper.Base_Column_List" />
+		FROM ICTLTXN
+		<where>
+			<if test="ictltxnTxDate != ''">
+				AND ICTLTXN_TX_DATE = #{ictltxnTxDate,jdbcType=CHAR}
+			</if>
+
+			<if test="ictltxnBkno != ''">
+				AND ICTLTXN_BKNO = #{ictltxnBkno,jdbcType=CHAR}
+			</if>
+
+			<if test="ictltxnStan != ''">
+				AND ICTLTXN_STAN = #{ictltxnStan,jdbcType=VARCHAR}
+			</if>
+		</where>
+
+	</select>
+</mapper>

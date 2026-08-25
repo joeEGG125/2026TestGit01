@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail" th:object="${detailEntity}">
+		<table border="0" cellspacing="0" class="table-detail">
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">交易日期</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).charDateToDate(feptxnTxDate)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">交易時間</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).charTimeToTime(feptxnTxTime)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">交易代號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnPcode}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">EJ序號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnEjfno}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">財金營業日</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).charDateToDate(feptxnTbsdyFisc)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">財金STAN</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).join('-',feptxnBkno,feptxnStan)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">REQ回應代碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnReqRc}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">REP回應代碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnRepRc}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">CON回應代碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnConRc}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">FEP內部錯誤代碼</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnAaRc}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">交易狀況</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).getPendingName(feptxnPending)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">FISC逾時FLAG</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).getFiscTimeoutName(feptxnFiscTimeout)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">交易啟動銀行</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnBkno}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">APID（KeyID）</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnApid}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">NOTICE ID</label>
+				</td>
+				<td class="condition-input" colspan="3">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnNoticeId}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">訊息流程</label>
+				</td>
+				<td class="condition-input" colspan="3">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).getMsgFlowName(feptxnMsgflow)}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">附言</label>
+				</td>
+				<td class="condition-input" colspan="3">
+					<label class="form-control label-text-left" th:if="${detailEntity!=null}" th:text="*{feptxnRemark}"></label>
+					<label class="form-control" th:if="${detailEntity==null}"></label>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

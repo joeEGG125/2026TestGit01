@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028150/saveIntervalBtn_Click}" method="post">
+        <table border="0" class="table-condition">
+            <tr>
+                <td class="condition-label">畫面更新間隔時間</td>
+                <td width="52px" class="condition-input">
+                    <input class="form-control" type="text" maxlength="2" th:field="*{time}"/></td>
+                <td class="condition-label">秒</td>
+                <td class="condition-label">
+                    <button type="button" class="btn btn-primary" id="btnReserve">儲存</button>
+                </td>
+                <td class="condition-label">更新時間:</td>
+                <td style="color: #7abaff" class="condition-input" th:text="${newtime}">
+                <td class="condition-label">T24 Pending:</td>
+                <td th:style="'color:'+${t24Color}+''" class="condition-input" th:text="${t24P}"></td>
+                <td class="condition-label">FCS未上傳:</td>
+                <td th:style="'color:'+${fcsColor}+''" class="condition-input" th:text="${fcs}"></td>
+                <td class="condition-label">待解:</td>
+                <td th:style="'color:'+${cntColor}+''" class="condition-input" th:text="${cnt}"></td>
+                <td class="condition-label">/</td>
+                <td th:style="'color:'+${amtColor}+''" class="condition-input" th:text="${amt}"></td>
+                <td class="condition-label">匯出暫禁記號:</td>
+                <td th:style="'color:'+${rmFlagColor}+''" class="condition-input" th:text="${rmFlagText}"></td>
+            </tr>
+        </table>
+
+        <table class="table-condition" width="100%">
+            <tr>
+                <td>
+                    <table border="1" class="table-condition" width="100%">
+                        <tr>
+                            <td align="right">主機匯出</td>
+                            <td th:style="'color:'+${rMCBSOutFlagLblColor}+''"
+                                th:if="${rMCBSOutFlagLbl != null}" th:text="${rMCBSOutFlagLbl}"></td>
+                            <td>未下傳</td>
+                            <td th:if="${outpassedcnt != null}" th:text="${outpassedcnt}"></td>
+                            <td>下傳中</td>
+                            <td th:if="${outtransferingcnt != null}"
+                                th:text="${outtransferingcnt}"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table border="1" class="table-condition" width="100%">
+                        <tr>
+                            <td align="right">主機匯入</td>
+                            <td th:style="'color:'+${rMCBSInFlagLblColor}+''"
+                                th:if="${rMCBSInFlagLbl != null}" th:text="${rMCBSInFlagLbl}"></td>
+                            <td>未下傳</td>
+                            <td th:if="${inpassedcnt != null}" th:text="${inpassedcnt}"></td>
+                            <td>AML傳送中</td>
+                            <td th:if="${amltransferingcnt != null}"
+                                th:text="${amltransferingcnt}"></td>
+                            <td>下傳中</td>
+                            <td th:if="${intransferingcnt != null}"
+                                th:text="${intransferingcnt}"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table border="1" class="table-condition" width="100%">
+                        <tr>
+                            <td align="right">通匯類匯出</td>
+                            <td th:style="'color:'+${rMFISCOFlag1LblColor}+''"
+                                th:if="${rMFISCOFlag1Lbl != null}" th:text="${rMFISCOFlag1Lbl}"></td>
+                            <td align="right" th:if="${rMFISCOUT1_NO != null}" th:text="${rMFISCOUT1_NO}"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">一般通訊類匯出</td>
+                            <td th:style="'color:'+${rMFISCOFlag4LblColor}+''"
+                                th:if="${rMFISCOFlag4Lbl != null}" th:text="${rMFISCOFlag4Lbl}"></td>
+                            <td align="right" th:if="${rMFISCOUT4_NO != null}" th:text="${rMFISCOUT4_NO}"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">1000系統狀態-財金</td>
+                            <td th:if="${SYSSTAT_AOCT_1000Lbl != null}"
+                                th:text="${SYSSTAT_AOCT_1000Lbl}" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">1100系統狀態-財金</td>
+                            <td th:if="${SYSSTAT_AOCT_1100Lbl != null}"
+                                th:text="${SYSSTAT_AOCT_1100Lbl}" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">1400系統狀態-財金</td>
+                            <td th:if="${SYSSTAT_AOCT_1400Lbl != null}"
+                                th:text="${SYSSTAT_AOCT_1400Lbl}" colspan="2"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table border="1" class="table-condition" width="100%">
+                        <tr>
+                            <td align="right">通匯類匯入</td>
+                            <td th:style="'color:'+${rMFISCIFlag1LblColor}+''"
+                                th:if="${rMFISCIFlag1Lbl != null}" th:text="${rMFISCIFlag1Lbl}"></td>
+                            <td align="right" th:if="${rMFISCIN1_NO != null}" th:text="${rMFISCIN1_NO}"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">一般通訊類匯入</td>
+                            <td th:style="'color:'+${rMFISCIFlag4LblColor}+''"
+                                th:if="${rMFISCIFlag4Lbl != null}" th:text="${rMFISCIFlag4Lbl}"></td>
+                            <td align="right" th:if="${rMFISCIN4_NO != null}" th:text="${rMFISCIN4_NO}"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">1000系統狀態-本行</td>
+                            <td th:if="${SYSSTAT_MBACT_1000Lbl != null}"
+                                th:text="${SYSSTAT_MBACT_1000Lbl}" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">1100系統狀態-本行</td>
+                            <td th:if="${SYSSTAT_MBACT_1100Lbl != null}"
+                                th:text="${SYSSTAT_MBACT_1100Lbl}" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">1400系統狀態-本行</td>
+                            <td th:if="${SYSSTAT_MBACT_1400Lbl != null}"
+                                th:text="${SYSSTAT_MBACT_1400Lbl}" colspan="2"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table border="1" class="table-condition" width="100%">
+            <tr>
+                <td align="right" width="160px">&nbsp;</td>
+                <td align="center">臨櫃</td>
+                <td align="center">整批</td>
+                <td align="center">FEDI</td>
+                <td align="center">MMAB2B</td>
+                <td align="center">PSP</td>
+                <td align="center">緊急</td>
+                <td align="center">自動退匯</td>
+                <td align="center">人工退匯</td>
+            </tr>
+            <tr>
+                <td align="right">匯出</td>
+                <td align="right" th:if="${wkOUT_Cnt0 != null}" th:text="${wkOUT_Cnt0}"></td>
+                <td align="right" th:if="${wkOUT_Cnt1 != null}" th:text="${wkOUT_Cnt1}"></td>
+                <td align="right" th:if="${wkOUT_Cnt2 != null}" th:text="${wkOUT_Cnt2}"></td>
+                <td align="right" th:if="${wkOUT_Cnt4 != null}" th:text="${wkOUT_Cnt4}"></td>
+                <td align="right" th:if="${wkOUT_Cnt7 != null}" th:text="${wkOUT_Cnt7}"></td>
+                <td align="right" th:if="${wkOUT_Cnt5 != null}" th:text="${wkOUT_Cnt5}"></td>
+                <td align="right" th:if="${wkOUT_Cnt3 != null}" th:text="${wkOUT_Cnt3}"></td>
+                <td align="right" th:if="${wkOUT_Cnt6 != null}" th:text="${wkOUT_Cnt6}"></td>
+            </tr>
+            <tr>
+                <td align="right">被退匯(總)</td>
+                <td align="right" th:if="${wkIN_Cnt0 != null}" th:text="${wkIN_Cnt0}"></td>
+                <td align="right" th:if="${wkIN_Cnt1 != null}" th:text="${wkIN_Cnt1}"></td>
+                <td align="right" th:if="${wkIN_Cnt2 != null}" th:text="${wkIN_Cnt2}"></td>
+                <td align="right" th:if="${wkIN_Cnt4 != null}" th:text="${wkIN_Cnt4}"></td>
+                <td align="right" th:if="${wkIN_Cnt7 != null}" th:text="${wkIN_Cnt7}"></td>
+                <td align="right" th:if="${wkIN_Cnt5 != null}" th:text="${wkIN_Cnt5}"></td>
+                <td align="right">&nbsp;</td>
+                <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="right">被自動退匯</td>
+                <td align="right" th:if="${wkIN_A_Cnt0 != null}" th:text="${wkIN_A_Cnt0}"></td>
+                <td align="right" th:if="${wkIN_A_Cnt1 != null}" th:text="${wkIN_A_Cnt1}"></td>
+                <td align="right" th:if="${wkIN_A_Cnt2 != null}" th:text="${wkIN_A_Cnt2}"></td>
+                <td align="right" th:if="${wkIN_A_Cnt4 != null}" th:text="${wkIN_A_Cnt4}"></td>
+                <td align="right" th:if="${wkIN_A_Cnt7 != null}" th:text="${wkIN_A_Cnt7}"></td>
+                <td align="right" th:if="${wkIN_A_Cnt5 != null}" th:text="${wkIN_A_Cnt5}"></td>
+                <td align="right">&nbsp;</td>
+                <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="right">被自動退匯之行庫</td>
+                <td align="left" colspan="8" th:if="${autoBackBank != null}" th:text="${autoBackBank}"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button"></div>
+<div layout:fragment="panel-summary"></div>
+<div layout:fragment="panel-grid">
+    <div style="text-align:center">最新5筆匯出記錄</div>
+    <div class="card-body table-responsive p-0" th:if="${dvRMOUT!= null}">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>時間</b></th>
+                <th><b>PCODE</b></th>
+                <th><b>匯款編號</b></th>
+                <th><b>電文序號</b></th>
+                <th><b>匯款金額</b></th>
+                <th><b>解款行</b></th>
+                <th><b>通匯序號</b></th>
+                <th><b>STAN</b></th>
+                <th><b>財金RC</b></th>
+                <th><b>收款人帳號</b></th>
+                <th><b>CBS暫停</b></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="data : ${dvRMOUT}">
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).charTimeToTime(data.RMOUT_SENDTIME)}"></td>
+                <td th:text="${data.RMOUT_FISC_SND_CODE}"></td>
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',data.RMOUT_BRNO,data.RMOUT_ORIGINAL,data.RMOUT_FEPNO)}"></td>
+                <td th:text="${data.RMOUT_FISCSNO}"></td>
+                <td align="center"
+                    th:text="${#numbers.formatDecimal(data.RMOUT_TXAMT,1,'COMMA',2,'POINT')}"></td>
+                <td th:text="${data.RMOUT_RECEIVER_BANK}"></td>
+                <td th:text="${data.RMOUT_RMSNO}"></td>
+                <td th:text="${data.RMOUT_STAN}"></td>
+                <td th:text="${data.RMOUT_FISC_RTN_CODE}"></td>
+                <td th:text="${data.RMOUT_IN_ACC_ID_NO}"></td>
+                <td th:text="${data.RMOUT_PENDING}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align:center">最新5筆匯入記錄</div>
+    <div class="card-body table-responsive p-0" th:if="${dvRMOUT!= dvRMIN}">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap"
+               th:if="${dvRMIN != null}">
+            <thead>
+            <tr>
+                <th><b>時間</b></th>
+                <th><b>PCODE</b></th>
+                <th><b>匯款編號</b></th>
+                <th><b>電文序號</b></th>
+                <th><b>匯款金額</b></th>
+                <th><b>解款行</b></th>
+                <th><b>通匯序號</b></th>
+                <th><b>STAN</b></th>
+                <th><b>財金RC</b></th>
+                <th><b>收款人帳號</b></th>
+                <th><b>CBS暫停</b></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="data : ${dvRMIN}">
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).charTimeToTime(data.RMIN_SENDTIME)}"></td>
+                <td th:text="${data.RMIN_FISC_SND_CODE}"></td>
+                <td th:text="${T(com.syscom.fep.web.base.FEPWebBase).join('-',data.RMIN_BRNO,data.RMIN_FEPNO)}"></td>
+                <td th:text="${data.RMIN_FISCSNO}"></td>
+                <td align="center"
+                    th:text="${#numbers.formatDecimal(data.RMIN_TXAMT,1,'COMMA',2,'POINT')}"></td>
+                <td th:text="${data.RMIN_SENDER_BANK}"></td>
+                <td th:text="${data.RMIN_RMSNO}"></td>
+                <td th:text="${data.RMIN_STAN}"></td>
+                <td th:text="${data.RMIN_FISC_RTN_CODE}"></td>
+                <td th:text="${data.RMIN_IN_ACC_ID_NO}"></td>
+                <td th:text="${data.RMIN_PENDING}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028150.js}"></script>
+    <script th:inline="javascript">
+        var form = [[${form}]];
+        setInterval(myrefresh, form.time * 1000);
+    </script>
+</div>
+</body>
+</html>

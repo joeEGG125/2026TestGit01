@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <div class="card card-primary card-outline" >
+            <div class="card-header">
+                <h5 class="card-title">調整條件</h5>
+            </div>
+            <div class="card-body">
+                <form id="form-validator">
+                    <table border="0" cellspacing="0" class="table-condition">
+                        <tr>
+                            <td class="condition-label">
+                                <label for="amlStatus" class="col-form-label">調整項目</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" value="AML傳送狀態" id="amlStatus" name="amlStatus" readonly/>
+                            </td>
+                            <td class="condition-label">
+                                <label for="qryAmlFlag" class="col-form-label">	調整使用狀態</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" value="R:暫停中" id="qryAmlFlag" name="qryAmlFlag" readonly/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnConfirm">執行</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid">
+        <div id="rm" v-cloak>
+            <table border="0" cellspacing="0" class="table-condition">
+                <tr>
+                    <td class="condition-label" align="center">
+                        <label for="amlFlag" class="col-form-label">AML傳送狀態</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="condition-input">
+                        <input class="form-control" type="text" id="amlFlag" v-model="amlFlag" name="amlFlag" readonly/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/rm/UI028270.js}"></script>
+    </div>
+</body>
+</html>

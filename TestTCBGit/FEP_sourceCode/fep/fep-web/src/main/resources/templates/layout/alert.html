@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Common Alert</title>
+</head>
+<body>
+	<div th:fragment="cmnAlert(id,body,size)" class="modal fade panel-alert" th:id="${id}" tabindex="-1" role="dialog" th:aria-labelledby="${id}" aria-hidden="true">
+		<div th:class="${'modal-dialog-' + (alertMessageType == null ? 'info' : #strings.toLowerCase(alertMessageType))}">
+			<div th:class="${'modal-dialog modal-dialog-scrollable modal-'+size}" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" th:id="${id+'Title'}">[[${T(com.syscom.fep.web.configurer.WebConfiguration).getInstance().getAppTitle()}]]</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div th:replace="${body}" class="row">
+							<div class="col-md-1">
+								<h5>
+									<block th:switch="${alertMessageType}">
+										<i th:case="${T(com.syscom.fep.web.entity.MessageType).DANGER}" class="icon fas fa-ban"></i>
+										<i th:case="${T(com.syscom.fep.web.entity.MessageType).INFO}" class="icon fas fa-info"></i>
+										<i th:case="${T(com.syscom.fep.web.entity.MessageType).WARNING}" class="icon fas fa-exclamation-triangle"></i>
+										<i th:case="${T(com.syscom.fep.web.entity.MessageType).SUCCESS}" class="icon fas fa-check"></i>
+									</block>
+								</h5>
+							</div>
+							<div class="col">
+								<pre th:id="${id+'MessageContent'}" class="pre-content">[[${alertMessage}]]</pre>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" th:id="${id+'BtnClose'}" class="btn btn-primary" data-dismiss="modal">關閉</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script th:if="${session.logonUser != null}" th:inline="javascript">
+			/**
+			 * alert一般訊息
+			 *
+			 * @param id
+			 * @param alertMessage
+			 * @param closeFunc
+			 */
+			function showInfoAlert(id, alertMessage, closeFunc) {
+				var alertMessageType = /*[[${T(com.syscom.fep.web.entity.MessageType).INFO}]]*/'';
+				showAlert(id, alertMessageType, alertMessage, closeFunc);
+			}
+			/**
+			 * alert成功訊息
+			 *
+			 * @param id
+			 * @param alertMessage
+			 * @param closeFunc
+			 */
+			function showSuccessAlert(id, alertMessage, closeFunc) {
+				var alertMessageType = /*[[${T(com.syscom.fep.web.entity.MessageType).SUCCESS}]]*/'';
+				showAlert(id, alertMessageType, alertMessage, closeFunc);
+			}
+			/**
+			 * alert警告訊息
+			 *
+			 * @param id
+			 * @param alertMessage
+			 * @param closeFunc
+			 */
+			function showWarningAlert(id, alertMessage, closeFunc) {
+				var alertMessageType = /*[[${T(com.syscom.fep.web.entity.MessageType).WARNING}]]*/'';
+				showAlert(id, alertMessageType, alertMessage, closeFunc);
+			}
+			/**
+			 * alert錯誤訊息
+			 *
+			 * @param id
+			 * @param alertMessage
+			 * @param closeFunc
+			 */
+			function showDangerAlert(id, alertMessage, closeFunc) {
+				var alertMessageType = /*[[${T(com.syscom.fep.web.entity.MessageType).DANGER}]]*/'';
+				showAlert(id, alertMessageType, alertMessage, closeFunc);
+			}
+			/**
+			 * alert訊息
+			 *
+			 * @param id 元件的id, 如果傳入null則預設是cmnAlert
+			 * @param alertMessageType 訊息類型
+			 * @param alertMessage 訊息內容
+			 * @param closeFunc 按下關閉按鈕觸發的事件
+			 */
+			function showAlert(id, alertMessageType, alertMessage, closeFunc) {
+				if (stringIsBlank(id)) {
+					id = 'cmnAlert';
+				}
+				var alertDialg = $("#" + id);
+				if (alertDialg.length > 0) {
+					var modalOpt = {
+						"backdrop" : "static",
+						"show" : false,
+						"keyboard" : false
+					};
+					var alertModal = $("#" + id).modal(modalOpt);
+					var btnClose = $("#" + id + "BtnClose");
+					alertDialg.children(":first").attr('class', 'modal-dialog-' + (stringIsBlank(alertMessageType) ? 'info' : alertMessageType.toLowerCase()));
+					var icon = '<i class="icon fas fa-info"></i>';
+					switch (alertMessageType) {
+					case 'DANGER':
+						icon = '<i class="icon fas fa-ban"></i>';
+						break;
+					case 'INFO':
+						icon = '<i class="icon fas fa-info"></i>';
+						break;
+					case 'WARNING':
+						icon = '<i class="icon fas fa-exclamation-triangle"></i>';
+						break;
+					case 'SUCCESS':
+						icon = '<i class="icon fas fa-check"></i>';
+						break;
+					}
+					$("#"+id+" .modal-body h5").html(icon);
+					var messageContent = $("#" + id + "MessageContent");
+					if (messageContent.length > 0) {
+						messageContent.html(alertMessage);
+					}
+					btnClose.off('click');
+					if ('undefined' !== typeof closeFunc) {
+						btnClose.on('click', closeFunc);
+					}
+					alertModal.modal("show");
+				}
+			}
+		</script>
+	</div>
+</body>
+</html>

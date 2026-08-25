@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.TxtypeExtMapper">
+	<!-- 2021-04-20 ZhaoKai add -->
+	<select id="getLevel1TxType"
+			resultType="java.util.HashMap">
+		SELECT distinct
+			TXTYPE_TYPE1, TXTYPE_TYPE1_NAME
+		FROM TXTYPE A
+		JOIN MSGCTL B
+		ON A.TXTYPE_TYPE1 = B.MSGCTL_TXTYPE1 AND A.TXTYPE_TYPE2 = B.MSGCTL_TXTYPE2
+		ORDER BY TXTYPE_TYPE1
+	</select>
+
+	<select id="getLevel2ByTxType1" parameterType="map" resultType="java.util.HashMap">
+		SELECT distinct
+			TXTYPE_TYPE2, TXTYPE_TYPE2_NAME
+		FROM TXTYPE
+		WHERE TXTYPE_TYPE1 = #{txType1,jdbcType=VARCHAR}
+		ORDER BY TXTYPE_TYPE2
+	</select>
+	<select id="getLevel2" parameterType="map" resultType="java.util.HashMap">
+		SELECT distinct
+			TXTYPE_TYPE1, TXTYPE_TYPE1_NAME,TXTYPE_TYPE2, TXTYPE_TYPE2_NAME
+		FROM TXTYPE A
+		JOIN MSGCTL B
+		ON A.TXTYPE_TYPE1 = B.MSGCTL_TXTYPE1 AND A.TXTYPE_TYPE2 = B.MSGCTL_TXTYPE2
+		ORDER BY TXTYPE_TYPE1,TXTYPE_TYPE2
+	</select>
+
+	<select id="getAllData" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.TxtypeMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.TxtypeMapper.Base_Column_List" />
+		FROM TXTYPE
+		ORDER BY TXTYPE_TYPE1,TXTYPE_TYPE2
+	</select>
+
+	<select id="getTxtypeForPcode" parameterType="map" resultType="java.util.HashMap">
+		SELECT A.TXTYPE_TYPE1_NAME, A.TXTYPE_TYPE2_NAME, B.MSGCTL_MSGID, B.MSGCTL_MSG_NAME, B.MSGCTL_CBS_PROC,
+			CASE B.MSGCTL_CBS_PROC WHEN 'Y' THEN 'IMS' WHEN 'N' THEN 'FEP' ELSE '異常'END AS MSGCTL_CBS_PROC_NAME 
+		FROM TXTYPE AS A
+		LEFT JOIN MSGCTL AS B ON A.TXTYPE_TYPE1 = B.MSGCTL_TXTYPE1 AND A.TXTYPE_TYPE2 = B.MSGCTL_TXTYPE2
+		WHERE B.MSGCTL_MSGID NOT IN ('', 'FC2', 'FCA', 'LF', 'LF-2566','216000')
+		AND B.MSGCTL_CHANNEL IN ('ATM', 'FISC')
+		AND B.MSGCTL_CBS_PROC IN ('Y','N')
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.uiTxType1)">
+		AND A.TXTYPE_TYPE1 = #{argsMap.uiTxType1, jdbcType=VARCHAR}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.uiTxType2)">
+		AND A.TXTYPE_TYPE2 = #{argsMap.uiTxType2, jdbcType=VARCHAR}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.uiProcType)">
+		AND B.MSGCTL_CBS_PROC = #{argsMap.uiProcType, jdbcType=VARCHAR}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(argsMap.msgctlMsgid)">
+		AND B.MSGCTL_MSGID like CONCAT('%', CONCAT(UPPER(#{argsMap.msgctlMsgid}), '%'))
+		</if>
+		ORDER BY A.TXTYPE_TYPE1,A.TXTYPE_TYPE2,B.MSGCTL_MSGID
+	</select>
+</mapper>

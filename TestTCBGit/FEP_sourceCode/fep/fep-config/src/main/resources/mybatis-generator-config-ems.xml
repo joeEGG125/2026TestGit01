@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="application-mybatis.properties"/>
+    <context id="ems" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.ChangeHashCodeModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.AddDefaultValueToFieldModelPlugin">
+            <property name="defaultValueForStringFieldCannotBeNullInDb" value="StringUtils.SPACE"/>
+        </plugin>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.AddExtendsToBaseModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.ChangeConstructorModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.AddFieldsToXmlMethodToModelPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.AddAnnotationToMapperPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.ChangeDeleteByPrimaryKeyMethodMapperPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.RenameFeplog1ToFeplogMapperPlugin"/>
+        <plugin type="com.syscom.fep.mybatis.ems.generator.RemoveSchemaPluginAdapter"/>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="false"/>
+            <property name="addRemarkComments" value="false"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="${spring.datasource.emsdb.driver-class-name}"
+                        connectionURL="${spring.datasource.emsdb.jdbc-url}"
+                        userId="${spring.datasource.emsdb.username}"
+                        password="P@ssw0rd">
+        </jdbcConnection>
+        <javaTypeResolver type="com.syscom.fep.mybatis.ems.generator.MyJavaTypeResolverDefaultImpl">
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="com.syscom.fep.mybatis.ems.model" targetProject="src\main\java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="constructorBased" value="true"/>
+            <property name="trimStrings" value="false"/>
+            <property name="immutable" value="false"/>
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="com.syscom.fep.mybatis.ems.mapper.xml" targetProject="src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.syscom.fep.mybatis.ems.mapper" targetProject="src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+        <table schema="EMS" tableName="FEPLOG1" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+    </context>
+</generatorConfiguration>

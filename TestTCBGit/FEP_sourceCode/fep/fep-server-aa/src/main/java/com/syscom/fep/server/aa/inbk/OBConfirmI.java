@@ -1,0 +1,417 @@
+package com.syscom.fep.server.aa.inbk;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+
+
+import com.syscom.fep.mybatis.configuration.DataSourceConstant;
+import com.syscom.fep.mybatis.model.Feptxntcb;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.event.Level;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import com.syscom.fep.base.aa.FISCData;
+import com.syscom.fep.base.enums.FEPChannel;
+import com.syscom.fep.base.enums.FEPReturnCode;
+import com.syscom.fep.common.util.DbHelper;
+import com.syscom.fep.enchelper.ENCHelper;
+import com.syscom.fep.frmcommon.util.CalendarUtil;
+import com.syscom.fep.frmcommon.util.FormatUtil;
+import com.syscom.fep.frmcommon.util.SpringBeanFactoryUtil;
+import com.syscom.fep.mybatis.ext.mapper.ObtltxnExtMapper;
+import com.syscom.fep.mybatis.model.Obtltxn;
+import com.syscom.fep.server.common.FeptxnTxrust;
+import com.syscom.fep.server.common.TxHelper;
+import com.syscom.fep.server.common.business.cbsbusiness.ACBSAction;
+import com.syscom.fep.server.common.business.cbsbusiness.CBS;
+import com.syscom.fep.vo.constant.FEPTxnMessageFlow;
+import com.syscom.fep.vo.constant.NormalRC;
+import com.syscom.fep.vo.enums.FISCPCode;
+import com.syscom.fep.vo.enums.FISCReturnCode;
+import com.syscom.fep.vo.enums.IOReturnCode;
+
+/**
+ * 負責處理財金發動的跨境電子支付Confirm電文
+ * pcode=2555 跨境電子支付交易
+ * pcode=2556 跨境電子支付退款交易
+ *
+ * @author Richard    --> Ben
+ */
+public class OBConfirmI extends INBKAABase {
+    private Obtltxn record = new Obtltxn();
+    private FEPReturnCode _rtnCode = FEPReturnCode.Normal;
+    private boolean isExitProgram = false;
+
+    /**
+     * AA的建構式,在這邊初始化及設定其他相關變數
+     *
+     * @param txnData AA交易訊息物件(含Timeout, EJ, Channel, 上行電文及上行電文物件
+     * @throws Exception
+     */
+    public OBConfirmI(FISCData txnData) throws Exception {
+        super(txnData);
+    }
+
+    /**
+     * 程式進入點
+     */
+    @Override
+    public String processRequestData() throws Exception {
+        try {
+            //1.拆解並檢核財金電文(CheckHeader內含CheckBitMap)，若為Garble則組回覆訊息(SendGarbledMessage)，程式結束
+            _rtnCode = getFiscBusiness().checkHeader(getFiscCon(), true);
+            String sFiscRc = TxHelper.getRCFromErrorCode(_rtnCode, FEPChannel.FISC, getLogContext());
+            if("10".equals(sFiscRc.substring(0, 2))) {
+                /* 程式結束 FISC RC:Garbled Message */
+                getFiscBusiness().sendGarbledMessage(getFiscReq().getEj(), _rtnCode, getFiscCon());
+                return StringUtils.EMPTY;
+            }
+            getFiscBusiness().setFeptxn(getFiscBusiness().getOriginalFEPTxn());
+            getTxData().setFeptxn(getFiscBusiness().getFeptxn());
+            //FISCRC=6101(跨行可用餘額小於零，不得交易)，要寄Email需將值塞入LogContext.TroutActno
+            getLogContext().setAtmNo(getFiscBusiness().getFeptxn().getFeptxnAtmno());
+            getLogContext().setTrinActno(getFiscBusiness().getFeptxn().getFeptxnTrinActno());
+            getLogContext().setTrinBank(getFiscBusiness().getFeptxn().getFeptxnTrinBkno());
+            getLogContext().setTroutActno(getFiscBusiness().getFeptxn().getFeptxnTroutActno());
+            getLogContext().setTroutBank(getFiscBusiness().getFeptxn().getFeptxnTroutBkno());
+
+            // 2.   商業邏輯檢核＆電文Body檢核
+            if (_rtnCode == FEPReturnCode.Normal) {
+                _rtnCode = this.checkBusinessRule();
+                if (isExitProgram) {    //EXIT PROGRAM
+                    return StringUtils.EMPTY;
+                }
+            }
+
+            // 3.   UpdateTxData:更新交易記錄 (FEPTXN & OBTLTXN)
+            if (_rtnCode == FEPReturnCode.Normal) {
+                _rtnCode = this.updateTxData();
+                //程式結束
+                if(_rtnCode != FEPReturnCode.Normal){
+                    getLogContext().setMessage(_rtnCode.toString());
+                    getLogContext().setRemark("寫入檔案發生錯誤!!");
+                    logMessage(Level.INFO, getLogContext());
+                    return StringUtils.EMPTY;
+                }
+            }
+
+            //4.判斷是否沖轉跨行代收付ProcessAPTOT及主機帳務SendToCBS)
+            if (_rtnCode == FEPReturnCode.Normal) {
+                _rtnCode = this.processAPTOTSendToCBS();
+            }
+
+            //5. 	label_END_OF_FUNC:
+
+            //6.    更新交易記錄(FEPTXN) : if need
+            _rtnCode = this.updateFEPTXN();
+
+            //7.簡訊/EMAL/推播:
+            if (getFiscBusiness().getFeptxn() != null
+                    && NormalRC.FISC_ATM_OK.equals(getFiscBusiness().getFeptxn().getFeptxnRepRc())
+                    && NormalRC.FISC_ATM_OK.equals(getFiscBusiness().getFeptxn().getFeptxnConRc())) {
+                getFiscBusiness().sendToNotify();
+            }
+
+            //8.判斷是否需傳送2160電文給財金
+                /* 2025/7/1 修改 for 傳送 2160電文給財金 */
+                /* “A” : 成功或失敗均需傳送      */
+                /* “Y” : 僅成功交易傳送         */
+            if("4001".equals(getFiscBusiness().getFeptxn().getFeptxnConRc())){
+                if ("Y".equals(getFiscBusiness().getFeptxn().getFeptxnSend2160()) || "A".equals(getFiscBusiness().getFeptxn().getFeptxnSend2160())) {
+                    /* 寫入2160發送資料檔 */
+                    _rtnCode = insertINBK2160();
+                }
+            }else{
+                if ( "A".equals(getFiscBusiness().getFeptxn().getFeptxnSend2160())) {
+                    /* 寫入2160發送資料檔 */
+                    _rtnCode = insertINBK2160();
+                }
+            }
+
+//            //9.    FEP通知主機交易結束
+//            _rtnCode = this.SendToCBS();
+        } catch (Exception e) {
+            this._rtnCode = FEPReturnCode.ProgramException;
+            this.logContext.setProgramException(e);
+            this.logContext.setProgramName(StringUtils.join(ProgramName, ".processRequestData"));
+            sendEMS(this.logContext);
+        }finally {
+            logContext.setRemark(TxHelper.getMessageFromFEPReturnCode(_rtnCode,getLogContext()));
+            logMessage(Level.DEBUG, getLogContext());
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /**
+     * 2. 	CheckBusinessRule:商業邏輯檢核 & 電文Body檢核
+     *
+     * @return FEPReturnCode
+     */
+    private FEPReturnCode checkBusinessRule() {
+        FEPReturnCode rtnCode = FEPReturnCode.Normal;
+        ENCHelper encHelper = new ENCHelper(this.getFiscBusiness().getFeptxn(), this.getTxData());
+
+        try {
+            //(2.1) 	檢核 Mapping 欄位
+            /* 9/9 修改, 改抓 FEPTXN_REQ_DATETIME欄位 */
+            String dateTime =  (CalendarUtil.rocStringToADString(StringUtils.leftPad(this.getFiscCon().getTxnInitiateDateAndTime().substring(0,6), 7, "0"))) + this.getFiscCon().getTxnInitiateDateAndTime().substring(6,12);
+            if(!getFiscBusiness().getFeptxn().getFeptxnReqDatetime().equals(dateTime) ||
+                    (!getFiscBusiness().getFeptxn().getFeptxnDesBkno().equals(this.getFiscCon().getTxnDestinationInstituteId().substring(0,3))) ||
+                    (StringUtils.isNotBlank(this.getFiscCon().getATMNO()) && !getFiscBusiness().getFeptxn().getFeptxnAtmno().equals(this.getFiscCon().getATMNO()))
+                    ||(StringUtils.isNotBlank(this.getFiscCon().getTxAmt()) && !new DecimalFormat("0.00").format(getFiscBusiness().getFeptxn().getFeptxnTxAmtAct()).equals(new DecimalFormat("0.00").format(new BigDecimal(this.getFiscCon().getTxAmt()))))) {
+                return FEPReturnCode.OriginalMessageDataError;
+            }
+
+            //(2.2) 檢核交易是否未完成
+            if(!getFiscBusiness().getFeptxn().getFeptxnTxrust().equals("B")) {
+                /* 10/20 修改, 財金錯誤代碼改為 ‘0101’ */
+                isExitProgram = true;
+                return FEPReturnCode.MessageFormatError; //11011  **相關欄位檢查錯誤
+            }
+
+            /*9/22 修改 for CON 送2次 */
+            if (!getFiscBusiness().getFeptxn().getFeptxnTraceEjfno().equals(0)) {
+                rtnCode = FISCReturnCode.MessageFormatError; // **相關欄位檢查錯誤
+                getFiscBusiness().sendGarbledMessage(getFiscCon().getEj(), rtnCode, getFiscCon());
+                isExitProgram = true;
+                return rtnCode;  //11011  **相關欄位檢查錯誤
+            }
+
+            /* 2024/7/1 以FEPTXN的PK讀取FEPTXNTCB Data */
+            Feptxntcb tempFeptxntcb = getFiscBusiness().checkFeptxntcbData(getFiscBusiness().getFeptxn());
+            getFiscBusiness().setFeptxntcb(tempFeptxntcb);
+            getTxData().setFeptxntcb(tempFeptxntcb);
+            if(getFiscBusiness().getFeptxntcb() == null) {
+                return FEPReturnCode.MessageFormatError;
+            }
+
+            //(2.3) 檢核 MAC
+            getFiscBusiness().getFeptxn().setFeptxnConRc(getFiscCon().getResponseCode());
+            // '2017/11/17 Modify by Ruling for 收到財金確認電文時間寫入FEPTXN
+            getFiscBusiness().getFeptxn().setFeptxnConTxTime(FormatUtil.dateTimeFormat(Calendar.getInstance(), FormatUtil.FORMAT_TIME_HHMMSS_PLAIN));
+            rtnCode = encHelper.checkFiscMac(getFiscCon().getMessageType(), getFiscCon().getMAC());
+            this.logContext.setRemark("after checkFiscMac RC:" + rtnCode.toString());
+            logMessage(this.logContext);
+            if (rtnCode != FEPReturnCode.Normal) {
+                getFiscBusiness().getFeptxn().setFeptxnConRc(null);    //**訊息押碼錯誤
+                return FEPReturnCode.ENCCheckMACError;
+            }
+            return rtnCode;
+        } catch (Exception e) {
+            this.getLogContext().setProgramException(e);
+            this.getLogContext().setProgramName(StringUtils.join(ProgramName, ".checkBusinessRule"));
+            sendEMS(this.getLogContext());
+            return FEPReturnCode.ProgramException;
+        }
+    }
+
+    /**
+     * 3.UpdateTxData:更新交易記錄 (FEPTXN & OBTLTXN)
+     *
+     * @return FEPReturnCode
+     */
+    private FEPReturnCode updateTxData() {
+        FEPReturnCode rtnCode = FEPReturnCode.Normal;
+        PlatformTransactionManager transactionManager = SpringBeanFactoryUtil.getBean(DataSourceConstant.BEAN_NAME_TRANSACTION_MANAGER);
+        TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            this.getFiscBusiness().getFeptxn().setFeptxnAaComplete(DbHelper.toShort(false));
+            if (NormalRC.FISC_ATM_OK.equals(getFiscBusiness().getFeptxn().getFeptxnRepRc())) {
+                if (NormalRC.FISC_ATM_OK.equals(getFiscBusiness().getFeptxn().getFeptxnConRc())) {
+                    this.getFiscBusiness().getFeptxn().setFeptxnTxrust(FeptxnTxrust.Successed); // A 成功
+                } else {
+                    this.getFiscBusiness().getFeptxn().setFeptxnTxrust(FeptxnTxrust.Reverse); // C Accept-Reverse
+                }
+                this.getFiscBusiness().getFeptxn().setFeptxnPending((short) 2);
+            }
+            getFiscBusiness().getFeptxn().setFeptxnMsgflow(FEPTxnMessageFlow.FISC_Confirm); // F3
+            getFiscBusiness().getFeptxn().setFeptxnTraceEjfno(getTxData().getEj());
+
+            /* 2025/5/9 修改 for  CON電文送2次*/
+//            getFiscBusiness().getFeptxn().setFeptxnConRc(getFiscCon().getResponseCode());
+            int i = this.feptxnDao.updateConfirmByPrimaryKey(getFiscBusiness().getFeptxn());
+            if (i <= 0) {
+                getLogContext().setProgramName(ProgramName + ".updateTxData");
+                getLogContext().setRemark("收到CON電文無法更新FEPTXN，EJFNO:"+getFiscBusiness().getFeptxn().getFeptxnEjfno());
+                sendEMS(getLogContext());
+                return IOReturnCode.FEPTXNUpdateError;
+            }
+            //須讀取 OBTLTXN
+            ObtltxnExtMapper obtltxnExtMapper = SpringBeanFactoryUtil.getBean(ObtltxnExtMapper.class);
+            record = obtltxnExtMapper.selectByPrimaryKey(getFiscBusiness().getFeptxn().getFeptxnTxDate(), getFiscBusiness().getFeptxn().getFeptxnEjfno());
+            if (record == null) {
+                // 找不到OBTLTXN
+                this.getLogContext().setRemark(StringUtils.join(
+                        "updateTxData-查詢OBTLTXN失敗, OBTLTXN_TX_DATE=", getFiscBusiness().getFeptxn().getFeptxnTxDate(),
+                        ", OBTLTXN_EJFNO=", getFiscBusiness().getFeptxn().getFeptxnEjfno()));
+                logMessage(Level.INFO, this.getLogContext());
+                rtnCode = IOReturnCode.QueryNoData;
+                return rtnCode;
+            } else {
+                // 有找到OBTLTXN
+                record.setObtltxnConRc(getFiscBusiness().getFeptxn().getFeptxnConRc());
+                record.setObtltxnTxrust(getFiscBusiness().getFeptxn().getFeptxnTxrust());
+                int iRes = obtltxnExtMapper.updateByPrimaryKeySelective(record);
+                if (iRes <= 0) {
+                    this.getLogContext().setRemark(StringUtils.join(
+                            "updateTxData-更新OBTLTXN失敗, OBTLTXN_TX_DATE=", getFiscBusiness().getFeptxn().getFeptxnTxDate(),
+                            ", OBTLTXN_EJFNO=", getFiscBusiness().getFeptxn().getFeptxnEjfno()));
+                    logMessage(Level.INFO, this.getLogContext());
+                    rtnCode = IOReturnCode.UpdateFail;
+                    return rtnCode;
+                }
+            }
+
+            /* 2024/7/2 點掉 */
+//            // 累計退費金額
+//            if (FISCPCode.PCode2556.getValueStr().equals(this.getFiscBusiness().getFeptxn().getFeptxnPcode())
+//                    && NormalRC.FISC_ATM_OK.equals(this.getFiscBusiness().getFeptxn().getFeptxnRepRc())
+//                    && NormalRC.FISC_ATM_OK.equals(this.getFiscBusiness().getFeptxn().getFeptxnConRc())) {
+//                Obtltxn obtltxn = new Obtltxn();
+//                obtltxn.setObtltxnTbsdyFisc(this.getFiscBusiness().getFeptxn().getFeptxnDueDate());
+//                obtltxn.setObtltxnBkno(this.getFiscBusiness().getFeptxn().getFeptxnBkno());
+//                obtltxn.setObtltxnStan(this.getFiscBusiness().getFeptxn().getFeptxnOriStan());
+//                obtltxn.setObtltxnTotRetAmt(record.getObtltxnTotRetAmt().add(record.getObtltxnTotTwdAmt())); // 累加寫在UpdateByStan用SQL的"+="
+//                int iRes = obtltxnExtMapper.updateByStan(obtltxn);
+//                if (iRes <= 0) {
+//                    this.getLogContext().setRemark("updateTxData-更新oriOBTLTXN的累計退貨金額失敗");
+//                    logMessage(Level.INFO, this.getLogContext());
+//                    rtnCode = IOReturnCode.UpdateFail;
+//                    return rtnCode;
+//                }
+//            }
+            transactionManager.commit(txStatus);
+            return FEPReturnCode.Normal;
+        } catch (Exception ex) {
+            // 若失敗則復原
+            this.logContext.setProgramException(ex);
+            this.logContext.setProgramName(StringUtils.join(ProgramName, ".updateTxData"));
+            sendEMS(this.logContext);
+            return FEPReturnCode.ProgramException;
+        }finally {
+            if ( !txStatus.isCompleted()) {
+                transactionManager.rollback(txStatus);
+            }
+        }
+    }
+
+    /**
+     * 4.判斷是否沖轉跨行代收付ProcessAPTOT及主機帳務SendToCBS/ASC
+     *
+     * @return FEPReturnCode
+     * @throws Exception sendToCBSException
+     */
+    private FEPReturnCode processAPTOTSendToCBS() throws Exception {
+        FEPReturnCode rtnCode = FEPReturnCode.Normal;
+        if (NormalRC.FISC_ATM_OK.equals(this.getFiscBusiness().getFeptxn().getFeptxnRepRc())) {
+            // +REP
+            if (!NormalRC.FISC_ATM_OK.equals(this.getFiscBusiness().getFeptxn().getFeptxnConRc())) {
+                // -CON
+                //沖轉跨行代收付
+                rtnCode = this.getFiscBusiness().processOBAptot(true);
+                this.getLogContext().setProgramName(ProgramName);
+                
+                /* 2025/1/24 應合庫要求, 2555/2556 CON(-)一律送沖正 */
+                // -CON 沖轉主機帳務
+                String TxType = "2";        //上CBS沖正
+                String AA = getTxData().getMsgCtl().getMsgctlTwcbstxid();
+                this.getTxData().setObtlTxn(record);
+                ACBSAction hostAA = (ACBSAction) this.getInstanceObject(AA, getTxData());
+                rtnCode = new CBS(hostAA, getTxData()).sendToCBS(TxType);
+
+                //由GetMessageFromFEPReturnCode執行 SendEMS
+                TxHelper.getMessageFromFEPReturnCode(getFiscBusiness().getFeptxn().getFeptxnConRc(), FEPChannel.FISC, getLogContext());
+            }else{ // 2025/8/24 修改
+                /* +CON 送交易結束通知(END)給主機 */
+                rtnCode = this.SendToCBSEnd();
+            }
+        }
+        return rtnCode;
+    }
+
+
+    /**
+     * 6. 	更新交易記錄(FEPTXN) : if need
+     *
+     * @return FEPReturnCode
+     * @throws Exception updateFEPTXNException
+     */
+    private FEPReturnCode updateFEPTXN() {
+        FEPReturnCode rtnCode = FEPReturnCode.Normal;
+        if (getFiscBusiness().getFeptxn().getFeptxnAaRc() == FEPReturnCode.Normal.getValue()) {
+            if (_rtnCode != FEPReturnCode.Normal) {
+                getFiscBusiness().getFeptxn().setFeptxnAaRc(_rtnCode.getValue());
+                }
+        }
+        getFiscBusiness().getFeptxn().setFeptxnAaComplete(DbHelper.toShort(true));
+        /* 2025/10/9 修改 for 原存CON交易主機處理異常 */
+        if ( "PEND".equals(getFiscBusiness().getFeptxn().getFeptxnCbsRc()) ) {
+            /* 2025/10/7 修改 for 合庫要求, FEP重發pending */
+            getFiscBusiness().getFeptxn().setFeptxnChannelEjfno(String.valueOf(getFiscBusiness().getFeptxn().getFeptxnTraceEjfno()));
+            getFiscBusiness().getFeptxn().setFeptxnPending( (short) 1 );
+            getFiscBusiness().getFeptxn().setFeptxnMsgflow( FEPTxnMessageFlow.FISC_Response);
+            getFiscBusiness().getFeptxn().setFeptxnTxrust("B");
+            getFiscBusiness().getFeptxn().setFeptxnTraceEjfno(0);
+        }
+
+        rtnCode = getFiscBusiness().updateTxData();
+        return rtnCode;
+    }
+
+    /**
+     * 8. 	判斷是否需傳送2160電文給財金
+     * @return
+     */
+    private FEPReturnCode insertINBK2160() {
+        FEPReturnCode rtnCode = FEPReturnCode.Normal;
+        try {
+            //檢核Header
+            rtnCode = getFiscBusiness().prepareInbk2160();
+            if(rtnCode != FEPReturnCode.Normal){
+                getLogContext().setMessage(rtnCode.toString());
+                getLogContext().setProgramName(ProgramName + ".insertINBK2160");
+                getLogContext().setRemark("寫入INBK2160發生錯誤!!");
+                logMessage(getLogContext());
+                return FEPReturnCode.INBK2160InsertError;
+            }else{
+                return FEPReturnCode.Normal;
+            }
+        } catch (Exception ex) {
+            getLogContext().setProgramException(ex);
+            getLogContext().setProgramName(ProgramName + ".insertINBK2160");
+            sendEMS(getLogContext());
+            return FEPReturnCode.ProgramException;
+        }
+    }
+
+    /**
+     * 9.   FEP通知主機交易結束
+     *
+     * @return FEPReturnCode
+     * @throws Exception sendToCBSException
+     */
+    private FEPReturnCode SendToCBSEnd() throws Exception {
+        FEPReturnCode rtnCode = FEPReturnCode.Normal;
+        /*沖轉主機帳務*/
+        String AATxTYPE = "";
+        String AATxRs = "N";
+        try {
+            String AA = getTxData().getMsgCtl().getMsgctlTwcbstxid1();
+            ACBSAction hostAA = (ACBSAction) this.getInstanceObject(AA, this.getTxData());
+            rtnCode = new CBS(hostAA, this.getTxData()).sendToCBS(AATxTYPE,AATxRs);
+            if(rtnCode != FEPReturnCode.Normal){
+                getLogContext().setMessage(rtnCode.toString());
+                getLogContext().setRemark("通知主機交易結束時發生錯誤!!");
+                sendEMS(getLogContext());
+            }
+            return rtnCode;
+        } catch (Exception ex) {
+            getLogContext().setProgramException(ex);
+            getLogContext().setProgramName(ProgramName + ".SendToCBSEnd");
+            sendEMS(getLogContext());
+            return FEPReturnCode.ProgramException;
+        }
+    }
+}

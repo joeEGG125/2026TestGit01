@@ -1,0 +1,30 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+	<id>${assembly-bash}</id>
+	<formats>
+		<format>${assembly-format-tar-gz}</format>
+	</formats>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>${assembly-fep-app}</baseDirectory>
+	<!-- <fileSets>
+		<fileSet>
+			<directory>${assembly-config-path}</directory>
+			<outputDirectory>${assembly-bin}</outputDirectory>
+			<includes>
+				<include>fep-function.sh</include>
+			</includes>
+			<fileMode>${assembly-file-mode}</fileMode>
+			<lineEnding>${assembly-lineEnding}</lineEnding>
+			<filtered>true</filtered>
+		</fileSet>
+	</fileSets> -->
+	<files>
+		<file>
+			<source>${assembly-config-path}/fep-function.sh</source>
+			<outputDirectory>${assembly-bin}</outputDirectory>
+			<destName>fep_function.sh</destName>
+			<fileMode>${assembly-file-mode}</fileMode>
+			<lineEnding>${assembly-lineEnding}</lineEnding>
+			<filtered>true</filtered>
+		</file>
+	</files>
+</assembly>

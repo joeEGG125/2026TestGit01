@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.RmnoctlExtMapper">
+    <update id="updateRMNOCTLforBatchDaily">
+        UPDATE RMNOCTL
+        SET RMNOCTL_NO = CASE WHEN RMNOCTL_CATEGORY IN ('01','02','03','04') THEN 0
+                              WHEN RMNOCTL_CATEGORY = '05' THEN 9000000
+                              WHEN RMNOCTL_CATEGORY = '06' THEN 8000000
+                              WHEN RMNOCTL_CATEGORY = '07' THEN 9000000
+            END
+    </update>
+</mapper>

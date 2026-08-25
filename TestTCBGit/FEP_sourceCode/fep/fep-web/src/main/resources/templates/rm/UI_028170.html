@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+	<form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028170/queryClick}" method="post">
+		<div class="card card-primary card-outline" >
+			<div class="card-header">
+				<h5 class="card-title">查詢條件</h5>
+			</div>
+			<div class="card-body">
+				<table border="0" cellspacing="0" class="table-condition">
+					<tr>
+						<td class="condition-label">
+							<label for="kind" class="col-form-label">查詢類別</label>
+						</td>
+						<td class="condition-input">
+							<select class="form-control" th:field="*{kind}">
+								<option value="1" selected="selected">依分行別查詢發訊狀況</option>
+								<option value="2">依分行別查詢收訊狀況</option>
+								<option value="3">查詢全行之發訊狀況</option>
+								<option value="4">查詢全行之收訊狀況</option>
+							</select>
+						</td>
+						<td class="condition-label">
+							<label for="brno" class="col-form-label">分行別</label>
+						</td>
+						<td class="condition-input">
+							<input class="form-control" type="text" th:field="*{brno}" maxlength="3" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</form>
+</div>
+<div layout:fragment="panel-button">
+	<button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+	<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+	<div class="card card-primary card-outline">
+		<div class="card-header">
+			<h5 class="card-title">查詢結果</h5>
+		</div>
+		<div class="card-body">
+			<div class="card-body table-responsive p-0">
+				<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap" th:if="${pageData.list.size() > 0}">
+					<thead>
+					<tr>
+						<th><b>匯款日期</b></th>
+						<th><b>匯款時間</b></th>
+						<th><b>發訊行</b></th>
+						<th><b>收訊行</b></th>
+						<th><b>中文訊息</b></th>
+						<th><b>英文訊息</b></th>
+						<th><b>狀態</b></th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="data : ${pageData.list}">
+						<td align="right" th:text="${data.get('SENDDATE')}" />
+						<td align="right" th:text="${data.get('SENDTIME')}" />
+						<td align="left" th:text="${data.get('SENDER_BANK')}" />
+						<td align="left" th:text="${data.get('RECEIVER_BANK')}" />
+						<td align="left" th:text="${data.get('CHNMEMO')}" />
+						<td align="left" th:text="${data.get('ENGMEMO')}" />
+						<td align="left" th:text="${data.get('STAT')}" />
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div layout:fragment="panel-script">
+	<script type="text/javascript" th:src="@{/js/rm/UI028170.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.AtmboxlogExtMapper">
+	<insert id="insert" parameterType="com.syscom.fep.mybatis.model.Atmboxlog">
+		INSERT INTO ATMBOXLOG (ATMBOXLOG_TX_DATE, ATMBOXLOG_EJFNO, ATMBOXLOG_ATMNO,
+		ATMBOXLOG_RWT_SEQNO, ATMBOXLOG_BOX_CNT, ATMBOXLOG_BOX_AREA,
+		UPDATE_USERID,
+		UPDATE_TIME)
+		VALUES (#{atmboxlogTxDate,jdbcType=CHAR}, #{atmboxlogEjfno,jdbcType=INTEGER}, #{atmboxlogAtmno,jdbcType=CHAR},
+		#{atmboxlogRwtSeqno,jdbcType=INTEGER}, #{atmboxlogBoxCnt,jdbcType=DECIMAL},
+		SUBSTR(#{atmboxlogBoxArea,jdbcType=VARCHAR}, 1, 435),
+		#{updateUserid,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.syscom.fep.mybatis.model.Atmboxlog">
+		INSERT INTO ATMBOXLOG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="atmboxlogTxDate != null">
+				ATMBOXLOG_TX_DATE,
+			</if>
+			<if test="atmboxlogEjfno != null">
+				ATMBOXLOG_EJFNO,
+			</if>
+			<if test="atmboxlogAtmno != null">
+				ATMBOXLOG_ATMNO,
+			</if>
+			<if test="atmboxlogRwtSeqno != null">
+				ATMBOXLOG_RWT_SEQNO,
+			</if>
+			<if test="atmboxlogBoxCnt != null">
+				ATMBOXLOG_BOX_CNT,
+			</if>
+			<if test="atmboxlogBoxArea != null">
+				ATMBOXLOG_BOX_AREA,
+			</if>
+			<if test="updateUserid != null">
+				UPDATE_USERID,
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="atmboxlogTxDate != null">
+				#{atmboxlogTxDate,jdbcType=CHAR},
+			</if>
+			<if test="atmboxlogEjfno != null">
+				#{atmboxlogEjfno,jdbcType=INTEGER},
+			</if>
+			<if test="atmboxlogAtmno != null">
+				#{atmboxlogAtmno,jdbcType=CHAR},
+			</if>
+			<if test="atmboxlogRwtSeqno != null">
+				#{atmboxlogRwtSeqno,jdbcType=INTEGER},
+			</if>
+			<if test="atmboxlogBoxCnt != null">
+				#{atmboxlogBoxCnt,jdbcType=DECIMAL},
+			</if>
+			<if test="atmboxlogBoxArea != null">
+				SUBSTR(#{atmboxlogBoxArea,jdbcType=VARCHAR}, 1, 435),
+			</if>
+			<if test="updateUserid != null">
+				#{updateUserid,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.syscom.fep.mybatis.model.Atmboxlog">
+		UPDATE ATMBOXLOG
+		<set>
+			<if test="atmboxlogAtmno != null">
+				ATMBOXLOG_ATMNO = #{atmboxlogAtmno,jdbcType=CHAR},
+			</if>
+			<if test="atmboxlogRwtSeqno != null">
+				ATMBOXLOG_RWT_SEQNO = #{atmboxlogRwtSeqno,jdbcType=INTEGER},
+			</if>
+			<if test="atmboxlogBoxCnt != null">
+				ATMBOXLOG_BOX_CNT = #{atmboxlogBoxCnt,jdbcType=DECIMAL},
+			</if>
+			<if test="atmboxlogBoxArea != null">
+				ATMBOXLOG_BOX_AREA = SUBSTR(#{atmboxlogBoxArea,jdbcType=VARCHAR}, 1, 435),
+			</if>
+			<if test="updateUserid != null">
+				UPDATE_USERID = #{updateUserid,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		WHERE ATMBOXLOG_TX_DATE = #{atmboxlogTxDate,jdbcType=CHAR}
+		AND ATMBOXLOG_EJFNO = #{atmboxlogEjfno,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.syscom.fep.mybatis.model.Atmboxlog">
+		UPDATE ATMBOXLOG
+		SET ATMBOXLOG_ATMNO = #{atmboxlogAtmno,jdbcType=CHAR},
+		ATMBOXLOG_RWT_SEQNO = #{atmboxlogRwtSeqno,jdbcType=INTEGER},
+		ATMBOXLOG_BOX_CNT = #{atmboxlogBoxCnt,jdbcType=DECIMAL},
+		ATMBOXLOG_BOX_AREA = SUBSTR(#{atmboxlogBoxArea,jdbcType=VARCHAR}, 1, 435),
+		UPDATE_USERID = #{updateUserid,jdbcType=INTEGER},
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE ATMBOXLOG_TX_DATE = #{atmboxlogTxDate,jdbcType=CHAR}
+		AND ATMBOXLOG_EJFNO = #{atmboxlogEjfno,jdbcType=INTEGER}
+	</update>
+</mapper>

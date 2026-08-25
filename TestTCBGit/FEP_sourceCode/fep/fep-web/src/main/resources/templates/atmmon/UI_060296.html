@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{home}">
+
+<head>
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+<div layout:fragment="panel-grid">
+    <div class="card card-primary card-outline card-tabs">
+        <div class="card-header p-0 pt-1 border-bottom-0">
+            <ul class="nav nav-tabs" role="tablist">
+                <li fep:nav-item="tabId1" nav-item-selected="true" nav-item-caption="基本資料"></li>
+                <li fep:nav-item="tabId2" nav-item-selected="false" nav-item-caption="財金系統狀態"></li>
+                <li fep:nav-item="tabId3" nav-item-selected="false" nav-item-caption="本行系統狀態"></li>
+            </ul>
+        </div>
+        <form th:object="${form}">
+            <div class="card-body p-0">
+                <div class="tab-content">
+                    <div fep:tab-pane="tabId1" tab-pane-selected="true" tab-pane-class="panel-detail">
+                        <table border="0" cellspacing="0" class="table-condition">
+                            <tr>
+                                <td class="condition-label" style="width:380px">
+                                    <label class="col-form-label">銀行代號<font color="red">*</font>:</label>
+                                </td>
+                                <td class="condition-input" style="width:200px">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatHbkno}"/>
+                                </td>
+                                <td class="condition-label" style="width:380px">
+                                    <label class="col-form-label">財金公司銀行代號:</label>
+                                </td>
+                                <td class="condition-input" style="width:200px">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatFbkno}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">信用卡虛擬代號:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatScbkno}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">財金上營業日:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatLbsdyFisc}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">財金本營業日:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatTbsdyFisc}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">財金下營業日:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatNbsdyFisc}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">OPC FROM FISC 同步基碼:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatFopcsync}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">OPC TO FISC 同步基碼:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatTopcsync}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">CD/ATM FROM FISC 同步基碼:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatFcdsync}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">CD/ATM TO FISC 同步基碼:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatTcdsync}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">通匯 FROM FISC 同步基碼:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatFrmsync}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">通匯 TO FISC 同步基碼:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatTrmsync}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">PIN PROTECTON FROM FISC:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatFppsync}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">PIN PROTECTION TO FISC:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatTppsync}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">TRIPLE DES PIN PROTECTION KEY FROM FISC:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatF3dessync}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">TRIPLE DES PIN PROTECTION KEY TO FISC:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatT3dessync}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">OPC KEY STATUS:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatOpckeyst}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">ATM KEY STATUS:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatAtmkeyst}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">RM KEY STATUS:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatRmkeyst}"/>
+                                </td>
+                                <td class="condition-label">
+                                    <label class="col-form-label">PP KEY STATUS:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstatPpkeyst}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-label">
+                                    <label class="col-form-label">3DES KEY STATUS:</label>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="form-control" type="text" disabled="true"
+                                           th:field="*{sysstat3deskeyst}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div fep:tab-pane="tabId2" tab-pane-selected="false" tab-pane-class="panel-detail">
+                        <table border="1" cellspacing="0" class="table-condition">
+                            <tr>
+                                <td class="condition-label" style="width:300px">
+                                </td>
+                                <td class="condition-input" style="width:400px">
+                                    <label class="col-form-label">財金</label>
+                                </td>
+                                <td class="condition-input" style="width:400px">
+                                    <label class="col-form-label">本行</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">系統狀態</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatSoct}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatMboct}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">1000 通匯各類子系統</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct1000}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact1000txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact1000}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">1100 匯款類子系統</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct1100}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact1100txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact1100}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">1200 代收款項類子系統</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct1200}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact1200txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact1200}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">1300 代繳代發類子系統</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct1300}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact1300txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact1300}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">1400 一般通信類子系統</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct1400}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact1400txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact1400}"/>
+                                </td>
+                            </tr>
+                            <!--								<tr>-->
+                            <!--									<td class="condition-input">-->
+                            <!--										<label class="col-form-label">1600 外幣通匯各類子系統</label>-->
+                            <!--									</td>-->
+                            <!--									<td class="condition-input">-->
+                            <!--										<label class="col-form-label" th:text="*{fcrmstatAoct1600}" />-->
+                            <!--									</td>-->
+                            <!--									<td class="condition-input">-->
+                            <!--										<input class="col-form-label" style="width:30px" type="text" disabled="true"-->
+                            <!--											th:field="*{fcrmstatMbact1600txt}" />- -->
+                            <!--										<label class="col-form-label" th:text="*{fcrmstatMbact1600}" />-->
+                            <!--									</td>-->
+                            <!--								</tr>-->
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2000 CD/ATM 共用系統提款作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2000}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2000txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2000}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2200 CD/ATM 共用系統轉帳作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2200}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2200txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2200}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2500 晶片卡共用系統</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2200}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2200txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2200}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2510 晶片卡提款作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2510}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2510txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2510}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2520 晶片卡轉帳作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2520}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2520txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2520}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2530 晶片卡繳款作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2530}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2530txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2530}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2540 晶片卡消費扣款作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2540}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2540txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2540}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2550 晶片卡預先授權作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2550}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2550txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2550}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2560 晶片卡全國繳費作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2560}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2560txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2560}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2570 晶片卡跨國提款作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2570}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2570txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2570}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">2700 資金調撥作業</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct2700}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact2700txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact2700}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">7100 轉帳退款類交易</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct7100}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact7100txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact7100}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="condition-input">
+                                    <label class="col-form-label">7300 FXML 跨行付款交易</label>
+                                </td>
+                                <td class="condition-input">
+                                    <label class="col-form-label" th:text="*{sysstatAoct7300}"/>
+                                </td>
+                                <td class="condition-input">
+                                    <input class="col-form-label" style="width:30px" type="text" disabled="true"
+                                           th:field="*{sysstatMbact7300txt}"/>-
+                                    <label class="col-form-label" th:text="*{sysstatMbact7300}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div fep:tab-pane="tabId3" tab-pane-selected="false" tab-pane-class="panel-detail">
+
+                        ATM
+                        <table class="table-zoo">
+                            <tr>
+                                <td valign="top" style="width: 100%">
+                                    <table class="table-zoo-tt">
+                                        <tr>
+                                            <td class="table-zoo-tt-td">
+                                                <b><span class="table-s">交易控制</span></b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="table-d">
+                                                    <table class="table-zoo-tt-tt">
+                                                        <tr>
+                                                            <td>
+                                                                <button type="button" class="btn btn-sm btn-primary" id="btnLevel1">開啟交易類別</button>
+                                                                <button type="button" class="btn btn-sm btn-primary" id="btnLevel2">開啟業務分類</button>
+                                                                <button type="button" class="btn btn-sm btn-primary" id="btnLevel3">開啟交易控制</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="content_wrap">
+                                                                    <div class="ztreeDemoBackground left">
+                                                                        <ul id="msgctlTree" class="ztree"></ul>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/atmmon/UI060296.js}"></script>
+</div>
+</body>
+
+
+</html>

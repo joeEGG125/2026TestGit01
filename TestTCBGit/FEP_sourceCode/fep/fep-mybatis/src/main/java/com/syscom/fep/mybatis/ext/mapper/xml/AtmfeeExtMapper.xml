@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.AtmfeeExtMapper">
+    <select id="selectAllAtmfee" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.AtmfeeMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.AtmfeeMapper.Base_Column_List"/>
+        from ATMFEE
+    </select>
+    <select id="selectByPKLike" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.AtmfeeMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.AtmfeeMapper.Base_Column_List"/>
+        from ATMFEE
+        <where>
+            <if test="tbxTX_MM != null">
+                and ATMFEE_TX_MM = #{tbxTX_MM,jdbcType=CHAR}
+            </if>
+            <if test="ddlSEQ_NO != null">
+                and ATMFEE_SEQ_NO = #{ddlSEQ_NO,jdbcType=CHAR}
+            </if>
+            <if test="fiscFlag != null">
+                and ATMFEE_FISC_FLAG = #{fiscFlag,jdbcType=CHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

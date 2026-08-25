@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.JobsExtMapper">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="jobsJobid" parameterType="com.syscom.fep.mybatis.model.Jobtask">
+		insert into JOBS (JOBS_NAME, JOBS_BATCHID,
+		JOBS_DESCRIPTION, JOBS_SEQ, JOBS_STARTTASKID,
+		JOBS_DELAY, JOBS_CONTINUEONFAIL)
+		values (#{jobsName,jdbcType=VARCHAR}, #{jobsBatchid,jdbcType=INTEGER},
+		#{jobsDescription,jdbcType=VARCHAR}, #{jobsSeq,jdbcType=INTEGER}, #{jobsStarttaskid,jdbcType=INTEGER},
+		#{jobsDelay,jdbcType=INTEGER}, #{jobsContinueonfail,jdbcType=SMALLINT})
+	</insert>
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="jobsJobid" parameterType="com.syscom.fep.mybatis.model.Jobtask">
+		insert into JOBS
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="jobsName != null">
+				JOBS_NAME,
+			</if>
+			<if test="jobsBatchid != null">
+				JOBS_BATCHID,
+			</if>
+			<if test="jobsDescription != null">
+				JOBS_DESCRIPTION,
+			</if>
+			<if test="jobsSeq != null">
+				JOBS_SEQ,
+			</if>
+			<if test="jobsStarttaskid != null">
+				JOBS_STARTTASKID,
+			</if>
+			<if test="jobsDelay != null">
+				JOBS_DELAY,
+			</if>
+			<if test="jobsContinueonfail != null">
+				JOBS_CONTINUEONFAIL,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="jobsName != null">
+				#{jobsName,jdbcType=VARCHAR},
+			</if>
+			<if test="jobsBatchid != null">
+				#{jobsBatchid,jdbcType=INTEGER},
+			</if>
+			<if test="jobsDescription != null">
+				#{jobsDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="jobsSeq != null">
+				#{jobsSeq,jdbcType=INTEGER},
+			</if>
+			<if test="jobsStarttaskid != null">
+				#{jobsStarttaskid,jdbcType=INTEGER},
+			</if>
+			<if test="jobsDelay != null">
+				#{jobsDelay,jdbcType=INTEGER},
+			</if>
+			<if test="jobsContinueonfail != null">
+				#{jobsContinueonfail,jdbcType=SMALLINT},
+			</if>
+		</trim>
+	</insert>
+	<delete id="deleteByBatchId" parameterType="java.lang.Integer">
+		DELETE FROM JOBS
+		WHERE JOBS_BATCHID = #{jobsBatchid,jdbcType=DECIMAL}
+	</delete>
+	<select id="getJobsCountByBatchId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT Count(*) FROM JOBS
+		WHERE JOBS_BATCHID = #{jobsBatchid,jdbcType=DECIMAL}
+	</select>
+	<select id="getDataTableByPrimaryKey" parameterType="java.lang.Integer" resultMap="com.syscom.fep.mybatis.mapper.JobsMapper.BaseResultMap">
+		SELECT * FROM JOBS
+		WHERE JOBS_JOBID = #{jobsJobid,jdbcType=DECIMAL}
+	</select>
+	<select id="getJobsByBatchId" parameterType="java.lang.Integer" resultMap="com.syscom.fep.mybatis.mapper.JobsMapper.BaseResultMap">
+		SELECT * FROM JOBS
+		WHERE JOBS_BATCHID = #{jobsBatchid,jdbcType=DECIMAL}
+		ORDER BY JOBS_SEQ
+	</select>
+</mapper>

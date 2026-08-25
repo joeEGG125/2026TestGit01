@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FEP_OPC | UI019050</title>
+</head>
+<body>
+
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_019050/doInquiryDetail}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label" for="fileid">
+                    <label class="col-form-label">傳送檔名</label>
+                </td>
+                <td class="condition-input">
+                	<select class="form-control" id="fileid" style="font-size: 12px" th:field="*{fileid}">
+                       <option value="AMPAYFL" selected>AMPAYFL</option>
+                       <option value="PUIPO">PUIPO</option>
+                       <option value="PUJPMP">PUJPMP</option>
+                   </select>
+                </td>
+               <td class="condition-label" for="txdate">
+                    <label for="txdate" class="col-form-label">扣帳日期</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" id="txdate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#txdate" th:field="*{txdate}" />
+                        <div class="input-group-append" data-target="#txdate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" th:if="${pageData != null}">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>批號</b></th>
+                <th><b>傳送檔名</b></th>
+                <th><b>放行分行</b></th>
+                <th><b>收檔時間</b></th>
+                <th><b>回傅時間</b></th>
+                <th><b>總筆數</b></th>
+                <th><b>總金額</b></th>
+                <th><b>成功筆數</b></th>
+                <th><b>成功金額</b></th>
+                <th><b>失敗筆數</b></th>
+                <th><b>失敗金額</b></th>
+                <th><b>檢核結果</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <a class="a-inquiry" href="#" th:text="${data.npsbatchBatchNo}"
+                            th:value="${
+										'{' + '&quot;fileid&quot;:&quot;'+data.npsbatchFileId + '&quot;' + ','
+											+ '&quot;txdate&quot;:&quot;'+data.npsbatchTxDate + '&quot;'  + ','
+											+ '&quot;npsbatchBatchNo&quot;:&quot;'+data.npsbatchBatchNo + '&quot;'
+										+ '}'
+										}"
+                    ></a>
+                </td>
+                <td align="center" th:text="${data.npsbatchFileId}" />
+                <td align="center" th:text="${data.npsbatchBranch}" />
+                <td align="center" th:text="${#dates.format(data.npsbatchRcvTime,'yyyy/MM/dd a hh:mm:ss')}" />
+                <td align="center" th:text="${#dates.format(data.npsbatchRspTime,'yyyy/MM/dd a hh:mm:ss')}" />
+                <td align="center" th:text="${data.npsbatchTotCnt}" />
+                <td align="right" th:text="${#numbers.formatDecimal(data.npsbatchTotAmt,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.npsbatchOkCnt}" />
+                <td align="right" th:text="${#numbers.formatDecimal(data.npsbatchOkAmt,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.npsbatchFailCnt}" />
+                <td align="right" th:text="${#numbers.formatDecimal(data.npsbatchFailAmt,1,'COMMA',2,'POINT')}"/>
+                <td align="center" th:text="${data.npsbatchResult}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/inbk/UI019050.js}"></script>
+</div>
+</div>
+</body>
+</html>

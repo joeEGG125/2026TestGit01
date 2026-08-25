@@ -1,0 +1,7 @@
+package com.syscom.fep.gateway.netty.cbs.server;
+
+import com.syscom.fep.gateway.netty.NettyTransmissionChannelInboundHandlerAdapterServer;
+import io.netty.channel.ChannelHandler.Sharable;
+
+@Sharable
+public class CBSGatewayServerChannelInboundHandlerAdapter extends NettyTransmissionChannelInboundHandlerAdapterServer<CBSGatewayServerConfiguration, CBSGatewayServerProcessRequestManager, CBSGatewayServerProcessRequest> {}

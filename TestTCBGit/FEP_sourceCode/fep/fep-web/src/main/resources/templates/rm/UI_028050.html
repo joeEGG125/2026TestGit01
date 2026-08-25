@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="panel-condition">
+        <div class="card card-primary card-outline" >
+            <div class="card-header">
+                <h5 class="card-title">調整選項</h5>
+            </div>
+            <div class="card-body">
+                <form id="form-detailed">
+                    <table border="0" cellspacing="0" class="table-condition">
+                        <tr>
+                            <td class="condition-label">
+                                <label for="kind" class="col-form-label">調整項目</label>
+                            </td>
+                            <td class="condition-input">
+                                <select class="form-control" id="kind">
+                                    <option value="0" selected="selected"></option>
+                                    <option value="1">匯出</option>
+                                    <option value="2">匯入</option>
+                                </select>
+                            </td>
+                            <td class="condition-label">
+                                <label for="bkno" class="col-form-label">對方總行代號</label>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="bkno" v-model="bkno" name="bkno" maxlength="3" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="panel-button">
+        <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+        <button type="button" class="btn btn-primary" id="btnConfirm">執行</button>
+        <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+    </div>
+    <div layout:fragment="panel-summary" class="panel-hidden">
+    </div>
+    <div layout:fragment="panel-grid">
+        <div class="card card-primary card-outline" id="rm" v-cloak>
+            <div class="card-header">
+                <h5 class="card-title">調整內容</h5>
+            </div>
+            <div class="card-body">
+                <form id="form-validator">
+                    <table border="0" cellspacing="0" class="table-condition">
+                        <tr>
+                            <td></td>
+                            <td align="center">匯出序號</td>
+                            <td align="center">匯入序號</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                現存序號
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="senderSeqRv" v-model="senderSeqRv" name="senderSeqRv" maxlength="7" disabled/>
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="receiverSeqRv" v-model="receiverSeqRv" name="receiverSeqRv" maxlength="7" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                請輸入調整後序號
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="newSenderSeqRv" v-model="newSenderSeqRv" name="newSenderSeqRv" maxlength="7" />
+                            </td>
+                            <td class="condition-input">
+                                <input class="form-control" type="text" id="newReceiverSeqRv" v-model="newReceiverSeqRv" name="newReceiverSeqRv" maxlength="7" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <hr>
+                <span style="color: red">*注意電文序號是否也要調整</span>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="panel-script">
+        <script type="text/javascript" th:src="@{/js/rm/UI028050.js}"></script>
+    </div>
+</body>
+</html>

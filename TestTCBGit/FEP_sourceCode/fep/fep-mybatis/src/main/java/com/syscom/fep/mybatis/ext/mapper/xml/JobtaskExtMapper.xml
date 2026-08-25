@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.JobtaskExtMapper">
+    <select id="getJobTaskByBatchId" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+        SELECT JOBTASK.*, TASK.*, JOBS.*
+        FROM JOBTASK
+                 INNER JOIN TASK ON JOBTASK_TASKID = TASK_ID
+                 INNER JOIN JOBS ON JOBTASK_JOBID = JOBS_JOBID
+        WHERE JOBS_BATCHID = #{batchid,jdbcType=INTEGER}
+        ORDER BY JOBTASK_STEPID, JOBS_SEQ
+    </select>
+    <select id="getMaxJobTasktByJobId" parameterType="java.lang.Integer" resultMap="com.syscom.fep.mybatis.mapper.JobtaskMapper.BaseResultMap">
+        SELECT *
+        FROM JOBTASK
+        WHERE JOBTASK_JOBID = #{jobId,jdbcType=INTEGER}
+        Order By JOBTASK_STEPID DESC
+    </select>
+    <delete id="deleteByBatchId" parameterType="java.lang.Integer">
+        DELETE JOBTASK a WHERE EXISTS (
+            SELECT 1 FROM JOBS b
+            INNER JOIN BATCH c
+            ON b.JOBS_BATCHID = c.BATCH_BATCHID
+            WHERE a.JOBTASK_JOBID = b.JOBS_JOBID AND c.BATCH_BATCHID = #{batchBatchid,jdbcType=INTEGER})
+    </delete>
+    <update id="updateTaskIdByJobId" parameterType="java.lang.Integer">
+        update JOBTASK
+        SET JOBTASK_TASKID = #{taskId,jdbcType=INTEGER}
+        WHERE JOBTASK_JOBID = #{jobId,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteByJobId" parameterType="java.lang.Integer">
+        delete
+        from JOBTASK
+        where JOBTASK_JOBID = #{jobtaskJobid,jdbcType=INTEGER}
+    </delete>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.RmbtchmtrExtMapper">
+    <!-- 2021/11/30 wj Add -->
+    <select id="getRMBTCHMTRByDef" parameterType="map" resultType="java.util.HashMap">
+        SELECT CASE WHEN RMBTCHMTR_FLAG = '0' THEN '0-未回饋'
+        WHEN  RMBTCHMTR_FLAG = '1'  THEN '1-已回饋' END AS FLAG, RMBTCHMTR.*
+        FROM RMBTCHMTR
+        <where>
+            <if test='rmbtchmtr.rmbtchmtrRemdate != null and rmbtchmtr.rmbtchmtrRemdate !=" "'>
+                AND RMBTCHMTR_REMDATE = #{rmbtchmtr.rmbtchmtrRemdate,jdbcType=VARCHAR}
+            </if>
+            <if test="rmbtchmtr.rmbtchmtrFlag != null and rmbtchmtr.rmbtchmtrFlag !=''">
+                AND RMBTCHMTR_FLAG= #{rmbtchmtr.rmbtchmtrFlag,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY RMBTCHMTR_TIMES
+    </select>
+</mapper>

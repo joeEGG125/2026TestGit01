@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/rm/UI_028010/insertMsgout}" method="post">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h5 class="card-title">查詢條件</h5>
+            </div>
+            <div class="card-body">
+                <div class="condition-label row">
+                    <label for="receiverBank" class="col-form-label col-1">收信行代號</label>
+                    <input class="form-control col-2" type="text" th:field="*{receiverBank}" maxlength="7"/>
+                    <label for="chnmemo" class="col-form-label col-1">中英文內容</label>
+                    <input class="form-control col-2" type="text" th:field="*{chnmemo}" maxlength="78"/>
+                </div>
+                <div class="condition-label row">
+                    <label for="engmemo" class="col-form-label col-1">英文內容</label>
+                    <input class="form-control col-2" type="text" th:field="*{engmemo}" maxlength="78"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnExecute">執行</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden">
+</div>
+<div layout:fragment="panel-grid" class="panel-hidden">
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/rm/UI028010.js}"></script>
+</div>
+</body>
+</html>

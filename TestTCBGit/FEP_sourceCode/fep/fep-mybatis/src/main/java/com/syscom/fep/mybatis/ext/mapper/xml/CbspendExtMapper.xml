@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.CbspendExtMapper">
+	<!-- 2021-04-28 WJ add -->
+	<select id="queryAllData" parameterType="map" resultType="java.util.HashMap">
+    select 
+    <include refid="com.syscom.fep.mybatis.mapper.CbspendMapper.Base_Column_List" />
+    from CBSPEND
+    </select>
+    <select id="getCBSPENDByTXDATEAndZone" parameterType="map" resultType="java.util.HashMap">
+    select 
+    <include refid="com.syscom.fep.mybatis.mapper.CbspendMapper.Base_Column_List" />
+    from CBSPEND
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cbspendTxDate)">
+      and CBSPEND_TX_DATE = #{cbspendTxDate,jdbcType=CHAR}
+      </if>
+      <if test="cbspendSuccessFlag != null ">
+      and CBSPEND_SUCCESS_FLAG = #{cbspendSuccessFlag,jdbcType=DECIMAL}
+      </if>
+      <if test="cbspendSubsys != null">
+      and CBSPEND_SUBSYS = #{cbspendSubsys,jdbcType=DECIMAL}
+      </if>
+      <if test="cbspendZone != null">
+      and CBSPEND_ZONE = #{cbspendZone,jdbcType=CHAR}
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cbspendCbsTxCode)">
+      and CBSPEND_CBS_TX_CODE LIKE CONCAT('%', CONCAT(#{cbspendCbsTxCode,jdbcType=VARCHAR}, '%'))
+      </if>
+     </where>
+    </select>
+    <select id="getsumOfTxAMT" parameterType="com.syscom.fep.mybatis.model.Cbspend" resultType="java.math.BigDecimal">
+    select 
+    sum(CBSPEND_TX_AMT)
+    from CBSPEND
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cbspendTxDate)">
+      and CBSPEND_TX_DATE = #{cbspendTxDate,jdbcType=CHAR}
+      </if>
+      <if test="cbspendSuccessFlag != null ">
+      and CBSPEND_SUCCESS_FLAG = #{cbspendSuccessFlag,jdbcType=DECIMAL}
+      </if>
+      <if test="cbspendSubsys != null">
+      and CBSPEND_SUBSYS = #{cbspendSubsys,jdbcType=DECIMAL}
+      </if>
+      <if test="cbspendZone != null">
+      and CBSPEND_ZONE = #{cbspendZone,jdbcType=CHAR}
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cbspendCbsTxCode)">
+      and CBSPEND_CBS_TX_CODE = #{cbspendCbsTxCode,jdbcType=VARCHAR}
+      </if>
+     </where>
+    </select>
+    <update id="UpdateResendCNT" parameterType="com.syscom.fep.mybatis.model.Cbspend">
+    update CBSPEND
+    SET
+    CBSPEND_RESEND_CNT = 0
+    <where>
+      <if test="cbspendTxDate != null">
+      and CBSPEND_TX_DATE = #{cbspendTxDate,jdbcType=CHAR}
+      </if>
+      <if test="cbspendEjfno != null">
+      and CBSPEND_EJFNO = #{cbspendEjfno,jdbcType=DECIMAL}
+      </if>
+      <if test="cbspendZone != null ">
+      and CBSPEND_ZONE = #{cbspendZone,jdbcType=CHAR}
+      </if>
+      <if test="cbspendSubsys == 2">
+      and CBSPEND_SUBSYS = 2 and CBSPEND_RESEND_CNT =5 and CBSPEND_SUCCESS_FLAG = 0 and CBSPEND_ACC_TYPE =4
+      </if>
+      <if test="cbspendSubsys != 2">
+      and CBSPEND_SUBSYS != 2 and CBSPEND_RESEND_CNT =5 and CBSPEND_SUCCESS_FLAG = 0 and CBSPEND_ACC_TYPE =4
+      </if>
+      <if test="cbspendTbsdy != null" >
+      and CBSPEND_TBSDY = #{cbspendTbsdy,jdbcType=VARCHAR}
+      </if>
+     </where>
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.syscom.fep.mybatis.model.Cbspend">
+    update CBSPEND
+    <set>
+      <if test="cbspendResendCnt != null">
+        CBSPEND_RESEND_CNT = #{cbspendResendCnt,jdbcType=DECIMAL},
+      </if>
+      <if test="updateUserid != null">
+        UPDATE_USERID = #{updateUserid,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where CBSPEND_TX_DATE = #{cbspendTxDate,jdbcType=CHAR}
+      and CBSPEND_EJFNO = #{cbspendEjfno,jdbcType=DECIMAL}
+  </update>
+  <select id="QueryResendCNT" parameterType="com.syscom.fep.mybatis.model.Cbspend" resultType="java.util.Map">
+    select 
+    <include refid="com.syscom.fep.mybatis.mapper.CbspendMapper.Base_Column_List" />
+    from CBSPEND
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cbspendTxDate)">
+      and CBSPEND_TX_DATE = #{cbspendTxDate,jdbcType=CHAR}
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cbspendZone)">
+      and CBSPEND_ZONE = #{cbspendZone,jdbcType=CHAR}
+      </if>
+      <if test="cbspendSubsys == 2">
+      and CBSPEND_SUBSYS = 2 and CBSPEND_RESEND_CNT =5 and CBSPEND_SUCCESS_FLAG = 0 and CBSPEND_ACC_TYPE =4
+      </if>
+      <if test="cbspendSubsys != 2">
+      and CBSPEND_SUBSYS != 2 and CBSPEND_RESEND_CNT =5 and CBSPEND_SUCCESS_FLAG = 0 and CBSPEND_ACC_TYPE =4
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(cbspendTbsdy)" >
+      and CBSPEND_TBSDY = #{cbspendTbsdy,jdbcType=VARCHAR}
+      </if>
+     </where>
+    </select>
+</mapper>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<form id="form-validator" th:object="${form}" th:action="@{/atmmon/UI_060010_Q/updateCertalias}" method="post">
+			<input type="hidden" th:field="*{rbtnDelFlg}"/>
+			<input type="hidden" th:field="*{checkCtrlEmvB}"/>
+			<input type="hidden" th:field="*{rbtnOS}"/>
+			<input type="hidden" th:field="*{vendor}"/>
+			<input type="hidden" th:field="*{typeQuery}"/>
+			<input type="hidden" th:field="*{insBrno}"/>
+			<table border="0" cellspacing="0" class="table-detail">
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">分行<font color="red">*</font>:</label>
+					</td>
+					<td class="condition-input">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{atmBranchNameC}"/>	
+					</td>
+					<td class="condition-label">
+                    	<label class="col-form-label">設備功能<font color="red">*</font>:</label>
+					</td>
+					<td class="condition-input">					
+                    	<input th:disabled="true" class="form-control" type="text"  th:field="*{atmAtmTypeCodeTxt}"/>	
+					</td>
+					<td class="condition-label" style="width:200px">
+					    <label class="col-form-label">憑證版本:</label>	
+					</td>
+					<td class="condition-input" style="width:300px">
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{atmCertalias}"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">廠牌<font color="red">*</font>:</label>
+					</td>
+					<td class="condition-input">
+			         	<input th:disabled="true" class="form-control" type="text"  th:field="*{atmVendorTxt}"/>
+					</td>
+					<td class="condition-label">
+                    	<label class="col-form-label">行內外點<font color="red">*</font>:</label>
+					</td>
+					<td class="condition-input">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{atmLocCodeTxt}"/>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">機型<font color="red">*</font>:</label>
+					</td>
+					<td class="condition-input">
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{atmModelNo}"/>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">IP Address<font color="red">*</font>:</label>
+					</td>
+					<td class="condition-input">
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{atmIp}"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">機器代號<font color="red">*</font>:</label>
+					</td>
+					<td class="condition-input" style="width:300px">
+			         	<input th:disabled="true" class="form-control" type="text"  th:field="*{atmAtmNo}"/>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">備註:</label>
+					</td>
+					<td class="condition-input">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{atmMemo}"/>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+						<label class="col-form-label">縣市:</label>
+					</td>
+					<td class="condition-input">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{atmCityC}"/>		
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">啟用日期:</label>
+					</td>
+					<td class="condition-input">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{atmStartDate}"/>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">地址:</label>
+					</td>
+					<td colspan="2" class="condition-input">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{atmAddressC}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label">
+                    	<label class="col-form-label">裝置地點:</label>
+					</td>
+					<td class="condition-input">
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{atmLocation}"/>
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">原廠機器序號:</label>	
+					</td>
+					<td class="condition-input" style="width:300px">
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{atmSno}"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">通訊元件連線狀態:</label>
+					</td>
+					<td class="condition-input" style="width:300px">
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{atmStatus}"/>
+					</td>
+					<td class="condition-label">
+						<label class="col-form-label">DMS監控狀態:</label>
+					</td>
+					<td class="condition-input">
+						<input th:disabled="true" class="form-control" type="text" th:field="*{atmEnable}"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

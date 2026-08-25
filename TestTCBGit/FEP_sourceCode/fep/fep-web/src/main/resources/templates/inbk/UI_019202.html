@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition">
+    <form id="form-validator" th:object="${form}" th:action="@{/inbk/UI_019202/queryClick}" method="post">
+        <table border="0" cellspacing="0" class="table-condition">
+            <tr>
+                <td class="condition-label">
+                    <label for="lblBankNo" class="col-form-label">銀行代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{lblBankNo}" readonly>
+                </td>
+                <td class="condition-label">
+                    <label for="clearDate" class="col-form-label">清算日期</label>
+                </td>
+                <td class="condition-input">
+                    <div class="input-group date" id="clearDate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#clearDate" th:field="*{clearDate}" />
+                        <div class="input-group-append" data-target="#beginDate" data-toggle="datetimepicker">
+                            <div class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="condition-label">
+                    <label for="apId" class="col-form-label">跨行業務代號</label>
+                </td>
+                <td class="condition-input">
+                    <input class="form-control" type="text" th:field="*{apId}" maxlength="4">
+                </td>
+            </tr>
+            <tr>
+                <td class="condition-label" colspan="6">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <table>
+        <tr>
+            <td width="1000px">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>通匯交易</b></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: block;">
+                        <table border="0" cellspacing="0" class="table-condition" width="100%">
+                            <tr>
+                                <td>11111:入戶電匯</td>
+                                <td>11211:國庫匯款</td>
+                                <td>11311:同業匯款</td>
+                                <td>11711:退還匯款</td>
+                                <td>11811:証券匯款</td>
+                                <td>11911:票券匯款</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>國際金融卡交易</b></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: block;">
+                        <table  border="0" cellspacing="0" class="table-condition" width="100%">
+                            <tr>
+                                <td>2422:跨國VISA/PLUS</td>
+                                <td>2432:跨國MAST/CIRRUS</td>
+                                <td>6282:跨國銀聯卡</td>
+                            </tr>
+                            <tr>
+                                <td>2421:國內VISA預借現金	</td>
+                                <td>2431:國內MAST預借現金</td>
+                                <td>2441:國內JCB預借現金</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>晶片卡交易</b></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: block;">
+                        <table  border="0" cellspacing="0" class="table-condition" width="100%">
+                            <tr>
+                                <td colspan="6">2510:晶片提款</td>
+                            </tr>
+                            <tr>
+                                <td>252*:晶片轉帳合計</td>
+                                <td>2521:轉入</td>
+                                <td>2522:轉出</td>
+                                <td>2523:自行</td>
+                                <td>2524:跨轉</td>
+                                <td>2525:消費扣款(固定)</td>
+                            </tr>
+                            <tr>
+                                <td>253*:晶片繳款合計</td>
+                                <td>2531:跨繳</td>
+                                <td colspan="4">2532:自繳</td>
+                            </tr>
+                            <tr>
+                                <td>254*:消費扣款合計</td>
+                                <td>2541:消費扣款(變動)</td>
+                                <td>2542:沖正</td>
+                                <td>2543:退貨</td>
+                                <td colspan="2">2552:授權完成</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>2545:晶片跨國消費扣款</td>
+                                <td>2546:沖正</td>
+                                <td colspan="3">2549:人工沖正</td>
+                            </tr>
+                            <tr>
+                                <td>257*:晶片跨國提款合計</td>
+                                <td>2571:晶片跨國提款</td>
+                                <td>2572:沖正</td>
+                                <td colspan="3">2573:人工沖正</td>
+                            </tr>
+                            <tr>
+                                <td>2555:跨境電子支付(Outbound)交易</td>
+                                <td colspan="5">2556:跨境電子支付(Outbound)退款交易</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>全國性繳費(稅)交易</b></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: block;">
+                        <table  border="0" cellspacing="0" class="table-condition" width="100%">
+                            <tr>
+                                <td>256*:晶片全國繳費合計</td>
+                                <td>2561:轉入</td>
+                                <td>2562:轉出</td>
+                                <td>2563:自行</td>
+                                <td>2564:跨轉</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>2567:自繳</td>
+                                <td>2568:跨繳</td>
+                                <td>2569:ID+ACC跨繳</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>226*: 全國繳費合計</td>
+                                <td>2261:轉入</td>
+                                <td>2262:轉出</td>
+                                <td>2263:自行</td>
+                                <td>2264:跨轉</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnQuery">查詢</button>
+    <button type="button" class="btn btn-primary" id="btnClear">清除</button>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+    <table class="table table-bordered text-nowrap">
+        <thead>
+        <tr align="center">
+            <th></th>
+            <th><b>借方筆數</b></th>
+            <th><b>借方金額</b></th>
+            <th><b>貸方筆數</b></th>
+            <th><b>貸方金額</b></th>
+        </tr>
+        </thead>
+        <tr>
+            <td align="left">業務小計</td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotCntDr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotAmtDr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotCntCr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotAmtCr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">沖正業務小計</td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcCntDr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcAmtDr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcCntCr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcAmtCr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">手續費小計</td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotFeeCntDr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotFeeAmtDr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotFeeCntCr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotFeeAmtDr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">沖正手續費小計</td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcFeeCntDr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcFeeAmtDr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcFeeCntCr,1,'COMMA',0,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+            <td align="right">
+                <span th:if="${detailEntity!=null}" th:text="${#numbers.formatDecimal(detailEntity.aptotEcFeeAmtCr,1,'COMMA',2,'POINT')}"></span>
+                <span th:if="${detailEntity==null}">0</span>
+            </td>
+        </tr>
+    </table>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/inbk/UI019202.js}"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.BctlExtMapper">
+    <select id="getBCTLAlias" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.BctlMapper.BaseResultMap">
+        select
+        <include refid="com.syscom.fep.mybatis.mapper.BctlMapper.Base_Column_List"/>
+        from BCTL
+            order by BCTL_BRNO
+    </select>
+    <select id="getBRAlias" resultType="java.lang.String">
+        SELECT BCTL_ALIAS
+        FROM BCTL
+        WHERE BCTL_BRNO = #{bctlBrno,jdbcType=CHAR}
+    </select>
+</mapper>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>UI060290</title>
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnConfirm">確認</button>
+		<button type="button" class="btn btn-primary" id="btnClear">清除</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid">
+		<form id="form-validator" th:object="${form}"
+			th:action="@{/atmmon/UI_060290/confirm}" method="post">
+			<div class="card-body table-responsive p-0">
+				<div class="card card-outline card-primary">
+					<div class="card-body" style="display: block;">
+						<p>
+							<input type="checkbox" id="useCheck" th:onclick="useAll()">全部服務
+							<input type="hidden" style="disabled:true" th:field="*{hbkno}" th:value="*{hbkno}">
+						</p>
+						<span>ATM</span>
+						<table border="1"
+							style="border-collapse: separate; border-spacing: 1px"
+							cellspacing="0" class="table-condition" width="75%">
+							<tr>
+								<td rowspan="6"><input type="checkbox"
+									th:if="*{sysstatIntra==true}" th:field="*{sysstatIntra}"
+									th:onclick="CheckIntra(false)" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatIntra==false}"
+									th:field="*{sysstatIntra}" th:onclick="CheckIntra(false)">自行</td>
+								<td><input type="checkbox" th:if="*{sysstatIwdI == true}"
+									th:field="*{sysstatIwdI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatIwdI == false}"
+									th:field="*{sysstatIwdI}">提款</td>
+								<td><input type="checkbox" th:if="*{sysstatIftI==true}"
+									th:field="*{sysstatIftI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatIftI==false}"
+									th:field="*{sysstatIftI}"> 轉帳</td>
+								<td><input type="checkbox" th:if="*{sysstatAdmI==true}"
+									th:field="*{sysstatAdmI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatAdmI==false}"
+									th:field="*{sysstatAdmI}"> 存款</td>
+								<td><input type="checkbox" th:if="*{sysstatIiqI==true}"
+									th:field="*{sysstatIiqI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatIiqI==false}"
+									th:field="*{sysstatIiqI}"> 餘額查詢</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:if="*{sysstatFwdI==true}"
+									th:field="*{sysstatFwdI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatFwdI==false}"
+									th:field="*{sysstatFwdI}"> 外幣提款</td>
+								<td><input type="checkbox" th:if="*{sysstatNwdI==true}"
+									th:field="*{sysstatNwdI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatNwdI==false}"
+									th:field="*{sysstatNwdI}"> 無卡提款</td>
+								<td><input type="checkbox" th:if="*{sysstatNfwI==true}"
+									th:field="*{sysstatNfwI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatNfwI==false}"
+									th:field="*{sysstatNfwI}"> 外幣無卡提款</td>
+								<td><input type="checkbox" th:if="*{sysstatIpyI==true}"
+									th:field="*{sysstatIpyI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatIpyI==false}"
+									th:field="*{sysstatIpyI}"> 繳款</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:if="*{sysstatIccdpI==true}"
+									th:field="*{sysstatIccdpI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatIccdpI==false}"
+									th:field="*{sysstatIccdpI}"> 全國繳費</td>
+								<td><input type="checkbox" th:if="*{sysstatEtxI==true}"
+									th:field="*{sysstatEtxI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatEtxI==false}"
+									th:field="*{sysstatEtxI}"> 全國繳稅</td>
+								<td><input type="checkbox" th:if="*{sysstatCaI==true}"
+									th:field="*{sysstatCaI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatCaI==false}"
+									th:field="*{sysstatCaI}"> 預借現金</td>
+								<td><input type="checkbox" th:if="*{sysstatCaaI==true}"
+									th:field="*{sysstatCaaI}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatCaaI==false}"
+									th:field="*{sysstatCaaI}"> AE預借現金</td>
+							</tr>
+						<!--	<tr>
+								<td><input type="checkbox" th:if="*{sysstatAig==true}"
+									th:field="*{sysstatAig}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatAig==false}"
+									th:field="*{sysstatAig}"> 南山人壽保單繳款</td>
+								<td><input type="checkbox" th:if="*{sysstatHkIssue==true}"
+									th:field="*{sysstatHkIssue}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatHkIssue==false}"
+									th:field="*{sysstatHkIssue}"> 香港分行原存行</td>
+								<td><input type="checkbox" th:if="*{sysstatHkFiscmb==true}"
+									th:field="*{sysstatHkFiscmb}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatHkFiscmb==false}"
+									th:field="*{sysstatHkFiscmb}"> 香港分行財金提款</td>
+								<td><input type="checkbox" th:if="*{sysstatHkFiscmq==true}"
+									th:field="*{sysstatHkFiscmq}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatHkFiscmq==false}"
+									th:field="*{sysstatHkFiscmq}"> 香港分行財金餘額查詢</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatHkPlus}"
+									th:if="*{sysstatHkPlus==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatHkPlus}"
+									th:if="*{sysstatHkPlus==false}"> 香港分行PLUS</td>
+								<td><input type="checkbox" th:field="*{sysstatMoIssue}"
+									th:if="*{sysstatMoIssue==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatMoIssue}"
+									th:if="*{sysstatMoIssue==false}"> 澳門分行原存行</td>
+								<td><input type="checkbox" th:field="*{sysstatMoFiscmb}"
+									th:if="*{sysstatMoFiscmb==true}" th:checked="checked">
+									<input type="checkbox" th:field="*{sysstatMoFiscmb}"
+									th:if="*{sysstatMoFiscmb==false}"> 澳門分行財金財金提款</td>
+								<td><input type="checkbox" th:field="*{sysstatMoFiscmq}"
+									th:if="*{sysstatMoFiscmq==true}" th:checked="checked">
+									<input type="checkbox" th:field="*{sysstatMoFiscmq}"
+									th:if="*{sysstatMoFiscmq==false}"> 澳門分行財金餘額查詢</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:if="*{sysstatMoPlus==true}"
+									th:field="*{sysstatMoPlus}" th:checked="checked"> <input
+									type="checkbox" th:if="*{sysstatMoPlus==false}"
+									th:field="*{sysstatMoPlus}"> 澳門分行PLUS</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr> -->
+						</table>
+						<br>
+						<table border="1"
+							style="border-collapse: separate; border-spacing: 1px"
+							cellspacing="0" class="table-condition" width="75%">
+							<tr>
+								<td rowspan="7"><input type="checkbox"
+									th:onclick="CheckAgent(false)" th:field="*{sysstatAgent}"
+									th:if="*{sysstatAgent==true}" th:checked="checked"> <input
+									type="checkbox" th:onclick="CheckAgent(false)"
+									th:field="*{sysstatAgent}" th:if="*{sysstatAgent==false}">代理行</td>
+								<td><input type="checkbox" th:field="*{sysstatIwdA}"
+									th:if="*{sysstatIwdA == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIwdA}"
+									th:if="*{sysstatIwdA == false}">台幣提款</td>
+								<td><input type="checkbox" th:field="*{sysstatFawA}"
+									th:if="*{sysstatFawA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatFawA}"
+									th:if="*{sysstatFawA==false}"> 外幣提款</td>
+								<td><input type="checkbox" th:field="*{sysstatIftA}"
+									th:if="*{sysstatIftA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIftA}"
+									th:if="*{sysstatIftA==false}"> 轉帳</td>
+								<td><input type="checkbox" th:field="*{sysstatAdmA}"
+									th:if="*{sysstatAdmA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatAdmA}"
+									th:if="*{sysstatAdmA==false}"> 跨行提款</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatIpyA}"
+									th:if="*{sysstatIpyA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIpyA}"
+									th:if="*{sysstatIpyA==false}"> 繳款</td>
+								<td><input type="checkbox" th:field="*{sysstatIccdpA}"
+									th:if="*{sysstatIccdpA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIccdpA}"
+									th:if="*{sysstatIccdpA==false}"> 全國繳費(晶片)</td>
+								<td><input type="checkbox" th:field="*{sysstatCdpA}"
+									th:if="*{sysstatCdpA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCdpA}"
+									th:if="*{sysstatCdpA==false}"> 全國繳費(ID+ACC)</td>
+								<td><input type="checkbox" th:field="*{sysstatEtxA}"
+									th:if="*{sysstatEtxA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEtxA}"
+									th:if="*{sysstatEtxA==false}"> 全國繳稅</td>
+							</tr>
+						<!--	<tr>
+								<td><input type="checkbox" th:field="*{sysstat2525A}"
+									th:if="*{sysstat2525A==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstat2525A}"
+									th:if="*{sysstat2525A==false}"> 消費扣款（固定費率）</td>
+								<td><input type="checkbox" th:field="*{sysstatCpuA}"
+									th:if="*{sysstatCpuA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCpuA}"
+									th:if="*{sysstatCpuA==false}"> 消費扣款（變動費率）</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatCavA}"
+									th:if="*{sysstatCavA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCavA}"
+									th:if="*{sysstatCavA==false}"> 預借現金 VISA</td>
+								<td><input type="checkbox" th:field="*{sysstatCamA}"
+									th:if="*{sysstatCamA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCamA}"
+									th:if="*{sysstatCamA==false}"> 預借現金 MASTER</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr> -->
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatCauA}"
+									th:if="*{sysstatCauA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCauA}"
+									th:if="*{sysstatCauA==false}"> 預授交易</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							<!--	<td><input type="checkbox" th:field="*{sysstatCwvA}"
+									th:if="*{sysstatCwvA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCwvA}"
+									th:if="*{sysstatCwvA==false}"> 國際提款PLUS</td>
+								<td><input type="checkbox" th:field="*{sysstatCwmA}"
+									th:if="*{sysstatCwmA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCwmA}"
+									th:if="*{sysstatCwmA==false}"> 國際提款CIRRUS</td>
+								<td><input type="checkbox" th:field="*{sysstatCafA}"
+									th:if="*{sysstatCafA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCafA}"
+									th:if="*{sysstatCafA==false}"> 國際提款銀聯卡</td>-->
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatEafA}"
+									th:if="*{sysstatEafA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEafA}"
+									th:if="*{sysstatEafA==false}"> EMV 國際提款銀聯卡</td>
+								<td><input type="checkbox" th:field="*{sysstatEwvA}"
+									th:if="*{sysstatEwvA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEwvA}"
+									th:if="*{sysstatEwvA==false}"> EMV國際提款(PLUS)</td>
+								<td><input type="checkbox" th:field="*{sysstatEwmA}"
+									th:if="*{sysstatEwmA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEwmA}"
+									th:if="*{sysstatEwmA==false}"> EMV國際提款(CIRRUS)</td>
+								<td><input type="checkbox" th:field="*{sysstatEavA}"
+									th:if="*{sysstatEavA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEavA}"
+									th:if="*{sysstatEavA==false}"> EMV預借現金(VISA)</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatEamA}"
+									th:if="*{sysstatEamA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEamA}"
+									th:if="*{sysstatEamA==false}"> EMV預借現金(MASTER)</td>
+								<td><input type="checkbox" th:field="*{sysstatNwdA}"
+									th:if="*{sysstatNwdA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatNwdA}"
+									th:if="*{sysstatNwdA==false}"> 無卡跨行提款</td>
+								<td><input type="checkbox" th:field="*{sysstatVaaA}"
+									th:if="*{sysstatVaaA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatVaaA}"
+									th:if="*{sysstatVaaA==false}"> 約定及核驗服務</td>
+								<td><input type="checkbox" th:field="*{sysstatEajA}"
+									th:if="*{sysstatEajA==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEajA}"
+									th:if="*{sysstatEajA==false}"> EMV預借現金(JCB)</td>									
+							</tr>
+						</table>
+						<br>
+						<table border="1"
+							style="border-collapse: separate; border-spacing: 1px"
+							cellspacing="0" class="table-condition" width="75%">
+							<tr>
+								<td rowspan="5"><input type="checkbox"
+									th:onclick="CheckIssue(false)" th:field="*{sysstatIssue}"
+									th:if="*{sysstatIssue==true}" th:checked="checked"> <input
+									type="checkbox" th:onclick="CheckIssue(false)"
+									th:field="*{sysstatIssue}" th:if="*{sysstatIssue==false}">原存</td>
+								<td><input type="checkbox" th:field="*{sysstatIwdF}"
+									th:if="*{sysstatIwdF == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIwdF}"
+									th:if="*{sysstatIwdF == false}">提款</td>
+								<td><input type="checkbox" th:field="*{sysstatIftF}"
+									th:if="*{sysstatIftF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIftF}"
+									th:if="*{sysstatIftF==false}"> 轉帳</td>
+								<td><input type="checkbox" th:field="*{sysstatIiqF}"
+									th:if="*{sysstatIiqF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIiqF}"
+									th:if="*{sysstatIiqF==false}"> 餘額查詢</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatIpyF}"
+									th:if="*{sysstatIpyF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIpyF}"
+									th:if="*{sysstatIpyF==false}">繳款</td>
+								<td><input type="checkbox" th:field="*{sysstatIccdpF}"
+									th:if="*{sysstatIccdpF == true}" th:checked="checked">
+									<input type="checkbox" th:field="*{sysstatIccdpF}"
+									th:if="*{sysstatIccdpF == false}">全國繳費(晶片)</td>
+								<td><input type="checkbox" th:field="*{sysstatCdpF}"
+									th:if="*{sysstatCdpF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCdpF}"
+									th:if="*{sysstatCdpF==false}"> 全國繳費(ID+ACT)</td>
+								<td><input type="checkbox" th:field="*{sysstatEtxF}"
+									th:if="*{sysstatEtxF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEtxF}"
+									th:if="*{sysstatEtxF==false}"> 全國繳稅</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstat2525F}"
+									th:if="*{sysstat2525F==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstat2525F}"
+									th:if="*{sysstat2525F==false}">消費扣款(固定費率)</td>
+								<td><input type="checkbox" th:field="*{sysstatCpuF}"
+									th:if="*{sysstatCpuF == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCpuF}"
+									th:if="*{sysstatCpuF == false}">消費扣款(變動費率)</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatCauF}"
+									th:if="*{sysstatCauF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCauF}"
+									th:if="*{sysstatCauF==false}">預授交易</td>
+								<td><input type="checkbox" th:field="*{sysstatGpcwdF}"
+									th:if="*{sysstatGpcwdF == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatGpcwdF}"
+									th:if="*{sysstatGpcwdF == false}">國際提款PLUS/CIRRUS</td>
+								<td><input type="checkbox" th:field="*{sysstatGpemvF}"
+									th:if="*{sysstatGpemvF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatGpemvF}"
+									th:if="*{sysstatGpemvF==false}"> EMV國際提款PLUS/CIRRUS</td>
+								<td><input type="checkbox" th:field="*{sysstatGpcadF}"
+									th:if="*{sysstatGpcadF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatGpcadF}"
+									th:if="*{sysstatGpcadF==false}"> 預借現金VISA/MASTER</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatGpiwdF}"
+									th:if="*{sysstatGpiwdF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatGpiwdF}"
+									th:if="*{sysstatGpiwdF==false}">晶片卡跨國提款</td>
+								<td><input type="checkbox" th:field="*{sysstatGpobF}"
+									th:if="*{sysstatGpobF == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatGpobF}"
+									th:if="*{sysstatGpobF == false}">跨境支付交易</td>
+								<td><input type="checkbox" th:field="*{sysstatVaaF}"
+									th:if="*{sysstatVaaF==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatVaaF}"
+									th:if="*{sysstatVaaF==false}"> 約定及核驗服務</td>
+								<td>&nbsp;</td>
+							</tr>
+						</table>
+						<br>
+						<table border="1"
+							style="border-collapse: separate; border-spacing: 1px"
+							cellspacing="0" class="table-condition" width="75%">
+							<tr>
+								<td rowspan="3"><input type="checkbox"
+									th:onclick="CheckPure(false)" th:field="*{sysstatPure}"
+									th:if="*{sysstatPure==true}" th:checked="checked"> <input
+									type="checkbox" th:onclick="CheckPure(false)"
+									th:field="*{sysstatPure}" th:if="*{sysstatPure==false}">純代理</td>
+								<td><input type="checkbox" th:field="*{sysstatIiqP}"
+									th:if="*{sysstatIiqP == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIiqP}"
+									th:if="*{sysstatIiqP == false}">晶片卡餘額查詢</td>
+								<td><input type="checkbox" th:field="*{sysstatIftP}"
+									th:if="*{sysstatIftP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIftP}"
+									th:if="*{sysstatIftP==false}"> 轉帳</td>
+								<td><input type="checkbox" th:field="*{sysstatIccdpP}"
+									th:if="*{sysstatIccdpP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIccdpP}"
+									th:if="*{sysstatIccdpP==false}"> 全國繳費(晶片)</td>
+								<td><input type="checkbox" th:field="*{sysstatCdpP}"
+									th:if="*{sysstatCdpP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatCdpP}"
+									th:if="*{sysstatCdpP==false}"> 全國繳費(ID+ACC)</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatIpyP}"
+									th:if="*{sysstatIpyP == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIpyP}"
+									th:if="*{sysstatIpyP == false}">繳款-跨行(2531)</td>
+									
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>	
+							<!--	<td><input type="checkbox" th:field="*{sysstatIqvP}"
+									th:if="*{sysstatIqvP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIqvP}"
+									th:if="*{sysstatIqvP==false}"> PLUS卡餘額查詢</td>
+								<td><input type="checkbox" th:field="*{sysstatIqmP}"
+									th:if="*{sysstatIqmP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIqmP}"
+									th:if="*{sysstatIqmP==false}"> CIRRUS卡餘額查詢</td>
+								<td><input type="checkbox" th:field="*{sysstatIqcP}"
+									th:if="*{sysstatIqcP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatIqcP}"
+									th:if="*{sysstatIqcP==false}"> 銀聯卡餘額查詢</td> -->
+							</tr>
+							<tr>
+								<td><input type="checkbox" th:field="*{sysstatEquP}"
+									th:if="*{sysstatEquP == true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEquP}"
+									th:if="*{sysstatEquP == false}">EMV 銀聯卡餘額查詢</td>
+								<td><input type="checkbox" th:field="*{sysstatEqpP}"
+									th:if="*{sysstatEqpP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEqpP}"
+									th:if="*{sysstatEqpP==false}"> EMV PLUS卡餘額查詢</td>
+								<td><input type="checkbox" th:field="*{sysstatEqcP}"
+									th:if="*{sysstatEqcP==true}" th:checked="checked"> <input
+									type="checkbox" th:field="*{sysstatEqcP}"
+									th:if="*{sysstatEqcP==false}"> EMV CIRRUS卡餘額查詢</td>
+								<td>&nbsp;</td>
+							</tr>
+						</table>
+						<br>
+					<!--	<p>T24主機服務</p>
+						<input type="checkbox" th:if="*{sysstatT24Twn==true}"
+							th:field="*{sysstatT24Twn}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatT24Twn==false}"
+							th:field="*{sysstatT24Twn}"> 台灣T24主機 <input
+							type="checkbox" th:if="*{sysstatT24Hkg==true}"
+							th:field="*{sysstatT24Hkg}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatT24Hkg==false}"
+							th:field="*{sysstatT24Hkg}"> 香港T24主機 <input
+							type="checkbox" th:if="*{sysstatT24Mac==true}"
+							th:field="*{sysstatT24Mac}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatT24Mac==false}"
+							th:field="*{sysstatT24Mac}"> 澳門T24主機 <br> -->
+						<p>其他通道及線路</p>
+						<input type="checkbox" th:if="*{sysstatCbs==true}"
+							th:field="*{sysstatCbs}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatCbs==false}"
+							th:field="*{sysstatCbs}"> CBS主機 
+						<!--<input type="checkbox"
+							th:if="*{sysstatFedi==true}" th:field="*{sysstatFedi}"
+							th:checked="checked"> <input type="checkbox"
+							th:if="*{sysstatFedi==false}" th:field="*{sysstatFedi}">
+						FEDI -->
+						<input type="checkbox" th:if="*{sysstatNb==true}"
+							th:field="*{sysstatNb}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatNb==false}"
+							th:field="*{sysstatNb}"> 網銀 <input type="checkbox"
+							th:if="*{sysstatWebatm==true}" th:field="*{sysstatWebatm}"
+							th:checked="checked"> <input type="checkbox"
+							th:if="*{sysstatWebatm==false}" th:field="*{sysstatWebatm}">
+						WEB ATM服務 <input type="checkbox"
+							th:if="*{sysstatAscChannel==true}"
+							th:field="*{sysstatAscChannel}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatAscChannel==false}"
+							th:field="*{sysstatAscChannel}"> 新信用卡
+							<!-- <input
+							type="checkbox" th:if="*{sysstatSvcs==true}"
+							th:field="*{sysstatSvcs}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatSvcs==false}"
+							th:field="*{sysstatSvcs}"> 悠遊Debit卡 <input
+							type="checkbox" th:if="*{sysstatHkSms==true}"
+							th:field="*{sysstatHkSms}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatHkSms==false}"
+							th:field="*{sysstatHkSms}"> 香港SMS --> <input type="checkbox"
+							th:if="*{sysstatPv==true}" th:field="*{sysstatPv}"
+							th:checked="checked"> <input type="checkbox"
+							th:if="*{sysstatPv==false}" th:field="*{sysstatPv}"> 指靜脈
+						<input type="checkbox" th:if="*{sysstatSmtp==true}"
+							th:field="*{sysstatSmtp}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatSmtp==false}"
+							th:field="*{sysstatSmtp}"> 手機門號轉帳中台 <br /> <!--<input
+							type="checkbox" th:if="*{sysstatAsc==true}"
+							th:field="*{sysstatAsc}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatAsc==false}"
+							th:field="*{sysstatAsc}"> 永豐信用卡線路 <input type="checkbox"
+							th:if="*{sysstatAscmd==true}" th:field="*{sysstatAscmd}"
+							th:checked="checked"> <input type="checkbox"
+							th:if="*{sysstatAscmd==false}" th:field="*{sysstatAscmd}">
+						永豐晶片錢卡線路 <input type="checkbox" th:if="*{sysstatGcard==true}"
+							th:field="*{sysstatGcard}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatGcard==false}"
+							th:field="*{sysstatGcard}"> 永豐GIFT卡線路 <input
+							type="checkbox" th:if="*{sysstatSps==true}"
+							th:field="*{sysstatSps}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatSps==false}"
+							th:field="*{sysstatSps}"> 永豐證券線路 <input type="checkbox"
+							th:if="*{sysstatAscmac==true}" th:field="*{sysstatAscmac}"
+							th:checked="checked"> <input type="checkbox"
+							th:if="*{sysstatAscmac==false}" th:field="*{sysstatAscmac}">
+						與ASC壓碼線路 <input type="checkbox" th:if="*{sysstatSpsmac==true}"
+							th:field="*{sysstatSpsmac}" th:checked="checked"> <input
+							type="checkbox" th:if="*{sysstatSpsmac==false}"
+							th:field="*{sysstatSpsmac}"> 與 SPS 壓碼線路--> <br />
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI060290.js}"></script>
+		<script type="text/javascript">
+			
+		</script>
+
+	</div>
+</body>
+</html>

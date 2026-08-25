@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div layout:fragment="panel-condition" th:if="${form.autoRefresh}" class="panel-hidden">
+    <form id="form-validator" th:object="${form}" th:action="@{/batch/UI_000120/updateTime}" method="post">
+        <input type="hidden" th:field="*{batchId}">
+        <input type="hidden" th:field="*{batchStartJobId}">
+        <input type="hidden" th:field="*{batchCurrentId}">
+        <input type="hidden" th:field="*{autoRefresh}">
+    </form>
+</div>
+<div layout:fragment="panel-button">
+    <button type="button" class="btn btn-primary" id="btnPrevPage">關閉</button>
+    <span th:if="${form.autoRefresh}">(本網頁會每5秒頁自動重新整理)</span>
+</div>
+<div layout:fragment="panel-summary" class="panel-hidden"></div>
+<div layout:fragment="panel-grid">
+    <table border="0" cellspacing="0" class="table-condition">
+        <tr>
+            <td class="condition-label col-3">
+                <label class="col-form-label">
+                    批次名稱：<span th:text="${BATCH_NAME}"></span>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label col-3">
+                <label class="col-form-label">
+                    批次說明：<span th:text="${BATCH_DESCRIPTION}"></span>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label col-3">
+                <label class="col-form-label">
+                    執行序號：<span th:text="${BATCH_CURRENTID}"></span>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label col-3">
+                <label class="col-form-label">
+                    批次執行結果：<span th:text="${BATCH_RESULT}"></span>
+                    <a class="a-inquiry" href="#" style="text-decoration: underline" th:text="檢視記錄儅"></a>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td class="condition-label col-3">
+                <label class="col-form-label">
+                    更新時間：
+                    <span th:text="${#dates.format(testTimeLbl,'yyyy-MM-dd a hh:mm:ss')}"></span>
+                </label>
+            </td>
+        </tr>
+        <tr th:if="${BATCH_EXECUTE_HOST_NAME != null && !#strings.isEmpty(BATCH_EXECUTE_HOST_NAME)}">
+            <td class="condition-label col-3">
+                <label class="col-form-label">
+                    執行主機：<span th:text="${BATCH_EXECUTE_HOST_NAME}"></span>
+                </label>
+            </td>
+        </tr>
+    </table>
+    <div class="card-body table-responsive p-0" th:if="${pageData != null}">
+        <table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th><b>指令</b></th>
+                <th><b>工作編號</b></th>
+                <th><b>工作名稱</b></th>
+                <th><b>執行程式</b></th>
+                <th><b>訊息</b></th>
+                <th><b>執行狀態</b></th>
+                <th><b>程序啓動時間</b></th>
+                <th><b>程序結束時間</b></th>
+                <th><b>程序執行時間(毫秒)</b></th>
+                <th><b>執行主機</b></th>
+            </tr>
+            </thead>
+            <tbody th:if="${pageData.list != null}">
+            <tr th:each="data : ${pageData.list}">
+                <td align="center">
+                    <button th:if="${data.get('btnReturn.enable')}" type="button" class="btn btn-primary btnReturn"
+                            th:value="${
+										'{' + '&quot;hostName&quot;:&quot;'+data.get('BATCH_EXECUTE_HOST_NAME')+ '&quot;' + ','
+											+ '&quot;batchCurrentId&quot;:&quot;'+data.get('BATCH_CURRENTID')+ '&quot;' + ','
+											+ '&quot;batchId&quot;:&quot;'+data.get('BATCH_BATCHID') + '&quot;' + ','
+											+ '&quot;jobId&quot;:&quot;'+data.get('JOBS_JOBID')+ '&quot;'
+										+ '}'}">重新執行
+                    </button>
+                    <button th:unless="${data.get('btnReturn.enable')}" type="button" class="btn btn-primary disabled">重新執行</button>
+                    <button th:if="${data.get('btnSkip.enable')}" type="button" class="btn btn-primary btnSkip"
+                            th:value="${
+										'{' + '&quot;hostName&quot;:&quot;'+data.get('BATCH_EXECUTE_HOST_NAME')+ '&quot;' + ','
+											+ '&quot;batchCurrentId&quot;:&quot;'+data.get('BATCH_CURRENTID')+ '&quot;' + ','
+											+ '&quot;batchId&quot;:&quot;'+data.get('BATCH_BATCHID') + '&quot;' + ','
+											+ '&quot;jobId&quot;:&quot;'+data.get('JOBS_JOBID')+ '&quot;'
+										+ '}'}">跳過執行
+                    </button>
+                    <button th:unless="${data.get('btnSkip.enable')}" type="button" class="btn btn-primary disabled">跳過執行</button>
+                    <input type="hidden" id="historyLogfile" th:value="${data.HISTORY_LOGFILE}">
+                </td>
+                <td align="center" th:text="${data.JOBS_JOBID}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.JOBS_NAME}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.TASK_COMMAND}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.HISTORY_MESSAGE}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.HISTORY_STATUS}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.HISTORY_TASKBEGINTIME}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.HISTORY_TASKENDTIME}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.HISTORY_DURATION}" th:style="${data.get('style')}"/>
+                <td align="center" th:text="${data.HISTORY_RUNHOST}" th:style="${data.get('style')}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div layout:fragment="panel-script">
+    <script type="text/javascript" th:src="@{/js/batch/UI000120.js}"></script>
+    <script th:if="${form.autoRefresh}" th:inline="javascript">
+        //指定5秒刷新一次
+        var myInterval = createMyInterval();
+        var setupMyIntervalFunc = function () {
+            myInterval = createMyInterval();
+            autoRefresh();
+        }
+
+        function createMyInterval() {
+            return setInterval(autoRefresh, 5 * 1000);
+        }
+
+        function clearMyInterval() {
+            clearInterval(myInterval);
+        }
+
+        function autoRefresh() {
+            if (doValidateForm(formId)) {
+                showLoading(true);
+                showProcessingMessage(true);
+                $('#' + formId).submit();
+            }
+        }
+    </script>
+</div>
+<div layout:fragment="panel-dialog">
+    <div th:replace="~{layout/alert :: cmnAlert(id=historyLogcontentAlert,body=~{::section},size=xl)}">
+        <section>
+            <p id="historyLogcontent"/>
+        </section>
+    </div>
+</div>
+</body>
+</html>

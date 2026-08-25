@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{home}">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-detail">
+		<table border="0" cellspacing="0" class="table-detail">
+			<tr>
+				<td class="condition-label">
+					<label class="col-form-label">ATM代號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${pageData!=null && (not #lists.isEmpty(pageData.list))}" th:text="*{pageData.list.get(0).atmno}"></label>
+					<label class="form-control" th:if="${pageData==null || #lists.isEmpty(pageData.list)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">轉出帳號</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${pageData!=null && (not #lists.isEmpty(pageData.list))}" th:text="*{pageData.list.get(0).troutactno}"></label>
+					<label class="form-control" th:if="${pageData==null || #lists.isEmpty(pageData.list)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">通道</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${pageData!=null && (not #lists.isEmpty(pageData.list))}" th:text="*{pageData.list.get(0).channel}"></label>
+					<label class="form-control" th:if="${pageData==null || #lists.isEmpty(pageData.list)}"></label>
+				</td>
+				<td class="condition-label">
+					<label class="col-form-label">財金Stan</label>
+				</td>
+				<td class="condition-input">
+					<label class="form-control label-text-left" th:if="${pageData!=null && (not #lists.isEmpty(pageData.list))}" th:text="*{T(com.syscom.fep.web.base.FEPWebBase).join('-',pageData.list.get(0).bkno,pageData.list.get(0).stan)}"></label>
+					<label class="form-control" th:if="${pageData==null || #lists.isEmpty(pageData.list)}"></label>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div layout:fragment="panel-button">
+		<button type="button" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+		<button type="button" class="btn btn-primary" id="btnDownload" th:if="${flag}">匯出</button>
+		<input  type="hidden" id="feptxnEjfno" th:value="${txnEjfno}">
+		<input  type="hidden" id="ejfnO1" th:value="${ejfnO1}">
+		<input  type="hidden" id="ejfnO2" th:value="${ejfnO2}">
+		<input  type="hidden" id="ejfnO3" th:value="${ejfnO3}">
+		<input  type="hidden" id="ejfnO4" th:value="${ejfnO4}">
+		<input  type="hidden" id="feptxnTraceEjfno" th:value="${traceEjfno}">
+		<input  type="hidden" id="feptxnTxDate" th:value="${txDate}">
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" th:if="${pageData != null}">
+		<div class="card-body table-responsive p-0">
+			<table class="table table-striped table-bordered table-head-fixed table-hover text-nowrap">
+				<thead>
+					<tr>
+						<th><b>EJ序號</b></th>
+						<th><b>ATM序號</b></th>
+						<th><b>訊息ID</b></th>
+						<th><b>轉出帳號</b></th>
+						<th><b>通道</b></th>
+						<th><b>程式流程</b></th>
+						<th><b>程式名稱</b></th>
+						<th><b>訊息流程</b></th>
+						<th><b>Stan 序號</b></th>
+						<th><b>記錄日期/時間</b></th>
+						<th><b>備註</b></th>
+					</tr>
+				</thead>
+				<tbody th:if="${pageData.list != null}">
+					<tr th:each="data : ${pageData.list}">
+						<td align="center">
+							<a class="a-inquiry" href="#" th:text="${data.ej}"
+								th:value="${
+										'{' + '&quot;logno&quot;:&quot;'+data.logno + '&quot;' + ',' 
+											+ '&quot;logdate&quot;:&quot;'+#dates.format(data.logdate, 'yyyyMMddHHmmssSSS') + '&quot;'
+										+ '}'
+										}">
+							</a>
+						</td>
+						<td align="center" th:text="${data.atmseq}" />
+						<td align="center" th:text="${data.messageid}" />
+						<td align="center" th:text="${data.troutactno}" />
+						<td align="center" th:text="${data.channel}" />
+						<td align="center" th:text="${data.programflow}" />
+						<td align="center" th:text="${data.programname}" />
+						<td align="center" th:text="${data.messageflow}" />
+						<td th:text="${data.stan}" />
+						<td th:text="${#dates.format(data.logdate, 'yyyy/MM/dd HH:mm:ss.SSS')}" />
+						<td th:text="${T(com.syscom.fep.web.base.FEPWebBase).shortRemark(data.remark)}" class="td-line-wrap"/>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div layout:fragment="panel-script">
+		<script type="text/javascript" th:src="@{/js/atmmon/UI_060610_A.js}"></script>
+	</div>
+</body>
+</html>

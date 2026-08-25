@@ -1,0 +1,7 @@
+package com.syscom.fep.gateway.netty.fisc.keepalive;
+
+import com.syscom.fep.gateway.netty.NettyTransmissionChannelInboundHandlerAdapterServer;
+import io.netty.channel.ChannelHandler.Sharable;
+
+@Sharable
+public class FISCGatewayKeepAliveServerChannelInboundHandlerAdapter extends NettyTransmissionChannelInboundHandlerAdapterServer<FISCGatewayKeepAliveServerConfiguration, FISCGatewayKeepAliveServerProcessRequestManager, FISCGatewayKeepAliveServerProcessRequest> {}

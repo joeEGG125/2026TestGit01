@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.MsginExtMapper">
+    <!-- 2021/10/25 Chen Yang Add -->
+    <select id="getMSGINByCheckINData" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsginMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.MsginMapper.Base_Column_List" />
+        FROM MSGIN
+        WHERE MSGIN_TXDATE = #{msginTxdate,jdbcType=VARCHAR}
+        AND SUBSTR(MSGIN_RECEIVER_BANK, 1, 3) = #{msginReceiverBank,jdbcType=VARCHAR}
+        AND MSGIN_FISCSNO = #{msginFiscsno,jdbcType=VARCHAR}
+        AND MSGIN_FISC_RTN_CODE = #{msginFiscRtnCode,jdbcType=VARCHAR}
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <select id="getMsgInByDef" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.MsginMapper.BaseResultMap">
+        SELECT
+        <include refid="com.syscom.fep.mybatis.mapper.MsginMapper.Base_Column_List" />
+        FROM MSGIN
+        <where>
+            <if test='msginTxdate != null and msginTxdate !=" "'>
+                AND MSGIN_TXDATE = #{msginTxdate,jdbcType=VARCHAR}
+            </if>
+            <if test='msginBrno != null and msginBrno !=" "'>
+                AND MSGIN_BRNO = #{msginBrno,jdbcType=VARCHAR}
+            </if>
+            <if test='msginFepno != null and msginFepno !=" "'>
+                AND MSGIN_FEPNO = #{msginFepno,jdbcType=VARCHAR}
+            </if>
+            <if test="msginFiscsno != null and msginFiscsno !=''">
+                AND MSGIN_FISCSNO = #{msginFiscsno,jdbcType=VARCHAR}
+            </if>
+            <if test="msginEjno != null and msginEjno !=''">
+                AND MSGIN_EJNO = #{msginEjno,jdbcType=VARCHAR}
+            </if>
+            <if test="msginStat != null and msginStat !=''">
+                AND MSGIN_STAT = #{msginStat,jdbcType=VARCHAR}
+            </if>
+            <if test="msginStan != null and msginStan !=''">
+                AND MSGIN_STAN = #{msginStan,jdbcType=VARCHAR}
+            </if>
+            <if test="msginReceiverBank != null and msginReceiverBank !=''">
+                <if test="msginReceiverBank.length() == 3">
+                    AND SUBSTR(MSGIN_RECEIVER_BANK,1,3)= #{msginReceiverBank,jdbcType=VARCHAR}
+                </if>
+                <if test="msginReceiverBank.length() == 6">
+                    AND SUBSTR(MSGIN_RECEIVER_BANK,1,6)= #{msginReceiverBank,jdbcType=VARCHAR}
+                </if>
+                <if test="msginReceiverBank.length() == 7">
+                    AND MSGIN_RECEIVER_BANK= #{msginReceiverBank,jdbcType=VARCHAR}
+                </if>
+            </if>
+            <if test="msginSenderBank != null and msginSenderBank !=''">
+                <if test="msginSenderBank.length() == 3">
+                    AND SUBSTR(MSGIN_SENDER_BANK,1,3) = #{msginSenderBank,jdbcType=VARCHAR}
+                </if>
+                <if test="msginSenderBank.length() == 6">
+                    AND SUBSTR(MSGIN_SENDER_BANK,1,6) = #{msginSenderBank,jdbcType=VARCHAR}
+                </if>
+                <if test="msginSenderBank.length() == 7">
+                    AND MSGIN_SENDER_BANK = #{msginSenderBank,jdbcType=VARCHAR}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <!-- 2021/11/25 wj Add -->
+    <select id="getMSGINDtByDef" parameterType="map" resultType="java.util.HashMap">
+	SELECT MSGIN_FISCSNO AS HBKNO_FISCSNO, MSGIN_SENDTIME AS SENDTIME,
+	'950' AS SENDER_BANK,
+	MSGIN_STAN AS STAN, MSGIN_SENDER_BANK AS RECEIVER_BANK, MSGIN_ENGMEMO AS ENGMEMO,
+	MSGIN_FISC_RTN_CODE AS RC,
+	CASE WHEN SUBSTR(MSGIN_ENGMEMO,1,3) = 'CHG' THEN SUBSTR(MSGIN_ENGMEMO,45,7)
+	WHEN SUBSTR(MSGIN_ENGMEMO,1,3) = 'REP' THEN SUBSTR(MSGIN_ENGMEMO,5,7)
+	END AS FISCSNO
+	FROM MSGIN
+	<where>
+		<if test='msgin.msginTxdate != null and msgin.msginTxdate !=" "'>
+			AND MSGIN_TXDATE = #{msgin.msginTxdate,jdbcType=VARCHAR}
+		</if>
+		<if test="msgin.msginEngmemo != null and msgin.msginEngmemo !=''">
+			AND SUBSTR(MSGIN_ENGMEMO,1,3)= #{msgin.msginEngmemo,jdbcType=VARCHAR}
+		</if>
+		<if test="msgin.msginFiscsno != null and msgin.msginFiscsno !=''">
+			AND MSGIN_FISCSNO = #{msgin.msginFiscsno,jdbcType=VARCHAR}
+		</if>
+		<if test="msgin.msginSenderBank != null and msgin.msginSenderBank !=''">
+			AND SUBSTR(MSGIN_SENDER_BANK,1,3) = #{msgin.msginSenderBank,jdbcType=VARCHAR}
+		</if>
+	</where>
+	
+	UNION ALL
+	SELECT MSGOUT_FISCSNO AS HBKNO_FISCSNO, MSGOUT_SENDTIME AS SENDTIME,
+	MSGOUT_SENDER_BANK AS SENDER_BANK,
+	MSGOUT_STAN AS STAN,
+	MSGOUT_RECEIVER_BANK AS RECEIVER_BANK, MSGOUT_ENGMEMO AS ENGMEMO,
+	MSGOUT_FISC_RTN_CODE AS RC,
+	CASE WHEN SUBSTR(MSGOUT_ENGMEMO,1,3) = 'CHG'
+	THEN MSGOUT_FISCSNO
+	WHEN SUBSTR(MSGOUT_ENGMEMO,1,3) = 'REP' THEN
+	SUBSTR(MSGOUT_ENGMEMO,5,7)
+	END AS FISCSNO
+	FROM MSGOUT
+	<where>
+		<if test='msgout.msgoutTxdate != null and msgout.msgoutTxdate !=" "'>
+			AND MSGOUT_TXDATE = #{msgout.msgoutTxdate,jdbcType=VARCHAR}
+		</if>
+		<if test="msgout.msgoutEngmemo != null and msgout.msgoutEngmemo !=''">
+			AND SUBSTR(MSGOUT_ENGMEMO,1,3)=
+			#{msgout.msgoutEngmemo,jdbcType=VARCHAR}
+		</if>
+		<if test="msgout.msgoutFiscsno != null and msgout.msgoutFiscsno !=''">
+			AND MSGOUT_FISCSNO = #{msgout.msgoutFiscsno,jdbcType=VARCHAR}
+		</if>
+		<if test="msgout.msgoutSenderBank != null and msgout.msgoutSenderBank !=''">
+			AND SUBSTR(MSGOUT_RECEIVER_BANK,1,3) =
+			#{msgout.msgoutSenderBank,jdbcType=VARCHAR}
+		</if>
+	</where>
+	
+	ORDER BY FISCSNO,SENDTIME,ENGMEMO
+    </select>
+    <select id="getMSGINByDateSendbankFISCRtnCodeEJ"  parameterType="map"  resultType="java.util.HashMap">
+        SELECT MSGIN_SENDER_BANK AS O_SENDER_BANK, MSGIN_RECEIVER_BANK AS RECEIVER_BANK, MSGIN_STAN AS STAN, '' AS ACTNO, '' AS RMSNO, '' AS AMT,
+        MSGIN_FISCSNO AS FISCSNO, '通訊' AS REMTYPE, MSGIN_FISC_RTN_CODE AS STAT
+        FROM MSGIN
+        <where>
+            MSGIN_TXDATE = #{txdate,jdbcType=CHAR}
+            AND MSGIN_FISC_RTN_CODE = #{fiscRtnCode,jdbcType=VARCHAR}
+            <if test='senderBank != null and senderBank != ""'>
+                AND SUBSTR(MSGIN_SENDER_BANK,1,3) = #{senderBank,jdbcType=CHAR}
+            </if>
+            <if test='ej != null and ej != "0" and ej != ""'>
+                AND MSGIN_EJNO = #{ej,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+</mapper>

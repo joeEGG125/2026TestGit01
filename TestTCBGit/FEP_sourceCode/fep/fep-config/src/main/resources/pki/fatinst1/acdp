@@ -1,0 +1,2 @@
+spring.datasource.fepdb.password=ENC(rq7spHpmsd5nMmO25S2AWak+p5X/ueOaOR0LUD4gI5H3u3KsQlI+actC9wU4zr2R)
+spring.datasource.desdb.password=ENC(rq7spHpmsd5nMmO25S2AWak+p5X/ueOaOR0LUD4gI5H3u3KsQlI+actC9wU4zr2R)

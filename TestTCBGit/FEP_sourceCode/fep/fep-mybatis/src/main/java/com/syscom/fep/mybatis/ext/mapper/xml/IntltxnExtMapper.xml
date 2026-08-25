@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.IntltxnExtMapper">
+	<!-- 2021-04-19 ZhaoKai add -->
+	<select id="queryByOriData" parameterType="com.syscom.fep.mybatis.model.Intltxn" resultMap="com.syscom.fep.mybatis.mapper.IntltxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.IntltxnMapper.Base_Column_List" />
+		FROM INTLTXN
+		WHERE INTLTXN_ORI_MSGTYPE = #{intltxnOriMsgtype,jdbcType=CHAR}
+		AND INTLTXN_ORI_VISA_STAN = #{intltxnOriVisaStan,jdbcType=CHAR}
+		AND INTLTXN_ORI_TX_MMDDTIME = #{intltxnOriTxMmddtime,jdbcType=CHAR}
+		AND INTLTXN_ORI_ACQ = #{intltxnOriAcq,jdbcType=CHAR}
+		<if test="intltxnOriFwdInst != null and intltxnOriFwdInst != ''">
+			AND INTLTXN_ORI_FWD_INST = #{intltxnOriFwdInst,jdbcType=CHAR}
+		</if>
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	<!-- 2021-08-04 Richard add -->
+	<select id="queryByOriDataEmv" parameterType="com.syscom.fep.mybatis.model.Intltxn" resultMap="com.syscom.fep.mybatis.mapper.IntltxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.IntltxnMapper.Base_Column_List" />
+		FROM INTLTXN
+		WHERE INTLTXN_STAN = #{intltxnOriStan,jdbcType=VARCHAR}
+		AND INTLTXN_TX_DATE = #{intltxnTxDate,jdbcType=CHAR}
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	<!-- 2021-05-06 ZhaoKai add -->
+	<select id="selectForCheckOwdCount" parameterType="map" resultMap="com.syscom.fep.mybatis.mapper.IntltxnMapper.BaseResultMap">
+		SELECT
+		<include refid="com.syscom.fep.mybatis.mapper.IntltxnMapper.Base_Column_List" />
+		FROM INTLTXN
+		WHERE INTLTXN_TX_DATE = #{intltxnTxDate,jdbcType=CHAR}
+		AND INTLTXN_TX_TIME >= #{intltxnTxTime,jdbcType=VARCHAR}
+		AND INTLTXN_TROUT_BKNO = #{intltxnTroutBkno,jdbcType=CHAR}
+		AND INTLTXN_TROUT_ACTNO = #{intltxnTroutActno,jdbcType=CHAR}
+		AND INTLTXN_BKNO &lt;&gt; #{intltxnTroutBkno,jdbcType=CHAR}
+		AND INTLTXN_PCODE IN ('2450', '2630')
+		AND INTLTXN_TXRUST IN ('A', 'D')
+	</select>
+</mapper>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{home}">
+
+<head>
+	<meta charset="UTF-8">
+	</meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+	<div layout:fragment="panel-condition" class="panel-hidden"></div>
+	<div layout:fragment="panel-button">
+		<button type="button" style="width:100px" class="btn btn-primary" id="btnPrevPage">上一頁</button>
+	</div>
+	<div layout:fragment="panel-summary" class="panel-hidden"></div>
+	<div layout:fragment="panel-grid" class="panel-detail">
+		<form id="form-validator" th:object="${form}" >
+			<table border="0" cellspacing="0" class="table-detail">
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">交易日期:</label>
+					</td>
+					<td class="condition-input" style="width:300px">
+			         	<input th:disabled="true" class="form-control" type="text"  th:field="*{feptxnTxDate}"/>
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">電子日誌序號:</label>	
+					</td>
+					<td class="condition-input" style="width:300px">
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnEjfno}"/>
+							</div>
+							<label class="label-text-symbol">/</label>
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text"  th:field="*{feptxnTraceEjfno}"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATM代號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="form-control" type="text"  th:field="*{feptxnAtmno}" />
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATM/ATM CON交易序號:</label>
+					</td>
+					<td class="condition-input">
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnAtmSeqno}"/>
+							</div>
+							<label class="label-text-symbol">/</label>
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text"  th:field="*{feptxnConAtmSeqno2}"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">交易序號/確認中心交易序號:</label>
+					</td>
+					<td class="condition-input">
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxseq}"/>
+							</div>
+							<label class="label-text-symbol">/</label>
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnConTxseq}"/>
+							</div>
+						</div>
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATM/ATM CON交易代號:</label>
+					</td>
+					<td class="condition-input">
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxCode}"/>
+							</div>
+							<label class="label-text-symbol">/</label>
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnConTxCode}"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">財金營業日:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text"  th:field="*{feptxnTbsdyFisc}"/>			
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">財金STAN:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text"  th:field="*{feptxnStan}"/>			
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">本行營業日:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text"  th:field="*{feptxnTbsdy}"/>	
+					</td>
+					<!--是一個欄位還是兩個-->
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">交易時間:</label>
+					</td>
+					<td class="condition-input">
+                        <input th:disabled="true" class="form-control" type="text" th:field="*{feptxnTxTime}"/>
+					</td>
+					<!--是一個欄位還是兩個-->
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">軋帳時點:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{feptxnAtmod}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">CBS 交易序號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{feptxnCbsRrn}"/>			
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">虛擬櫃員機代號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+                    	<input th:disabled="true" class="form-control" type="text" th:field="*{feptxnAtmnoVir}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+                    	<label class="col-form-label">虛擬中心交易序號/CON交易序號:</label>
+					</td>
+					<td>
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnVirTxseq}"/>
+							</div>
+							<label class="label-text-symbol">/</label>
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnConVirTxseq}"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">卡片帳號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="form-control" type="text" th:field="*{feptxnMajorActno}" />
+							</div>
+							<label class="label-text-symbol">-</label>
+							<div class="col">
+								<input th:disabled="true" class="form-control" type="text" th:field="*{feptxnCardSeq}" />
+							</div>
+						</div>	
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">轉出銀行_轉出帳號_類別:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTroutActnoBknoTxt}"/>
+							</div>
+							<label class="label-text-symbol">/</label>
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTroutKind}"/>
+							</div>
+						</div>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">轉入銀行_轉入帳號_類別:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<div class="row">
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTrinBknoActnoTxt}"/>
+							</div>
+							<label class="label-text-symbol">/</label>
+							<div class="col">
+								<input th:disabled="true" class="col form-control" type="text"  th:field="*{feptxnTrinKind}"/>
+							</div>
+						</div>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">實際入帳帳號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTrinActnoActual}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">提領幣別:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxCur}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">提領金額:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxAmt}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">帳戶幣別:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxCurAct}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">帳戶交易金額:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxAmt}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">手續費幣別:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnFeeCur}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">提領當地手續費:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnFeeCustpay}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">手續費折算原幣金額:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnFeeCustpayAct}"/>		
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">應收財金手續費:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxFeeDr}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">應付財金手續費:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxFeeCr}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">應收同業手續費:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxFeeMbnkDr}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">應付同業手續費:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxFeeMbnkCr}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">可用餘額:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnBala}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">帳戶餘額:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnBalb}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">CBS摘要:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnCbsDscpt}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATMC檔交易代號:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnTxCodeAtmc}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">帳務分行:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnBrno}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">地區代碼:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnZoneCode}"/>	
+					</td>
+				</tr>
+				<tr>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATM所屬區域:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnAtmZone}"/>		
+					</td>
+					<td class="condition-label" style="width:200px">
+						<label class="col-form-label">ATM所屬分行:</label>
+					</td>
+					<td class="condition-input" style="width:200px">					
+						<input th:disabled="true" class="col form-control" type="text" th:field="*{feptxnAtmBrno}"/>	
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

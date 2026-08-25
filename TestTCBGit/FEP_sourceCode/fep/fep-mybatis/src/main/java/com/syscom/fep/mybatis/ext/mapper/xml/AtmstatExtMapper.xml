@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syscom.fep.mybatis.ext.mapper.AtmstatExtMapper">
+    <!-- 2021-11-11 Richard add for ATM Gateway -->
+    <update id="updateAtmstatByAtmAtmpIp" parameterType="map">
+        UPDATE ATMSTAT
+        <set>
+            ATMSTAT_STATUS = #{atmstat.atmstatStatus,jdbcType=DECIMAL},
+            ATMSTAT_SOCKET = #{atmstat.atmstatSocket,jdbcType=DECIMAL},
+            ATMSTAT_SEC    = #{atmstat.atmstatSec,jdbcType=DECIMAL},
+            ATMSTAT_INIKEY = #{atmstat.atmstatInikey,jdbcType=DECIMAL},
+            <if test="atmstat.atmstatStatus == 0">
+                ATMSTAT_LAST_OPEN = current_timestamp,
+                ATMSTAT_LAST_CLOSE = NULL,
+            </if>
+            <if test="atmstat.atmstatStatus == 1">
+                ATMSTAT_LAST_OPEN = NULL,
+                ATMSTAT_LAST_CLOSE = current_timestamp,
+            </if>
+            <if test="atmstat.atmstatApVersionN != null">
+                ATMSTAT_AP_VERSION_N = #{atmstat.atmstatApVersionN,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE ATMSTAT_ATMNO =
+              (SELECT ATMSTAT_ATMNO
+               FROM ATMSTAT
+                        INNER JOIN ATMMSTR ON ATM_ATMNO = ATMSTAT_ATMNO
+               WHERE ATM_ATMP_IP = #{atmAtmpIp,jdbcType=VARCHAR}
+                 AND ATMSTAT_ATMNO = #{atmstat.atmstatAtmno,jdbcType=CHAR})
+    </update>
+    <!-- 2022-08-17 Han add for ATM Gateway -->
+    <update id="updateATMStatus" parameterType="map">
+        UPDATE ATMSTAT
+        SET ATMSTAT_SERVICE = #{serviceStatus,jdbcType=SMALLINT},
+            ATMSTAT_STATUS  = #{connectStatus,jdbcType=DECIMAL},
+            ATMSTAT_ENABLE  = #{enable,jdbcType=BOOLEAN}
+        WHERE ATMSTAT_ATMNO = #{atmNo,jdbcType=CHAR}
+    </update>
+    <!-- 2026-03-30 Zonghao add for ATM 基本資料查詢 -->
+    <select id="getAtmApVersion" resultType="map">
+        SELECT DISTINCT ATMSTAT_AP_VERSION_N FROM ATMSTAT WHERE ATMSTAT_AP_VERSION_N <![CDATA[<>]]> ''
+    </select>
+    <!-- 2023-02-10 Richard add for ATM Gateway -->
+    <select id="selectAtmstatList" parameterType="map" resultType="map">
+        SELECT ATMSTAT_ATMNO,
+            ATMSTAT.ATMSTAT_STATUS,
+            ATMSTAT.ATMSTAT_LAST_CLOSE,
+            ATMSTAT.ATMSTAT_LAST_OPEN,
+            ATMMSTR.ATM_ATMP_IP
+        FROM ATMSTAT 
+         INNER JOIN ATMMSTR ON ATMSTAT.ATMSTAT_ATMNO = ATMMSTR.ATM_ATMNO
+        <where>
+            <if test="@org.apache.commons.collections4.CollectionUtils@isNotEmpty(atmstatAtmnoList)">
+                AND ATMSTAT_ATMNO IN
+                <foreach item="item" index="index" collection="atmstatAtmnoList" open="(" close=")" separator=",">
+                    #{item,jdbcType=DECIMAL}
+                </foreach>
+            </if>
+            <if test="atmstatStatus != null and atmstatStatus != -1">
+                AND ATMSTAT_STATUS = #{atmstatStatus,jdbcType=DECIMAL}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(atmAtmpIp)">
+                AND ATM_ATMP_IP = #{atmAtmpIp,jdbcType=VARCHAR}
+            </if>
+            and ATM_FEP_CONNECTION = 1
+        </where>
+        ORDER BY
+        <if test="atmstatStatus == null or atmstatStatus == -1">
+            ATMSTAT_STATUS desc,
+        </if>
+        ATMSTAT_ATMNO
+    </select>
+    <select id="selectAtmstatListCount" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ATMSTAT
+        INNER JOIN ATMMSTR ON ATMSTAT.ATMSTAT_ATMNO = ATMMSTR.ATM_ATMNO
+        <where>
+            <if test="@org.apache.commons.collections4.CollectionUtils@isNotEmpty(atmstatAtmnoList)">
+                AND ATMSTAT_ATMNO IN
+                <foreach item="item" index="index" collection="atmstatAtmnoList" open="(" close=")" separator=",">
+                    #{item,jdbcType=DECIMAL}
+                </foreach>
+            </if>
+            <if test="atmstatStatus != null and atmstatStatus != -1">
+                AND ATMSTAT_STATUS = #{atmstatStatus,jdbcType=DECIMAL}
+            </if>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(atmAtmpIp)">
+                AND ATM_ATMP_IP = #{atmAtmpIp,jdbcType=VARCHAR}
+            </if>
+            and ATM_FEP_CONNECTION = 1
+        </where>
+    </select>
+    <update id="updateAtmstatEnable" parameterType="map">
+        UPDATE ATMSTAT
+        SET ATMSTAT_ENABLE  = #{enable,jdbcType=BOOLEAN}
+        WHERE ATMSTAT_ATMNO = #{atmNo,jdbcType=CHAR}
+    </update>
+</mapper>
